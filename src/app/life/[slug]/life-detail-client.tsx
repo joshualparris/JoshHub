@@ -19,14 +19,16 @@ export function LifeDetailClient({ area }: Props) {
   const [pinned, setPinned] = useState<string[]>([]);
 
   useEffect(() => {
-    loadPinnedLife().then(setPinned);
+    loadPinnedLife()
+      .then(setPinned)
+      .catch(() => setPinned([]));
   }, []);
 
   const quickApps = useMemo(
     () =>
       area.quickLinks
         .map((id) => getAppById(id))
-        .filter(Boolean)
+        .filter((app): app is NonNullable<typeof app> => Boolean(app))
         .slice(0, 6),
     [area.quickLinks]
   );
@@ -82,23 +84,25 @@ export function LifeDetailClient({ area }: Props) {
             ) : (
               quickApps.map((app) => (
                 <div
-                  key={app!.id}
+                  key={app.id}
                   className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2"
                 >
                   <div className="space-y-1">
-                    <Link
-                      href={`/apps/${app!.id}`}
+                    <a
+                      href={app.primaryUrl}
+                      target="_blank"
+                      rel="noreferrer"
                       className="font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
                     >
-                      {app!.name}
-                    </Link>
+                      {app.name}
+                    </a>
                     <div className="flex items-center gap-2 text-xs text-neutral-500">
-                      <StatusChip status={app!.status} />
-                      <span>{app!.category}</span>
+                      <StatusChip status={app.status} />
+                      <span>{app.category}</span>
                     </div>
                   </div>
                   <a
-                    href={app!.primaryUrl}
+                    href={app.primaryUrl}
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
