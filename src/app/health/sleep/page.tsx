@@ -111,7 +111,7 @@ export default function SleepPage() {
               <LineChart data={chartData}>
                 <XAxis dataKey="date" fontSize={12} />
                 <YAxis tickFormatter={(v) => (v / 60).toFixed(1)} fontSize={12} />
-                <Tooltip formatter={(v: any) => `${(Number(v) / 60).toFixed(1)} hrs`} />
+                <Tooltip formatter={(v: number) => `${(Number(v) / 60).toFixed(1)} hrs`} />
                 <Line
                   type="monotone"
                   dataKey="duration"

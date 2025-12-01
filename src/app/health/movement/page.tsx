@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,14 @@ export default function MovementPage() {
 
   const recent = useMemo(
     () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10),
+    [movement]
+  );
+  const chartData = useMemo(
+    () =>
+      (movement ?? [])
+        .map((m) => ({ date: m.date, minutes: m.minutes }))
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .slice(-14),
     [movement]
   );
 
@@ -86,6 +95,26 @@ export default function MovementPage() {
               <Button type="submit">Save</Button>
             </div>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Movement trend (minutes)</CardTitle>
+        </CardHeader>
+        <CardContent className="h-64">
+          {chartData.length === 0 ? (
+            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <XAxis dataKey="date" fontSize={12} />
+                <YAxis fontSize={12} />
+                <Tooltip />
+                <Bar dataKey="minutes" fill="#0f172a" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </CardContent>
       </Card>
 

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { createEvent, parseIcsEvents } from "@/lib/db/events";
 
 const icsSchema = z.object({
   lines: z.array(z.string()),
@@ -13,21 +13,37 @@ const icsSchema = z.object({
 export default function CalendarSettingsPage() {
   const [message, setMessage] = useState("");
 
-  function handleFile(file?: File | null) {
+  async function handleFile(file?: File | null) {
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const text = reader.result?.toString() ?? "";
         const lines = text.split(/\r?\n/);
-        // Minimal validation; real parsing would map VEVENT blocks into our local events table.
         const parsed = icsSchema.safeParse({ lines });
         if (!parsed.success) {
           setMessage("Invalid ICS file.");
           return;
         }
-        setMessage("ICS import stub: parsed file, conversion to local events not implemented yet.");
-      } catch (e) {
+        const events = parseIcsEvents(text);
+        if (!events.length) {
+          setMessage("No events found in ICS.");
+          return;
+        }
+        await Promise.all(
+          events.map((ev) =>
+            createEvent({
+              title: ev.title,
+              startIso: ev.startIso,
+              endIso: ev.endIso,
+              location: ev.location,
+              notes: ev.notes,
+              tags: ["ics-import"],
+            })
+          )
+        );
+        setMessage(`Imported ${events.length} events into local calendar.`);
+      } catch {
         setMessage("Failed to read ICS.");
       }
     };
@@ -40,13 +56,13 @@ export default function CalendarSettingsPage() {
         <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Settings</p>
         <h1 className="text-3xl font-semibold text-neutral-900">Calendar import</h1>
         <p className="text-neutral-600">
-          Manually add events at /calendar. ICS import is stubbed here; paste a file to parse and we can wire conversion next.
+          Import an .ics export into your local calendar (stored in your browser).
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>ICS import (stub)</CardTitle>
+          <CardTitle>ICS import</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <input
@@ -56,7 +72,7 @@ export default function CalendarSettingsPage() {
           />
           {message && <p className="text-sm text-neutral-700">{message}</p>}
           <p className="text-xs text-neutral-500">
-            For now, this only validates the file. We can map events into the local calendar on the next pass.
+            Events are added to the local calendar; no external sync or upload.
           </p>
         </CardContent>
       </Card>

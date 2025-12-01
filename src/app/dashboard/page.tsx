@@ -72,7 +72,8 @@ export default function DashboardPage() {
     return Math.round(avg);
   }, [sleep]);
   const runsThisWeek = useMemo(() => {
-    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    const now = new Date().getTime();
+    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
     return (routineRuns ?? []).filter((r) => r.startedAt >= sevenDaysAgo).length;
   }, [routineRuns]);
   const latestMove = useMemo(
