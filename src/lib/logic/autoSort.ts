@@ -1,5 +1,5 @@
 import { CaptureKind } from "../models/capture";
-import { inferArea as _inferArea, LifeArea } from "../models/life";
+import { LifeArea, normalizeLifeArea } from "../models/life";
 import { extractHashtags } from "./tagging";
 
 export function inferKind(text: string, url?: string | null): CaptureKind {
@@ -27,7 +27,7 @@ export function inferArea(text: string): LifeArea {
   for (const m of mapping) {
     if (m.re.test(lower)) return m.area;
   }
-  return "inbox";
+  return normalizeLifeArea(lower);
 }
 
 export function extractTitle(text: string): string {
