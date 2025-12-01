@@ -41,6 +41,10 @@ export function useRoutineRuns(routineId?: string) {
   }, [routineId]);
 }
 
+export function useRoutineRunsAll() {
+  return useLiveQuery(async () => db.routineRuns.toArray(), []);
+}
+
 export function useBookmarks() {
   return useLiveQuery(async () => db.bookmarks.orderBy("createdAt").reverse().toArray(), []);
 }

@@ -40,6 +40,9 @@ npm run start  # preview production build
   - `/tasks`: quick add, grouped Today/Upcoming/Someday, check/priority.
   - `/routines` + `/routines/[id]`: create/run routines, log runs.
   - `/settings/backups`: export/import/reset local data (notes/tasks/bookmarks/routines/runs/pins).
+- Health: `/health` hub plus `/health/sleep|movement|nutrition|metrics` logging; sleep chart; dashboard shows health snippets.
+- Calendar: `/calendar` manual events; dashboard shows upcoming; ICS import stub at `/settings/calendar`.
+- Family: `/family` for rhythm + kid checklists, surfaced on dashboard.
 - Pinned Life areas now stored in IndexedDB.
 
 ## Accessibility

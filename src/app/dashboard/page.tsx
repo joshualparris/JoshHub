@@ -10,9 +10,10 @@ import { apps } from "@/data/apps";
 import { lifeAreas, type LifeArea } from "@/data/life";
 import { addRecent, loadRecent } from "@/lib/recent";
 import { loadPinnedLife } from "@/lib/pins";
-import { useNotes, useTasks } from "@/lib/db/hooks";
+import { useNotes, useTasks, useRoutineRunsAll } from "@/lib/db/hooks";
 import { useEvents } from "@/lib/db/events";
 import { useSleep, useMovement, useNutrition, useMetrics } from "@/lib/db/health";
+import { useFamilyRhythm } from "@/lib/db/family";
 
 export default function DashboardPage() {
   const notes = useNotes();
@@ -24,6 +25,8 @@ export default function DashboardPage() {
   const movement = useMovement();
   const nutrition = useNutrition();
   const metrics = useMetrics();
+  const rhythm = useFamilyRhythm();
+  const routineRuns = useRoutineRunsAll();
 
   useEffect(() => {
     loadPinnedLife().then(setPinned);
@@ -68,6 +71,10 @@ export default function DashboardPage() {
     const avg = durations.reduce((a, b) => a + b, 0) / durations.length;
     return Math.round(avg);
   }, [sleep]);
+  const runsThisWeek = useMemo(() => {
+    const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+    return (routineRuns ?? []).filter((r) => r.startedAt >= sevenDaysAgo).length;
+  }, [routineRuns]);
   const latestMove = useMemo(
     () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
     [movement]
@@ -329,6 +336,13 @@ export default function DashboardPage() {
               <p className="text-xs text-neutral-600">
                 Last metric: {latestMetric.metricType} {latestMetric.value} {latestMetric.unit}
               </p>
+            )}
+            <p className="text-xs text-neutral-600">Routine runs (7d): {runsThisWeek}</p>
+            {rhythm && (
+              <div className="text-xs text-neutral-600 space-y-1">
+                <p>Family rhythm: dinner {rhythm.dinner}, bedtime {rhythm.bedtime}</p>
+                <p>Responsibilities: {rhythm.responsibilities.join(", ") || "n/a"}</p>
+              </div>
             )}
           </CardContent>
         </Card>
