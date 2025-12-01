@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,18 @@ export default function MetricsPage() {
 
   const recent = useMemo(
     () => (metrics ?? []).sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso)).slice(0, 10),
+    [metrics]
+  );
+  const chartData = useMemo(
+    () =>
+      (metrics ?? [])
+        .map((m) => ({
+          date: m.dateTimeIso,
+          value: m.value,
+          metricType: m.metricType,
+        }))
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .slice(-20),
     [metrics]
   );
 
@@ -83,6 +96,26 @@ export default function MetricsPage() {
               <Button type="submit">Save</Button>
             </div>
           </form>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Metrics trend</CardTitle>
+        </CardHeader>
+        <CardContent className="h-64">
+          {chartData.length === 0 ? (
+            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <XAxis dataKey="date" tickFormatter={(v) => v.slice(5, 16)} fontSize={12} />
+                <YAxis fontSize={12} />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#0f172a" strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </CardContent>
       </Card>
 
