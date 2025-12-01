@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "cmdk";
 import { AppWindow, Home, Layers, Plus, Search } from "lucide-react";
 
@@ -31,6 +32,7 @@ const routes = [
 ];
 
 export function GlobalSearch() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [pinned, setPinned] = useState<string[]>([]);
@@ -135,14 +137,16 @@ export function GlobalSearch() {
                     .filter((r): r is Extract<Result, { type: "app" }> => r.type === "app")
                     .map((r) => (
                       <CommandItem key={r.item.id} onSelect={() => setOpen(false)} asChild>
-                        <Link
-                          href={`/apps/${r.item.id}`}
+                        <a
+                          href={r.item.primaryUrl}
+                          target="_blank"
+                          rel="noreferrer"
                           className="flex items-center gap-2 px-4 py-2"
                         >
                           <AppWindow className="h-4 w-4 text-neutral-500" />
                           <span>{r.item.name}</span>
                           <span className="text-xs text-neutral-500">{r.item.category}</span>
-                        </Link>
+                        </a>
                       </CommandItem>
                     ))}
                 </CommandGroup>
@@ -150,32 +154,35 @@ export function GlobalSearch() {
                   {results
                     .filter((r): r is Extract<Result, { type: "life" }> => r.type === "life")
                     .map((r) => (
-                      <CommandItem key={r.item.slug} onSelect={() => setOpen(false)} asChild>
-                        <Link
-                          href={`/life/${r.item.slug}`}
-                          className="flex items-center gap-2 px-4 py-2"
+                      <CommandItem
+                        key={r.item.slug}
+                        onSelect={() => {
+                          router.push(`/life/${r.item.slug}`);
+                          setOpen(false);
+                        }}
+                        className="flex items-center gap-2 px-4 py-2"
+                      >
+                        <Layers className="h-4 w-4 text-neutral-500" />
+                        <span>{r.item.title}</span>
+                        <span className="text-xs text-neutral-500">
+                          {r.item.tags.slice(0, 2).join(", ")}
+                        </span>
+                        <button
+                          type="button"
+                          className="ml-auto text-xs underline"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (pinned.includes(r.item.slug)) {
+                              await removePin(r.item.slug);
+                            } else {
+                              await addPin(r.item.slug);
+                            }
+                            setPinned(await loadPinnedLife());
+                          }}
                         >
-                          <Layers className="h-4 w-4 text-neutral-500" />
-                          <span>{r.item.title}</span>
-                          <span className="text-xs text-neutral-500">
-                            {r.item.tags.slice(0, 2).join(", ")}
-                          </span>
-                          <button
-                            type="button"
-                            className="ml-auto text-xs underline"
-                            onClick={async (e) => {
-                              e.preventDefault();
-                              if (pinned.includes(r.item.slug)) {
-                                await removePin(r.item.slug);
-                              } else {
-                                await addPin(r.item.slug);
-                              }
-                              setPinned(await loadPinnedLife());
-                            }}
-                          >
-                            {pinned.includes(r.item.slug) ? "Unpin" : "Pin"}
-                          </button>
-                        </Link>
+                          {pinned.includes(r.item.slug) ? "Unpin" : "Pin"}
+                        </button>
                       </CommandItem>
                     ))}
                 </CommandGroup>

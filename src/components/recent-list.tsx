@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { Clock } from "lucide-react";
 
 import { StatusChip } from "@/components/status-chip";
@@ -24,12 +23,14 @@ export function RecentList() {
           className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
         >
           <div className="space-y-1">
-            <Link
-              href={`/apps/${item.id}`}
+            <a
+              href={item.primaryUrl}
+              target="_blank"
+              rel="noreferrer"
               className="font-medium text-neutral-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
             >
               {item.name}
-            </Link>
+            </a>
             <div className="flex items-center gap-2 text-sm text-neutral-600">
               <StatusChip status={item.status as AppStatus} />
               <span>{item.category}</span>

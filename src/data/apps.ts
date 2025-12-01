@@ -65,9 +65,9 @@ export const apps: CatalogItem[] = [
     id: "campaign-copilot",
     name: "Campaign Copilot",
     type: "app",
-    category: "Dubbo / DCS",
+    category: "Games",
     status: "ok",
-    tags: ["dubbo", "campaign", "copilot", "web"],
+    tags: ["game", "dnd", "campaign", "copilot", "web"],
     primaryUrl: "https://joshuaparrisdadlan-stack.github.io/campaign-copilot/",
     urls: [
       { label: "Live", url: "https://joshuaparrisdadlan-stack.github.io/campaign-copilot/" },

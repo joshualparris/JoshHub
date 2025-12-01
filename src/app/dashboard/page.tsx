@@ -286,12 +286,14 @@ export default function DashboardPage() {
                     <p className="font-medium text-neutral-900">{item.name}</p>
                     <p className="text-xs text-neutral-500">{item.category}</p>
                   </div>
-                  <Link
-                    href={`/apps/${item.id}`}
+                  <a
+                    href={item.primaryUrl}
+                    target="_blank"
+                    rel="noreferrer"
                     className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
                   >
                     Open
-                  </Link>
+                  </a>
                 </div>
               ))
             )}
