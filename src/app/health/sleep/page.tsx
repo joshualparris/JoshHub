@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,19 @@ export default function SleepPage() {
 
   const recent = useMemo(
     () => (sleeps ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7),
+    [sleeps]
+  );
+  const chartData = useMemo(
+    () =>
+      (sleeps ?? [])
+        .map((s) => ({
+          date: s.date,
+          duration:
+            s.durationMinutes ?? durationFromTimes(s.bedtimeIso, s.wakeIso) ?? 0,
+        }))
+        .filter((d) => d.duration > 0)
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .slice(-14),
     [sleeps]
   );
 
@@ -87,6 +101,32 @@ export default function SleepPage() {
 
       <Card>
         <CardHeader>
+          <CardTitle>Sleep trend (hours)</CardTitle>
+        </CardHeader>
+        <CardContent className="h-64">
+          {chartData.length === 0 ? (
+            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData}>
+                <XAxis dataKey="date" fontSize={12} />
+                <YAxis tickFormatter={(v) => (v / 60).toFixed(1)} fontSize={12} />
+                <Tooltip formatter={(v: any) => `${(Number(v) / 60).toFixed(1)} hrs`} />
+                <Line
+                  type="monotone"
+                  dataKey="duration"
+                  stroke="#0f172a"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Recent</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
@@ -111,4 +151,13 @@ export default function SleepPage() {
       </Card>
     </div>
   );
+}
+
+function durationFromTimes(start?: string | null, end?: string | null) {
+  if (!start || !end) return null;
+  const s = new Date(start).getTime();
+  const e = new Date(end).getTime();
+  if (Number.isNaN(s) || Number.isNaN(e)) return null;
+  const diff = (e - s) / 60000;
+  return diff > 0 ? diff : null;
 }
