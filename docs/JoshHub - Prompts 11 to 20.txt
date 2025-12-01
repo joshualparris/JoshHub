@@ -1,0 +1,276 @@
+﻿The Plan, Prompts 11-20
+Here’s what I’d do for Prompts 11–20 (each one is a clean “upgrade slice” that makes JoshHub more alive, more useful, and more you).
+Prompt 11 — Capture → Auto-sort (the engine)
+Build a fast Capture panel (text/voice later) that lets you save a thought in 5 seconds, tag it (Faith/Family/Health/etc), choose kind (note/link/memory/task), and it lands in the right place automatically.
+Prompt 12 — Dashboard 2.0 (today view that actually runs your day)
+Create a “Today” dashboard: Abide, Love, Serve, Steward, Play tiles + next 3 calendar events + top 3 tasks + one “grace” reflection card.
+Prompt 13 — Command Palette / Hotkeys everywhere
+Proper Ctrl/Cmd+K with actions: capture, add task, add checklist run, start routine, jump to area, export/import, pin/unpin, search.
+Prompt 14 — Global search + tags + smart filters
+A real search page (or omnibox) across everything: life items, notes, tasks, routines, projects, links. Add tags and saved filters (“NDIS”, “MS”, “DCS”, “Marriage”, “D&D”).
+Prompt 15 — Tasks that aren’t boring (and don’t shame you)
+Add Tasks with:
+* “Today / This Week / Someday”
+
+* recurring tasks
+
+* gentle streaks (optional)
+
+* ADHD-friendly “next tiny step” field
+
+* “done list” by day (celebration + evidence).
+
+________________
+Prompt 16 — Routines runner (morning/evening + custom)
+Turn routines into runnable flows:
+   * start routine → checklist view → timer steps → log completion
+
+   * store “last run” + notes (“worked/didn’t work”)
+
+   * templates: wind-down, morning anchor, conflict recovery, weekly review.
+
+Prompt 17 — Marriage tools (Gottman-inspired, gentle)
+A “Love” area module:
+      * Love Map question of the day
+
+      * Bids notice log (tiny)
+
+      * Repair scripts (tap to copy)
+
+      * “Same team” debrief card after conflict
+
+      * weekly check-in agenda.
+
+Prompt 18 — Health dashboard (data import + manual logging)
+Local-first health hub:
+         * import Withings/Welltory exports (CSV/JSON) if possible
+
+         * show simple trends: sleep duration, HRV, RHR
+
+         * quick daily check-in (“energy / mood / movement / sunlight”)
+
+         * keep it non-obsessive: “track to serve love”.
+
+________________
+Prompt 19 — Family care systems (NDIS + MS lanes)
+Two sub-hubs:
+            * Sylvie NDIS: provider directory, appointment notes, goals, next actions, budgets (basic)
+
+            * Kristy MS: appointment tracker, medication/treatment notes, fatigue-friendly planning cues (kind, not clinical).
+
+Prompt 20 — “JoshHub Studio” (creative playground hub)
+The fun core:
+               * D&D idea generator cards (hook/NPC/location/twist)
+
+               * story seeds for kids
+
+               * game dev idea board (core loop/vibe/next step)
+
+               * “joy library” (best memories, funny moments, wins)
+
+               * quick-launch links to your games/apps and “what to build next”.
+
+If you want a good build order: 11 → 12 → 13 → 14 → 15 → 16, then pick 17/18/19 depending what’s heaviest right now, and keep 20 as the “delight engine” so the whole thing doesn’t turn into admin.
+If you say “write Prompt 11”, I’ll format it exactly like Prompt 10 for Codex.
+
+
+________________
+JoshHub - Prompt 11
+Prompt 11 (Codex) — Build “Capture → Auto-Sort” (the engine of JoshHub)
+You are ChatGPT Codex inside VS Code. Implement Capture as the fastest way to add anything into JoshHub, and automatically route it into the right section (Faith/Family/Health/Finance/Work/Tech/Travel/Legacy) with tags.
+Constraints / Goals
+                  * Must run in browser (PC + Android) at http://<local-ip>:3000
+
+                  * Local-first: persist to localStorage now (no backend required yet)
+
+                  * Extremely fast UX: open Capture, type, hit Enter, done
+
+                  * All data structured, searchable later
+
+________________
+
+
+1) Data model (create/update types + storage)
+Create a new file src/lib/models/capture.ts (or similar) with:
+Enums
+                     * LifeArea: "faith" | "family" | "health" | "finance" | "work" | "tech" | "travel" | "legacy" | "inbox"
+
+                     * CaptureKind: "note" | "task" | "link" | "memory" | "prayer" | "idea"
+
+Core type
+export type CaptureItem = {
+  id: string;
+  createdAt: string; // ISO
+  updatedAt: string; // ISO
+  area: LifeArea;
+  kind: CaptureKind;
+  title: string;        // short summary (auto-derived if needed)
+  content: string;      // main text
+  url?: string;         // if kind=link or content contains a URL
+  tags: string[];       // user tags + auto tags
+  pinned?: boolean;
+  status?: "open" | "done" | "archived"; // for tasks
+  dueDate?: string;     // ISO date-only optional
+  source?: "manual" | "import";
+};
+
+
+Storage
+                        * Implement src/lib/storage/captureStore.ts with CRUD:
+
+                           * listCaptureItems(): CaptureItem[]
+
+                           * addCaptureItem(input: Partial<CaptureItem> & { content: string }): CaptureItem
+
+                           * updateCaptureItem(id, patch)
+
+                           * deleteCaptureItem(id)
+
+                           * searchCaptureItems(query: string): CaptureItem[] (simple contains match on title/content/tags)
+
+                              * Use localStorage key: "joshhub.capture.v1"
+
+                              * Always sort newest first.
+
+________________
+
+
+2) Auto-sort + auto-tag rules (simple but useful)
+Create src/lib/logic/autoSort.ts:
+inferKind(content: string): CaptureKind
+                                 * If contains URL → link
+
+                                 * If starts with todo: or task: or - [ ] → task
+
+                                 * If starts with prayer: → prayer
+
+                                 * If starts with memory: → memory
+
+                                 * If starts with idea: → idea
+
+                                 * Else note
+
+inferArea(content: string): LifeArea
+Use keyword heuristics (case-insensitive):
+                                    * Faith: jesus|prayer|psalm|bible|devotional|scripture|church|worship
+
+                                    * Family: kristy|sylvie|elias|marriage|love map|bedtime|parenting|date night
+
+                                    * Health: hrv|sleep|withings|welltory|workout|run|steps|protein|meal|headache
+
+                                    * Finance: budget|mortgage|unisure|super|tax|insurance|rent|weekly|
+
+                                    * Work: la trobe|ask la trobe|dcs|dubbo christian school|ticket|crm|shift
+
+                                    * Tech: code|bug|github|vercel|react|server|nfc|app|
+
+                                    * Travel: fiji|tasmania|trip|holiday|itinerary|packing|
+
+                                    * Legacy: memoir|letters|will|story for descendants|
+ Default: inbox
+
+extractTags(content: string): string[]
+                                       * Pull #tags from text
+
+                                       * Add auto tags based on detected area/kind (e.g. kind:task, area:health)
+
+                                       * De-duplicate, lowercase, max 12 tags.
+
+extractTitle(content: string): string
+                                          * If first line is short (<80 chars) use it
+
+                                          * Else take first 8–12 words.
+
+________________
+
+
+3) UI: Capture page + quick-add component
+Implement a new route/page: /capture
+Page layout
+                                             * Title: Capture
+
+                                             * Description: “Drop anything here. JoshHub will sort it.”
+
+                                             * Main input: a big text area (multi-line), auto-focus, supports:
+
+                                                * Enter = save (unless Shift+Enter)
+
+                                                * Shift+Enter = newline
+
+                                                   * Row of quick buttons/toggles (optional):
+
+                                                      * Area dropdown (default “Auto”)
+
+                                                      * Kind dropdown (default “Auto”)
+
+                                                      * Tags input (optional)
+
+                                                      * “Pin” toggle
+
+After save
+                                                         * Clear textarea
+
+                                                         * Tiny toast: “Saved to Health → Tasks” (whatever was inferred)
+
+                                                         * Show “Recent Captures” list (last 20) with:
+
+                                                            * icon for kind
+
+                                                            * title
+
+                                                            * chips: area + tags
+
+                                                            * click opens a side panel (or modal) to edit/delete/mark done
+
+Navigation
+                                                               * Add “Capture” to top nav (it already exists in the UI; ensure route works)
+
+________________
+
+
+4) Integration points
+                                                                  * When a capture is kind="task", also set status="open" by default.
+
+                                                                  * Expose a lightweight selector so other pages can show:
+
+                                                                     * “Latest 3 captures”
+
+                                                                     * “Open tasks”
+Leave hooks/exports for later.
+
+________________
+
+
+5) Quality requirements
+                                                                        * TypeScript strict, no any
+
+                                                                        * Reusable components where sensible (CaptureInput, CaptureList, TagChips)
+
+                                                                        * Minimal, clean styling consistent with existing JoshHub UI
+
+                                                                        * Add basic unit tests for autoSort functions if test setup exists; otherwise add a small dev test page section that prints inferred results for a sample input.
+
+________________
+
+
+________________
+6) Acceptance tests (manual)
+After implementation, I should be able to:
+                                                                           1. Go to /capture
+
+                                                                           2. Paste: Task: Book OT appointment for Sylvie #ndis → becomes area=family or health (reasonable), kind=task, tag includes ndis
+
+                                                                           3. Paste: https://joshuaparrisdadlan-stack.github.io/campaign-copilot/ → kind=link, area=tech
+
+                                                                           4. Paste: Prayer: Jesus help me love Kristy well today → kind=prayer, area=faith
+
+                                                                           5. Refresh page and all items persist.
+
+________________
+
+
+Now implement Prompt 11 end-to-end: data model, storage, auto-sort logic, /capture page, nav link fix, and basic tests/dev verification.
+________________
+
+
+Prompt 12

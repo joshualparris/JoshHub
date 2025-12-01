@@ -1,0 +1,1756 @@
+﻿JoshHub is a ripper name: clear, personal, and it naturally fits as a browser-based home dashboard that links out to everything you’ve built, plus gradually becomes your “life OS”.
+Below is an extensive (but still buildable) plan for the app: vision → IA → architecture → data → security → roadmap → then Prompt 1 for Codex.
+(Also yes — Fiji + Tassie should be filed under Past trips, not “planned”.)
+________________
+
+
+JoshHub — product vision (what it is)
+JoshHub is your personal command centre: one URL that opens fast on Android + PC, shows what matters today, and gives you a clean directory into every Josh-project (apps + games) plus key life areas (family, faith, health, work, money, moves).
+Core idea: A calm dashboard + a searchable catalogue + personal pages.
+What it does on day 1 (MVP)
+1. Apps & Games Directory (all your links, grouped + searchable)
+
+2. Home dashboard (quick tiles: “Dubbo”, “DCS”, “Games”, “Health”, “Faith”, “Finance”, “Docs”)
+
+3. Project status per app (Working / Broken / Archived / Next steps)
+
+4. One place to add links as you create new stuff
+
+What it becomes (later)
+   * Your “Everything Map” in-app (not just PDF)
+
+   * Notes, checklists, routines, goals
+
+   * Optional private sync + login
+
+   * “Ask JoshHub” search over your own docs/projects
+
+________________
+
+
+________________
+Information Architecture (simple, modular)
+Nav (left sidebar on desktop, bottom tabs on mobile):
+      * Home
+
+      * Apps
+
+      * Projects
+
+      * Life
+
+         * Faith
+
+         * Family
+
+         * Health
+
+         * Finance
+
+         * Work / DCS
+
+         * Travel / Adventure
+
+            * Docs (Everything Map, PDFs, guides)
+
+            * Settings
+
+Home page widgets (MVP):
+               * “Quick Launch” (your top 6)
+
+               * “Recently Used” (local history)
+
+               * “Status” (what’s broken / needs love)
+
+               * “Today” (optional later: integrates calendar/tasks)
+
+________________
+
+
+________________
+Apps & Games catalogue (your current list)
+These go into apps.ts as data, displayed as cards with tags:
+Dubbo / DCS Apps
+                  * DCS Companion — https://joshuaparris-max.github.io/DCSCompanion
+
+                  * DCS Prep App — https://dcs-prep.vercel.app/
+
+                  * ParrisDubboMover — https://parris-dubbo-mover-app-main-client.vercel.app/ (API broken)
+
+                  * Campaign Copilot — https://joshuaparrisdadlan-stack.github.io/campaign-copilot/
+
+Games
+                     * Whispering Wilds (v1) — https://joshuaparris-max.github.io/WhirringWilderness/
+
+                     * Whispering Wilds (v2) — https://joshuaparrisdadlan-stack.github.io/whispering-wilds/
+
+                     * Whispering Wilds (itch) — https://joshualparris.itch.io/whisperingwilds
+
+                     * Mystery Depths (itch) — https://joshualparris.itch.io/mysterydepths
+
+                     * Mystery Depths (GH) — https://joshuaparrisdadlan-stack.github.io/MysteriousDepths/
+
+                     * Simple RPG (itch) — https://joshualparris.itch.io/simplerpg
+
+                     * Simple RPG (GH) — https://joshuaparrisdadlan-stack.github.io/LetsPlayDnd/
+
+                     * Infinite Office (itch) — https://joshualparris.itch.io/infiniteoffice
+
+                     * Infinite Office / OrgScape (GH) — https://joshuaparrisdadlan-stack.github.io/OrgScape/
+
+                     * Null (itch) — https://joshualparris.itch.io/null-html-game
+
+                     * Null (GH) — https://joshualparris.dadlan-stack.github.io/Null/ (check the exact GH URL; keep what you provided)
+
+________________
+
+
+________________
+Architecture (buildable + future-proof)
+Recommended stack (because you’re already in this world)
+                        * Next.js (App Router) + TypeScript
+
+                        * Tailwind + shadcn/ui (clean UI fast)
+
+                        * Vercel deploy (one click, stable on mobile + PC)
+
+App structure (practical)
+                           * src/app/ routes
+
+                           * src/data/apps.ts (single source of truth for your catalogue)
+
+                           * src/components/ UI building blocks
+
+                           * src/lib/ helpers (search, tags, local storage)
+
+                           * src/content/ markdown for personal pages (“Faith”, “Family”, etc.)
+
+Data model (start dead simple)
+For each “thing” (app/game/page), store:
+                              * id, name, type (app/game/doc), category
+
+                              * urls[] (because many have multiple versions)
+
+                              * status (ok/broken/wip)
+
+                              * tags[] (dubbo, dcs, game, react, etc.)
+
+                              * notes, lastTouched
+
+Storage strategy (phased)
+Phase 1 (MVP): static config + local-only history
+                                 * Everything public is just links + markdown content.
+
+                                 * “Recently used” stored in localStorage.
+
+Phase 2 (Private features): add optional login + sync
+Pick one:
+                                    * Supabase (free tier, easiest auth+db)
+
+                                    * OR local-first encrypted vault (IndexedDB + WebCrypto), with manual export/import for syncing.
+
+I’d do Supabase only when you’re ready to store genuinely private stuff.
+________________
+
+
+Embedding vs linking (important detail)
+Some sites/apps won’t allow iframes (security headers), especially itch.io sometimes.
+So JoshHub should:
+                                       * Default: open in new tab
+
+                                       * Optional: “Try embed view” toggle (iframe) and gracefully fall back if blocked.
+
+________________
+
+
+Non-negotiables (so it doesn’t become chaos)
+                                          * Fast launch (no heavy dashboards at first)
+
+                                          * One config file controls the catalogue
+
+                                          * Mobile-first UI
+
+                                          * No sensitive data stored without protection
+
+                                          * A “broken list” so you always know what to fix next
+
+________________
+
+
+________________
+Roadmap (so Codex doesn’t build a monster)
+MVP (1–2 sessions)
+                                             * Scaffold app + theme
+
+                                             * Home page with tiles
+
+                                             * Apps directory: search, filter, tags
+
+                                             * App detail page (all URLs + status + notes)
+
+                                             * Local “recently opened”
+
+                                             * Deploy
+
+V1 (after MVP feels solid)
+                                                * “Projects” page with roadmap per app
+
+                                                * Markdown “Life pages” (Faith/Health/Family/etc.)
+
+                                                * Upload/view PDFs (Everything Map) from /public
+
+V2 (optional)
+                                                   * Auth + sync
+
+                                                   * Notes + checklists
+
+                                                   * Calendar integration
+
+                                                   * “Ask JoshHub” search over your docs/projects
+
+________________
+
+
+________________
+Prompt 1 for Codex (copy/paste into VS Code)
+Use this exactly as the first Codex task:
+You are building “JoshHub” — a personal web dashboard that runs in a browser (mobile + desktop) and links to all of my existing web apps/games.
+
+
+GOALS (MVP):
+1) Next.js (App Router) + TypeScript + Tailwind + shadcn/ui.
+2) A clean, mobile-first dashboard home page at “/”.
+3) An “Apps” directory at “/apps” that lists my apps/games as cards with:
+   - name, category, status (ok/broken/wip), tags, and one primary URL
+   - full-text search (name + tags + notes)
+   - filters by category + status
+4) An app detail page at “/apps/[id]” showing:
+   - all URLs for that item (some have multiple versions)
+   - notes, status, tags, and “Open” buttons (open in new tab)
+   - optional “Embed” view using an iframe with graceful fallback if blocked
+5) “Recently opened” list stored in localStorage (update when opening an item).
+6) Keep the catalogue in ONE place: `src/data/apps.ts` exporting a typed array.
+
+
+DATA TO INCLUDE (seed catalogue):
+- DCS Companion — https://joshuaparris-max.github.io/DCSCompanion
+- DCS Prep App — https://dcs-prep.vercel.app/
+- ParrisDubboMover — https://parris-dubbo-mover-app-main-client.vercel.app/ (status: broken, note: API/backend not working)
+- Campaign Copilot — https://joshuaparrisdadlan-stack.github.io/campaign-copilot/
+- Whispering Wilds v1 — https://joshuaparris-max.github.io/WhirringWilderness/
+- Whispering Wilds v2 — https://joshuaparrisdadlan-stack.github.io/whispering-wilds/
+- Whispering Wilds (itch) — https://joshualparris.itch.io/whisperingwilds
+- Mystery Depths (itch) — https://joshualparris.itch.io/mysterydepths
+- Mystery Depths (GH) — https://joshuaparrisdadlan-stack.github.io/MysteriousDepths/
+- Simple RPG (itch) — https://joshualparris.itch.io/simplerpg
+- Simple RPG (GH) — https://joshuaparrisdadlan-stack.github.io/LetsPlayDnd/
+- Infinite Office (itch) — https://joshualparris.itch.io/infiniteoffice
+- OrgScape (GH) — https://joshuaparrisdadlan-stack.github.io/OrgScape/
+- Null (itch) — https://joshualparris.itch.io/null-html-game
+- Null (GH) — https://joshuaparrisdadlan-stack.github.io/Null/
+
+
+CATEGORIES:
+- “Dubbo / DCS”
+- “Games”
+
+
+REQUIREMENTS:
+- Use strict TypeScript types for the catalogue model.
+- No backend for MVP.
+- Add a simple README with: install, dev, build, deploy (Vercel).
+- Add basic accessibility: keyboard-focus styles, semantic headings, sensible contrast.
+- Make the UI clean and calm (cards, spacing, not cluttered).
+
+
+DELIVER:
+- All code changes needed for MVP.
+- Ensure it runs with `npm run dev` with no errors.
+
+
+________________
+
+
+If you want, I can write Prompt 2 as well, which adds: a “Life” section that turns your Everything Map into navigable pages (markdown-based), plus a “Projects” board that tracks what’s broken and what’s next.
+________________
+
+
+Prompt 2 for JoshHub
+You are continuing to build “JoshHub” (Next.js App Router + TypeScript + Tailwind + shadcn/ui). The MVP exists with /, /apps, and /apps/[id]. Now implement Prompt 2: “Life OS” pages + a Projects board, using ONLY local/static data (no backend).
+
+
+GOALS (V1):
+A) LIFE SECTION (navigable personal map)
+1) Add a top-level route group: /life
+2) /life shows a clean grid of Life Areas (cards):
+   - Faith
+   - Family
+   - Health
+   - Finance
+   - Work / DCS
+   - Tech & Projects
+   - Travel & Adventure
+   - Legacy
+3) Each Life Area has its own page /life/[slug] with:
+   - a title, short intro, and sections rendered from Markdown content
+   - a right-side “Quick Links” panel (on desktop) linking to relevant apps from the catalogue (e.g., Work/DCS links to DCS Companion + DCS Prep App; Tech links to Campaign Copilot etc.)
+   - a “Pin to Home” button that adds this Life Area to a Home quick-launch list (stored in localStorage)
+4) Store Life content as markdown files in `src/content/life/*.md` OR as typed objects in `src/data/life.ts`. Choose the approach that is simplest and maintainable, but do not use a CMS or backend.
+5) Add a global search box in the header that searches across:
+   - apps catalogue (name/tags/notes)
+   - life pages (title + headings + text)
+   and shows a combined results dropdown with keyboard navigation.
+
+
+B) PROJECTS BOARD
+1) Add route: /projects
+2) /projects displays a board/list of projects sourced from the apps catalogue, grouped by `status`:
+   - Broken
+   - WIP
+   - OK
+3) Each item shows:
+   - name, category, status badge
+   - “Next action” (new field you add to the catalogue model)
+   - lastTouched (optional)
+   - buttons: View details (internal), Open (external)
+4) Add simple sorting controls:
+   - sort by status, lastTouched, or name
+   - optional filter by category/tag
+
+
+C) HOME IMPROVEMENTS
+1) Update / to include:
+   - Pinned Life Areas (from localStorage) as tiles
+   - Quick Launch apps (top 6, configurable in data)
+   - Recently opened (already exists)
+   - “Broken right now” widget that pulls from /projects (status broken)
+2) Keep Home fast: defer expensive work; don’t render massive markdown on home.
+
+
+D) DATA MODEL CHANGES
+1) Extend the app catalogue type in `src/data/apps.ts`:
+   - status: "ok" | "broken" | "wip" | "archived"
+   - category: "Dubbo / DCS" | "Games" | (allow future strings)
+   - nextAction?: string
+   - lastTouched?: string (ISO date)
+2) Ensure existing seed items compile.
+
+
+E) UX / UI
+- Clean, calm layout, mobile-first.
+- Sidebar nav on desktop, bottom nav on mobile (or a responsive header with a menu), your call—just make it coherent.
+- Use shadcn components for cards, badges, tabs, input, dropdown.
+- Ensure keyboard accessibility for search and menus.
+
+
+F) DELIVERABLES
+- Implement all routes: /life, /life/[slug], /projects.
+- Add the global search experience.
+- Add “pin” behaviour using localStorage.
+- Update README with the new sections.
+- Ensure `npm run dev` works with no errors and no missing imports.
+
+
+________________
+
+
+Prompt 3 for JoshHub
+You are continuing to build “JoshHub” (Next.js App Router + TypeScript + Tailwind + shadcn/ui). Prompt 1 created the core shell + Apps catalogue, Prompt 2 added /life + /projects + global search + pinning.
+
+
+Now implement Prompt 3: “Capture + Local-First Data Layer + Command Palette + Backups” (still NO backend required).
+
+
+GOALS (V1.5):
+A) LOCAL-FIRST DATA LAYER (single source of truth)
+1) Create a lightweight persistence layer using IndexedDB (preferred) via Dexie OR a minimal wrapper you write yourself.
+   - Must support: Notes, Tasks, Routines, Bookmarks (for apps + any URL), Recent activity, Pinned life areas.
+   - Include migrations/versioning (Dexie version bumps or your own schemaVersion).
+2) Define typed models in `src/lib/models/*` and a data access layer in `src/lib/db/*`.
+3) Add a small repository API with functions like:
+   - notes.list/search/create/update/archive
+   - tasks.list/search/create/complete/reopen
+   - routines.list/create/runLog
+   - bookmarks.list/add/remove
+4) Ensure everything works offline and across reloads. Avoid localStorage except for tiny UI prefs.
+
+
+B) COMMAND PALETTE (Ctrl+K)
+1) Add a global command palette accessible via:
+   - Ctrl+K / Cmd+K
+   - a header button
+2) It must support:
+   - Navigate to routes (Home, Apps, Projects, Life areas, Notes, Tasks, Routines, Settings)
+   - Open any App (external link) from the catalogue
+   - Quick create:
+     - “New Note”
+     - “New Task”
+     - “Add Bookmark”
+     - “Pin/Unpin Life Area”
+3) Keyboard accessibility:
+   - arrow keys + Enter
+   - Esc closes
+   - typeahead filtering
+4) Use shadcn/ui (Dialog + Command components) or a clean custom command UI.
+
+
+C) CAPTURE MODULE (fast brain-dump)
+1) Add route: /capture
+   - a single “Inbox” style page with:
+     - quick add task
+     - quick add note
+     - quick add bookmark (URL + optional title + tags)
+   - show a small feed of the last 10 captured items
+2) Add “Capture” button in the header/nav that goes to /capture.
+
+
+D) NOTES
+1) Routes:
+   - /notes (list with search + tags + sort)
+   - /notes/[id] (viewer/editor)
+2) Editor:
+   - Simple Markdown editor (textarea is fine) + live preview toggle OR split view.
+   - Autosave with debounce.
+   - Fields: title, body(md), tags[], createdAt, updatedAt, archivedAt?
+3) Link notes to Life Areas optionally:
+   - `lifeAreaSlug?: string`
+   - On /life/[slug], show “Related Notes” from the DB.
+
+
+E) TASKS
+1) Routes:
+   - /tasks (list grouped: Today / Upcoming / Someday)
+2) Fields:
+   - title, status ("open"|"done"), priority ("low"|"med"|"high"), dueDate?, tags[], projectId?, createdAt, updatedAt
+3) Quick complete checkbox + keyboard shortcuts (j/k navigation optional).
+4) On /projects show “Open tasks related to this project” using `projectId` == app.id OR a separate project model (your call; pick the simplest consistent approach).
+
+
+F) ROUTINES (lightweight)
+1) Route:
+   - /routines (list)
+   - /routines/[id] (run screen)
+2) Routine model:
+   - name, items[] { label, type: "check"|"timer", seconds? }, tags[], createdAt
+3) Routine run:
+   - checklist + timers
+   - when finished, store a run log {routineId, startedAt, finishedAt, completedCount}
+4) Add “Evening wind-down” and “Morning start” sample routines in seed data created on first run if none exist.
+
+
+G) EXPORT / IMPORT BACKUPS (important)
+1) Route: /settings/backups
+2) Allow:
+   - Export all local data to a JSON file (download)
+   - Import JSON (replace or merge mode; choose one default, but support both if easy)
+3) Validate input schema on import (zod recommended).
+4) Add a “Reset local data” danger button with a confirm dialog.
+
+
+H) PERFORMANCE + QUALITY
+- No backend, no auth, no external services.
+- Keep pages fast; don’t fetch everything at once.
+- Use memoised selectors where relevant.
+- Add minimal unit tests for:
+  - repository functions (create/update/list)
+  - backup export/import validation
+- Ensure `npm run dev` and `npm run test` work cleanly.
+
+
+DELIVERABLES
+- New routes: /capture, /notes, /notes/[id], /tasks, /routines, /routines/[id], /settings/backups
+- IndexedDB persistence with migrations
+- Command palette integrated globally
+- Backup export/import working
+- README updated with what’s stored locally + how to backup/restore
+
+
+IMPORTANT: keep code tidy and consistent with existing architecture from Prompts 1–2. Avoid overengineering; build the smallest clean version that works.
+
+
+________________
+
+
+Prompt 4 for JoshHub
+You are continuing to build “JoshHub” (Next.js App Router + TypeScript + Tailwind + shadcn/ui). Prompts 1–3 delivered: shell + apps catalogue, Life/Projects structure, search/pins, local-first IndexedDB (Dexie), Notes/Tasks/Routines, Capture, Command Palette, and Backups.
+
+
+Now implement Prompt 4: “JoshHub as the ‘daily OS’ — dashboards, calendars (read-only), health/sleep logging, and family rhythm” with STILL NO backend required. Everything local-first. Keep it clean and shippable.
+
+
+V2 GOALS:
+A) HOME DASHBOARD (the main daily cockpit)
+1) Create route: `/dashboard`
+   - Make this the default landing page (redirect `/` -> `/dashboard`).
+2) Layout sections (responsive grid):
+   - “Today” panel: date, a short “Focus” line, quick buttons (Capture, New Task, New Note, Start Routine).
+   - “Tasks Today” (due today or flagged today), “Next 7 days”, “Overdue”.
+   - “Recent Notes” (last updated).
+   - “Pinned Areas” (Life Areas pinned).
+   - “Quick Links” (pinned bookmarks + top apps).
+   - “Streaks & Signals” (very lightweight): routines run counts this week, sleep average last 7 days (if available), screen cutoff adherence (manual toggle).
+3) Add a top-level nav item “Dashboard”.
+
+
+B) CALENDAR (READ-ONLY, OPTIONAL IMPORT)
+Since we have no backend and no access to Google Calendar API from the browser without auth, implement TWO options:
+Option 1 (Required): “Manual events”
+- Local events model stored in IndexedDB:
+  - id, title, startIso, endIso, location?, notes?, tags[], createdAt, updatedAt
+- Routes:
+  - `/calendar` month/week agenda view (simple agenda is fine)
+  - create/edit modal
+- Show “Next events” on dashboard (next 7 days).
+
+
+Option 2 (Nice-to-have if easy): “ICS import”
+- On `/settings/calendar` allow importing an `.ics` file export from Google Calendar.
+- Parse ICS locally (use a small library if needed).
+- Store imported events as read-only with `source:"ics"` + `calendarName`.
+- Provide “clear imported calendar” button.
+- Do NOT sync; it’s a one-time import.
+
+
+C) HEALTH / SLEEP (MANUAL LOGGING, LOCAL-FIRST)
+1) Add route group `/health` with tabs:
+   - `/health/sleep`
+   - `/health/movement`
+   - `/health/nutrition`
+   - `/health/metrics`
+2) Models:
+   - SleepLog: date, bedtimeIso?, wakeIso?, durationMinutes (computed), quality(1-5), notes?, tags[]
+   - MovementLog: date, type("walk"|"ride"|"strength"|"mobility"|"other"), minutes, intensity("low"|"med"|"high"), notes?
+   - NutritionLog: date, summary text, proteinGrams?, vegServes?, satFatGrams? (optional), notes?
+   - MetricLog: dateTimeIso, metricType("weight"|"hrv"|"restingHR"|"bp"|"other"), value, unit, notes?
+3) UI:
+   - Quick-add forms + list views.
+   - Simple charts using Recharts (line chart for sleep duration, HRV, weight etc.). Keep it minimal.
+4) Dashboard:
+   - Show last 7 days sleep duration avg + last HRV entry if present.
+5) Data integrity:
+   - Validate with zod.
+   - Prevent impossible entries (end before start etc.).
+
+
+D) FAMILY RHYTHM (WEEKLY TEMPLATE + CHECKLISTS)
+1) Add `/family`
+   - “Weekly Rhythm” (template editor): blocks for weekdays with:
+     - kids bedtime target (default 7pm)
+     - dinner target (default 5pm)
+     - key responsibilities (bins, groceries, church, etc.)
+   - “Kid Routines”:
+     - Sylvie bedtime checklist template
+     - Elias bedtime checklist template
+2) Make these editable and stored locally.
+3) On dashboard: show today’s “Family Rhythm” snippet and a “Bedtime checklist” quick launch.
+
+
+E) DEEP LINKS + “OPEN APP” SAFETY
+1) Improve external linking to your existing apps:
+   - Open in new tab
+   - Add “copy link” button
+   - Add “mark as currently broken” toggle per app (e.g., ParrisDubboMover API down) and show a small warning badge in the catalogue and dashboard.
+
+
+F) SETTINGS: THEMES + DATA MANAGEMENT
+1) Add `/settings`
+   - Theme: light/dark/system (persist)
+   - Data: show approximate DB size + counts (notes/tasks/events/logs)
+   - Backups already exist; link to `/settings/backups`
+   - Calendar import if you implemented ICS: `/settings/calendar`
+
+
+G) QUALITY BAR
+- Keep everything local-first; no external calls required.
+- Keep code modular: `src/lib/models`, `src/lib/db`, `src/lib/repo`, `src/app/(routes)`
+- Add seeds:
+  - sample “Weekly Rhythm”
+  - sample sleep log entry (optional)
+- Add tests:
+  - health repo create/list
+  - calendar manual events create/list
+- Ensure `npm run dev` and `npm run test` pass.
+
+
+DELIVERABLES (PROMPT 4)
+- `/dashboard` as home
+- Manual local calendar + events
+- Health logging + minimal charts
+- Family rhythm weekly template + kid checklists
+- Settings enhancements (theme + data info)
+- App status badges + safer external links
+
+
+Build the simplest clean version that matches the spirit: JoshHub = one place to run life, locally, without friction.
+
+
+________________
+
+
+Prompt 5 for JoshHub
+PROMPT 5 — Build the “Everything Map” module (JoshHub) with a TOC-driven knowledge tree + local notes (IndexedDB) + search.
+
+
+Context
+- This is a Next.js + TypeScript web app (JoshHub) that runs in browser on Android + PC.
+- We already have a home page and top-level navigation. Now add a new core area: “Everything Map”.
+- “Everything Map” is basically Josh’s life map / table-of-contents turned into a navigable in-app knowledge tree, where each section can hold notes, links, and tags.
+
+
+Goal (what “done” looks like)
+1) New nav item: “Everything Map”
+2) /map page shows:
+   - Left: collapsible tree nav (sections + subsections)
+   - Top: search box to filter sections
+   - Right: details panel (title, section id, page ref, description placeholder, related links placeholder, notes list)
+3) /map/[id] page (deep link) shows the same section details (shareable within JoshHub)
+4) Each section supports local notes (create/edit/delete) stored in IndexedDB (so it persists across refresh). No backend.
+5) Export/Import notes as a JSON file.
+6) Unit tests for the TOC tree builder + search filter logic.
+
+
+Implementation instructions
+A) Data model + TOC
+- Create: src/features/everything-map/types.ts
+
+
+  export type TocItem = { id: string; title: string; page?: number | null }
+  export type TocNode = TocItem & { children: TocNode[] }
+
+
+- Create: src/features/everything-map/toc.ts
+  Export a flat array `EVERYTHING_MAP_TOC: TocItem[]` using the list below (copy exactly).
+
+
+- Create: src/features/everything-map/tree.ts
+  - buildTree(items: TocItem[]): TocNode[]
+    - Convert flat ids like "7.2" into a nested tree under "7"
+    - Sort numerically by id parts (so 7.10 comes after 7.2)
+  - findNode(tree: TocNode[], id: string): TocNode | null
+  - filterTreeByQuery(tree: TocNode[], q: string): TocNode[]
+    - Keep matching nodes and their ancestor path
+    - Case-insensitive match against id + title
+
+
+B) Notes (IndexedDB)
+- Use Dexie (preferred) or idb-keyval. Pick one and keep it simple.
+- Create: src/features/everything-map/db.ts
+  Dexie schema:
+    notes: { id: string, nodeId: string, title: string, body: string, tags: string[], createdAt: number, updatedAt: number }
+- Create hooks:
+  - useNotes(nodeId: string)
+  - useAllNotes() (needed for export)
+- UI allows:
+  - Add Note (title + body + tags)
+  - Edit Note
+  - Delete Note (confirm)
+  - Notes list sorted by updatedAt desc
+
+
+C) Pages + UI
+- Create route: app/map/page.tsx
+- Create route: app/map/[id]/page.tsx
+- Create UI components:
+  - MapLayout (two-pane)
+  - TocTree (recursive, collapsible)
+  - SectionDetails (shows title/id/page + placeholders + notes UI)
+  - Mobile: left pane becomes a Drawer/Sheet
+
+
+D) Export / Import
+- Add buttons in SectionDetails or Map header:
+  - Export Notes -> downloads JSON: { version, exportedAt, notes: [...] }
+  - Import Notes -> file picker, validate shape, upsert into Dexie
+
+
+E) Add to main nav
+- Add “Everything Map” link to your existing top nav / sidebar.
+
+
+F) Tests
+- Add Vitest tests:
+  - buildTree nests correctly (e.g., 7.1 under 7)
+  - numeric sorting works (7.2 before 7.10)
+  - filterTreeByQuery keeps ancestor paths
+
+
+TOC LIST (use in src/features/everything-map/toc.ts)
+export const EVERYTHING_MAP_TOC = [
+  { id: "0", title: "Front Matter (paste-in)", page: 223 },
+  { id: "0.1", title: "Purpose", page: 223 },
+  { id: "0.2", title: "How to use this map", page: 223 },
+  { id: "0.3", title: "Conventions (what’s what)", page: 224 },
+
+
+  { id: "1", title: "Identity & Background", page: 12 },
+  { id: "1.1", title: "Full name, date/place of birth", page: 12 },
+  { id: "1.2", title: "Family of origin (parents, siblings, upbringing, childhood home)", page: 13 },
+  { id: "1.3", title: "Education (schooling, university, Bible college)", page: 16 },
+  { id: "1.4", title: "Core values, faith, worldview", page: 19 },
+
+
+  { id: "2", title: "Family & Relationships", page: 20 },
+  { id: "2.1", title: "Kristy (wife) – how you met and marriage journey", page: 20 },
+  { id: "2.2", title: "Children (Sylvie, Elias) – key timelines and parenting seasons", page: 27 },
+  { id: "2.3", title: "Extended family (parents, siblings, in-laws)", page: 34 },
+  { id: "2.4", title: "Friendships and close relationships", page: 40 },
+
+
+  { id: "3", title: "Work & Calling", page: 42 },
+  { id: "3.1", title: "Current role(s) and responsibilities", page: 43 },
+  { id: "3.2", title: "Strengths at work (what you’re known for)", page: 49 },
+  { id: "3.3", title: "Career direction and future roles", page: 55 },
+  { id: "3.4", title: "Calling, mission, and meaning", page: 59 },
+
+
+  { id: "4", title: "Health & Body", page: 62 },
+  { id: "4.1", title: "Medical history and notable seasons", page: 62 },
+  { id: "4.2", title: "Fitness and movement goals", page: 67 },
+  { id: "4.3", title: "Sleep, recovery, HRV, anxiety patterns", page: 73 },
+  { id: "4.4", title: "Nutrition approach (Blueprint/Wahls/Blue Zones style)", page: 80 },
+  { id: "4.5", title: "Supplements and protocols", page: 86 },
+
+
+  { id: "5", title: "Mind & Emotions", page: 92 },
+  { id: "5.1", title: "ADHD and focus patterns", page: 92 },
+  { id: "5.2", title: "Stress, anxiety, and nervous system responses", page: 96 },
+  { id: "5.3", title: "Conflict triggers and repair patterns", page: 101 },
+  { id: "5.4", title: "Habits you’re trying to build/break", page: 106 },
+
+
+  { id: "6", title: "Finances & Practical Life", page: 110 },
+  { id: "6.1", title: "Income, salaries, mortgage, superannuation", page: 111 },
+  { id: "6.2", title: "Budgeting, savings, investments, wills", page: 114 },
+  { id: "6.3", title: "Insurance, benefits, tax", page: 116 },
+  { id: "6.4", title: "Dreams (paying off house, second property, granny flat)", page: 118 },
+
+
+  { id: "7", title: "Daily Life & Routines", page: 119 },
+  { id: "7.1", title: "Morning & evening routines (wind-down, health stack, family rhythm)", page: 119 },
+  { id: "7.2", title: "Parenting rhythms (Sylvie’s sleep, Elias’s feeding, bath time struggles)", page: 121 },
+  { id: "7.3", title: "Meals & cooking", page: 124 },
+  { id: "7.4", title: "Time management (screen use, productivity zones, rest vs. self-care guilt)", page: 126 },
+
+
+  { id: "8", title: "Tech & Projects", page: 129 },
+  { id: "8.1", title: "Computer collection, server rack setup", page: 130 },
+  { id: "8.2", title: "Gaming (D&D, Baldur’s Gate 3, homebrew projects)", page: 132 },
+  { id: "8.3", title: "AI & coding interests", page: 134 },
+  { id: "8.4", title: "Home IT, troubleshooting, remote support", page: 136 },
+
+
+  { id: "9", title: "Personality & Inner Life", page: 139 },
+  { id: "9.1", title: "Strengths & sensitivities", page: 139 },
+  { id: "9.2", title: "Struggles (porn, conflict with Kristy, self-care guilt)", page: 142 },
+  { id: "9.3", title: "Desires (confidence, leadership, integration with Spirit)", page: 145 },
+  { id: "9.4", title: "Vision for self and family growth", page: 147 },
+
+
+  { id: "10", title: "Community & Social Web", page: 149 },
+  { id: "10.1", title: "Church & Cornerstone community", page: 149 },
+  { id: "10.2", title: "Friends (close and extended)", page: 150 },
+  { id: "10.3", title: "Volunteer roles (youth ministry, Bible studies)", page: 151 },
+  { id: "10.4", title: "Social challenges & neurodiverse communication", page: 152 },
+
+
+  { id: "11", title: "Travel & Adventure", page: 153 },
+  { id: "11.1", title: "Past trips (Philippines, Thailand)", page: 153 },
+  { id: "11.2", title: "Planned trips (Crete, Fiji, Tasmania, Australia travel)", page: 154 },
+
+
+  { id: "12", title: "Legacy & Dreams", page: 156 },
+  { id: "12.1", title: "Memoirs & storytelling for descendants", page: 156 },
+  { id: "12.2", title: "Digital legacy plan (accounts, assets, who gets access)", page: 158 },
+  { id: "12.3", title: "Generational vision: faith, family, stability", page: 160 },
+
+
+  { id: "13", title: "Home, Places & Stuff", page: 162 },
+  { id: "13.1", title: "Current home layout and storage systems", page: 162 },
+  { id: "13.2", title: "Organisation projects (shed/garage inventory)", page: 165 },
+  { id: "13.3", title: "Future home dreams and renovations", page: 168 },
+
+
+  { id: "14", title: "Learning, Books & Influences", page: 170 },
+  { id: "14.1", title: "Favourite authors, podcasts, key ideas", page: 170 },
+  { id: "14.2", title: "Books that shaped you (Dobson, MacDonald, Lewis, etc.)", page: 172 },
+  { id: "14.3", title: "Skills you’re building (tech, leadership, parenting)", page: 174 },
+
+
+  { id: "15", title: "Tools, Systems & Templates", page: 176 },
+  { id: "15.1", title: "Routines templates (morning/evening), checklists", page: 176 },
+  { id: "15.2", title: "Finances templates (budget, property, moving)", page: 179 },
+  { id: "15.3", title: "Project templates (apps, game dev, prompts)", page: 182 },
+  { id: "15.4", title: "Decision frameworks (priorities, scoring, risk registers)", page: 185 },
+
+
+  { id: "16", title: "Faith & Spiritual Journey", page: 188 },
+  { id: "16.1", title: "Key faith milestones (baptism, Bible college, callings)", page: 188 },
+  { id: "16.2", title: "Spiritual practices (prayer, Scripture, community)", page: 191 },
+  { id: "16.3", title: "Marriage as discipleship (love, boundaries, repair)", page: 194 },
+  { id: "16.4", title: "Faith wrestles (dryness, longing for intimacy with God, unanswered prayers, discerning calling)", page: 197 },
+  { id: "16.5", title: "Hope and direction: where you feel God leading", page: 200 }
+];
+
+
+Acceptance checks
+- `npm test` (or `pnpm test`) passes
+- Navigating to /map works, tree renders, search filters, clicking section updates details
+- Creating a note persists after refresh (IndexedDB)
+- Export downloads JSON; import restores notes
+
+
+Now implement this feature set cleanly, with tidy components, and commit in small logical chunks.
+
+
+________________
+
+
+Prompt 6 for JoshHub
+You didn’t say “no backend” — that was me defaulting to the fastest, lowest-friction v1 (offline-first, no accounts). If you want the best version, a backend + sync + search + AI features is absolutely the way to go.
+Here’s what would genuinely make JoshHub way more useful (only if you’re comfy sharing):
+                                                      * Your “Top 10” workflows: what you’d open JoshHub for most days (e.g., “plan week”, “log health”, “track projects”, “dev links”, “family admin”).
+
+                                                      * Google Calendar: either (a) connect via OAuth in the app later, or (b) export an .ics file for now so we can build “calendar ingest + weekly dashboard” quickly.
+
+                                                      * Health data exports: Withings CSV (sleep/weight), Welltory CSV (HRV) or even screenshots → we can build importers + charts.
+
+                                                      * Resume / role docs: helps build a “Work” area (skills, achievements, career timeline) you can reuse for applications.
+
+                                                      * Photos (Fiji etc.): only if you want a “Family memories” module. Not required for a killer MVP.
+
+                                                      * Any existing PDFs/docs like your “Everything Map” doc: perfect for seeding the knowledge tree and sections.
+
+Now, Prompt 6 (Codex in VS Code) — this takes JoshHub from “link hub” to JoshOS (auth + database + file vault + AI + slick UI):
+PROMPT 6 — JoshHub “JoshOS” v0.3: Add backend, auth, sync, full-text search, file vault, AI assistant + a premium UI system.
+
+
+You are building JoshHub (JoshOS): a personal operating system web app for Josh that runs in browser on Android + PC.
+No constraints. Optimise for: useful, beautiful, fast, practical, secure, and extensible.
+
+
+Tech decisions (choose and implement)
+- Frontend: Next.js (App Router) + TypeScript + Tailwind + shadcn/ui + Framer Motion
+- Backend: Supabase (Auth + Postgres + Storage) with Row Level Security (RLS)
+- Search: Postgres full-text search now; optional pgvector later (design schema so it’s easy to add)
+- Charts: Recharts
+- Forms: react-hook-form + zod
+- Data fetching: server actions (preferred) + minimal client fetch
+- Hosting: Vercel (frontend) + Supabase (backend)
+
+
+Core concept
+JoshHub contains modules:
+1) Dashboard (Today/This Week)
+2) Everything Map (TOC tree + notes) — now synced in DB (not just IndexedDB)
+3) Apps & Links (your existing projects list + tags + status)
+4) Files Vault (upload PDFs/images/exports, attach to sections/notes)
+5) Calendar (v1 = import .ics or manual events; v2 = Google OAuth integration placeholder)
+6) Health (v1 = import CSV + charts; v2 = connectors later)
+7) AI Assistant (context-aware chat over JoshHub data with “safe” tools)
+
+
+Implementation plan (build in this order, commit small)
+A) Supabase setup
+1. Add /supabase folder with migration SQL and seed script.
+2. Tables (at minimum):
+- profiles: id (uuid pk, references auth.users), display_name, created_at
+- toc_nodes: id (text pk), title, parent_id (text nullable), sort_key (text), page (int nullable)
+- notes: id (uuid pk), user_id (uuid), node_id (text), title, body, tags (text[]), created_at, updated_at
+- links: id (uuid pk), user_id, title, url, category, tags (text[]), status, created_at, updated_at
+- files: id (uuid pk), user_id, storage_path, filename, mime, size, sha256, created_at
+- attachments: id (uuid pk), user_id, entity_type (note|node|link), entity_id, file_id
+- events: id (uuid pk), user_id, title, start_at, end_at, location, source (manual|ics), created_at
+- health_series: id (uuid), user_id, source (withings|welltory|manual), metric, unit, data_json, start_at, end_at, created_at
+3. RLS policies: user can only read/write rows where user_id = auth.uid(). toc_nodes can be shared/global OR per-user (choose per-user for simplicity unless specified).
+4. Create Supabase Storage bucket “vault” with RLS: only owner can read.
+
+
+B) App auth + layout polish
+1. Implement Supabase Auth (email magic link OR email+password — choose magic link to reduce friction).
+2. Add auth-protected routes: everything except /login, / (marketing/landing).
+3. Create a modern shell layout:
+- Left sidebar (icons + labels) + top command bar
+- Mobile: bottom tab bar + slide-out drawer
+- Dark mode support
+- Typography polish, spacing, subtle motion
+
+
+C) Data layer
+1. Add a typed Supabase client.
+2. Add repository functions in src/lib/repos/* for toc_nodes, notes, links, files, events, health_series.
+3. Add optimistic UI where it’s safe (notes/links).
+4. Add error handling and toast notifications (sonner).
+
+
+D) Everything Map v2 (DB-backed)
+1. Replace local IndexedDB notes with DB notes, synced per user.
+2. Keep the same TOC tree behaviour:
+- Build tree from toc_nodes (or from seed list inserted into toc_nodes on first run/seed)
+- Search filter keeps ancestors
+3. Section details page:
+- notes CRUD
+- “Attach file” from vault
+- “Related Links” list (filtered by tag)
+4. Add a “Command Palette” (⌘K) to jump to any section quickly.
+
+
+E) Apps & Links module
+1. Build /links page:
+- categories: Dubbo/DCS, Games, Tools, Family, Health, Finance, Faith, Other
+- card grid with tags, status (Live/Broken/WIP/Idea)
+- quick open + copy link
+2. Seed it with Josh’s links:
+DCS Companion - https://joshuaparris-max.github.io/DCSCompanion
+DCS Prep App - https://dcs-prep.vercel.app/
+ParrisDubboMover - https://parris-dubbo-mover-app-main-client.vercel.app/ (status Broken API)
+Campaign Copilot - https://joshuaparrisdadlan-stack.github.io/campaign-copilot/
+Whispering Wilds - https://joshuaparris-max.github.io/WhirringWilderness/
+Whispering Wilds - https://joshuaparrisdadlan-stack.github.io/whispering-wilds/
+Whispering Wilds - https://joshualparris.itch.io/whisperingwilds
+Mystery Depths - https://joshualparris.itch.io/mysterydepths
+Mystery Depths - https://joshuaparrisdadlan-stack.github.io/MysteriousDepths/
+Simple RPG - https://joshualparris.itch.io/simplerpg
+Simple RPG - https://joshuaparrisdadlan-stack.github.io/LetsPlayDnd/
+Infinite Office - https://joshualparris.itch.io/infiniteoffice
+Infinite Office - https://joshuaparrisdadlan-stack.github.io/OrgScape/
+Null - https://joshualparris.itch.io/null-html-game
+Null - https://joshuaparrisdadlan-stack.github.io/Null/
+3. Add a “Health check” button that pings each URL and stores last_ok / last_status in DB (server action).
+
+
+F) Vault (file uploads + attachments)
+1. Build /vault page:
+- upload files (pdf, images, csv)
+- list + search + tags (optional)
+- view PDF in-app (simple embedded viewer)
+2. Allow attaching a vault file to:
+- a Map section (toc_node)
+- a note
+3. Export/import:
+- Export “All JoshHub data” as JSON (notes, links, events metadata, toc customisations). Files are not embedded; include a manifest.
+
+
+G) Search
+1. Global search bar in the header:
+- search toc_nodes + notes + links
+- show results grouped by type
+2. Implement Postgres full-text search for notes (title/body) with fallback to ilike for simplicity.
+
+
+H) AI Assistant (scaffold safely)
+1. Create /assistant page:
+- chat UI
+- “context chips” (selected section, selected note, selected files)
+2. Implement a server endpoint that:
+- takes user message + selected context
+- returns a response (for now: stub + architecture; do NOT hardcode OpenAI keys in repo)
+3. Provide “tools” as functions the assistant can call later:
+- searchNotes(query)
+- searchLinks(query)
+- summarizeFile(fileId)
+- createNote(nodeId, title, body, tags)
+Implement these as server actions with auth checks, but you can leave the LLM tool-calling for a later prompt—just structure for it.
+
+
+Quality bar
+- Beautiful: consistent spacing, cards, subtle motion, great empty states
+- Fast: avoid heavy client bundles; server actions; suspense skeletons
+- Secure: RLS enforced everywhere; never trust client user_id
+- Tested: unit tests for tree building + filter; integration tests for repos if feasible
+
+
+Deliverables
+- Working auth flow
+- Working /map (DB-backed notes), /links, /vault, /assistant, /dashboard (basic)
+- Seed script to populate toc_nodes + initial links
+- Clear README with setup steps:
+  - Supabase project env vars
+  - migrations
+  - local dev
+  - deployment notes
+
+
+Say what you changed and where. Commit in small logical chunks.
+
+
+If you want, the single most helpful input to unlock the “Today / This Week” dashboard is your calendar (even just an .ics export). Second most helpful is any health exports (CSV). Everything else is optional seasoning on top.
+________________
+
+
+Prompt 7 for JoshHub
+Yep — Prompt 7 should build the “Delight” pillar properly: Create Studio + Play Arcade + Adventure & Memories + Nerd Corner, plus a Steady/Playful mode switch so joy is up front, not buried. (And it still sits under Jesus as Lord — “delight” isn’t fluff; it’s a very biblical word. )
+PROMPT 7 — JoshHub “DELIGHT” v0.4: Play + Create + Memories (beautiful + actually usable)
+
+
+You are continuing to build “JoshHub” (Next.js App Router + TypeScript + Tailwind + shadcn/ui).
+Assume Prompt 6 is implemented (auth + Postgres/Supabase + RLS + vault + search + nice UI system).
+If anything from Prompt 6 is missing, scaffold minimal versions but DO NOT block Prompt 7 — leave TODOs.
+
+
+GOAL
+Add a full “Delight” pillar that makes JoshHub feel like *Josh*, not just a serious life admin tool.
+Delight must always offer two doors:
+1) “Make something small” (create)
+2) “Play something small” (joy)
+…and it must include a built-in timebox to prevent ADHD hyperfocus spirals.
+
+
+CORE UX
+A) Add a 6th/7th main nav item: Delight
+- Desktop: sidebar item
+- Mobile: bottom nav item or menu item (match existing nav pattern)
+B) Add a Home tile: “Delight”
+C) Add a global Mode Switch (UI preference):
+- “Steady” mode: calm minimal vibes
+- “Playful” mode: more colour / motion / playful microcopy
+Store the preference per-user (DB) if logged in; fallback to localStorage for anonymous/dev.
+
+
+ROUTES
+Create these pages (App Router):
+1) /delight (hub)
+2) /delight/studio (Create Studio)
+3) /delight/arcade (Play Arcade)
+4) /delight/adventures (Adventure + Memories)
+5) /delight/nerd (Nerd Corner)
+
+
+DATA MODEL (Supabase/Postgres)
+Create tables + RLS for per-user data.
+
+
+1) delight_ideas
+- id (uuid pk)
+- user_id (uuid fk auth.users)
+- title (text, required)
+- body (text)
+- tags (text[] default '{}')
+- kind (text enum-like: 'idea' | 'prompt' | 'snippet' | 'dream' | 'ministry' | 'app' | 'dnd' | 'family' | 'other')
+- pinned (boolean default false)
+- created_at, updated_at (timestamptz)
+RLS: user can CRUD their own rows only.
+
+
+2) creative_sprints
+- id uuid pk
+- user_id fk
+- intention (text) e.g. “What am I making?”
+- next_tiny_step (text)
+- duration_minutes (int default 25)
+- started_at (timestamptz)
+- ended_at (timestamptz)
+- outcome_notes (text)
+- energy (int nullable 1–5)
+RLS: owner-only.
+
+
+3) worldbuilding_items
+- id uuid pk
+- user_id fk
+- campaign (text) (e.g. “Candlekeep”, “Custom”, “Sylvie Stories”)
+- type (text: 'location' | 'npc' | 'plot_hook' | 'encounter' | 'loot' | 'note')
+- title (text)
+- body (text)
+- tags (text[] default '{}')
+- related_links (jsonb default '[]')  // list of {label,url}
+- attachments (jsonb default '[]')    // list of vault fileIds (if vault exists)
+- created_at, updated_at
+RLS: owner-only.
+
+
+4) adventures
+- id uuid pk
+- user_id fk
+- title (text)
+- date (date)
+- location (text)
+- highlights (text)
+- gratitude (text)
+- photos (jsonb default '[]')  // vault fileIds or URLs
+- people (text[] default '{}') // e.g. ["Kristy","Sylvie","Elias"]
+- cost (numeric nullable)
+- tags (text[] default '{}')   // beach, hike, dubbo, bendigo, etc
+RLS: owner-only.
+
+
+5) nerd_items
+- id uuid pk
+- user_id fk
+- category (text: 'books' | 'quotes' | 'tech_experiments' | 'music' | 'films' | 'prompts')
+- title (text)
+- body (text)
+- tags (text[] default '{}')
+- link_url (text nullable)
+- attachments (jsonb default '[]')
+- created_at, updated_at
+RLS: owner-only.
+
+
+Create SQL migrations for all of the above + RLS policies.
+
+
+SERVER + CLIENT ARCHITECTURE
+- Create a typed data layer:
+  - src/lib/repos/delightRepo.ts (CRUD functions for each table)
+  - Use server actions for mutations (create/update/delete).
+  - Use cached queries for reads; keep pages fast.
+- Add shared UI components:
+  - DelightHeader (mode switch + quick actions)
+  - TagInput
+  - CardGrid
+  - EmptyState
+  - TimerCard (for Sprint)
+  - “Open externally” link button for arcade items
+
+
+DELIGHT: /delight (Hub)
+Layout:
+- Hero header: “Delight (Play · Create · Explore)” + mode switch
+- Two primary CTA buttons:
+  1) “Make something small” → /delight/studio (opens Idea Inbox composer)
+  2) “Play something small” → /delight/arcade
+- Sections (cards):
+  - “Resume a sprint” (if last sprint is active)
+  - “Recent ideas” (last 5)
+  - “Games & tools” (top 6 from your existing apps catalogue filtered to Games + DnD tools)
+  - “Make another memory” (random suggestion list + “log an adventure” CTA)
+
+
+CREATE STUDIO: /delight/studio
+Features:
+1) Idea Inbox
+- Fast capture composer at top (title + body + tags + kind selector)
+- Submit creates a delight_idea
+- List view with search + filter by tag/kind + pinned toggle
+- “Pin” and “Archive” (archive can be soft-delete via a boolean or reuse a generic archived_at field if your DB style already has it)
+
+
+2) Creative Sprint (25-min default)
+- Big “Start Sprint” button
+- On start: ask
+  - “What am I making?”
+  - “What’s the next tiny step?”
+  - duration (default 25)
+- Timer runs client-side, but persist start/end in DB.
+- On completion:
+  - prompt for outcome_notes
+  - show a gentle “Return to people” message + one quick action button:
+    “Send a kind text to Kristy” (just opens a prefilled draft in the UI; don’t send SMS)
+- Add a “Hyperfocus Guardrail”:
+  - if sprint goes 2× duration without ending, show a modal: “Pause / End / Extend by 10”
+  - record extensions in outcome_notes or add a small field if you want
+
+
+3) Worldbuilding Vault
+- Tabs: Locations / NPCs / Plot Hooks / Loot / Notes
+- Create/edit items (worldbuilding_items)
+- Simple templates:
+  - NPC template fields (name, voice, desire, secret, hook)
+  - Location template fields (vibe, danger, sights, secrets)
+Store templates client-side but save output to body.
+
+
+PLAY ARCADE: /delight/arcade
+Features:
+- Beautiful card wall of your existing games + relevant tools (pull from apps catalogue).
+- Each card:
+  - Name
+  - Tags
+  - “Play now” button (open in new tab)
+  - Version selector when multiple URLs exist (Whispering Wilds v1/v2/itch, etc.)
+  - Optional “Embed” button (try iframe). If blocked by X-Frame-Options, show a friendly fallback.
+  - “What I learned building this” (editable note saved as nerd_items category='tech_experiments' OR a new table if you prefer)
+- Add a “Health Check” action:
+  - Button “Check links” calls a server action that HEAD/GET pings each URL and stores last_ok / last_status / checked_at.
+  - Show a small badge on each card (OK / Broken / Unknown).
+
+
+ADVENTURE + MEMORIES: /delight/adventures
+Features:
+- “Log an adventure” means a quick family memory, not a big journaling chore.
+- Create adventure form: title, date, location, highlights, gratitude, people tags, photos.
+- Timeline list sorted latest first.
+- Photo support:
+  - If vault exists, pick files from vault or upload here (store fileId references in photos jsonb).
+  - If vault not ready, store photo URLs or skip with TODO.
+- Add a “Make another memory” panel:
+  - Hardcode 30 cheap ideas (walk to a park, library trip, backyard picnic, sunset stroll, creek adventure, op shop browse, etc.)
+  - Randomise on page load + allow “shuffle”.
+
+
+NERD CORNER: /delight/nerd
+Features:
+- Tabs: Books / Quotes / Tech Experiments / Prompts / Music / Films
+- Simple CRUD for nerd_items
+- “Quotes that hit” supports:
+  - quote text
+  - source (book/passage)
+  - tags
+- “Tech experiments” supports:
+  - title
+  - what I tried
+  - what worked
+  - what broke
+  - next attempt
+- Optional: “reading list” can start as a static list, but allow enriching with notes over time.
+
+
+HOME PAGE UPDATES
+- Ensure Home shows the Delight tile alongside the existing pillars.
+- Home should surface:
+  - “Make/Play” quick actions
+  - last sprint status
+  - recent idea or “Idea of the day”
+
+
+DESIGN / QUALITY BAR
+- Must feel premium: spacing, typography hierarchy, subtle animations, excellent empty states.
+- Mobile-first, but looks great on desktop.
+- Accessibility: keyboard nav, focus rings, ARIA for tabs/dialogs.
+- Performance: keep pages lightweight; avoid huge client bundles.
+- Testing:
+  - unit tests for tag parsing + sprint timer utils
+  - minimal integration test for repo functions if you already have a test harness
+
+
+DELIVERABLES
+- All new routes implemented and wired into nav
+- DB migrations + RLS policies included
+- Repo layer + server actions implemented
+- Seed data:
+  - Seed arcade with your existing app/game URLs (from catalogue)
+  - Seed “Make another memory” list
+- README updated with:
+  - new migrations
+  - how to run locally
+  - how to deploy
+
+
+Finally: summarise what you changed and where, and commit in small logical chunks.
+
+
+If you want, I can also write Prompt 8 to make “Delight” smarter: auto-pull GitHub repo stats (last commit), generate D&D loot/hooks from your own notes, and add a “playful devotional” mode that ties joy back to worship without getting cringe.
+________________
+
+
+Prompt 8 for JoshHub
+Prompts 1–7 mostly cover the build of JoshHub, but they don’t yet explicitly bake in your north star + the Abide/Love/Serve/Steward/Belong/Understand flow + the two guardrails as the organising spine.
+Here’s how they map:
+                                                         * Prompt 1: the “link hub” foundation (apps directory + detail pages + recent)
+
+                                                         * Prompt 2: Life pages + Projects board + global search + pinning (this is where your 6 core sections naturally live)
+
+                                                         * Prompt 3: capture/notes/tasks/routines + command palette + backups (supports “don’t hide in projects” because it makes the system frictionless)
+
+                                                         * Prompt 4: daily dashboard + calendar + health logging + family rhythm (this is closest to your “5 tiles” home screen idea)
+
+                                                         * Prompt 5: Everything Map as a TOC-driven knowledge tree + notes
+
+                                                         * Prompt 6: optional “go big” (auth/sync/vault/AI). Powerful, but it can also turn into another rabbit hole.
+
+                                                         * Prompt 7: currently blank.
+
+So yes — Prompt 8 should steer the whole project in this direction.
+Not “more features”, but a clearer centre of gravity: JoshHub exists to help Josh obey Jesus in ordinary Tuesday life.
+Below is a copy/paste Prompt 8 that makes your north star + 6 sections + guardrails the core UX (works whether you’re still local-first or later add Supabase).
+PROMPT 8 — Make JoshHub serve real life (North Star + 6 Sections + Guardrails) without becoming another hiding project.
+
+
+Context
+- JoshHub already has: Apps/Projects/Life (or will after prompts 1–4), plus capture/notes/tasks/routines (after prompt 3).
+- Goal now is NOT “more modules”. It’s to make the app *useful daily* in <60 seconds, aligned to Josh’s values.
+
+
+A) NORTH STAR (always visible, lightweight)
+1) Add a tiny “North Star” component (editable in Settings) that can appear:
+   - on /dashboard (top, small)
+   - optional in sidebar/footer
+Default text:
+“Fear God and keep His commandments — and let that shape how I love, work, lead, and steward my health.”
+2) Store northStarText in local storage/db (use existing persistence pattern). Keep it simple.
+
+
+B) THE 6 CORE SECTIONS (the real home of Life)
+Implement a new top-level route: /core
+- /core shows 6 cards:
+  1) Abide (Faith)
+  2) Love (Kristy + kids)
+  3) Serve (Work)
+  4) Steward (Health + family care load)
+  5) Belong (Community + outdoors + books)
+  6) Understand (family systems + psychology + skills)
+
+
+Each card opens /core/[slug] with:
+- Title + 2–3 sentence purpose (editable content stored as markdown or simple content objects)
+- 1 “Daily prompt” (editable)
+- Quick links to relevant apps/pages
+- “Pinned actions” list (max 3) stored locally (a simple checklist)
+- A “Related Notes” panel filtered by coreSlug (reuse notes system if exists)
+
+
+C) DASHBOARD: 5 TILES THAT MATCH REAL LIFE (fast, not clutter)
+Update /dashboard to default to 5 tiles (mobile-first grid):
+1) Abide: show the Daily prompt + a single “Truth for today” text field
+2) Love: show “2-minute check-in” card + one Love Map question
+3) Serve: “Top 3 outcomes today” + “Done list” (quick add)
+4) Steward: next appointment OR “one health action” + quick log buttons
+5) Review: two fields: “What went well?” and “Where do I need grace?”
+
+
+Rules:
+- Everything on dashboard must be usable in <60 seconds.
+- Keep data local-first; do not fetch big lists.
+- Each tile has one primary action button (e.g., Add Note, Add Task, Start Routine).
+
+
+D) THE TWO GUARDRAILS (baked in, not preachy, practical)
+Add a new /guardrails page and a small “Guardrails” widget on the dashboard:
+1) Decision filter modal (button: “Quick Discern”):
+   - Two required toggles:
+     - “Is this sin?” (Yes/No/Unsure)
+     - “Is this agreed by Kristy?” (Yes/No/Needs talk)
+   - Optional notes field
+   - Save each entry as a simple log (dateTime, answers, notes)
+   - If “Needs talk” is selected, auto-create a task: “Talk with Kristy about: <notes>”
+2) Time-box mode:
+   - A “Start focus timer” on /dashboard (15/25/45 presets)
+   - When timer ends: show a modal: “Return to people” with 3 buttons:
+     - “Check in with Kristy (2 minutes)”
+     - “Play with kids (5 minutes)”
+     - “Do one practical task (5 minutes)”
+   - Log these completions as simple counters (weekly totals).
+
+
+E) CONTENT: seed defaults (so it feels alive day 1)
+Seed daily prompts:
+- Abide: “What’s Jesus inviting me into today?”
+- Love: “What would make Kristy feel cared for today?”
+- Serve: “What’s the one outcome that matters most?”
+- Steward: “What one choice supports health and peace today?”
+- Belong: “Where will I connect this week?”
+- Understand: “What pattern am I noticing—and what’s my next wise step?”
+
+
+F) QUALITY BAR
+- Clean, calm UI (shadcn cards, spacing, strong headings)
+- Keyboard accessible (including modal + timer)
+- Persist all fields offline
+- Add minimal tests for:
+  - core slug routing
+  - decision log create
+  - timer completion log
+
+
+Deliverables
+- /core + /core/[slug]
+- Dashboard updated with 5 tiles aligned to the 6 core sections
+- /guardrails + Decision Filter modal + Time-box mode
+- Seeds + persistence working with no backend required
+- No clutter; keep it minimal and fast
+
+
+One gentle check for you (no pressure to answer now): when you “hide in projects”, what are you usually trying to avoid feeling or facing in that moment? That answer will tell us how firm the guardrails need to be.
+
+
+________________
+Prompt 9 for JoshHub
+Prompts 1–7 give you the engine (hub, map, projects, capture, data layer, then backend). Prompt 8 is the life-direction (Abide/Love/Serve/Steward/Belong/Understand + guardrails). Prompt 9 is where we bake in the fun/creative Josh properly: Delight.
+________________
+
+
+Prompt 9 for JoshHub (copy/paste into Codex in VS Code)
+PROMPT 9 — JoshHub v0.4: “Delight” Pillar + Steady/Playful Mode + Create/Play/Memories/Nerd Corner
+You are continuing to build JoshHub (JoshOS) using:
+                                                            * Next.js (App Router) + TypeScript + Tailwind + shadcn/ui + Framer Motion
+
+                                                            * Supabase (Auth + Postgres + Storage) with strict RLS
+
+                                                            * Server Actions preferred, minimal client fetch
+
+                                                            * Recharts available (but only use if it genuinely adds value)
+
+Goal
+Add my creative + fun life as a first-class pillar called Delight (Play / Create / Explore) — not an afterthought — while keeping the app calm, fast, and non-rabbit-hole.
+Core UX changes (must do)
+                                                               1. Add “Delight” to global navigation
+
+                                                                  * Add top-level route: /delight
+
+                                                                  * Add sub-routes:
+
+                                                                     * /delight/studio (Create Studio)
+
+                                                                     * /delight/arcade (Play Arcade)
+
+                                                                     * /delight/memories (Adventures + Memories)
+
+                                                                     * /delight/nerd (Nerd Corner)
+
+                                                                        2. Mode Switch: Steady vs Playful
+
+                                                                           * Add a small toggle in the header (and on /delight) labelled:
+
+                                                                              * Steady (calm day)
+
+                                                                              * Playful (creative day)
+
+                                                                                 * Store preference per-user (Supabase profiles column) with local fallback if needed.
+
+                                                                                 * Same data, different vibe:
+
+                                                                                    * Steady: minimal motion, calm copy, simple layout
+
+                                                                                    * Playful: slightly more motion, lighter microcopy, small celebratory moments (tasteful)
+
+                                                                                       3. Dashboard: add the “two doors” rule
+
+                                                                                          * Update /dashboard to always present two primary CTAs:
+
+                                                                                             * Do the next right thing ✅ (links to Serve/Steward/next task)
+
+                                                                                             * Make/play something small 🎨 (links to /delight)
+
+                                                                                                * Add a Delight tile alongside the other life tiles.
+
+Data model (Supabase) — keep it simple and flexible
+Create ONE flexible table to store creative items:
+Table: captures
+                                                                                                   * id uuid primary key default gen_random_uuid()
+
+                                                                                                   * user_id uuid not null references auth.users(id)
+
+                                                                                                   * kind text not null (enum-like values enforced by CHECK constraint)
+
+                                                                                                      * allowed kinds: idea, story, campaign_log, npc, plot_hook, loot, memory, quote, reading_note, tech_experiment, sprint_log
+
+                                                                                                         * title text not null
+
+                                                                                                         * body text not null default ''
+
+                                                                                                         * tags text[] not null default '{}'
+
+                                                                                                         * pinned boolean not null default false
+
+                                                                                                         * created_at timestamptz not null default now()
+
+                                                                                                         * updated_at timestamptz not null default now()
+
+RLS
+                                                                                                            * Enable RLS on captures
+
+                                                                                                            * Policies: user can CRUD only their rows (auth.uid() = user_id)
+
+                                                                                                            * Add an index for fast filtering: (user_id, kind, created_at desc) and GIN index on tags.
+
+Attachments (optional but ideal)
+                                                                                                               * Allow linking a Vault file to a capture by creating:
+
+                                                                                                                  * capture_files (capture_id uuid, file_id uuid, user_id uuid, created_at)
+
+                                                                                                                  * RLS same pattern.
+If Vault isn’t implemented yet in this repo, stub the UI as “Attach file (coming soon)” and keep it clean.
+
+Create Studio (/delight/studio)
+Build a “maker mode” that is fast and frictionless:
+                                                                                                                     1. Idea Inbox
+
+                                                                                                                        * Quick capture form: Title + Body + tags + kind selector (default idea)
+
+                                                                                                                        * Show recent captures (filterable by kind + tags)
+
+                                                                                                                        * Pin/unpin
+
+                                                                                                                        * Edit + delete (soft delete optional; hard delete ok if simplest)
+
+                                                                                                                           2. Creative Sprint button
+
+                                                                                                                              * A button: “Start a 25 min sprint”
+
+                                                                                                                              * Opens a modal:
+
+                                                                                                                                 * “What am I making?”
+
+                                                                                                                                 * “What’s the next tiny step?”
+
+                                                                                                                                 * Timer starts
+
+                                                                                                                                 * At finish: save a sprint_log capture containing those answers + timestamp + whether completed.
+
+                                                                                                                                    3. Worldbuilding Vault (DnD)
+
+                                                                                                                                       * Provide fast tabs for kinds:
+
+                                                                                                                                          * NPCs, Plot Hooks, Loot, Campaign Logs
+
+                                                                                                                                             * These are just filtered views of captures by kind.
+
+Play Arcade (/delight/arcade)
+This should reuse what you already have: the Projects/Apps catalogue.
+                                                                                                                                                1. Show a beautiful “card wall” of items tagged/category = Games (or a Games category).
+
+                                                                                                                                                2. Each card must include:
+
+                                                                                                                                                   * Play now (opens external link)
+
+                                                                                                                                                   * If the project has multiple versions/URLs, show a version selector (dropdown)
+
+                                                                                                                                                   * Optional: “Try embed view” toggle (iframe) with graceful fallback if blocked
+
+                                                                                                                                                      3. Add a small “What I learned” note area per game:
+
+                                                                                                                                                         * Store as a captures row with kind tech_experiment or reading_note (your call), and tag it with the project id.
+
+Adventures + Memories (/delight/memories)
+                                                                                                                                                            1. A simple “Family Adventures” log (kind = memory)
+
+                                                                                                                                                               * Fields: title, body, tags (eg. “beach”, “hike”, “cheap”, “kids”), date = use created_at
+
+                                                                                                                                                               * Allow attaching photos later (vault linkage)
+
+                                                                                                                                                                  2. Add a “Make another memory” prompt list:
+
+                                                                                                                                                                     * Hardcode 20–40 simple local-friendly ideas (walks, parks, picnics, library, backyard games, etc.)
+
+                                                                                                                                                                     * One-button “Add to plans” that creates a memory capture draft tagged planned.
+
+Nerd Corner (/delight/nerd)
+Keep it very “Josh” without getting complex:
+                                                                                                                                                                        1. Reading list
+
+                                                                                                                                                                           * Store as captures with kind reading_note and tags like book, sci-fi, theology, etc.
+
+                                                                                                                                                                           * Add a simple status tag convention: to-read, reading, finished
+
+                                                                                                                                                                              2. Quotes that hit
+
+                                                                                                                                                                                 * Store as captures with kind quote
+
+                                                                                                                                                                                 * Fast add + browse
+
+Visual/quality bar
+                                                                                                                                                                                    * Mobile-first, fast load, excellent empty states
+
+                                                                                                                                                                                    * Subtle motion only (especially in Steady mode)
+
+                                                                                                                                                                                    * Keyboard accessible
+
+                                                                                                                                                                                    * No heavy complexity: keep the first implementation clean and shippable
+
+Acceptance checks
+                                                                                                                                                                                       * New routes render: /delight, /delight/studio, /delight/arcade, /delight/memories, /delight/nerd
+
+                                                                                                                                                                                       * Can create/edit/pin/filter captures; persists after refresh
+
+                                                                                                                                                                                       * RLS verified: one user cannot read another user’s captures
+
+                                                                                                                                                                                       * Mode switch persists per-user
+
+                                                                                                                                                                                       * Dashboard shows the “two doors” CTAs and Delight tile
+
+                                                                                                                                                                                       * npm test (or pnpm test) passes, lint passes, no TS errors
+
+Delivery style
+                                                                                                                                                                                          * Say what you changed and where
+
+                                                                                                                                                                                          * Commit in small logical chunks
+
+________________
+
+
+If you want, after this we’ll use Prompt 10 to pull Delight into the Everything Map properly (so your “play identity”, favourite stories, music, projects, and memories sit inside the same tree — not scattered).
+
+
+________________
+Prompt 10 for JoshHub
+Yep — they’re blank because we haven’t built the “content system” yet (data model + editor + seeded starter content). Prompt 10 is where we start filling them out: we’ll add templates, a simple editor, and “starter packs” so each Life Area instantly has content (and then you can keep adding via Capture as you live).
+Here’s Prompt 10 for Codex:
+PROMPT 10 — “Make Life Areas not blank”: add a Life Content system (templates + editor + seeded starter packs + creative/fun)
+
+
+Context
+- We have a JoshHub web app (Next.js App Router + TS + Tailwind/shadcn assumed).
+- Top nav exists (Dashboard, Apps, Projects, Life, Capture, Notes, Tasks, Routines).
+- /life currently shows Life Area cards (Faith, Family, Health, Finance, Work/DCS, Tech & Projects, Travel & Adventure, Legacy) but pages are empty/blank because there’s no real content store yet.
+- Requirement: JoshHub must include the “creative / fun” sides too, not just serious life admin.
+
+
+Goal
+Implement a lightweight “Life Content” system that:
+1) Gives every Life Area real content on day 1 (seeded starter pack).
+2) Lets Josh add/edit items fast (local-first).
+3) Adds a new Life Area for fun/creativity (Play & Creativity).
+4) Connects to existing “Capture” flow (so daily living fills the system naturally).
+5) Looks polished with excellent empty-states, keyboard shortcuts, and quick-add.
+
+
+Non-goals (for now)
+- No heavy media storage system. If we add “memories”, store photo URLs + captions (optional), not raw uploads.
+- No forced backend requirement. Make it local-first; optionally add a clean interface that can swap to Supabase later.
+
+
+Deliverables (build all of these)
+A) Add “Play & Creativity” life area
+- Update /life grid to include a new card:
+  Title: “Play & Creativity”
+  Subtitle: D&D, game ideas, stories, music, adventures with kids, creative experiments.
+- Add routing so clicking goes to /life/play.
+
+
+B) Create a Life Content data model + storage adapter
+Create a small data layer with an interface:
+- LifeStore interface:
+  - list(area): LifeItem[]
+  - create(item)
+  - update(id, patch)
+  - remove(id)
+  - import(json)
+  - export(): json
+- Implement LocalLifeStore using localStorage (or IndexedDB if already present).
+- Items should be namespaced per user (even if we don’t have auth): use a single “default” userId constant for now.
+
+
+LifeItem shape (TypeScript)
+- id: string
+- area: "faith" | "family" | "health" | "finance" | "work" | "tech" | "travel" | "legacy" | "play"
+- kind: "focus" | "quick_link" | "checklist" | "ritual" | "note" | "memory" | "resource"
+- title: string
+- body?: string (markdown supported)
+- url?: string (for quick_link + resource)
+- tags?: string[]
+- pinned?: boolean
+- status?: "active" | "someday" | "archived"
+- createdAt, updatedAt: ISO string
+
+
+C) Build /life/[area] page that actually renders content
+For each life area page:
+- Header: area title + short description + “Add” button + “Templates” button.
+- Layout (polished, card-based):
+  1) Focus (show pinned focus items first; allow one “Primary Focus”)
+  2) Quick Links (grid of link chips/cards)
+  3) Checklists + Rituals (accordion or cards; can “run” a checklist)
+  4) Notes/Memories (feed list, newest first)
+- Empty-state behaviour:
+  - If no content: show a friendly “Start Here” panel with two buttons:
+    [Seed this area] [Add your first item]
+  - Seeding should be per-area (not global).
+
+
+D) Templates Library + “Seed Starter Pack”
+Create a template system that can insert multiple LifeItems at once.
+- Templates are stored in code as JSON in /lib/templates/lifeTemplates.ts
+- Each template has:
+  - id, title, description, targetAreas[], items[]
+- Add a “Templates” modal on /life/[area]
+  - shows templates relevant to that area
+  - click “Apply” inserts those items
+
+
+Starter pack should exist for EVERY area, including Play.
+Make the starter packs practical and aligned with JoshHub’s north star (Jesus-centred + family + work integrity + stewardship), but include fun.
+
+
+Seed content (put these into the starter packs)
+Faith starter pack:
+- Focus: “Jesus at the centre today”
+- Ritual: “Daily Abide (10 min)” checklist:
+  - 2 min: quiet + gratitude
+  - 5 min: Scripture (Psalm + Gospel)
+  - 2 min: prayer for Kristy + kids
+  - 1 min: one obedience step today
+- Quick link placeholders: Bible app, church notes page.
+- Resource note: “Identity in Christ > lies” (short markdown)
+
+
+Family starter pack:
+- Focus: “Same team” / “Gentle leadership”
+- Ritual: “2-minute check-in (morning)” checklist:
+  - Ask: “How are you really?” “What’s one thing I can do today?”
+- Checklist: “Bedtime stability steps” (short, calm steps)
+- Note: “repair after rupture” mini-script
+
+
+Health starter pack:
+- Focus: “Steady energy + sleep”
+- Checklist: “Evening wind-down (post 7pm)” (short)
+- Quick links: Withings/Welltory placeholders
+- Note: “Don’t obsess—track to serve love”
+
+
+Finance starter pack:
+- Focus: “Stability first → then expansion”
+- Checklist: “Monthly money review (20 min)”
+- Quick links: UniSuper, banking, budget sheet placeholder
+- Note: “Mortgage payoff plan (2028 target)”
+
+
+Work starter pack (La Trobe → DCS):
+- Focus: “Finish La Trobe well (Dec 24) / Prepare DCS ramp (Jan 19)”
+- Checklist: “End-of-day closeout”
+- Quick links: key work systems placeholders
+- Note: “Top 3 outcomes + done list = ADHD shame shield”
+
+
+Tech starter pack:
+- Quick links: all Josh apps list (already known: DCS Companion, DCS Prep, ParrisDubboMover client, Campaign Copilot, games, etc.)
+- Note: “Home lab safety checklist”
+- Focus: “Build useful, not endless”
+
+
+Travel starter pack:
+- Memory: “Fiji trip” (title + body placeholders: dates, what you loved, funniest moment, gratitude)
+- Memory: “Tasmania trip” (same)
+- Checklist: “Trip essentials + docs”
+- Note: “Adventures as family renewal”
+
+
+Legacy starter pack:
+- Focus: “Spiritual inheritance > stuff”
+- Checklist: “Weekly memoir prompt (10 min)”
+- Note: “Write one story you’d tell Sylvie & Elias at 20”
+
+
+Play & Creativity starter pack (THIS IS CRITICAL)
+- Focus: “Delight is not optional”
+- Checklist: “Weekly Play Block (60 min)”:
+  - 10 min: pick a fun thing
+  - 30 min: create/play (D&D prep, story scene, game idea)
+  - 10 min: share with Kristy/kids (one tiny joy)
+  - 10 min: save a ‘spark note’ in JoshHub
+- Quick links: Baldur’s Gate 3, D&D tools, your itch.io pages
+- Note templates:
+  - “D&D session seed” (hook, NPC, twist, reward)
+  - “Kids story seed” (character, problem, wonder, prayer/gratitude line)
+  - “Game idea card” (core loop, vibe, next tiny step)
+
+
+E) Add “Quick Add” everywhere (keyboard friendly)
+- Add a Cmd/Ctrl+K command palette actions:
+  - “Add Focus”
+  - “Add Quick Link”
+  - “Add Checklist”
+  - “Add Note”
+  - “Apply Template…”
+- Add small “+” buttons in each section too.
+
+
+F) Import / Export
+- Add a Settings page or modal with:
+  - Export JSON (downloads or copy-to-clipboard)
+  - Import JSON (paste box)
+This prevents lock-in and makes multi-device doable even without backend.
+
+
+Quality requirements
+- UI must look clean and modern: consistent spacing, soft borders/shadows, good empty states.
+- No blank pages: every section has either content or an helpful empty state.
+- All new code typed, linted, and components split cleanly.
+- Add basic unit tests for template seeding + store create/update/remove if test setup exists.
+
+
+Finally
+After implementing, ensure /life shows the new Play & Creativity card, and each /life/[area] shows seeded content when the user clicks “Seed this area”.
+
+
+If you run this, you’ll go from “blank sections” to a proper lived-in Life OS in one hit. After that, filling it out becomes dead simple: you’ll mostly use Capture → tag to an area → it shows up automatically.

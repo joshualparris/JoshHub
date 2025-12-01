@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+JoshHub
+=======
 
-## Getting Started
+Personal browser-based dashboard for all your apps and games.
 
-First, run the development server:
+## Stack
+- Next.js (App Router) + TypeScript
+- Tailwind CSS
+- Lightweight shadcn-style UI components (Button/Card/Badge/Input)
 
+## Getting started
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+Open http://localhost:3000.
+
+## Build
+```bash
+npm run build
+npm run start  # preview production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Deploy
+- Vercel recommended: push to a repo and import in Vercel; set framework to Next.js (app directory).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Editing the catalogue
+- Source of truth: `src/data/apps.ts`.
+- Add new items with `id`, `name`, `category`, `status`, `tags`, `urls[]`, `primaryUrl`, optional `notes`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Features
+- Home dashboard with quick launch, recent items, broken list, and pinned Life areas.
+- `/apps` directory: search, category/status filters, tags; `/apps/[id]` detail with links, embed toggle, status, tags, notes.
+- `/projects`: grouped by status with next actions.
+- `/life` and `/life/[slug]`: Life areas with content, quick links, and pin-to-home.
+- Global search (Ctrl/Cmd + K) across routes, apps, and life pages.
+- Capture + local data (IndexedDB/Dexie):
+  - `/capture`: quick add note/task/bookmark + recent feed.
+  - `/notes` + `/notes/[id]`: search/filter, edit, and autosave notes.
+  - `/tasks`: quick add, grouped Today/Upcoming/Someday, check/priority.
+  - `/routines` + `/routines/[id]`: create/run routines, log runs.
+  - `/settings/backups`: export/import/reset local data (notes/tasks/bookmarks/routines/runs/pins).
+- Pinned Life areas now stored in IndexedDB.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Accessibility
+- Semantic headings, focus rings on interactive elements, keyboard-friendly controls, readable contrast.
