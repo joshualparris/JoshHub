@@ -115,22 +115,16 @@ export default function ProjectsPage() {
                 <p className="text-sm text-neutral-600">No items.</p>
               ) : (
                 group.items.map((item) => (
-                  <div key={item.id} className="rounded-md border border-neutral-200 bg-white p-3">
+                  <a
+                    key={item.id}
+                    href={item.primaryUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block rounded-md border border-neutral-200 bg-white p-3 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+                  >
                     <div className="flex items-center justify-between gap-2">
-                      <Link
-                        href={`/apps/${item.id}`}
-                        className="font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
-                      >
-                        {item.name}
-                      </Link>
-                      <a
-                        href={item.primaryUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs text-neutral-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
-                      >
-                        Open
-                      </a>
+                      <span className="font-medium hover:underline">{item.name}</span>
+                      <span className="text-xs text-neutral-600">Open</span>
                     </div>
                     <p className="text-xs text-neutral-500">{item.category}</p>
                     {item.nextAction && (
@@ -141,7 +135,7 @@ export default function ProjectsPage() {
                     {item.lastTouched && (
                       <p className="text-xs text-neutral-500">Last touched: {item.lastTouched}</p>
                     )}
-                  </div>
+                  </a>
                 ))
               )}
             </CardContent>
