@@ -39,3 +39,23 @@ Handoff guidance for Codex (what to wire next):
 Notes:
 - All added modules are pure/compile-safe and do not touch existing routes or DB schema.
 - Keep adapters and Dexie wiring in a separate branch or changeset so this foundation remains non-conflicting.
+
+Hydration mismatch (React error #418) — Playbook
+------------------------------------------------
+
+Common causes:
+- Client-only values rendered on server (Date.now(), random ids, locale formatting)
+- Markup differences between server and client (different conditional rendering)
+- Effects that update state on mount and change tree shape
+
+Quick fixes for `/life/*` pages (apply one):
+1) Wrap client-only bits with `ClientOnly` (see `src/lib/react/ClientOnly.tsx`) so they render only after hydration.
+2) Use the `useHydrated` hook (`src/lib/react/useHydrated.ts`) to gate rendering:
+   - if (!useHydrated()) return placeholder
+3) For heavy client components, use `dynamic(() => import('...'), { ssr: false })` at the page component level.
+
+Notes for Codex:
+- Prefer the non-invasive `ClientOnly` / `useHydrated` approach first — it avoids changing page routes.
+- Ensure components that read `window` or `Intl` are guarded behind `isBrowser()` from `src/lib/utils/ssr.ts`.
+- After gating, re-run `npm run build` to catch remaining hydration mismatches.
+
