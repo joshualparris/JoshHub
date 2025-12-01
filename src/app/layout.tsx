@@ -50,6 +50,9 @@ export default function RootLayout({
                 <Link className="hover:underline" href="/projects">
                   Projects
                 </Link>
+                <Link className="hover:underline" href="/map">
+                  Everything Map
+                </Link>
                 <Link className="hover:underline" href="/life">
                   Life
                 </Link>
