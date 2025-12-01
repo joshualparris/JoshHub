@@ -1,18 +1,21 @@
 import { notFound } from "next/navigation";
 
-import { lifeAreas, getLifeArea } from "@/data/life";
+import { getLifeArea } from "@/data/life";
 import { LifeDetailClient } from "./life-detail-client";
 
 interface Props {
-  params: { slug: string };
+  params: { slug: string } | Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return lifeAreas.map((area) => ({ slug: area.slug }));
-}
+// Render at request time to avoid stale pre-rendered 404s.
+export const dynamic = "force-dynamic";
 
-export default function LifeDetailPage({ params }: Props) {
-  const area = getLifeArea(params.slug);
+export default async function LifeDetailPage({ params }: Props) {
+  // In Next.js 16 App Router, params is a Promise for dynamic routes—unwrap before use.
+  const resolved = await params;
+  const slug = decodeURIComponent(resolved.slug).trim().toLowerCase();
+
+  const area = getLifeArea(slug);
   if (!area) return notFound();
 
   return <LifeDetailClient area={area} />;
