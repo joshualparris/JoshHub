@@ -5,6 +5,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { createTask, toggleTaskStatus, updateTask } from "@/lib/db/actions";
 import { useTasks } from "@/lib/db/hooks";
 import type { Task, TaskPriority } from "@/lib/db/schema";
@@ -37,11 +38,7 @@ export default function TasksPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Tasks</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Tasks</h1>
-        <p className="text-neutral-600">Quick add and manage tasks.</p>
-      </div>
+      <PageHeader kicker="TASKS" title="Tasks" subtitle="Quick add and manage tasks." />
 
       <Card>
         <CardHeader>
@@ -58,7 +55,7 @@ export default function TasksPage() {
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
             >
               <option value="low">Low</option>
               <option value="med">Med</option>
@@ -92,7 +89,7 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
       </CardHeader>
       <CardContent className="space-y-2">
         {tasks.length === 0 ? (
-          <p className="text-sm text-neutral-600">Nothing here.</p>
+          <p className="text-sm text-foreground/60">Nothing here.</p>
         ) : (
           tasks.map((task) => (
             <div
@@ -100,7 +97,7 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
               className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
             >
               <div>
-                <label className="flex items-center gap-2 text-sm text-neutral-800">
+                <label className="flex items-center gap-2 text-sm text-foreground">
                   <input
                     type="checkbox"
                     checked={task.status === "done"}
@@ -108,14 +105,17 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
                       toggleTaskStatus(task.id, e.target.checked ? "done" : "open")
                     }
                   />
-                  <span className={task.status === "done" ? "line-through text-neutral-500" : ""}>
+                  <span className={task.status === "done" ? "line-through text-foreground/60" : ""}>
                     {task.title}
                   </span>
                 </label>
-                <div className="flex flex-wrap gap-2 text-xs text-neutral-500">
+                <div className="flex flex-wrap gap-2 text-xs text-foreground/65">
                   {task.dueDate && <span>Due {task.dueDate}</span>}
                   {task.tags.map((t) => (
-                    <span key={t} className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700">
+                    <span
+                      key={t}
+                      className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
+                    >
                       {t}
                     </span>
                   ))}
@@ -124,7 +124,7 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
               <select
                 value={task.priority}
                 onChange={(e) => updateTask(task.id, { priority: e.target.value as TaskPriority })}
-                className="h-8 rounded-md border border-neutral-300 bg-white px-2 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+                className="h-8 rounded-md border border-neutral-300 bg-white px-2 text-xs text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
               >
                 <option value="low">Low</option>
                 <option value="med">Med</option>

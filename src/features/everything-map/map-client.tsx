@@ -38,9 +38,9 @@ export function MapClient({ initialId }: MapClientProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-[280px,1fr]">
-      <div className="space-y-3 rounded-lg border border-neutral-200 bg-white p-3 shadow-sm">
+      <div className="space-y-3 rounded-lg border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
         <div className="flex items-center gap-2">
-          <Search className="h-4 w-4 text-neutral-500" />
+          <Search className="h-4 w-4 text-neutral-500 dark:text-slate-400" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -61,7 +61,7 @@ export function MapClient({ initialId }: MapClientProps) {
             <CardHeader>
               <CardTitle>Select a section</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-neutral-600">
+            <CardContent className="text-sm text-neutral-600 dark:text-slate-300">
               Choose a section from the tree to view details and notes.
             </CardContent>
           </Card>
@@ -86,14 +86,14 @@ function TocTree({ nodes, selectedId, onSelect, depth = 0 }: TocTreeProps) {
           <button
             type="button"
             onClick={() => onSelect(node.id)}
-            className={`flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 ${
-              selectedId === node.id ? "bg-neutral-100 font-semibold" : ""
+            className={`flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:hover:bg-slate-800 dark:focus-visible:ring-slate-400 ${
+              selectedId === node.id ? "bg-neutral-100 font-semibold dark:bg-slate-800/80" : ""
             }`}
             style={{ paddingLeft: 8 + depth * 12 }}
           >
-            <Folder className="h-4 w-4 text-neutral-500" />
-            <span className="text-neutral-900">{node.title}</span>
-            <span className="text-xs text-neutral-500">{node.id}</span>
+            <Folder className="h-4 w-4 text-neutral-500 dark:text-slate-400" />
+            <span className="text-neutral-900 dark:text-slate-100">{node.title}</span>
+            <span className="text-xs text-neutral-500 dark:text-slate-400">{node.id}</span>
           </button>
           {node.children.length > 0 && (
             <TocTree
@@ -160,12 +160,12 @@ function SectionDetails({ node }: { node: TocNode }) {
 
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between gap-2">
-            <span>{node.title}</span>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={handleExport}>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between gap-2">
+                <span>{node.title}</span>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={handleExport}>
                 <FileDown className="mr-2 h-4 w-4" />
                 Export notes
               </Button>
@@ -184,16 +184,18 @@ function SectionDetails({ node }: { node: TocNode }) {
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-2 text-sm text-neutral-700">
-          <div className="flex gap-3 text-neutral-600">
-            <span className="rounded-md border border-neutral-200 px-2 py-1 text-xs">ID: {node.id}</span>
+        <CardContent className="space-y-2 text-sm text-neutral-700 dark:text-slate-200">
+          <div className="flex gap-3 text-neutral-600 dark:text-slate-300">
+            <span className="rounded-md border border-neutral-200 px-2 py-1 text-xs dark:border-slate-700/60">
+              ID: {node.id}
+            </span>
             {node.page && (
-              <span className="rounded-md border border-neutral-200 px-2 py-1 text-xs">
+              <span className="rounded-md border border-neutral-200 px-2 py-1 text-xs dark:border-slate-700/60">
                 Page {node.page}
               </span>
             )}
           </div>
-          <p className="text-neutral-600">
+          <p className="text-neutral-600 dark:text-slate-300">
             Placeholder: add description or related links for this section here.
           </p>
           <Separator className="my-2" />
@@ -253,21 +255,23 @@ function SectionDetails({ node }: { node: TocNode }) {
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="font-medium text-neutral-900">{note.title}</p>
-                    <p className="whitespace-pre-wrap text-sm text-neutral-700">{note.body}</p>
+                    <p className="font-medium text-neutral-900 dark:text-slate-100">{note.title}</p>
+                    <p className="whitespace-pre-wrap text-sm text-neutral-700 dark:text-slate-200">
+                      {note.body}
+                    </p>
                     {note.tags.length > 0 && (
                       <div className="mt-1 flex flex-wrap gap-1">
                         {note.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700"
+                            className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     )}
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="mt-1 text-xs text-neutral-500 dark:text-slate-400">
                       Updated {new Date(note.updatedAt).toLocaleString()}
                     </p>
                   </div>
@@ -294,9 +298,11 @@ function SectionDetails({ node }: { node: TocNode }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-semibold text-neutral-900">All notes summary</CardTitle>
+          <CardTitle className="text-sm font-semibold text-neutral-900 dark:text-slate-100">
+            All notes summary
+          </CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-neutral-600">
+        <CardContent className="text-sm text-neutral-600 dark:text-slate-300">
           {allNotes.length} total notes across the map.
         </CardContent>
       </Card>

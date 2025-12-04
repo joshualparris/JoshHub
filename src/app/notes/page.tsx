@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PageHeader } from "@/components/ui/page-header";
 import { createNote } from "@/lib/db/actions";
 import { useNotes } from "@/lib/db/hooks";
 import type { Note } from "@/lib/db/schema";
@@ -39,11 +40,7 @@ export default function NotesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Notes</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Notes</h1>
-        <p className="text-neutral-600">Search, filter, and edit notes.</p>
-      </div>
+      <PageHeader kicker="NOTES" title="Notes" subtitle="Search, filter, and edit notes." />
 
       <div className="flex flex-wrap gap-3">
         <Input
@@ -87,7 +84,7 @@ export default function NotesPage() {
           <NoteCard key={note.id} note={note} />
         ))}
       </div>
-      {filtered.length === 0 && <p className="text-sm text-neutral-600">No notes found.</p>}
+      {filtered.length === 0 && <p className="text-sm text-foreground/65">No notes found.</p>}
     </div>
   );
 }
@@ -103,18 +100,18 @@ function NoteCard({ note }: { note: Note }) {
           >
             {note.title || "Untitled"}
           </Link>
-          <span className="text-xs text-neutral-500">
+          <span className="text-xs text-foreground/65">
             {new Date(note.updatedAt).toLocaleDateString()}
           </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p className="text-sm text-neutral-700 line-clamp-3">{note.body || "No content yet."}</p>
+        <p className="text-sm text-foreground/80 line-clamp-3">{note.body || "No content yet."}</p>
         <div className="flex flex-wrap gap-2">
           {note.tags.map((t) => (
             <span
               key={t}
-              className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700"
+              className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
             >
               {t}
             </span>

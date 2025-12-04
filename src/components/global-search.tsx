@@ -150,21 +150,23 @@ export function GlobalSearch() {
                   {results
                     .filter((r): r is Extract<Result, { type: "life" }> => r.type === "life")
                     .map((r) => (
-                      <CommandItem key={r.item.slug} onSelect={() => setOpen(false)} asChild>
-                        <Link
-                          href={`/life/${r.item.slug}`}
-                          className="flex items-center gap-2 px-4 py-2"
-                        >
-                          <Layers className="h-4 w-4 text-neutral-500" />
-                          <span>{r.item.title}</span>
-                          <span className="text-xs text-neutral-500">
-                            {r.item.tags.slice(0, 2).join(", ")}
-                          </span>
+                      <CommandItem key={r.item.slug} onSelect={() => setOpen(false)} className="px-0">
+                        <div className="flex w-full items-center gap-2 px-4 py-2">
+                          <Link
+                            href={`/life/${r.item.slug}`}
+                            className="flex flex-1 items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
+                          >
+                            <Layers className="h-4 w-4 text-neutral-500" />
+                            <span>{r.item.title}</span>
+                            <span className="text-xs text-neutral-500">
+                              {r.item.tags.slice(0, 2).join(", ")}
+                            </span>
+                          </Link>
                           <button
                             type="button"
-                            className="ml-auto text-xs underline"
+                            className="text-xs underline"
                             onClick={async (e) => {
-                              e.preventDefault();
+                              e.stopPropagation();
                               if (pinned.includes(r.item.slug)) {
                                 await removePin(r.item.slug);
                               } else {
@@ -175,7 +177,7 @@ export function GlobalSearch() {
                           >
                             {pinned.includes(r.item.slug) ? "Unpin" : "Pin"}
                           </button>
-                        </Link>
+                        </div>
                       </CommandItem>
                     ))}
                 </CommandGroup>

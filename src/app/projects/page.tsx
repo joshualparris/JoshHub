@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 import { StatusChip } from "@/components/status-chip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
+import { labelText, metaText, mutedText } from "@/components/ui/text";
 import { apps, type AppStatus } from "@/data/apps";
 
 const statusOrder: AppStatus[] = ["broken", "wip", "ok", "archived"];
@@ -49,21 +51,19 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Projects</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Projects board</h1>
-        <p className="text-neutral-600">
-          Status by project with next actions and quick open buttons.
-        </p>
-      </div>
+      <PageHeader
+        kicker="Projects"
+        title="Projects board"
+        subtitle="Status by project with next actions and quick open buttons."
+      />
 
       <div className="flex flex-wrap gap-3">
-        <label className="flex items-center gap-2 text-sm text-neutral-700">
-          Category:
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+          <span className={labelText}>Category:</span>
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
           >
             <option value="all">All</option>
             {categories.map((cat) => (
@@ -74,22 +74,22 @@ export default function ProjectsPage() {
           </select>
         </label>
 
-        <label className="flex items-center gap-2 text-sm text-neutral-700">
-          Tag:
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+          <span className={labelText}>Tag:</span>
           <input
             value={tagFilter}
             onChange={(e) => setTagFilter(e.target.value)}
             placeholder="filter tag"
-            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus-visible:ring-slate-400"
           />
         </label>
 
-        <label className="flex items-center gap-2 text-sm text-neutral-700">
-          Sort:
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+          <span className={labelText}>Sort:</span>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+            className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
           >
             {sortOptions.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -102,7 +102,7 @@ export default function ProjectsPage() {
 
       <div className="grid gap-4 lg:grid-cols-4">
         {grouped.map((group) => (
-          <Card key={group.status} className="bg-neutral-50">
+          <Card key={group.status} className="bg-neutral-50 dark:bg-slate-900/70">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <StatusChip status={group.status} />
@@ -111,7 +111,7 @@ export default function ProjectsPage() {
             </CardHeader>
             <CardContent className="space-y-3">
               {group.items.length === 0 ? (
-                <p className="text-sm text-neutral-600">No items.</p>
+                <p className={`${mutedText}`}>No items.</p>
               ) : (
                 group.items.map((item) => (
                   <a
@@ -119,20 +119,20 @@ export default function ProjectsPage() {
                     href={item.primaryUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="block rounded-md border border-neutral-200 bg-white p-3 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+                    className="block rounded-md border border-neutral-200 bg-white p-3 text-slate-950 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-700/60 dark:bg-slate-900/70 dark:text-slate-100"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-medium hover:underline">{item.name}</span>
-                      <span className="text-xs text-neutral-600">Open</span>
+                      <span className={`${metaText} dark:text-slate-200`}>Open</span>
                     </div>
-                    <p className="text-xs text-neutral-500">{item.category}</p>
+                    <p className={metaText}>{item.category}</p>
                     {item.nextAction && (
-                      <p className="mt-2 text-sm text-neutral-700">
+                      <p className={`mt-2 ${mutedText}`}>
                         <span className="font-medium">Next:</span> {item.nextAction}
                       </p>
                     )}
                     {item.lastTouched && (
-                      <p className="text-xs text-neutral-500">Last touched: {item.lastTouched}</p>
+                      <p className={metaText}>Last touched: {item.lastTouched}</p>
                     )}
                   </a>
                 ))

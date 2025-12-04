@@ -1,4 +1,5 @@
 import { AppsDirectory } from "@/components/apps-directory";
+import { PageHeader } from "@/components/ui/page-header";
 import { apps, type AppStatus } from "@/data/apps";
 
 export const metadata = {
@@ -19,13 +20,11 @@ export default function AppsPage({ searchParams }: Props) {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Catalogue</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Apps & Games</h1>
-        <p className="text-neutral-600">
-          Search, filter, and open every app or game from one place.
-        </p>
-      </div>
+      <PageHeader
+        kicker="Catalogue"
+        title="Apps & Games"
+        subtitle="Search, filter, and open every app or game from one place."
+      />
       <AppsDirectory items={apps} initialStatus={initialStatus} />
     </div>
   );

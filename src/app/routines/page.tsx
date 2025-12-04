@@ -6,6 +6,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { createRoutine, logRoutineRun } from "@/lib/db/actions";
 import { useRoutines } from "@/lib/db/hooks";
 import { seedRoutines } from "@/lib/db/dexie";
@@ -27,11 +28,7 @@ export default function RoutinesPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Routines</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Routines</h1>
-        <p className="text-neutral-600">Create and run routines.</p>
-      </div>
+      <PageHeader kicker="ROUTINES" title="Routines" subtitle="Create and run routines." />
 
       <Card>
         <CardHeader>
@@ -69,18 +66,18 @@ export default function RoutinesPage() {
                 </Button>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-neutral-700">
+            <CardContent className="space-y-2 text-sm text-foreground/80">
               {routine.items.length === 0 ? (
-                <p>No steps yet.</p>
+                <p className="text-foreground/65">No steps yet.</p>
               ) : (
                 routine.items.map((item) => (
                   <div key={item.id} className="flex items-center gap-2">
-                    <span className="rounded bg-neutral-100 px-2 py-1 text-xs uppercase">
+                    <span className="rounded bg-neutral-100 px-2 py-1 text-xs uppercase text-foreground">
                       {item.type}
                     </span>
-                    <span>{item.label}</span>
+                    <span className="text-foreground/80">{item.label}</span>
                     {item.seconds ? (
-                      <span className="text-xs text-neutral-500">{item.seconds}s</span>
+                      <span className="text-xs text-foreground/65">{item.seconds}s</span>
                     ) : null}
                   </div>
                 ))

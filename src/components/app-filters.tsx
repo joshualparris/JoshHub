@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 
 import { Input } from "@/components/ui/input";
+import { labelText } from "@/components/ui/text";
 import type { AppCategory, AppStatus } from "@/data/apps";
 
 interface Props {
@@ -63,10 +64,10 @@ interface SelectProps {
 
 function Select({ label, value, onChange, options }: SelectProps) {
   return (
-    <label className="flex items-center gap-2 text-sm text-neutral-700">
-      <span className="whitespace-nowrap">{label}:</span>
+    <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+      <span className={`${labelText} whitespace-nowrap`}>{label}:</span>
       <select
-        className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+        className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
