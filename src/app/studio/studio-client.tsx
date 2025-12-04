@@ -39,7 +39,8 @@ const storySeeds = [
 ];
 
 export function StudioClient() {
-  const notes = useNotes() ?? [];
+  const notesRaw = useNotes();
+  const notes = useMemo(() => notesRaw ?? [], [notesRaw]);
   const quickLaunch = useMemo(() => apps.slice(0, 6), []);
   const gamedevNotes = useMemo(
     () => notes.filter((n) => n.tags.includes("gamedev") || n.tags.includes("studio")).slice(0, 5),

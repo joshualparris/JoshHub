@@ -152,7 +152,7 @@ function SectionDetails({ node }: { node: TocNode }) {
     try {
       await importNotes(file);
       e.target.value = "";
-    } catch (err) {
+    } catch {
       alert("Import failed. Please check the file format.");
       e.target.value = "";
     }

@@ -8,32 +8,34 @@ function toIso(msOrIso: number | string | undefined | null): string {
 }
 
 export function noteToCapture(n: Note): CaptureItem {
+  const area = (n.lifeAreaSlug ?? "inbox") as CaptureItem["area"];
   return {
     id: `note:${n.id}`,
     createdAt: toIso(n.createdAt),
     updatedAt: toIso(n.updatedAt),
     kind: "note",
-    area: (n.lifeAreaSlug as any) || "inbox",
+    area,
     title: n.title || "",
     content: n.body || "",
     tags: n.tags || [],
     status: undefined,
-  } as CaptureItem;
+  };
 }
 
 export function taskToCapture(t: Task): CaptureItem {
+  const area = (t.projectId ?? "inbox") as CaptureItem["area"];
   return {
     id: `task:${t.id}`,
     createdAt: toIso(t.createdAt),
     updatedAt: toIso(t.updatedAt),
     kind: "task",
-    area: (t.projectId as any) || "inbox",
+    area,
     title: t.title || "",
     content: "",
     tags: t.tags || [],
     status: t.status === "done" ? "done" : "open",
     dueDate: t.dueDate ?? undefined,
-  } as CaptureItem;
+  };
 }
 
 export function bookmarkToCapture(b: Bookmark): CaptureItem {
@@ -47,11 +49,11 @@ export function bookmarkToCapture(b: Bookmark): CaptureItem {
     content: "",
     url: b.url,
     tags: b.tags || [],
-  } as CaptureItem;
+  };
 }
 
 export function dbRecordToCapture(rec: Note | Task | Bookmark): CaptureItem {
-  if ((rec as Note).body !== undefined) return noteToCapture(rec as Note);
-  if ((rec as Task).status !== undefined) return taskToCapture(rec as Task);
-  return bookmarkToCapture(rec as Bookmark);
+  if ("body" in rec) return noteToCapture(rec);
+  if ("status" in rec) return taskToCapture(rec);
+  return bookmarkToCapture(rec);
 }

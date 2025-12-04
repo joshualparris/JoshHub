@@ -19,12 +19,12 @@ export function createInMemoryCaptureRepo(initial: CaptureItem[] = []): CaptureR
     async get(id: string) {
       return store.get(id);
     },
-    async add(partial) {
-      const item = makeCapture(partial as any);
+    async add(partial: Partial<CaptureItem> & Pick<CaptureItem, "kind" | "title">) {
+      const item = makeCapture(partial);
       store.set(item.id, item);
       return item;
     },
-    async update(id: string, patch) {
+    async update(id: string, patch: Partial<CaptureItem>) {
       const existing = store.get(id);
       if (!existing) return undefined;
       const updated: CaptureItem = { ...existing, ...patch, updatedAt: new Date().toISOString() };

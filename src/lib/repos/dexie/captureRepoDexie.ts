@@ -1,10 +1,16 @@
 import { db } from "../../db/dexie";
 import type { CaptureRepo } from "../captureRepo";
 import type { CaptureItem } from "../../models/capture";
+import type { Bookmark, Note, Task } from "../../db/schema";
 import { noteToCapture, taskToCapture, bookmarkToCapture } from "../../logic/mappers/dbToCapture";
 
 function mergeAndSort(items: CaptureItem[]) {
   return items.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : b.updatedAt < a.updatedAt ? -1 : 0));
+}
+
+function makeId(prefix?: string) {
+  const base = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Date.now().toString();
+  return prefix ? `${prefix}:${base}` : base;
 }
 
 export function createCaptureRepoDexie(): CaptureRepo {
@@ -40,50 +46,74 @@ export function createCaptureRepoDexie(): CaptureRepo {
       if (b) return bookmarkToCapture(b);
       return undefined;
     },
-    async add(partial) {
+    async add(partial: Partial<CaptureItem> & Pick<CaptureItem, "kind" | "title">) {
       // naive: add as a note by default when kind === 'note' or when no url
       const kind = partial.kind;
       if (kind === "bookmark" && partial.url) {
-        const id = partial.id ? partial.id.replace(/^bookmark:/, "") : undefined;
-        const rec = { id, title: partial.title, url: partial.url, tags: partial.tags ?? [], createdAt: Date.now() };
-        const newId = await db.bookmarks.add(rec as any);
-        const saved = await db.bookmarks.get(newId as any);
-        return bookmarkToCapture(saved as any);
+        const id = partial.id ? partial.id.replace(/^bookmark:/, "") : makeId();
+        const rec: Bookmark = {
+          id,
+          title: partial.title,
+          url: partial.url,
+          tags: partial.tags ?? [],
+          createdAt: Date.now(),
+        };
+        await db.bookmarks.put(rec);
+        return bookmarkToCapture(rec);
       }
       if (kind === "task") {
-        const rec = { id: partial.id ? partial.id.replace(/^task:/, "") : undefined, title: partial.title, status: (partial.status as any) ?? "open", priority: "med", dueDate: partial.dueDate ?? null, tags: partial.tags ?? [], projectId: partial.area ?? null, createdAt: Date.now(), updatedAt: Date.now() };
-        const newId = await db.tasks.add(rec as any);
-        const saved = await db.tasks.get(newId as any);
-        return taskToCapture(saved as any);
+        const id = partial.id ? partial.id.replace(/^task:/, "") : makeId();
+        const rec: Task = {
+          id,
+          title: partial.title,
+          status: partial.status ?? "open",
+          priority: "med",
+          dueDate: partial.dueDate ?? null,
+          tags: partial.tags ?? [],
+          projectId: partial.area ?? null,
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+        };
+        await db.tasks.put(rec);
+        return taskToCapture(rec);
       }
       // default to note
-      const rec = { id: partial.id ? partial.id.replace(/^note:/, "") : undefined, nodeId: null, title: partial.title, body: partial.content ?? "", tags: partial.tags ?? [], createdAt: Date.now(), updatedAt: Date.now(), lifeAreaSlug: partial.area ?? null };
-      const newId = await db.notes.add(rec as any);
-      const saved = await db.notes.get(newId as any);
-      return noteToCapture(saved as any);
+      const id = partial.id ? partial.id.replace(/^note:/, "") : makeId();
+      const rec: Note = {
+        id,
+        nodeId: null,
+        title: partial.title,
+        body: partial.content ?? "",
+        tags: partial.tags ?? [],
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        lifeAreaSlug: partial.area ?? null,
+      };
+      await db.notes.put(rec);
+      return noteToCapture(rec);
     },
-    async update(id, patch) {
+    async update(id: string, patch: Partial<CaptureItem>) {
       if (id.startsWith("note:")) {
         const key = id.replace(/^note:/, "");
-        await db.notes.update(key, { ...patch, updatedAt: Date.now() } as any);
+        await db.notes.update(key, { ...patch, updatedAt: Date.now() });
         const rec = await db.notes.get(key);
         return rec ? noteToCapture(rec) : undefined;
       }
       if (id.startsWith("task:")) {
         const key = id.replace(/^task:/, "");
-        await db.tasks.update(key, { ...patch, updatedAt: Date.now() } as any);
+        await db.tasks.update(key, { ...patch, updatedAt: Date.now() });
         const rec = await db.tasks.get(key);
         return rec ? taskToCapture(rec) : undefined;
       }
       if (id.startsWith("bookmark:")) {
         const key = id.replace(/^bookmark:/, "");
-        await db.bookmarks.update(key, { ...patch } as any);
+        await db.bookmarks.update(key, { ...patch });
         const rec = await db.bookmarks.get(key);
         return rec ? bookmarkToCapture(rec) : undefined;
       }
       return undefined;
     },
-    async remove(id) {
+    async remove(id: string) {
       if (id.startsWith("note:")) {
         await db.notes.delete(id.replace(/^note:/, ""));
         return;
@@ -101,7 +131,7 @@ export function createCaptureRepoDexie(): CaptureRepo {
       await db.tasks.delete(id).catch(() => {});
       await db.bookmarks.delete(id).catch(() => {});
     },
-    async search(query) {
+    async search(query: string) {
       const q = query.trim().toLowerCase();
       const [notes, tasks, bookmarks] = await Promise.all([db.notes.toArray(), db.tasks.toArray(), db.bookmarks.toArray()]);
       const mapped = [

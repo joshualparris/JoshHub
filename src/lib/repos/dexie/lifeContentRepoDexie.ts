@@ -1,3 +1,4 @@
+import type { Table } from "dexie";
 import { db } from "../../db/dexie";
 import type { LifeContentRepo } from "../lifeContentRepo";
 import type { LifeItem } from "../../models/lifeContent";
@@ -7,8 +8,7 @@ import type { LifeItem } from "../../models/lifeContent";
 // implement a real table later and remove the fallback.
 
 export function createLifeContentRepoDexie(): LifeContentRepo {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const hasTable = (db as any).lifeContent !== undefined;
+  const hasTable = (db as { lifeContent?: Table<LifeItem, string> }).lifeContent !== undefined;
   if (!hasTable) {
     const store = new Map<string, LifeItem>();
     return {
@@ -38,14 +38,15 @@ export function createLifeContentRepoDexie(): LifeContentRepo {
 
   // If a table exists, wire the CRUD operations to Dexie. Table shape must be
   // adapted by Codex if needed.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const table = (db as any).lifeContent;
+  const table = (db as { lifeContent?: Table<LifeItem, string> }).lifeContent;
+  if (!table) {
+    throw new Error("lifeContent table not found in Dexie schema");
+  }
 
   return {
     async list(area) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       const rows = await table.toArray();
-      const items: LifeItem[] = rows.map((r: any) => ({ ...r }));
+      const items: LifeItem[] = rows.map((r) => ({ ...r }));
       return area ? items.filter((i) => i.area === area) : items;
     },
     async get(id) {
