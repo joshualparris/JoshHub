@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { StatusChip } from "@/components/status-chip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import { getAppById } from "@/data/apps";
 import type { LifeArea } from "@/data/life";
 import { loadPinnedLife, togglePinnedLife } from "@/lib/pins";
@@ -38,12 +39,8 @@ export function LifeDetailClient({ area }: Props) {
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2 space-y-6">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-300/80">Life Area</p>
-            <h1 className="text-3xl font-semibold text-slate-50">{area.title}</h1>
-            <p className="text-slate-200/80">{area.intro}</p>
-          </div>
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+          <PageHeader kicker="Life area" title={area.title} subtitle={area.intro} tone="onDark" />
           <Button
             variant="outline"
             onClick={async () => setPinned(await togglePinnedLife(area.slug))}
@@ -63,24 +60,27 @@ export function LifeDetailClient({ area }: Props) {
 
         <div className="space-y-4">
           {area.sections.map((section) => (
-            <Card key={section.heading} className="dark:bg-slate-900/60 dark:text-slate-100">
+            <Card
+              key={section.heading}
+              className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100"
+            >
               <CardHeader>
-                <CardTitle className="text-lg text-slate-950 dark:text-slate-50">{section.heading}</CardTitle>
+                <CardTitle className="text-lg text-foreground dark:text-slate-50">{section.heading}</CardTitle>
               </CardHeader>
-              <CardContent className="text-slate-700 dark:text-slate-200/90">{section.body}</CardContent>
+              <CardContent className="text-card-foreground/85 dark:text-slate-200/90">{section.body}</CardContent>
             </Card>
           ))}
         </div>
       </div>
 
       <aside className="space-y-4">
-        <Card className="dark:bg-slate-900/60 dark:text-slate-100">
+        <Card className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100">
           <CardHeader>
-            <CardTitle className="text-lg text-slate-950 dark:text-slate-50">Quick Links</CardTitle>
+            <CardTitle className="text-lg text-foreground dark:text-slate-50">Quick Links</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {quickApps.length === 0 ? (
-              <p className="text-sm text-slate-700 dark:text-slate-300">No linked apps yet.</p>
+              <p className="text-sm text-card-foreground/80 dark:text-slate-300">No linked apps yet.</p>
             ) : (
               quickApps.map((app) => (
                 <div
@@ -114,12 +114,12 @@ export function LifeDetailClient({ area }: Props) {
             )}
           </CardContent>
         </Card>
-        <Card className="dark:bg-slate-900/60 dark:text-slate-100">
+        <Card className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100">
           <CardHeader>
-            <CardTitle className="text-lg text-slate-950 dark:text-slate-50">All apps</CardTitle>
+            <CardTitle className="text-lg text-foreground dark:text-slate-50">All apps</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2 text-sm">
-            <p className="text-slate-700 dark:text-slate-200/90">
+            <p className="text-card-foreground/85 dark:text-slate-200/90">
               Explore more in the catalogue and link them here later.
             </p>
             <Button asChild className="w-full">
