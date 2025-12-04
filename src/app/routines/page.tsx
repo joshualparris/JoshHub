@@ -60,9 +60,12 @@ function RoutineCard({ routine }: { routine: Routine }) {
   const [items, setItems] = useState<RoutineItem[]>(routine.items);
   const [saving, setSaving] = useState(false);
   const [running, setRunning] = useState(false);
+  const [paused, setPaused] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [finishedSummary, setFinishedSummary] = useState<{ completed: number; durationMs: number } | null>(null);
 
   const ordered = useMemo(
     () =>
@@ -112,8 +115,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
   function startRun() {
     if (ordered.length === 0) return;
     setRunning(true);
+    setPaused(false);
+    setFinishedSummary(null);
     setCompleted({});
     setCurrentStep(0);
+    setStartedAt(Date.now());
     setRemaining(ordered[0]?.type === "timer" ? ordered[0]?.seconds ?? null : null);
   }
 
@@ -125,6 +131,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
       const doneCount = Object.values(nextCompleted).filter(Boolean).length;
       logRoutineRun({ routineId: routine.id, completedCount: doneCount }).catch(() => {});
       setRunning(false);
+      setPaused(false);
+      if (startedAt) {
+        setFinishedSummary({ completed: doneCount, durationMs: Date.now() - startedAt });
+      }
+      setStartedAt(null);
       setRemaining(null);
     } else {
       setCurrentStep(nextIndex);
@@ -138,11 +149,16 @@ function RoutineCard({ routine }: { routine: Routine }) {
       logRoutineRun({ routineId: routine.id, completedCount: doneCount }).catch(() => {});
     }
     setRunning(false);
+    setPaused(false);
+    if (startedAt) {
+      setFinishedSummary({ completed: doneCount, durationMs: Date.now() - startedAt });
+    }
+    setStartedAt(null);
     setRemaining(null);
   }
 
   useEffect(() => {
-    if (!running) return;
+    if (!running || paused) return;
     const step = ordered[currentStep];
     if (!step) {
       stopRun();
@@ -176,6 +192,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
               >
                 {running ? "Stop" : "Run"}
               </Button>
+              {running ? (
+                <Button size="sm" variant="outline" onClick={() => setPaused((p) => !p)}>
+                  {paused ? "Resume" : "Pause"}
+                </Button>
+              ) : null}
               <Button size="sm" onClick={handleSave} disabled={saving}>
                 {saving ? "Saving..." : "Save changes"}
               </Button>
@@ -307,6 +328,14 @@ function RoutineCard({ routine }: { routine: Routine }) {
               </div>
             ))}
           </div>
+        </div>
+      ) : null}
+      {finishedSummary ? (
+        <div className="border-t border-neutral-200 px-4 py-3 text-sm text-slate-800 dark:border-slate-800 dark:text-slate-100">
+          <p className="font-medium">Run summary</p>
+          <p className="text-sm text-muted-foreground">
+            Completed {finishedSummary.completed} steps in {(finishedSummary.durationMs / 1000).toFixed(0)}s.
+          </p>
         </div>
       ) : null}
     </Card>
