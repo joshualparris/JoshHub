@@ -76,6 +76,11 @@ export async function createBookmark(input: { title: string; url: string; tags?:
   return bookmark;
 }
 
+export async function updateBookmark(id: string, updates: Partial<Bookmark>) {
+  await db.bookmarks.update(id, updates);
+  return db.bookmarks.get(id);
+}
+
 export async function deleteBookmark(id: string) {
   await db.bookmarks.delete(id);
 }
