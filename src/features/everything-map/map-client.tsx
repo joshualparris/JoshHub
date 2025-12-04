@@ -130,7 +130,7 @@ function SectionDetails({ node }: { node: TocNode }) {
   }
 
   function startEdit(noteId: string) {
-    const note = notes?.find((n) => n.id === noteId);
+    const note = notes?.find((n) => n.id === noteId) ?? allNotes.find((n) => n.id === noteId);
     if (!note) return;
     setEditingId(note.id);
     setDraft({ title: note.title, body: note.body, tags: note.tags.join(", ") });
@@ -320,7 +320,6 @@ function SectionDetails({ node }: { node: TocNode }) {
             <p>No notes yet.</p>
           ) : (
             allNotes.slice(0, 15).map((note) => {
-              const sameSection = note.nodeId === node.id;
               return (
               <div
                 key={note.id}
@@ -330,19 +329,29 @@ function SectionDetails({ node }: { node: TocNode }) {
                   <p className="font-medium text-neutral-900 dark:text-slate-50">{note.title}</p>
                   <p className="text-xs text-neutral-500 dark:text-slate-300">Section: {note.nodeId}</p>
                   <p className="line-clamp-2 text-sm text-neutral-700 dark:text-slate-200">{note.body}</p>
+                  {note.tags.length > 0 ? (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {note.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="flex gap-2">
-                  {sameSection ? (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        startEdit(note.id);
-                      }}
-                    >
-                      Edit
-                    </Button>
-                  ) : null}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      startEdit(note.id);
+                    }}
+                  >
+                    Edit
+                  </Button>
                   <Button
                     size="sm"
                     variant="ghost"

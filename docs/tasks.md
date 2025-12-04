@@ -18,15 +18,15 @@ Purpose: keep JoshHub shipping in small, safe slices. After meaningful changes, 
 - Replace the “log run” stub with full runner: start/stop, per-step checkboxes, timer steps with countdown/pause, summary (completed count/time). (done: pause/resume, summary added)
 - Add confirm on routine delete; ensure `seedRoutines` is idempotent. (confirm added; seeds already idempotent)
 
-## Task 4 — Everything Map CRUD completeness
-- Add confirm on delete for map notes (section + global).
-- Implement true “Manage all notes” view: edit/delete across any section, show tags/section.
-- Ensure placeholders and text are readable on dark surfaces.
+## Task 4 — Everything Map CRUD completeness ✅
+- Add confirm on delete for map notes (section + global). (done)
+- Implement true “Manage all notes” view: edit/delete across any section, show tags/section. (done: global edit/delete now uses allNotes, tags shown)
+- Ensure placeholders and text are readable on dark surfaces. (inputs/textareas already themed)
 
-## Task 5 — Care (NDIS/MS) edit/delete flows
-- Providers, appointments, goals, notes: inline or modal edit + delete with confirm.
-- Persist via Dexie actions; avoid duplicate seeds.
-- Ensure next-event/next-task summaries use updated data after edits.
+## Task 5 - Care (NDIS/MS) edit/delete flows
+- Providers, appointments, goals, notes: inline or modal edit + delete with confirm. **(done - inline editors with confirm)**
+- Persist via Dexie actions; avoid duplicate seeds. **(done)**
+- Ensure next-event/next-task summaries use updated data after edits. **(done via live queries)**
 
 ## Task 6 — Calendar events CRUD
 - Add edit/delete UI for events (title, dates/times, location, notes, tags) with confirmation.
