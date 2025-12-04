@@ -59,6 +59,10 @@ export async function toggleTaskStatus(id: string, status: TaskStatus) {
   await db.tasks.update(id, { status, updatedAt: Date.now() });
 }
 
+export async function deleteTask(id: string) {
+  await db.tasks.delete(id);
+}
+
 export async function createBookmark(input: { title: string; url: string; tags?: string[] }) {
   const now = Date.now();
   const bookmark: Bookmark = {
@@ -91,6 +95,10 @@ export async function createRoutine(input: { name: string; items: Routine["items
 
 export async function updateRoutine(id: string, updates: Partial<Routine>) {
   await db.routines.update(id, updates);
+}
+
+export async function deleteRoutine(id: string) {
+  await db.routines.delete(id);
 }
 
 export async function logRoutineRun(input: { routineId: string; completedCount: number }) {

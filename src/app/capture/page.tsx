@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/ui/page-header";
 import { createBookmark, createNote, createTask } from "@/lib/db/actions";
 import { useBookmarks, useNotes, useTasks } from "@/lib/db/hooks";
+import { lifeAreas } from "@/data/life";
 
 export default function CapturePage() {
   const notes = useNotes();
@@ -18,9 +19,13 @@ export default function CapturePage() {
 
   const [noteTitle, setNoteTitle] = useState("");
   const [noteBody, setNoteBody] = useState("");
+  const [noteTags, setNoteTags] = useState("");
+  const [noteArea, setNoteArea] = useState("");
   const [taskTitle, setTaskTitle] = useState("");
+  const [taskTags, setTaskTags] = useState("");
   const [bookmarkTitle, setBookmarkTitle] = useState("");
   const [bookmarkUrl, setBookmarkUrl] = useState("");
+  const [bookmarkTags, setBookmarkTags] = useState("");
   const [savingNote, setSavingNote] = useState(false);
   const [savingTask, setSavingTask] = useState(false);
   const [savingBookmark, setSavingBookmark] = useState(false);
@@ -40,9 +45,18 @@ export default function CapturePage() {
     if (!noteTitle.trim()) return;
     try {
       setSavingNote(true);
-      await createNote({ title: noteTitle.trim(), body: noteBody.trim(), tags: [] });
+      await createNote({
+        title: noteTitle.trim(),
+        body: noteBody.trim(),
+        tags: noteTags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+        lifeAreaSlug: noteArea || null,
+      });
       setNoteTitle("");
       setNoteBody("");
+      setNoteTags("");
     } finally {
       setSavingNote(false);
     }
@@ -53,8 +67,15 @@ export default function CapturePage() {
     if (!taskTitle.trim()) return;
     try {
       setSavingTask(true);
-      await createTask({ title: taskTitle.trim() });
+      await createTask({
+        title: taskTitle.trim(),
+        tags: taskTags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+      });
       setTaskTitle("");
+      setTaskTags("");
     } finally {
       setSavingTask(false);
     }
@@ -62,12 +83,20 @@ export default function CapturePage() {
 
   async function onAddBookmark(e: FormEvent) {
     e.preventDefault();
-    if (!bookmarkUrl.trim()) return;
+    if (!bookmarkUrl.trim() || !bookmarkUrl.startsWith("http")) return;
     try {
       setSavingBookmark(true);
-      await createBookmark({ title: bookmarkTitle || bookmarkUrl, url: bookmarkUrl.trim(), tags: [] });
+      await createBookmark({
+        title: bookmarkTitle || bookmarkUrl,
+        url: bookmarkUrl.trim(),
+        tags: bookmarkTags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+      });
       setBookmarkTitle("");
       setBookmarkUrl("");
+      setBookmarkTags("");
     } finally {
       setSavingBookmark(false);
     }
@@ -75,7 +104,7 @@ export default function CapturePage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="Capture" title="Inbox" subtitle="Fast drop for notes, tasks, and bookmarks." />
+      <PageHeader kicker="Capture" title="Inbox" subtitle="Fast drop for notes, tasks, and bookmarks." tone="onDark" />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
@@ -93,6 +122,25 @@ export default function CapturePage() {
                 value={noteBody}
                 onChange={(e) => setNoteBody(e.target.value)}
               />
+              <div className="grid gap-2 md:grid-cols-2">
+                <Input
+                  placeholder="Tags (comma separated)"
+                  value={noteTags}
+                  onChange={(e) => setNoteTags(e.target.value)}
+                />
+                <select
+                  value={noteArea}
+                  onChange={(e) => setNoteArea(e.target.value)}
+                  className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+                >
+                  <option value="">Area (optional)</option>
+                  {lifeAreas.map((area) => (
+                    <option key={area.slug} value={area.slug}>
+                      {area.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Button type="submit" className="w-full" disabled={savingNote}>
                 {savingNote ? "Saving..." : "Save note"}
               </Button>
@@ -110,6 +158,11 @@ export default function CapturePage() {
                 placeholder="Task title"
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
+              />
+              <Input
+                placeholder="Tags (comma separated)"
+                value={taskTags}
+                onChange={(e) => setTaskTags(e.target.value)}
               />
               <Button type="submit" className="w-full" disabled={savingTask}>
                 {savingTask ? "Saving..." : "Add task"}
@@ -133,6 +186,11 @@ export default function CapturePage() {
                 placeholder="https://..."
                 value={bookmarkUrl}
                 onChange={(e) => setBookmarkUrl(e.target.value)}
+              />
+              <Input
+                placeholder="Tags (comma separated)"
+                value={bookmarkTags}
+                onChange={(e) => setBookmarkTags(e.target.value)}
               />
               <Button type="submit" className="w-full" disabled={savingBookmark}>
                 {savingBookmark ? "Saving..." : "Save link"}

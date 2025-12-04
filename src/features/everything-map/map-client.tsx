@@ -160,11 +160,11 @@ function SectionDetails({ node }: { node: TocNode }) {
 
   return (
     <div className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between gap-2">
-                <span>{node.title}</span>
-                <div className="flex gap-2">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between gap-2">
+              <span>{node.title}</span>
+              <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleExport}>
                 <FileDown className="mr-2 h-4 w-4" />
                 Export notes
@@ -304,6 +304,51 @@ function SectionDetails({ node }: { node: TocNode }) {
         </CardHeader>
         <CardContent className="text-sm text-neutral-600 dark:text-slate-300">
           {allNotes.length} total notes across the map.
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm font-semibold text-neutral-900 dark:text-slate-100">
+            Manage all notes
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm text-neutral-700 dark:text-slate-200">
+          {allNotes.length === 0 ? (
+            <p>No notes yet.</p>
+          ) : (
+            allNotes.slice(0, 15).map((note) => {
+              const sameSection = note.nodeId === node.id;
+              return (
+              <div
+                key={note.id}
+                className="flex items-start justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
+              >
+                <div className="space-y-1">
+                  <p className="font-medium text-neutral-900 dark:text-slate-50">{note.title}</p>
+                  <p className="text-xs text-neutral-500 dark:text-slate-300">Section: {note.nodeId}</p>
+                  <p className="line-clamp-2 text-sm text-neutral-700 dark:text-slate-200">{note.body}</p>
+                </div>
+                <div className="flex gap-2">
+                  {sameSection ? (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        startEdit(note.id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                  ) : null}
+                  <Button size="sm" variant="ghost" onClick={() => deleteMapNote(note.id)}>
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            );
+            })
+          )}
         </CardContent>
       </Card>
     </div>

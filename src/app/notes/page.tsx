@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/ui/page-header";
-import { createNote } from "@/lib/db/actions";
+import { createNote, deleteNote, updateNote } from "@/lib/db/actions";
 import { useNotes } from "@/lib/db/hooks";
 import type { Note } from "@/lib/db/schema";
 
@@ -40,7 +40,7 @@ export default function NotesPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="NOTES" title="Notes" subtitle="Search, filter, and edit notes." />
+      <PageHeader kicker="NOTES" title="Notes" subtitle="Search, filter, and edit notes." tone="onDark" />
 
       <div className="flex flex-wrap gap-3">
         <Input
@@ -90,33 +90,89 @@ export default function NotesPage() {
 }
 
 function NoteCard({ note }: { note: Note }) {
+  const [editing, setEditing] = useState(false);
+  const [title, setTitle] = useState(note.title);
+  const [body, setBody] = useState(note.body);
+  const [tags, setTags] = useState(note.tags.join(", "));
+
+  async function onSave(e: FormEvent) {
+    e.preventDefault();
+    await updateNote(note.id, {
+      title: title.trim() || "Untitled",
+      body: body,
+      tags: tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+    });
+    setEditing(false);
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <Link
-            href={`/notes/${note.id}`}
-            className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
-          >
-            {note.title || "Untitled"}
-          </Link>
-          <span className="text-xs text-foreground/65">
-            {new Date(note.updatedAt).toLocaleDateString()}
-          </span>
+        <CardTitle className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/notes/${note.id}`}
+              className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
+            >
+              {note.title || "Untitled"}
+            </Link>
+            <span className="text-xs text-foreground/65">
+              {new Date(note.updatedAt).toLocaleDateString()}
+            </span>
+          </div>
+          <div className="flex gap-2 text-xs">
+            <Button size="sm" variant="outline" onClick={() => setEditing((v) => !v)}>
+              {editing ? "Cancel" : "Edit"}
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={async () => {
+                await deleteNote(note.id);
+              }}
+            >
+              Delete
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        <p className="text-sm text-foreground/80 line-clamp-3">{note.body || "No content yet."}</p>
-        <div className="flex flex-wrap gap-2">
-          {note.tags.map((t) => (
-            <span
-              key={t}
-              className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
-            >
-              {t}
-            </span>
-          ))}
-        </div>
+        {editing ? (
+          <form className="space-y-2" onSubmit={onSave}>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Textarea value={body} onChange={(e) => setBody(e.target.value)} />
+            <Input
+              placeholder="Tags (comma separated)"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <Button type="submit" size="sm">
+                Save
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
+                Cancel
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <p className="text-sm text-foreground/80 line-clamp-3">{note.body || "No content yet."}</p>
+            <div className="flex flex-wrap gap-2">
+              {note.tags.map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full bg-neutral-100 px-2 py-1 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

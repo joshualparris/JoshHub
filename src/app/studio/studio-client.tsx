@@ -57,6 +57,7 @@ export function StudioClient() {
         kicker="Studio"
         title="JoshHub Studio"
         subtitle="A playful corner for D&D, stories, and logging quick wins — all saved locally."
+        tone="onDark"
       />
 
       <div className="grid gap-4 lg:grid-cols-2">

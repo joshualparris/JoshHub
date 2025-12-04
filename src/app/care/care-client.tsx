@@ -41,6 +41,7 @@ export function CareClient() {
         kicker="Care systems"
         title="Family care"
         subtitle="Keep Sylvie's NDIS and Kristy's MS care organised in one place, locally."
+        tone="onDark"
       />
 
       <div className="grid gap-4 md:grid-cols-2">

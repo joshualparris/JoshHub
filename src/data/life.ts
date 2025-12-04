@@ -66,7 +66,7 @@ export const lifeAreas: LifeArea[] = [
     sections: [
       { heading: "Current", body: "Prep and companion apps; keep broken items visible." },
     ],
-    quickLinks: ["dcs-companion", "dcs-prep", "parris-dubbo-mover", "campaign-copilot"],
+    quickLinks: ["dcs-companion", "dcs-prep", "parris-dubbo-mover"],
     tags: ["dubbo", "dcs", "work"],
   },
   {

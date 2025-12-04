@@ -24,6 +24,7 @@ export default function AppsPage({ searchParams }: Props) {
         kicker="Catalogue"
         title="Apps & Games"
         subtitle="Search, filter, and open every app or game from one place."
+        tone="onDark"
       />
       <AppsDirectory items={apps} initialStatus={initialStatus} />
     </div>
