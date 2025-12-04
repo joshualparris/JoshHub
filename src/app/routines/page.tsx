@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { metaText } from "@/components/ui/text";
+import { StepBadge } from "@/components/ui/step-badge";
 import { createRoutine, deleteRoutine, logRoutineRun, updateRoutine } from "@/lib/db/actions";
 import { seedRoutines } from "@/lib/db/dexie";
 import { useRoutines } from "@/lib/db/hooks";
@@ -286,7 +287,8 @@ function RoutineCard({ routine }: { routine: Routine }) {
                   idx === currentStep ? "bg-slate-100 dark:bg-slate-800/70" : ""
                 }`}
               >
-                <label className="flex items-center gap-2 text-sm text-slate-800 dark:text-slate-100">
+                <div className="flex items-center gap-3 text-sm text-slate-800 dark:text-slate-100">
+                  <StepBadge type={step.type} />
                   <input
                     type="checkbox"
                     checked={completed[step.id] ?? false}
@@ -294,7 +296,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
                     className="h-4 w-4 rounded border border-neutral-300 dark:border-slate-700"
                   />
                   <span>{step.label}</span>
-                </label>
+                </div>
                 {step.seconds ? (
                   <span className="text-xs text-slate-600 dark:text-slate-300">{step.seconds}s</span>
                 ) : null}
