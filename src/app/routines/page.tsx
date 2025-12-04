@@ -182,7 +182,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => deleteRoutine(routine.id)}
+                onClick={() => {
+                  if (confirm("Delete this routine?")) {
+                    deleteRoutine(routine.id);
+                  }
+                }}
                 className="text-red-600 hover:text-red-700 dark:text-red-300 dark:hover:text-red-200"
               >
                 Delete
