@@ -19,7 +19,7 @@ export function captureToTask(item: CaptureItem) {
   return {
     id: item.id.replace(/^task:/, ""),
     title: item.title,
-    status: (item.status as any) ?? "open",
+    status: item.status ?? "open",
     priority: "med",
     dueDate: item.dueDate ?? null,
     tags: item.tags ?? [],
