@@ -7,7 +7,7 @@ export function Card({ className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-neutral-200 bg-white shadow-sm transition hover:shadow-md",
+        "rounded-lg border border-neutral-200 bg-white text-neutral-900 shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-50",
         className
       )}
       {...props}
@@ -21,13 +21,19 @@ export function CardHeader({ className, ...props }: CardProps) {
 
 export function CardTitle({ className, ...props }: CardProps) {
   return (
-    <h3 className={cn("text-lg font-semibold leading-none", className)} {...props} />
+    <h3
+      className={cn(
+        "text-lg font-semibold leading-none text-neutral-900 dark:text-slate-50",
+        className
+      )}
+      {...props}
+    />
   );
 }
 
 export function CardDescription({ className, ...props }: CardProps) {
   return (
-    <p className={cn("text-sm text-neutral-600", className)} {...props} />
+    <p className={cn("text-sm text-neutral-600 dark:text-slate-200", className)} {...props} />
   );
 }
 

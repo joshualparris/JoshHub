@@ -24,20 +24,20 @@ export function AppCard({ app, onOpen }: Props) {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => onOpen?.(app)}
-                className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
+                className="rounded-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
               >
                 {app.name}
               </a>
               <StatusChip status={app.status} />
             </CardTitle>
-            <p className="mt-1 text-sm text-neutral-600">{app.category}</p>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{app.category}</p>
           </div>
           <Link
             href={app.primaryUrl}
             target="_blank"
             rel="noreferrer"
             onClick={() => onOpen?.(app)}
-            className="rounded-md px-2 py-1 text-sm text-neutral-700 hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+            className="rounded-md px-2 py-1 text-sm text-slate-700 transition hover:bg-neutral-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50"
           >
             Open
           </Link>
@@ -67,7 +67,7 @@ export function AppCard({ app, onOpen }: Props) {
             </Button>
           ))}
         </div>
-        {app.notes && <p className="text-sm text-neutral-700">{app.notes}</p>}
+        {app.notes && <p className="text-sm text-slate-600 dark:text-slate-300">{app.notes}</p>}
       </CardContent>
     </Card>
   );

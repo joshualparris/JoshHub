@@ -7,9 +7,9 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 
 export function Badge({ className, variant = "default", ...props }: BadgeProps) {
   const styles: Record<NonNullable<BadgeProps["variant"]>, string> = {
-    default: "bg-neutral-900 text-white border-transparent",
-    outline: "border border-neutral-300 text-neutral-800",
-    muted: "bg-neutral-100 text-neutral-700 border-transparent",
+    default: "bg-neutral-900 text-white border-transparent dark:bg-slate-100 dark:text-slate-900",
+    outline: "border border-neutral-300 text-neutral-800 dark:border-slate-600 dark:text-slate-100",
+    muted: "bg-neutral-100 text-neutral-700 border-transparent dark:bg-slate-800 dark:text-slate-100",
   };
 
   return (

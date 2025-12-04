@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { PageHeader } from "@/components/ui/page-header";
 import { createBookmark, createNote, createTask } from "@/lib/db/actions";
 import { useBookmarks, useNotes, useTasks } from "@/lib/db/hooks";
 
@@ -74,11 +75,7 @@ export default function CapturePage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Capture</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Inbox</h1>
-        <p className="text-neutral-600">Fast drop for notes, tasks, and bookmarks.</p>
-      </div>
+      <PageHeader kicker="Capture" title="Inbox" subtitle="Fast drop for notes, tasks, and bookmarks." />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>
