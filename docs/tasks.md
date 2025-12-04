@@ -9,10 +9,10 @@ Purpose: keep JoshHub shipping in small, safe slices. After meaningful changes, 
 - Ensure section cards/sidebars use dark-safe text (`text-foreground`/`text-card-foreground`) not raw slate/neutral.
 - Update Work/DCS quick links: remove Campaign Copilot from Work (belongs in Tech/Projects).
 
-## Task 2 — Theme-safe text helpers and badges
-- Update `metaText`/label helpers to be foreground-based, not hard-coded gray on dark.
-- Add a dark-safe badge/chip variant for routine step types (CHECK/TIMER) and use it everywhere.
-- Ensure Input/Select/Textarea placeholders are readable in both themes (audit Capture, Notes, Everything Map, Routines).
+## Task 2 — Theme-safe text helpers and badges ✅
+- Update `metaText`/label helpers to be foreground-based, not hard-coded gray on dark. (done)
+- Add a dark-safe badge/chip variant for routine step types (CHECK/TIMER) and use it in the runner. (done)
+- Ensure Input/Select/Textarea placeholders are readable in both themes (audit Capture, Notes, Everything Map, Routines). (done via shared Input/Textarea)
 
 ## Task 3 — Routine runner v2
 - Replace the “log run” stub with full runner: start/stop, per-step checkboxes, timer steps with countdown/pause, summary (completed count/time).
@@ -72,6 +72,8 @@ Purpose: keep JoshHub shipping in small, safe slices. After meaningful changes, 
 ## Task 15 — Optional: Supabase auth/sync epic (cross-device)
 - If/when ready: add Supabase Auth + `entities` table + push/pull sync with Dexie fallback.
 - Keep feature-flagged so app works without env vars.
+
+## Task 16 — 
 
 ## Prompt backlog (from docs)
 These are additional deliverables from Prompts 1–20 and supporting docs; start after Tasks 1–14 are stable.
