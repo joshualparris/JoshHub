@@ -55,6 +55,7 @@ export default function ProjectsPage() {
         kicker="Projects"
         title="Projects board"
         subtitle="Status by project with next actions and quick open buttons."
+        tone="onDark"
       />
 
       <div className="flex flex-wrap gap-3">

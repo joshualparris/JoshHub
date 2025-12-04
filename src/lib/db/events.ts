@@ -28,6 +28,15 @@ export async function createEvent(input: {
   return ev;
 }
 
+export async function updateEvent(id: string, updates: Partial<CalendarEvent>) {
+  await db.events.update(id, { ...updates, updatedAt: Date.now() });
+  return db.events.get(id);
+}
+
+export async function deleteEvent(id: string) {
+  await db.events.delete(id);
+}
+
 export function useEvents() {
   return useLiveQuery(async () => db.events.orderBy("startIso").toArray(), []);
 }

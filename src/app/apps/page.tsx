@@ -24,6 +24,7 @@ export default function AppsPage({ searchParacare2 }: Props) {
         kicker="Catalogue"
         title="Apps & Games"
         subtitle="Search, filter, and open every app or game from one place."
+        tone="onDark"
       />
       <AppsDirectory itecare2={apps} initialStatus={initialStatus} />
     </div>

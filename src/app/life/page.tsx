@@ -14,6 +14,7 @@ export default function LifePage() {
         kicker="Life OS"
         title="Life Areas"
         subtitle="Jump into each area to see focus and quick links."
+        tone="onDark"
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {lifeAreas.map((area) => (
