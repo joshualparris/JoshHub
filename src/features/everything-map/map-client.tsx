@@ -282,7 +282,9 @@ function SectionDetails({ node }: { node: TocNode }) {
                     <Button
                       size="sm"
                       variant="ghost"
-                      onClick={() => deleteMapNote(note.id)}
+                      onClick={() => {
+                        if (confirm("Delete this note?")) deleteMapNote(note.id);
+                      }}
                     >
                       Delete
                     </Button>
@@ -341,7 +343,13 @@ function SectionDetails({ node }: { node: TocNode }) {
                       Edit
                     </Button>
                   ) : null}
-                  <Button size="sm" variant="ghost" onClick={() => deleteMapNote(note.id)}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      if (confirm("Delete this note?")) deleteMapNote(note.id);
+                    }}
+                  >
                     Delete
                   </Button>
                 </div>

@@ -63,7 +63,13 @@ function RoutineCard({ routine }: { routine: Routine }) {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
 
-  const ordered = useMemo(() => items, [items]);
+  const ordered = useMemo(
+    () =>
+      items.map((item) =>
+        item.type === "check" || item.type === "timer" ? item : { ...item, type: "check" as const }
+      ),
+    [items]
+  );
 
   function updateItem(id: string, partial: Partial<RoutineItem>) {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...partial } : item)));
@@ -90,8 +96,8 @@ function RoutineCard({ routine }: { routine: Routine }) {
     const newItem: RoutineItem = {
       id: crypto.randomUUID(),
       label: "New step",
-      type: "action",
-      seconds: 60,
+      type: "check",
+      seconds: undefined,
     };
     setItems((prev) => [...prev, newItem]);
   }
@@ -107,7 +113,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
     setRunning(true);
     setCompleted({});
     setCurrentStep(0);
-    setRemaining(ordered[0]?.seconds ?? null);
+    setRemaining(ordered[0]?.type === "timer" ? ordered[0]?.seconds ?? null : null);
   }
 
   function handleCompleteStep(id: string) {
@@ -121,7 +127,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
       setRemaining(null);
     } else {
       setCurrentStep(nextIndex);
-      setRemaining(ordered[nextIndex]?.seconds ?? null);
+      setRemaining(ordered[nextIndex]?.type === "timer" ? ordered[nextIndex]?.seconds ?? null : null);
     }
   }
 
@@ -141,7 +147,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
       stopRun();
       return;
     }
-    if (!step.seconds) return;
+    if (step.type !== "timer" || !step.seconds) return;
     if (remaining === null) {
       setRemaining(step.seconds);
       return;
@@ -202,24 +208,30 @@ function RoutineCard({ routine }: { routine: Routine }) {
               <div className="flex flex-wrap items-center gap-2">
                 <select
                   value={item.type}
-                  onChange={(e) => updateItem(item.id, { type: e.target.value as RoutineItem["type"] })}
+                  onChange={(e) =>
+                    updateItem(item.id, {
+                      type: e.target.value as RoutineItem["type"],
+                      seconds: e.target.value === "timer" ? item.seconds ?? 60 : undefined,
+                    })
+                  }
                   className="h-9 rounded-md border border-neutral-300 bg-white px-2 text-xs text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
                 >
-                  <option value="action">Action</option>
-                  <option value="rest">Rest</option>
-                  <option value="reflect">Reflect</option>
+                  <option value="check">Check</option>
+                  <option value="timer">Timer</option>
                 </select>
                 <Input
                   className="flex-1 min-w-[140px]"
                   value={item.label}
                   onChange={(e) => updateItem(item.id, { label: e.target.value })}
                 />
-                <Input
-                  type="number"
-                  className="w-24"
-                  value={item.seconds ?? 0}
-                  onChange={(e) => updateItem(item.id, { seconds: Number(e.target.value) || 0 })}
-                />
+                {item.type === "timer" ? (
+                  <Input
+                    type="number"
+                    className="w-24"
+                    value={item.seconds ?? 0}
+                    onChange={(e) => updateItem(item.id, { seconds: Number(e.target.value) || 0 })}
+                  />
+                ) : null}
                 <div className={`flex items-center gap-2 ${metaText}`}>
                   <button
                     type="button"

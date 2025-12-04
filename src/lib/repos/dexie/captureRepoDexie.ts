@@ -1,7 +1,7 @@
 import { db } from "../../db/dexie";
 import type { CaptureRepo } from "../captureRepo";
 import type { CaptureItem } from "../../models/capture";
-import type { Bookmark, Note, Task } from "../../db/schema";
+import type { Bookmark, Note, Task, TaskPriority } from "../../db/schema";
 import { noteToCapture, taskToCapture, bookmarkToCapture } from "../../logic/mappers/dbToCapture";
 
 function mergeAndSort(items: CaptureItem[]) {
@@ -81,7 +81,7 @@ export function createCaptureRepoDexie(): CaptureRepo {
       const id = partial.id ? partial.id.replace(/^note:/, "") : makeId();
       const rec: Note = {
         id,
-        nodeId: null,
+        nodeId: undefined,
         title: partial.title,
         body: partial.content ?? "",
         tags: partial.tags ?? [],
@@ -95,19 +95,42 @@ export function createCaptureRepoDexie(): CaptureRepo {
     async update(id: string, patch: Partial<CaptureItem>) {
       if (id.startsWith("note:")) {
         const key = id.replace(/^note:/, "");
-        await db.notes.update(key, { ...patch, updatedAt: Date.now() });
+        const update: Partial<Note> = {
+          updatedAt: Date.now(),
+        };
+        if (patch.title !== undefined) update.title = patch.title;
+        if (patch.content !== undefined) update.body = patch.content;
+        if (patch.tags !== undefined) update.tags = patch.tags;
+        if (patch.area !== undefined) update.lifeAreaSlug = patch.area ?? null;
+        await db.notes.update(key, update);
         const rec = await db.notes.get(key);
         return rec ? noteToCapture(rec) : undefined;
       }
       if (id.startsWith("task:")) {
         const key = id.replace(/^task:/, "");
-        await db.tasks.update(key, { ...patch, updatedAt: Date.now() });
+        const update: Partial<Task> = { updatedAt: Date.now() };
+        if (patch.title !== undefined) update.title = patch.title;
+        if (patch.status === "open" || patch.status === "done") update.status = patch.status;
+        if ("priority" in patch) {
+          const pr = patch.priority as TaskPriority | undefined;
+          if (pr === "low" || pr === "med" || pr === "high") {
+            update.priority = pr;
+          }
+        }
+        if (patch.dueDate !== undefined) update.dueDate = patch.dueDate;
+        if (patch.tags !== undefined) update.tags = patch.tags;
+        if (patch.area !== undefined) update.projectId = patch.area ?? null;
+        await db.tasks.update(key, update);
         const rec = await db.tasks.get(key);
         return rec ? taskToCapture(rec) : undefined;
       }
       if (id.startsWith("bookmark:")) {
         const key = id.replace(/^bookmark:/, "");
-        await db.bookmarks.update(key, { ...patch });
+        const update: Partial<Bookmark> = {};
+        if (patch.title !== undefined) update.title = patch.title;
+        if (patch.url !== undefined) update.url = patch.url;
+        if (patch.tags !== undefined) update.tags = patch.tags;
+        await db.bookmarks.update(key, update);
         const rec = await db.bookmarks.get(key);
         return rec ? bookmarkToCapture(rec) : undefined;
       }
