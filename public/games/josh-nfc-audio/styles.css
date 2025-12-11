@@ -1,0 +1,41 @@
+/* Simple mobile-first styles. Keep minimal and responsive. */
+:root{
+  --bg:#0b1220; --panel:#0f172a; --muted:#94a3b8; --accent:#06b6d4; --card:#0b1226; --text:#e6eef6;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);color:var(--text);padding:12px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.brand{font-weight:700}
+.panel{background:linear-gradient(180deg,var(--panel),#071025);padding:12px;border-radius:12px;margin-bottom:12px}
+.row{display:flex;gap:8px;align-items:center}
+.row.small{font-size:0.9rem;color:var(--muted)}
+input[type="text"],input[type="range"],select,input{background:#07101a;border:1px solid #123; color:var(--text);padding:8px;border-radius:8px}
+.drop{border:2px dashed rgba(255,255,255,0.06);padding:16px;border-radius:10px;text-align:center;color:var(--muted)}
+.btn{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px}
+.btn.primary{background:var(--accent);color:#04202a;border:none}
+.btn.big{font-size:1.5rem;padding:12px 18px}
+.btn.link{background:none;border:none;color:var(--accent);text-decoration:underline}
+.cards{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.card{background:var(--card);padding:8px;border-radius:8px;min-width:140px;flex:1 1 140px}
+.player-card{display:flex;gap:12px;align-items:center}
+.player-card img{width:64px;height:64px;border-radius:8px;object-fit:cover;background:#061017}
+.player-title{font-weight:700}
+.player-track{color:var(--muted)}
+.player-controls{display:flex;justify-content:center;gap:16px;margin:12px 0}
+.list{margin-top:8px}
+.status{margin-top:8px;color:var(--accent)}
+
+/* Responsive tweaks */
+@media(min-width:700px){
+  body{padding:20px}
+  .panel{display:flex;gap:12px;flex-wrap:wrap}
+  #uploadPanel{flex:2}
+  #cardsPanel{flex:1}
+}
+
+/* Light mode helper (toggle adds .light to body) */
+body.light{--bg:#f6f9fc;--panel:#ffffff;--card:#ffffff;--text:#071022;--muted:#475569}
+
+/* small helpers */
+.small{font-size:0.9rem}
