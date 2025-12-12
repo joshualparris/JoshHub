@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "audit:links": "tsx scripts/audit-links.ts"
+    "audit:links": "TMPDIR=/tmp tsx scripts/audit-links.ts",
+    "ensure:placeholders": "TMPDIR=/tmp tsx scripts/ensure-placeholders.ts",
+    "prebuild": "npm run ensure:placeholders && npm run audit:links"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
