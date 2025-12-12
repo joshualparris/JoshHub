@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Classic D&D 5e Text Adventure</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="game-container">
+    <header id="hud">
+      <div id="character-summary">
+        <button id="open-creator">Open Character Creator</button>
+        <div id="char-brief">
+          <strong id="char-name">Adventurer</strong>
+          <div id="char-details">HP: <span id="brief-hp">10</span> | AC: <span id="brief-ac">13</span> | Gold: <span id="brief-gold">0</span></div>
+        </div>
+      </div>
+    </header>
+
+    <section id="main-play">
+      <div id="story"></div>
+      <div id="choices"></div>
+      <div id="dice"></div>
+    </section>
+
+    <!-- Character creator modal/section (hidden by default) -->
+    <aside id="character-creator" class="hidden">
+      <h2>Character Creator (D&D 5e)</h2>
+      <label>Name: <input id="cc-name" type="text" placeholder="Character name"></label>
+      <label>Race:
+        <select id="cc-race">
+          <option>Human</option>
+          <option>Elf</option>
+          <option>Dwarf</option>
+          <option>Halfling</option>
+        </select>
+      </label>
+      <label>Class:
+        <select id="cc-class">
+          <option>Fighter</option>
+          <option>Rogue</option>
+          <option>Wizard</option>
+          <option>Cleric</option>
+        </select>
+      </label>
+      <label>Background: <input id="cc-background" type="text" placeholder="Background"></label>
+      <label>Alignment:
+        <select id="cc-alignment">
+          <option>Neutral</option>
+          <option>Lawful Good</option>
+          <option>Chaotic Good</option>
+          <option>Lawful Evil</option>
+        </select>
+      </label>
+
+      <h3>Ability Scores</h3>
+      <div id="score-methods">
+        <label><input type="radio" name="method" value="standard" checked> Standard Array</label>
+        <label><input type="radio" name="method" value="roll"> Roll 4d6 (drop lowest)</label>
+        <label><input type="radio" name="method" value="pointbuy"> Point Buy (27)</label>
+      </div>
+      <div id="ability-scores"></div>
+
+      <div class="cc-actions">
+        <button id="cc-apply">Apply & Close</button>
+        <button id="cc-randomize">Randomize (roll)</button>
+        <button id="cc-reset">Reset</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Persistent minimap bottom-right -->
+  <div id="minimap">
+    <canvas id="map-canvas" width="200" height="200"></canvas>
+    <div id="map-controls">
+      <button data-dir="north">▲</button>
+      <div>
+        <button data-dir="west">◀</button>
+        <button data-dir="east">▶</button>
+      </div>
+      <button data-dir="south">▼</button>
+    </div>
+    <div id="map-coords">(0,0)</div>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>
