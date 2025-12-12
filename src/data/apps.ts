@@ -1219,9 +1219,9 @@ export const apps: CatalogItem[] = [
     category: "Games",
     status: "ok",
     tags: ["game", "mystery", "text", "playable"],
-    primaryUrl: "/games/starhaven/",
+    primaryUrl: "/games/starhaven/index.html",
     urls: [
-      { label: "Play (Local)", url: "/games/starhaven/" },
+      { label: "Play (Local)", url: "/games/starhaven/index.html" },
       { label: "Play (Prototype)", url: "/games/max/index.html" },
       { label: "Repo", url: "https://github.com/joshuaparris-max/StarHaven" },
     ],

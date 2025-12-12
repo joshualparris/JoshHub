@@ -64,7 +64,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
       <CardContent className="space-y-3">
         <div className="flex flex-wrap gap-2">
           {app.tags.map((tag) => (
-            <Badge key={tag} variant="muted">
+            <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
           ))}
@@ -85,7 +85,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
             </Button>
           ))}
         </div>
-        {app.notes && <p className="text-sm text-muted-foreground">{app.notes}</p>}
+        {app.notes && <p className="text-sm text-muted-foreground line-clamp-2" title={app.notes}>{app.notes}</p>}
       </CardContent>
     </Card>
   );
