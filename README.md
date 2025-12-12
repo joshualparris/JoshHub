@@ -47,3 +47,7 @@ npm run start  # preview production build
 
 ## Accessibility
 - Semantic headings, focus rings on interactive elements, keyboard-friendly controls, readable contrast.
+
+## Docs
+- Improvement tracker: docs/IMPROVEMENTS.md
+
