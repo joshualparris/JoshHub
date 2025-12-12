@@ -258,7 +258,6 @@ export const apps: CatalogItem[] = [
     tags: ["game", "lexicon", "download", "playable"],
     primaryUrl: "/docs/lexicon.html",
     urls: [
-      { label: "Download (Windows)", url: "/games/lexicon/Lexicon/Lexicon.exe" },
       { label: "Docs", url: "/docs/lexicon.html" },
     ],
     notes: "Unity desktop build hosted for download from JoshHub.",
