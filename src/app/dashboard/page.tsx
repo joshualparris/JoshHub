@@ -192,6 +192,12 @@ export default function DashboardPage() {
                   Life focus
                 </Link>
               </Button>
+              <Button variant="ghost" asChild>
+                <Link href="/docs/IMPROVEMENTS.md" target="_blank" rel="noreferrer">
+                  <ArrowUpRight className="mr-2 h-4 w-4" />
+                  Improvements
+                </Link>
+              </Button>
             </div>
           </div>
 
