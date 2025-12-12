@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wastes Courier Roguelike</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
+    h1, h2 { color: #ffc773; margin-bottom: 0.4em; }
+    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 960px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
+    a { color: #ffd591; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .muted { color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Wastes Courier Roguelike</h1>
+    <p class="muted">Status: WIP. Repo: <a href="https://github.com/joshualparris/wastes-courier-roguelike">github.com/joshualparris/wastes-courier-roguelike</a>.</p>
+
+    <h2>Plan</h2>
+    <ul>
+      <li>Confirm tech stack (likely Python/JS). If web-capable, target a browser build.</li>
+      <li>Ship a minimal playable slice (movement + one combat loop) and host under <code class="mono">public/games/wastes-courier/</code>.</li>
+      <li>Add controls + platform notes on the JoshHub card once built.</li>
+    </ul>
+
+    <h2>Quick Local Steps</h2>
+    <ol>
+      <li><span class="mono">git clone https://github.com/joshualparris/wastes-courier-roguelike</span></li>
+      <li>Install deps per README (add one if missing).</li>
+      <li>Export a web build or package a desktop binary; drop into JoshHub when ready.</li>
+    </ol>
+  </div>
+</body>
+</html>

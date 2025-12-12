@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buckland Blocks</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
+    h1, h2 { color: #7cd2ff; margin-bottom: 0.4em; }
+    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 960px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
+    a { color: #9ce1ff; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .muted { color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Buckland Blocks</h1>
+    <p class="muted">Status: WIP. Repo lives at <a href="https://github.com/joshualparris/BucklandBlocks">github.com/joshualparris/BucklandBlocks</a>.</p>
+
+    <h2>Next Steps to Get Playable</h2>
+    <ul>
+      <li>Open the repo and confirm engine (likely Godot/Unity/JS). If web-capable, build a browser export.</li>
+      <li>Publish the build into <code class="mono">Apps/joshhub/public/games/buckland-blocks/</code> and update the dashboard link to Play.</li>
+      <li>If desktop-only, add a downloadable zip and list OS/requirements.</li>
+    </ul>
+
+    <h2>Local Workflow</h2>
+    <ol>
+      <li>Clone or open the repo: <span class="mono">git clone https://github.com/joshualparris/BucklandBlocks</span></li>
+      <li>Follow the engine’s build/export steps (add a README once known).</li>
+      <li>Drop the compiled web build into JoshHub under <span class="mono">public/games/buckland-blocks/</span>.</li>
+    </ol>
+  </div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mysterious Depths — Enhanced</title>
+    <!-- Version2 styles (visuals, overlays, starfield) -->
+    <link rel="stylesheet" href="style_Version2.css">
+</head>
+<body>
+    <div id="background"></div>
+    <div id="ambient-overlay"></div>
+    <div id="game-container">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <h1 style="margin:0;">Mysterious Depths</h1>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <button id="open-settings" title="Settings" style="font-size:1.05em;padding:6px 10px;border-radius:6px;">⚙️</button>
+                <button id="sfx-toggle" aria-pressed="false" title="Toggle SFX" style="font-size:1.05em;padding:6px 10px;border-radius:6px;">🔊</button>
+            </div>
+        </div>
+    <div id="scene-art" aria-hidden="true"></div>
+    <div id="clue-bar" aria-live="polite" style="margin:8px 0 6px;display:flex;gap:6px;flex-wrap:wrap;"></div>
+    <div id="achv-bar" aria-live="polite" style="margin:4px 0 12px;display:flex;gap:6px;flex-wrap:wrap;"></div>
+    <div id="story"></div>
+        <div id="choices"></div>
+        <div id="log-panel" aria-live="polite" hidden></div>
+    </div>
+
+    <!-- Settings modal -->
+    <div id="settings-modal" hidden>
+        <div class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <h2 id="settings-title" style="margin:0;">Settings</h2>
+                <button id="close-settings" title="Close">✖</button>
+            </div>
+            <div class="settings-row">
+                <label for="volume">Master Volume</label>
+                <input id="volume" type="range" min="0" max="1" step="0.01">
+            </div>
+            <div class="settings-row">
+                <label><input id="toggle-sound" type="checkbox"> Sound enabled</label>
+            </div>
+            <div class="settings-row">
+                <label><input id="toggle-anim" type="checkbox"> Animations enabled</label>
+            </div>
+            <div class="settings-row">
+                <label for="theme-select">Theme</label>
+                <select id="theme-select">
+                    <option value="deepSea">Deep Sea</option>
+                    <option value="derelict">Derelict</option>
+                    <option value="stardrift">Stardrift</option>
+                </select>
+            </div>
+            <div class="settings-row" style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button id="save-slot">Save Checkpoint</button>
+                <button id="load-slot">Load Checkpoint</button>
+                <button id="toggle-log">Toggle Log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load the enhanced visuals/game runtime -->
+    <script src="game_Version2.js"></script>
+
+    <!-- Small UX improvements: keyboard shortcuts for choices -->
+    <script>
+        // Press 1..9 to choose the corresponding choice button.
+        // Press 'r' to trigger a "Play Again" button if present.
+        document.addEventListener('keydown', (e) => {
+            const key = e.key;
+            if (/^[1-9]$/.test(key)) {
+                const idx = parseInt(key, 10) - 1;
+                const btns = document.querySelectorAll('.choice-btn');
+                if (btns[idx]) {
+                    btns[idx].click();
+                    btns[idx].focus();
+                }
+            }
+            if (key === 'r' || key === 'R') {
+                const play = Array.from(document.querySelectorAll('.choice-btn')).find(b => /play again/i.test(b.textContent));
+                if (play) play.click();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Random Play Redirect</title>
+  <script>
+    fetch('links.json')
+      .then(response => response.json())
+      .then(links => {
+        const chosen = links[Math.floor(Math.random() * links.length)];
+        window.location.replace(chosen);
+      })
+      .catch(() => {
+        document.body.innerHTML = "<h2>Could not load links. Please check links.json.</h2>";
+      });
+  </script>
+</head>
+<body>
+  <h2>Redirecting to a random track...</h2>
+</body>
+</html>

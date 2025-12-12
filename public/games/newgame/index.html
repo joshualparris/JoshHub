@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Realms - RPG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Character Creation Screen -->
+    <div id="charCreation" class="char-creation">
+        <div class="char-creation-panel">
+            <h1>Character Creation</h1>
+            
+            <div class="char-section">
+                <h2>Name</h2>
+                <input type="text" id="charName" placeholder="Enter your name" maxlength="20">
+            </div>
+            
+            <div class="char-section">
+                <h2>Race</h2>
+                <div class="race-selector">
+                    <div class="race-option" data-race="human">
+                        <h3>Human</h3>
+                        <p>+1 to all attributes. Versatile and adaptable.</p>
+                    </div>
+                    <div class="race-option" data-race="elf">
+                        <h3>Elf</h3>
+                        <p>+2 Dexterity, +1 Wisdom. Agile and perceptive.</p>
+                    </div>
+                    <div class="race-option" data-race="dwarf">
+                        <h3>Dwarf</h3>
+                        <p>+2 Constitution, +1 Strength. Hardy and strong.</p>
+                    </div>
+                    <div class="race-option" data-race="orc">
+                        <h3>Orc</h3>
+                        <p>+2 Strength, +1 Constitution. Brutal and tough.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="char-section">
+                <h2>Class</h2>
+                <div class="class-selector">
+                    <div class="class-option" data-class="warrior">
+                        <h3>Warrior</h3>
+                        <p>High strength and constitution. Frontline fighter.</p>
+                    </div>
+                    <div class="class-option" data-class="rogue">
+                        <h3>Rogue</h3>
+                        <p>High dexterity. Deadly strikes and evasion.</p>
+                    </div>
+                    <div class="class-option" data-class="mage">
+                        <h3>Mage</h3>
+                        <p>High intelligence. Powerful spells.</p>
+                    </div>
+                    <div class="class-option" data-class="ranger">
+                        <h3>Ranger</h3>
+                        <p>Balanced stats. Survivalist and tracker.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="char-section">
+                <h2>Attributes</h2>
+                <p class="points-remaining">Points Remaining: <span id="pointsRemaining">27</span></p>
+                <button id="autoAssignBtn" class="auto-assign-btn">Auto Assign Points</button>
+                <div class="attributes">
+                    <div class="attribute">
+                        <label>Strength (STR)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="str" data-dir="-">-</button>
+                            <span id="strValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="str" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Physical power and melee damage</p>
+                    </div>
+                    <div class="attribute">
+                        <label>Dexterity (DEX)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="dex" data-dir="-">-</button>
+                            <span id="dexValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="dex" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Agility, accuracy, and evasion</p>
+                    </div>
+                    <div class="attribute">
+                        <label>Constitution (CON)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="con" data-dir="-">-</button>
+                            <span id="conValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="con" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Health and physical resilience</p>
+                    </div>
+                    <div class="attribute">
+                        <label>Intelligence (INT)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="int" data-dir="-">-</button>
+                            <span id="intValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="int" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Magical power and knowledge</p>
+                    </div>
+                    <div class="attribute">
+                        <label>Wisdom (WIS)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="wis" data-dir="-">-</button>
+                            <span id="wisValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="wis" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Perception and willpower</p>
+                    </div>
+                    <div class="attribute">
+                        <label>Charisma (CHA)</label>
+                        <div class="attr-controls">
+                            <button class="attr-btn" data-attr="cha" data-dir="-">-</button>
+                            <span id="chaValue" class="attr-value">8</span>
+                            <button class="attr-btn" data-attr="cha" data-dir="+">+</button>
+                        </div>
+                        <p class="attr-desc">Social influence and leadership</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button id="startGameBtn" class="start-btn" disabled>Begin Your Journey</button>
+        </div>
+    </div>
+    
+    <!-- Main Game -->
+    <div id="gameContainer" class="container hidden">
+        <div class="game-header">
+            <h1>Dark Realms</h1>
+            <div class="character-info">
+                <span id="playerName" class="player-name"></span>
+                <span id="playerRaceClass" class="race-class"></span>
+            </div>
+            <div class="stats-panel">
+                <div class="stat-card">
+                    <span class="stat-label">Health</span>
+                    <div class="stat-bar">
+                        <div id="hpBar" class="stat-fill hp-fill"></div>
+                        <span id="hpText" class="stat-value">0/0</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Level</span>
+                    <span id="level" class="stat-value">1</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Experience</span>
+                    <div class="stat-bar">
+                        <div id="xpBar" class="stat-fill xp-fill"></div>
+                        <span id="xpText" class="stat-value">0/100</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Gold</span>
+                    <span id="gold" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-area">
+            <canvas id="gameCanvas"></canvas>
+            <div class="ui-panel">
+                <div class="attributes-panel">
+                    <h3>Attributes</h3>
+                    <div class="attr-display">
+                        <div class="attr-row"><span>STR:</span><span id="displayStr">0</span></div>
+                        <div class="attr-row"><span>DEX:</span><span id="displayDex">0</span></div>
+                        <div class="attr-row"><span>CON:</span><span id="displayCon">0</span></div>
+                        <div class="attr-row"><span>INT:</span><span id="displayInt">0</span></div>
+                        <div class="attr-row"><span>WIS:</span><span id="displayWis">0</span></div>
+                        <div class="attr-row"><span>CHA:</span><span id="displayCha">0</span></div>
+                    </div>
+                </div>
+                <div class="inventory">
+                    <h3>Inventory</h3>
+                    <div id="inventory" class="inventory-items"></div>
+                </div>
+                <div class="log">
+                    <h3>Combat Log</h3>
+                    <div id="log" class="log-content"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls-info">
+            <p>WASD or Arrow Keys: Move (W=North, S=South, A=West, D=East) | Space: Interact/Talk | E: Inventory</p>
+        </div>
+        
+        <div id="combatModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Combat</h2>
+                <div id="combatInfo"></div>
+                <div class="combat-actions">
+                    <button id="attackBtn">Attack</button>
+                    <button id="defendBtn">Defend</button>
+                    <button id="fleeBtn">Flee</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="shopModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Merchant</h2>
+                <div id="shopItems"></div>
+                <button id="closeShop">Close</button>
+            </div>
+        </div>
+        
+        <div id="inventoryModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>Inventory</h2>
+                <div id="inventoryModalContent"></div>
+                <button id="closeInventory">Close</button>
+            </div>
+        </div>
+        
+        <div id="dialogueModal" class="modal hidden">
+            <div class="modal-content">
+                <h2>NPC</h2>
+                <div id="dialogueText" style="color: #aaa; margin: 20px 0; line-height: 1.6;"></div>
+                <button id="closeDialogue">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modular game system (new) -->
+    <!-- <script type="module">
+        // Import and initialize modular game system
+        import { Game } from './js/main.js';
+        
+        // The old game.js can still be loaded for backward compatibility
+        // New modular system is available via window.game
+        console.log('Modular game system loaded. Use window.game to access.');
+    </script> -->
+    
+    <!-- Legacy game.js (still functional, can be gradually migrated) -->
+    <script src="game.js"></script>
+</body>
+</html>

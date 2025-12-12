@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Max Games</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif; background: #0f1115; color: #e7e9ee; display: grid; grid-template-rows: auto 1fr; min-height: 100vh; }
+    header { padding: 16px 20px; border-bottom: 1px solid #1f2430; background: #12151d; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    h1 { margin: 0; font-size: 18px; color: #7cd2ff; }
+    button { background: #1a1f2d; color: #e7e9ee; border: 1px solid #2a3040; border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: border-color 120ms ease, transform 120ms ease; }
+    button:hover { border-color: #7cd2ff; transform: translateY(-1px); }
+    main { padding: 20px; display: grid; gap: 12px; }
+    #output { background: #0c0f17; border: 1px solid #1f2430; border-radius: 12px; padding: 16px; min-height: 320px; white-space: pre-wrap; overflow-y: auto; font-family: "JetBrains Mono", "Fira Code", monospace; font-size: 14px; line-height: 1.5; }
+    .input-row { display: flex; gap: 8px; }
+    input[type="text"] { flex: 1; padding: 10px 12px; border-radius: 10px; border: 1px solid #2a3040; background: #0c0f17; color: #e7e9ee; font-size: 14px; }
+    .muted { color: #9aa3b5; font-size: 13px; }
+    .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; border: 1px solid #2a3040; background: #1a1f2d; margin-right: 6px; margin-bottom: 6px; font-size: 12px; color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Max Games</h1>
+    <button id="play-starhaven">Play Starhaven</button>
+    <button id="play-guess">Play Guess the Number</button>
+    <span class="muted">Starhaven: type commands (help, look, go n/e/s/w, take, talk, accuse, arrest, use console...)</span>
+  </header>
+  <main>
+    <div id="output" aria-live="polite"></div>
+    <div class="input-row">
+      <input id="command" type="text" placeholder="Type a command and press Enter..." autocomplete="off" />
+      <button id="submit">Send</button>
+    </div>
+    <div id="status" class="muted"></div>
+  </main>
+
+  <script type="module" src="./max.js"></script>
+</body>
+</html>

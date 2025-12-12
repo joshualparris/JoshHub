@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Buckland Street Game</title>
+  <style>
+    body { background: #eee; text-align: center; font-family: sans-serif; }
+    canvas { background: #fff; border: 1px solid #333; display: block; margin: auto; }
+    #message { margin-top: 10px; min-height: 2em; }
+    #quest { margin-top: 6px; color: darkgreen; min-height: 2em; }
+    #progress { 
+      margin: 10px auto 0 auto; 
+      max-width: 650px; 
+      text-align: left; 
+      background: #fff; 
+      border: 1px solid #ccc; 
+      padding: 8px 10px; 
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    #progress strong { display: inline-block; margin-bottom: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Buckland Street Game</h1>
+  <canvas id="gameCanvas" width="650" height="420"></canvas>
+  <div id="quest"></div>
+  <div id="message"></div>
+  <div id="progress"><strong>Neighbours met:</strong> <span id="progressList">None yet</span></div>
+  <p>
+    <strong>Controls:</strong> Arrow keys (← → ↑ ↓) to move.<br>
+    <strong>Spacebar</strong> to knock when at a house.
+  </p>
+  <script src="game.js"></script>
+</body>
+</html>

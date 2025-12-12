@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ORGSCAPE: The Infinite Office</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="container">
+  <header>
+    <h1>ORGSCAPE: The Infinite Office</h1>
+    <button id="darkmode-toggle" title="Toggle Dark Mode">🌙</button>
+    <p class="subtitle">Welcome to the endless workplace. Seek the Missing Directive!</p>
+  </header>
+  <main>
+    <section id="sidepanels">
+      <div class="panel" id="map-panel">
+        <h2>Floor Map</h2>
+        <div id="floor-map"></div>
+      </div>
+      <div class="panel" id="inventory-panel">
+        <h2>Inventory</h2>
+        <ul id="inventory-list"></ul>
+      </div>
+      <div class="panel" id="tasks-panel">
+        <h2>Tasks</h2>
+        <ul id="tasks-list"></ul>
+      </div>
+      <div class="panel" id="orgchart-panel">
+        <h2>Org Chart</h2>
+        <ul id="orgchart-list"></ul>
+      </div>
+      <div class="panel" id="reputation-panel">
+        <h2>Faction Reputation</h2>
+        <div id="reputation-bars"></div>
+      </div>
+    </section>
+    <section id="gamelog-section">
+      <div id="gamelog"></div>
+      <div id="event-choices"></div>
+      <form id="command-form" autocomplete="off">
+        <input id="command-input" type="text" placeholder="Type command..." autofocus autocomplete="off"/>
+        <button type="submit">↵</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <span>&copy; 2025 ORGSCAPE: The Infinite Office | A Browser Roguelike by joshuaparrisdadlan-stack</span>
+  </footer>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

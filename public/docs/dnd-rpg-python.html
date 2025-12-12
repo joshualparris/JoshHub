@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D RPG Dungeon (Python)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
+    h1, h2 { color: #9ee37d; margin-bottom: 0.4em; }
+    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 900px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .muted { color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>D&D RPG Dungeon (Python)</h1>
+    <p class="muted">Text-based dungeon crawler located at <code class="mono">Games/AAA/AAA</code>. Run locally with Python; this page exposes the instructions from JoshHub.</p>
+
+    <h2>How to Play Locally</h2>
+    <ol>
+      <li>Open a terminal and navigate to the game folder:<br><span class="mono">cd "/mnt/c/Users/joshu/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Games/AAA/AAA"</span></li>
+      <li>Run the game:<br><span class="mono">python main.py</span></li>
+      <li>Follow the prompts to create your character and descend through the dungeon.</li>
+    </ol>
+
+    <h2>Features</h2>
+    <ul>
+      <li>4 classes, 4 races; dynamic combat, XP/leveling, gold and inventory.</li>
+      <li>5-level dungeon with a final dragon boss.</li>
+      <li>No external dependencies beyond Python 3.10+.</li>
+    </ul>
+
+    <h2>Next Actions</h2>
+    <ul>
+      <li>Package a Web build (Pyodide or JS port) and publish under <code class="mono">/games/dnd-rpg-python/</code>.</li>
+      <li>Optionally bundle a Windows binary for direct download.</li>
+    </ul>
+  </div>
+</body>
+</html>
