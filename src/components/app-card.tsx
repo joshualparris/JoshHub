@@ -22,7 +22,7 @@ export function AppCard({ app, onOpen }: Props) {
               <a
                 href={app.primaryUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 onClick={() => onOpen?.(app)}
                 className="rounded-sm hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
               >
@@ -35,7 +35,7 @@ export function AppCard({ app, onOpen }: Props) {
           <Link
             href={app.primaryUrl}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             onClick={() => onOpen?.(app)}
             className="rounded-md px-2 py-1 text-sm text-slate-700 transition hover:bg-neutral-100 hover:text-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-50"
           >

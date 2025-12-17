@@ -262,7 +262,7 @@ export default function DashboardPage() {
                 key={item.id}
                 href={item.primaryUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 onClick={() => addRecent(item)}
                 className="group flex flex-col gap-2 rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-white to-sky-50 px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:from-slate-900 dark:to-slate-800"
               >
@@ -305,7 +305,7 @@ export default function DashboardPage() {
                     <a
                       href={item.primaryUrl}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
                       className="font-semibold text-red-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 rounded-sm dark:text-red-100"
                     >
                       {item.name}
@@ -536,14 +536,14 @@ export default function DashboardPage() {
                     <p className="font-medium text-neutral-900 dark:text-white">{item.name}</p>
                     <p className="text-xs text-neutral-500 dark:text-slate-400">{item.category}</p>
                   </div>
-                  <a
-                    href={item.primaryUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm dark:text-slate-200"
-                  >
-                    Open
-                  </a>
+                    <a
+                      href={item.primaryUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm dark:text-slate-200"
+                    >
+                      Open
+                    </a>
                 </div>
               ))
             )}
