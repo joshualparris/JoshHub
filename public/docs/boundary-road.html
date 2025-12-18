@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boundary Road App Plan</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
+    h1, h2 { color: #7cd2ff; margin-bottom: 0.4em; }
+    a { color: #9ce1ff; }
+    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 960px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .pill { display: inline-block; background: #1f2533; border: 1px solid #2c3547; border-radius: 999px; padding: 4px 10px; margin: 3px 6px 3px 0; font-size: 13px; }
+    .muted { color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Boundary Road App</h1>
+    <p class="muted">Goal: turn captured 360° panorama images for 101 Boundary Rd into a navigable WSAD/Mouse 3D walkthrough.</p>
+
+    <h2>Current Assets</h2>
+    <ul>
+      <li>Panorama URLs saved from ipropertyexpress viewer (9 shots: bathroom, hall, kitchen/living, patio, garage, etc.).</li>
+      <li>Design prompt drafted for a React + TypeScript + Three.js pano viewer with hotspots and floor plan.</li>
+      <li>Reference docs: <code class="mono">Docs/BoundaryRoadApp.txt</code> (this summary is pulled from there).</li>
+    </ul>
+
+    <h2>Plan Snapshot</h2>
+    <ul>
+      <li>Stack: React + TypeScript + Vite + Three.js (pointer-lock, inverted sphere pano rendering).</li>
+      <li>Controls: Mouse look + WSAD; hotspots to move between rooms; fade transitions.</li>
+      <li>Edit mode: add hotspots in-view, choose destinations, export updated <code class="mono">house.json</code>.</li>
+      <li>Optional floor plan: SVG nodes/edges, click to jump to rooms, drag to reposition in edit mode.</li>
+    </ul>
+
+    <h2>Next Actions</h2>
+    <ul>
+      <li>Drop pano JPGs into <code class="mono">public/panos/</code> (filenames listed in the prompt inside the doc).</li>
+      <li>Generate the Vite + Three.js project from the included prompt (see Docs/BoundaryRoadApp.txt) or reuse your existing starter if present.</li>
+      <li>Wire hotspots and floor plan coordinates; seed file lives at <code class="mono">src/data/house.seed.json</code> in the prompt.</li>
+      <li>Publish to JoshHub by building to <code class="mono">public/games/boundary-road/</code> when ready.</li>
+    </ul>
+
+    <h2>Key Reference Prompt (excerpt)</h2>
+    <div class="mono">
+      React + TS + Vite + Three.js<br>
+      Pointer lock, inverted sphere pano<br>
+      Hotspots with yaw/pitch, W to move to nearest hotspot<br>
+      Edit mode (M) + H to add hotspot at crosshair<br>
+      Persist to localStorage, export house.json<br>
+      Pano files in /public/panos/ (9 images listed in the doc)
+    </div>
+
+    <p class="muted">Need the pano JPGs from Google Drive? Share the link and I’ll drop them into <code class="mono">public/panos/</code> and wire the starter project.</p>
+  </div>
+</body>
+</html>

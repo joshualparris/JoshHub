@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>D&D RPG Dungeon (Browser)</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0f0f14;
+        --panel: #181820;
+        --panel-2: #1f1f2a;
+        --accent: #8ef3c5;
+        --accent-2: #f2c94c;
+        --text: #e9ecf1;
+        --muted: #9aa4b5;
+        --danger: #ff6b6b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at 20% 20%, #1a1b25, #0f0f14 50%),
+          radial-gradient(circle at 80% 10%, #1d1f2f, transparent 40%),
+          radial-gradient(circle at 10% 80%, #162025, transparent 45%),
+          var(--bg);
+        color: var(--text);
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .card {
+        width: min(960px, 100%);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.0))
+          var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
+      header {
+        padding: 18px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: linear-gradient(90deg, rgba(142, 243, 197, 0.12), transparent);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+        letter-spacing: 0.5px;
+      }
+      header small {
+        color: var(--muted);
+      }
+      .content {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+      .panel {
+        background: var(--panel-2);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+        padding: 14px;
+        min-height: 120px;
+      }
+      .panel h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+        color: var(--accent);
+      }
+      .log {
+        background: #0c0d12;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 12px;
+        padding: 12px;
+        height: 240px;
+        overflow-y: auto;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      button {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #202433;
+        color: var(--text);
+        border-radius: 10px;
+        padding: 12px 10px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: transform 120ms ease, background 120ms ease, border 120ms ease;
+      }
+      button:hover {
+        transform: translateY(-1px);
+        border-color: rgba(142, 243, 197, 0.6);
+      }
+      button.primary {
+        background: linear-gradient(135deg, #23c788, #2bd9a0);
+        color: #04120c;
+        font-weight: 700;
+        border: none;
+      }
+      button.danger {
+        background: #3c1f26;
+        color: #ffd4d4;
+        border-color: rgba(255, 107, 107, 0.4);
+      }
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+        margin-bottom: 4px;
+        font-size: 13px;
+      }
+      .bar {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.07);
+        overflow: hidden;
+        margin-bottom: 10px;
+      }
+      .bar > div {
+        height: 100%;
+        background: linear-gradient(90deg, #2bd9a0, #8ef3c5);
+      }
+      .enemy-bar > div {
+        background: linear-gradient(90deg, #ff6b6b, #f5a623);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      input, select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: #11131a;
+        color: var(--text);
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background: rgba(142, 243, 197, 0.12);
+        color: var(--accent);
+        font-size: 12px;
+        border: 1px solid rgba(142, 243, 197, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <header>
+        <div>
+          <h1>D&D RPG Dungeon</h1>
+          <small>Browser port of the local Python text adventure</small>
+        </div>
+      </header>
+      <div class="content">
+        <div class="panel" id="create-panel">
+          <h3>Create your hero</h3>
+          <div class="form-grid">
+            <label>
+              <div class="muted">Name</div>
+              <input id="hero-name" placeholder="Elyra" />
+            </label>
+            <label>
+              <div class="muted">Class</div>
+              <select id="hero-class">
+                <option>Warrior</option>
+                <option>Mage</option>
+                <option>Rogue</option>
+                <option>Cleric</option>
+              </select>
+            </label>
+            <label>
+              <div class="muted">Race</div>
+              <select id="hero-race">
+                <option>Human</option>
+                <option>Elf</option>
+                <option>Dwarf</option>
+                <option>Halfling</option>
+              </select>
+            </label>
+          </div>
+          <div style="margin-top:12px; display:flex; gap:10px;">
+            <button class="primary" id="start-btn">Start Adventure</button>
+            <button id="random-btn">Randomize</button>
+          </div>
+          <div class="muted" style="margin-top:10px;">
+            Explore rooms, fight enemies, heal, and push to Level 5 to win. Progress auto-saves in this tab.
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Hero</h3>
+          <div class="stat"><span id="hero-title">—</span><span id="hero-gold">Gold: 0</span></div>
+          <div class="bar"><div id="hero-hp-bar" style="width:0%"></div></div>
+          <div class="stat"><span id="hero-hp">HP 0/0</span><span id="hero-lvl">Lvl 1</span></div>
+          <div class="grid-2 muted">
+            <div>ATK <strong id="hero-atk">0</strong></div>
+            <div>DEF <strong id="hero-def">0</strong></div>
+            <div>MAG <strong id="hero-mag">0</strong></div>
+            <div>Potions <strong id="hero-potions">0</strong></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Enemy</h3>
+          <div class="stat"><span id="enemy-name">—</span><span id="enemy-tier">—</span></div>
+          <div class="bar enemy-bar"><div id="enemy-hp-bar" style="width:0%"></div></div>
+          <div class="stat"><span id="enemy-hp">HP 0/0</span><span id="enemy-stats">ATK 0 | DEF 0</span></div>
+          <div class="muted" id="enemy-note">No foe present.</div>
+        </div>
+
+        <div class="panel">
+          <h3>Actions</h3>
+          <div class="actions">
+            <button id="btn-attack">Attack</button>
+            <button id="btn-magic">Magic</button>
+            <button id="btn-heal">Heal (potion)</button>
+            <button id="btn-run">Run</button>
+            <button id="btn-explore" class="primary">Explore / Continue</button>
+            <button id="btn-reset" class="danger">Reset Run</button>
+          </div>
+          <div class="muted" style="margin-top:10px;">Tip: Heal when below 40% HP. Run if the foe outlevels you.</div>
+        </div>
+
+        <div class="panel" style="grid-column: 1 / -1;">
+          <h3>Adventure Log</h3>
+          <div class="log" id="log"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Simple browser port inspired by the local Python D&D RPG Dungeon
+      const $ = (id) => document.getElementById(id);
+      const logEl = $("log");
+      const state = {
+        hero: null,
+        enemy: null,
+        level: 1,
+        roomsCleared: 0,
+        potions: 2,
+        gold: 0,
+        victory: false,
+        inCombat: false,
+      };
+
+      const enemies = [
+        { name: "Goblin", tier: 1, hp: 18, atk: 4, def: 2 },
+        { name: "Kobold Skirmisher", tier: 1, hp: 16, atk: 5, def: 1 },
+        { name: "Skeleton Guard", tier: 2, hp: 22, atk: 6, def: 3 },
+        { name: "Bandit Captain", tier: 2, hp: 28, atk: 7, def: 3 },
+        { name: "Ogre Brute", tier: 3, hp: 36, atk: 9, def: 4 },
+        { name: "Wyvern Whelp", tier: 3, hp: 32, atk: 10, def: 3 },
+        { name: "Shadow Assassin", tier: 4, hp: 30, atk: 12, def: 5 },
+        { name: "Flame Drake", tier: 4, hp: 40, atk: 13, def: 4 },
+        { name: "Ancient Dragon", tier: 5, hp: 55, atk: 16, def: 6 },
+      ];
+
+      const classes = {
+        Warrior: { hp: 30, atk: 8, def: 5, mag: 1 },
+        Mage: { hp: 22, atk: 4, def: 2, mag: 10 },
+        Rogue: { hp: 24, atk: 7, def: 3, mag: 3 },
+        Cleric: { hp: 26, atk: 5, def: 4, mag: 6 },
+      };
+
+      const races = {
+        Human: { hp: 0, atk: 1, def: 0, mag: 0 },
+        Elf: { hp: -1, atk: 0, def: 0, mag: 2 },
+        Dwarf: { hp: 2, atk: 0, def: 2, mag: -1 },
+        Halfling: { hp: 0, atk: 0, def: 1, mag: 0 },
+      };
+
+      function randomChoice(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
+
+      function addLog(msg, kind = "info") {
+        const div = document.createElement("div");
+        div.innerHTML = msg;
+        if (kind === "danger") div.style.color = "var(--danger)";
+        if (kind === "success") div.style.color = "var(--accent)";
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      function updateUI() {
+        const h = state.hero;
+        if (!h) return;
+        $("hero-title").textContent = `${h.name} — ${h.class} ${h.race}`;
+        $("hero-gold").textContent = `Gold: ${state.gold}`;
+        $("hero-lvl").textContent = `Lvl ${state.level}`;
+        $("hero-atk").textContent = h.atk;
+        $("hero-def").textContent = h.def;
+        $("hero-mag").textContent = h.mag;
+        $("hero-potions").textContent = state.potions;
+        const hpPct = Math.max(0, Math.min(100, (h.hp / h.maxHp) * 100));
+        $("hero-hp-bar").style.width = `${hpPct}%`;
+        $("hero-hp").textContent = `HP ${h.hp}/${h.maxHp}`;
+
+        if (state.enemy) {
+          const e = state.enemy;
+          $("enemy-name").textContent = e.name;
+          $("enemy-tier").textContent = `Tier ${e.tier}`;
+          $("enemy-stats").textContent = `ATK ${e.atk} | DEF ${e.def}`;
+          $("enemy-note").textContent = "An enemy stands in your path.";
+          const epct = Math.max(0, Math.min(100, (e.hp / e.maxHp) * 100));
+          $("enemy-hp-bar").style.width = `${epct}%`;
+          $("enemy-hp").textContent = `HP ${e.hp}/${e.maxHp}`;
+        } else {
+          $("enemy-name").textContent = "—";
+          $("enemy-tier").textContent = "—";
+          $("enemy-stats").textContent = "ATK 0 | DEF 0";
+          $("enemy-note").textContent = "No foe present.";
+          $("enemy-hp-bar").style.width = "0%";
+          $("enemy-hp").textContent = "HP 0/0";
+        }
+
+        $("btn-attack").disabled = !state.inCombat;
+        $("btn-magic").disabled = !state.inCombat;
+        $("btn-heal").disabled = !state.inCombat || state.potions <= 0;
+        $("btn-run").disabled = !state.inCombat;
+        $("btn-explore").disabled = state.inCombat;
+      }
+
+      function createHero() {
+        const name = $("hero-name").value.trim() || randomName();
+        const cls = $("hero-class").value;
+        const race = $("hero-race").value;
+        const base = classes[cls];
+        const bonus = races[race];
+        const hero = {
+          name,
+          class: cls,
+          race,
+          maxHp: base.hp + bonus.hp,
+          hp: base.hp + bonus.hp,
+          atk: base.atk + bonus.atk,
+          def: base.def + bonus.def,
+          mag: base.mag + bonus.mag,
+        };
+        state.hero = hero;
+        state.level = 1;
+        state.roomsCleared = 0;
+        state.potions = 2;
+        state.gold = 0;
+        state.victory = false;
+        state.enemy = null;
+        state.inCombat = false;
+        logEl.innerHTML = "";
+        addLog(`Welcome, <strong>${hero.name}</strong> the ${hero.race} ${hero.class}!`, "success");
+        addLog("Explore the dungeon and reach Level 5 to win.");
+        updateUI();
+      }
+
+      function spawnEnemy() {
+        const tier = Math.min(5, 1 + Math.floor(state.roomsCleared / 3));
+        const pool = enemies.filter((e) => e.tier <= tier + 1);
+        const proto = randomChoice(pool);
+        const scale = 1 + (state.level - 1) * 0.15;
+        state.enemy = {
+          name: proto.name,
+          tier: proto.tier,
+          hp: Math.round(proto.hp * scale),
+          maxHp: Math.round(proto.hp * scale),
+          atk: Math.round(proto.atk * scale),
+          def: Math.round(proto.def * scale),
+        };
+        state.inCombat = true;
+        addLog(`⚔️ Encounter! <strong>${state.enemy.name}</strong> (Tier ${state.enemy.tier}) appears.`);
+        updateUI();
+      }
+
+      function heroAttack(kind = "attack") {
+        if (!state.inCombat || !state.enemy) return;
+        const h = state.hero;
+        const e = state.enemy;
+        const crit = Math.random() < 0.15 ? 1.5 : 1;
+        const base = kind === "magic" ? h.mag + 5 : h.atk;
+        const dmg = Math.max(1, Math.round((base - e.def) * crit));
+        e.hp = Math.max(0, e.hp - dmg);
+        addLog(
+          `${kind === "magic" ? "🔮" : "🗡️"} ${h.name} hits ${e.name} for <strong>${dmg}</strong> damage${crit > 1 ? " (CRIT)" : ""}.`
+        );
+        if (e.hp <= 0) {
+          addLog(`${e.name} is defeated!`, "success");
+          state.inCombat = false;
+          state.enemy = null;
+          reward();
+          updateUI();
+          return;
+        }
+        enemyTurn();
+      }
+
+      function heroHeal() {
+        if (!state.inCombat || state.potions <= 0) return;
+        const h = state.hero;
+        state.potions -= 1;
+        const heal = Math.round(h.maxHp * 0.35);
+        h.hp = Math.min(h.maxHp, h.hp + heal);
+        addLog(`💚 ${h.name} drinks a potion and heals <strong>${heal}</strong> HP.`);
+        enemyTurn();
+        updateUI();
+      }
+
+      function heroRun() {
+        if (!state.inCombat) return;
+        const success = Math.random() < 0.55;
+        if (success) {
+          addLog("You slip away into the shadows. Combat escaped.", "success");
+          state.inCombat = false;
+          state.enemy = null;
+          updateUI();
+          return;
+        }
+        addLog("Escape failed! The enemy lunges.", "danger");
+        enemyTurn(true);
+      }
+
+      function enemyTurn(free = false) {
+        const h = state.hero;
+        const e = state.enemy;
+        if (!e) return;
+        const dmg = Math.max(1, e.atk - Math.floor(h.def * 0.6));
+        h.hp = Math.max(0, h.hp - dmg);
+        addLog(`⚔️ ${e.name} strikes for <strong>${dmg}</strong> damage.`);
+        if (h.hp <= 0) {
+          addLog("You fall in the darkness. Run reset.", "danger");
+          state.inCombat = false;
+          state.enemy = null;
+          resetAdventure(false);
+        }
+        updateUI();
+      }
+
+      function reward() {
+        state.roomsCleared += 1;
+        const goldGain = 6 + Math.floor(Math.random() * 8);
+        state.gold += goldGain;
+        if (Math.random() < 0.3) {
+          state.potions += 1;
+          addLog("Found a potion in the room.");
+        }
+        if (state.roomsCleared % 2 === 0) {
+          state.level += 1;
+          state.hero.maxHp += 4;
+          state.hero.atk += 2;
+          state.hero.def += 1;
+          state.hero.mag += 1;
+          state.hero.hp = state.hero.maxHp;
+          addLog(`📈 Level up! You are now Level ${state.level}.`, "success");
+        }
+        if (state.level >= 5) {
+          addLog("🏆 You reached Level 5 and cleared the dungeon! Victory!", "success");
+          state.victory = true;
+        }
+      }
+
+      function explore() {
+        if (!state.hero) return;
+        if (state.victory) {
+          addLog("You already won. Reset to play again.");
+          return;
+        }
+        // 60% enemy, 30% treasure, 10% empty
+        const roll = Math.random();
+        if (roll < 0.6) {
+          spawnEnemy();
+        } else if (roll < 0.9) {
+          const gold = 10 + Math.floor(Math.random() * 15);
+          state.gold += gold;
+          if (Math.random() < 0.4) state.potions += 1;
+          addLog(`✨ You find ${gold} gold and maybe a potion.`);
+        } else {
+          addLog("The room is eerily quiet. You advance.");
+        }
+        updateUI();
+      }
+
+      function resetAdventure(full = true) {
+        if (full || !state.hero) {
+          $("hero-name").value = "";
+          $("hero-class").selectedIndex = 0;
+          $("hero-race").selectedIndex = 0;
+          state.hero = null;
+          state.enemy = null;
+          state.inCombat = false;
+          state.level = 1;
+          state.roomsCleared = 0;
+          state.gold = 0;
+          state.potions = 2;
+          state.victory = false;
+          logEl.innerHTML = "";
+          addLog("Run reset. Create a new hero to begin.");
+        } else {
+          const h = state.hero;
+          h.hp = h.maxHp;
+          state.enemy = null;
+          state.inCombat = false;
+          state.roomsCleared = 0;
+          state.level = 1;
+          state.gold = 0;
+          state.potions = 2;
+          state.victory = false;
+          addLog("You regroup at camp. Run restarted.");
+        }
+        updateUI();
+      }
+
+      function randomName() {
+        const names = ["Elyra", "Thorne", "Kael", "Mira", "Rowan", "Nyx", "Alaric", "Vera"];
+        return randomChoice(names);
+      }
+
+      $("random-btn").addEventListener("click", () => {
+        $("hero-name").value = randomName();
+        $("hero-class").selectedIndex = Math.floor(Math.random() * $("hero-class").length);
+        $("hero-race").selectedIndex = Math.floor(Math.random() * $("hero-race").length);
+      });
+      $("start-btn").addEventListener("click", () => {
+        createHero();
+        explore();
+      });
+      $("btn-attack").addEventListener("click", () => heroAttack("attack"));
+      $("btn-magic").addEventListener("click", () => heroAttack("magic"));
+      $("btn-heal").addEventListener("click", heroHeal);
+      $("btn-run").addEventListener("click", heroRun);
+      $("btn-explore").addEventListener("click", explore);
+      $("btn-reset").addEventListener("click", () => resetAdventure(true));
+
+      // initial state
+      resetAdventure(true);
+    </script>
+  </body>
+</html>

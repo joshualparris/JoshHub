@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>NFC Audio Player — Browser Yoto</title>
+  <meta name="description" content="Turn an NFC card into a Yoto-like audio player — PWA, offline, Web NFC" />
+  <!-- Use relative paths so site works when hosted under a repo subpath (GitHub Pages) -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./icons/icon-192.svg">
+  <link rel="stylesheet" href="styles.css">
+  <meta name="theme-color" content="#0f172a" />
+</head>
+<body>
+  <main id="app" class="app">
+    <header class="topbar">
+      <div class="brand">NFC Audio Player</div>
+      <div class="controls">
+        <button id="darkToggle" class="btn small">Dark</button>
+        <button id="scanBtn" class="btn primary">Start NFC Scan</button>
+        <button id="testTagBtn" class="btn">Test Tag</button>
+        <button id="nfcDebugBtn" class="btn small">NFC Debug</button>
+        <button id="exportBtn" class="btn small">Export</button>
+        <button id="importBtn" class="btn small">Import</button>
+      </div>
+    </header>
+
+    <!-- Quick inline NFC status (visible on small screens if overlay fails) -->
+    <div id="nfcQuickStatus" class="small" style="padding:8px 12px;margin:8px 12px;border-radius:8px;background:rgba(255,255,255,0.02);color:var(--muted);font-family:monospace;display:none"></div>
+
+    <div id="nfcHint" class="small" style="margin-bottom:12px;color:var(--muted)">Web NFC: Chrome on Android only, HTTPS required. Use Write mode for blank cards.</div>
+
+    <section class="panel" id="uploadPanel">
+      <h2>Upload audio files</h2>
+      <div id="dropZone" class="drop">Drop files here or <button id="filePickBtn" class="btn link">Choose files</button></div>
+      <input id="fileInput" type="file" accept="audio/*" multiple hidden>
+      <div id="tracksList" class="list"></div>
+    </section>
+
+    <section class="panel" id="cardsPanel">
+      <h2>Cards (Playlists)</h2>
+      <div class="row">
+        <input id="cardName" placeholder="New card name" />
+        <button id="createCardBtn" class="btn">Create Card</button>
+      </div>
+      <div id="cardsList" class="cards"></div>
+    </section>
+
+    <section class="panel" id="writerPanel">
+      <h2>Card Writing Mode</h2>
+      <div class="row">
+        <select id="writeCardSelect"></select>
+        <select id="writeTypeSelect"><option value="url" selected>URL (?card=)</option><option value="text">Text (card://id)</option></select>
+        <button id="startWriteBtn" class="btn primary">Write to Card</button>
+      </div>
+      <div id="writeStatus" class="status"></div>
+      <div id="lastPayload" class="small" style="margin-top:8px;color:var(--muted)"></div>
+      <pre id="rawDump" class="small" style="margin-top:8px;color:var(--muted);white-space:pre-wrap"></pre>
+    </section>
+
+  <!-- Big play overlay for deep-link playback when autoplay is blocked -->
+  <div id="deepPlayOverlay" style="display:none;position:fixed;inset:0;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:9999">
+    <button id="deepPlayBtn" class="btn big" style="background:var(--accent);color:#001214;padding:24px 36px;border-radius:16px">Play</button>
+  </div>
+
+  <!-- NFC debug overlay -->
+  <div id="nfcDebugOverlay" style="display:none;position:fixed;inset:0;align-items:flex-start;justify-content:center;padding-top:80px;background:rgba(0,0,0,0.6);z-index:10000">
+    <div style="background:#fff;color:#000;padding:16px;border-radius:8px;max-width:760px;width:90%;box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+      <h3>NFC Debug</h3>
+      <div id="nfcDebugInfo" class="small" style="white-space:pre-wrap;font-family:monospace;font-size:12px;color:#111"></div>
+      <div style="margin-top:12px">
+        <button id="tryConstructNdef" class="btn">Try NDEFReader()</button>
+        <button id="closeNfcDebug" class="btn">Close</button>
+      </div>
+      <pre id="nfcDebugResult" style="margin-top:12px;background:#f6f6f6;padding:8px;border-radius:4px;max-height:240px;overflow:auto;font-family:monospace;font-size:12px"></pre>
+    </div>
+  </div>
+
+    <section class="panel" id="playerPanel">
+      <h2>Player</h2>
+      <div id="playerCardInfo" class="player-card">
+        <img id="playerCover" src="" alt="cover" />
+        <div class="player-meta">
+          <div id="playerTitle" class="player-title">No card tapped</div>
+          <div id="playerTrack" class="player-track">—</div>
+        </div>
+      </div>
+      <div class="player-controls">
+        <button id="prevBtn" class="btn">⏮</button>
+        <button id="playBtn" class="btn big">▶️</button>
+        <button id="nextBtn" class="btn">⏭</button>
+      </div>
+      <input id="seek" type="range" min="0" max="100" value="0" class="seek">
+      <div class="row">
+        <label>Volume</label>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7">
+      </div>
+      <div class="row small">
+        <label><input id="keepPlaying" type="checkbox"> Keep playing if card removed</label>
+      </div>
+    </section>
+
+    <audio id="audio" preload="metadata"></audio>
+  </main>
+
+  <input id="importFile" type="file" accept="application/json" hidden>
+
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

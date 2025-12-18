@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>Whispering Wilds (Browser)</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0c0e14;
+        --panel: #151826;
+        --accent: #9ef0c3;
+        --muted: #9aa4b5;
+        --danger: #ff6b6b;
+      }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, sans-serif;
+        background: radial-gradient(circle at 20% 20%, #151c2e, #0c0e14 55%), #0c0e14;
+        color: #e8ecf3;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+      }
+      .card {
+        width: min(960px, 100%);
+        background: var(--panel);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 16px 64px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
+      header {
+        padding: 18px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        background: linear-gradient(90deg, rgba(158, 240, 195, 0.12), transparent);
+      }
+      header h1 {
+        margin: 0;
+        font-size: 20px;
+      }
+      header small {
+        color: var(--muted);
+      }
+      .content {
+        padding: 16px 20px 20px;
+        display: grid;
+        gap: 12px;
+      }
+      .log {
+        background: #0b0d13;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        min-height: 260px;
+        max-height: 360px;
+        overflow-y: auto;
+        padding: 12px;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .input-row {
+        display: flex;
+        gap: 10px;
+      }
+      input[type="text"] {
+        flex: 1;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #0f111a;
+        color: #e8ecf3;
+        font-size: 14px;
+      }
+      button {
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #1f2334;
+        color: #e8ecf3;
+        cursor: pointer;
+        transition: transform 120ms ease, border 120ms ease;
+      }
+      button:hover {
+        transform: translateY(-1px);
+        border-color: rgba(158, 240, 195, 0.6);
+      }
+      .help {
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .badge {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(158, 240, 195, 0.12);
+        color: var(--accent);
+        border: 1px solid rgba(158, 240, 195, 0.2);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <header>
+        <h1>Whispering Wilds</h1>
+        <small>Browser port of <code>newfileqqqwertuhvgjkk.py</code> (text adventure)</small>
+      </header>
+      <div class="content">
+        <div class="badge">Commands: help, look, move n/s/e/w, take, use, talk caretaker, inv, map, stats, attack, rest, quit</div>
+        <div class="log" id="log"></div>
+        <div class="input-row">
+          <input id="cmd" type="text" placeholder="Type a command (e.g., look, move e, take key)" autofocus />
+          <button id="send">Enter</button>
+        </div>
+        <div class="help">Tip: take the rusty key, unlock the east gate, head into the wilds, and try attack/rest.</div>
+      </div>
+    </div>
+
+    <script>
+      // Lightweight JS port mirroring the Python adventure.
+      const logEl = document.getElementById("log");
+      const cmdEl = document.getElementById("cmd");
+      const sendBtn = document.getElementById("send");
+
+      const items = {
+        rust_key: { id: "rust_key", name: "Rusty Key", desc: "Old key with a jagged bite.", usable: true },
+        apple: { id: "apple", name: "Apple", desc: "A crisp, red apple.", usable: true },
+        mint: { id: "mint", name: "Wild Mint", desc: "Smells fresh.", usable: false },
+        torch: { id: "torch", name: "Old Torch", desc: "Might still light.", usable: false },
+      };
+
+      const world = {};
+      function addRoom(id, name, desc, tag) {
+        world[id] = { id, name, desc, items: [], neighbors: {}, npcs: [], tag };
+      }
+      function link(a, dir, b) {
+        world[a].neighbors[dir] = b;
+      }
+
+      // Base map
+      addRoom("sanctum", "Sanctum", "A quiet stone atrium with mossy pillars.");
+      addRoom("gate", "East Gate", "An iron gate bars the way east. A keyhole glints.");
+      addRoom("path", "Forest Path", "A winding path through whispering trees.");
+      addRoom("wilds_stub", "Overgrown Verge", "Tall grass hints at wilder lands to the east.", "part2_hook");
+      // Extra map
+      addRoom("grove_n", "Northern Grove", "Silver-barked trees and soft leaf litter.");
+      addRoom("cellar_s", "Sunken Cellar", "Damp stone, old crates, and a chill draft.");
+      addRoom("court_w", "Ruined Courtyard", "Broken statues and a dry fountain.");
+      addRoom("brook_ne", "Brook Crossing", "A shallow brook babbles over smooth stones.");
+      addRoom("thicket_se", "Southern Thicket", "Close-set shrubs tug at your sleeves.");
+      // Wilds
+      addRoom("wilds", "Whispering Wilds", "The wild lands teem with danger and chance.");
+
+      // Links
+      link("sanctum", "n", "grove_n");
+      link("sanctum", "s", "cellar_s");
+      link("sanctum", "w", "court_w");
+      link("sanctum", "e", "gate");
+      link("grove_n", "s", "sanctum");
+      link("grove_n", "e", "brook_ne");
+      link("brook_ne", "w", "grove_n");
+      link("cellar_s", "n", "sanctum");
+      link("cellar_s", "e", "thicket_se");
+      link("thicket_se", "w", "cellar_s");
+      link("court_w", "e", "sanctum");
+      link("gate", "w", "sanctum");
+      link("gate", "e", "path");
+      link("path", "w", "gate");
+      link("path", "e", "wilds_stub");
+      link("wilds_stub", "w", "path");
+      link("wilds_stub", "e", "wilds");
+      link("wilds", "w", "wilds_stub");
+
+      // Items/NPCs
+      world["sanctum"].items.push(items.rust_key);
+      world["path"].items.push(items.apple);
+      world["grove_n"].items.push(items.mint);
+      world["cellar_s"].items.push(items.torch);
+      world["sanctum"].npcs.push("Caretaker");
+
+      const player = {
+        room: "sanctum",
+        hp: 10,
+        maxHp: 10,
+        inv: {},
+        xp: 0,
+        bandages: 1,
+      };
+
+      function say(msg) {
+        const div = document.createElement("div");
+        div.innerHTML = msg;
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+      }
+
+      function look() {
+        const r = world[player.room];
+        say(`<strong>${r.name}</strong><br>${r.desc}`);
+        if (r.items.length) say(`Items here: ${r.items.map((i) => i.name).join(", ")}`);
+        if (r.npcs.length) say(`You see: ${r.npcs.join(", ")}`);
+        const exits = Object.keys(r.neighbors).sort().join(", ");
+        say(`Exits: ${exits || "none"}`);
+      }
+
+      function map() {
+        say(`[Map] You are at: ${world[player.room].name}. West: Sanctum. East: Woods.`);
+      }
+
+      function move(dir) {
+        const aliases = { north: "n", south: "s", east: "e", west: "w" };
+        dir = aliases[dir] || dir;
+        const r = world[player.room];
+        if (!r.neighbors[dir]) return say("You can't go that way.");
+        if (player.room === "gate" && dir === "e" && !player.inv.rust_key) {
+          return say("The gate is locked. A keyhole awaits a fitting key.");
+        }
+        player.room = r.neighbors[dir];
+        look();
+      }
+
+      function take(name) {
+        const r = world[player.room];
+        const wanted = name.toLowerCase();
+        const idx = r.items.findIndex(
+          (it) =>
+            wanted === it.id ||
+            wanted === it.name.toLowerCase() ||
+            it.id.toLowerCase().includes(wanted) ||
+            it.name.toLowerCase().includes(wanted)
+        );
+        if (idx === -1) return say("No such item here.");
+        const it = r.items.splice(idx, 1)[0];
+        player.inv[it.id] = it;
+        say(`You take the ${it.name}.`);
+      }
+
+      function drop(name) {
+        const key = Object.keys(player.inv).find(
+          (k) => name.toLowerCase() === k || name.toLowerCase() === player.inv[k].name.toLowerCase()
+        );
+        if (!key) return say("You don't have that.");
+        const it = player.inv[key];
+        delete player.inv[key];
+        world[player.room].items.push(it);
+        say(`You drop the ${it.name}.`);
+      }
+
+      function use(name) {
+        const key = Object.keys(player.inv).find(
+          (k) => name.toLowerCase() === k || name.toLowerCase() === player.inv[k].name.toLowerCase()
+        );
+        if (!key) return say("You don't have that.");
+        const it = player.inv[key];
+        if (it.id === "rust_key" && player.room === "gate") {
+          say("You turn the key. The gate creaks open eastward.");
+          return;
+        }
+        if (it.id === "apple") {
+          const healed = player.hp < player.maxHp;
+          player.hp = Math.min(player.maxHp, player.hp + 1);
+          delete player.inv["apple"];
+          say("You eat the apple." + (healed ? " (+1 HP)" : ""));
+          return;
+        }
+        say("You're not sure how to use that.");
+      }
+
+      function talk(name) {
+        if (name.toLowerCase() === "caretaker" && player.room === "sanctum") {
+          say('Caretaker: "Keys open ways, traveler. Try the east gate."');
+        } else {
+          say(`No response from ${name}.`);
+        }
+      }
+
+      function inv() {
+        const names = Object.values(player.inv).map((i) => i.name);
+        say(names.length ? `Inventory: ${names.join(", ")}` : "Inventory: (empty)");
+      }
+
+      function stats() {
+        say(`HP: ${player.hp}/${player.maxHp} | XP: ${player.xp} | Bandages: ${player.bandages}`);
+      }
+
+      function attack() {
+        player.xp += 1;
+        say("You strike into the air. (Dealt imaginary damage)");
+      }
+
+      function rest() {
+        if (player.hp < player.maxHp) {
+          player.hp = Math.min(player.maxHp, player.hp + 2);
+          say("You rest and recover 2 HP.");
+        } else {
+          say("You rest, but you're already at full health.");
+        }
+      }
+
+      function help() {
+        say(
+          "Commands: help, look, move n/s/e/w, take [item], drop [item], use [item], talk [name], inv, map, stats, attack, rest, quit"
+        );
+      }
+
+      function dispatch(line) {
+        const parts = line.trim().split(/\s+/);
+        if (!parts.length || !parts[0]) return;
+        const cmd = parts[0].toLowerCase();
+        const args = parts.slice(1);
+        switch (cmd) {
+          case "help": help(); break;
+          case "look": look(); break;
+          case "move":
+          case "go": args[0] ? move(args[0]) : say("Use: move n/s/e/w"); break;
+          case "take": args.length ? take(args.join(" ")) : say("Take what?"); break;
+          case "drop": args.length ? drop(args.join(" ")) : say("Drop what?"); break;
+          case "use": args.length ? use(args.join(" ")) : say("Use what?"); break;
+          case "talk": args.length ? talk(args.join(" ")) : say("Talk to whom?"); break;
+          case "inv": inv(); break;
+          case "map": map(); break;
+          case "stats": stats(); break;
+          case "attack": attack(); break;
+          case "rest": rest(); break;
+          case "n":
+          case "s":
+          case "e":
+          case "w":
+            move(cmd); break;
+          case "quit":
+          case "exit": say("Session ended. Refresh to restart."); break;
+          default: say("Unknown command. Try 'help'.");
+        }
+      }
+
+      function init() {
+        say("Welcome to the Whispering Wilds. Type 'help' for commands.");
+        look();
+      }
+
+      sendBtn.addEventListener("click", () => {
+        const val = cmdEl.value.trim();
+        if (!val) return;
+        say(`<span style="color:${'var(--muted)'};">&gt; ${val}</span>`);
+        dispatch(val);
+        cmdEl.value = "";
+        cmdEl.focus();
+      });
+      cmdEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendBtn.click();
+      });
+
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boundary Road Panos</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f1115;
+      --panel: #161922;
+      --border: #252a36;
+      --accent: #7cd2ff;
+      --text: #e7e9ee;
+      --muted: #9aa3b5;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: Inter, "Segoe UI", system-ui, sans-serif; height: 100vh; display: grid; grid-template-columns: 320px 1fr; }
+    aside { padding: 20px; border-right: 1px solid var(--border); background: var(--panel); display: flex; flex-direction: column; gap: 12px; }
+    h1 { margin: 0 0 4px; font-size: 20px; color: var(--accent); }
+    p { margin: 0; color: var(--muted); }
+    select, button { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: #0c0f17; color: var(--text); font-size: 14px; }
+    button { cursor: pointer; transition: transform 120ms ease, border-color 120ms ease; }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    .viewer { position: relative; }
+    #pano { width: 100%; height: 100vh; }
+    .meta { font-size: 13px; line-height: 1.5; }
+    .pill { display: inline-block; background: #1f2533; border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; margin-right: 6px; margin-bottom: 6px; color: var(--muted); }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/panolens@0.12.0/build/panolens.min.js"></script>
+</head>
+<body>
+  <aside>
+    <div>
+      <h1>Boundary Road Panos</h1>
+      <p>WSAD/mouse drag to look. Use the list to jump between rooms.</p>
+    </div>
+    <label>
+      <span class="meta">Choose a room</span>
+      <select id="pano-select"></select>
+    </label>
+    <div style="display:flex; gap:8px;">
+      <button id="prev">◀ Prev</button>
+      <button id="next">Next ▶</button>
+    </div>
+    <div class="meta">
+      <div id="label" style="font-weight:600; margin-bottom:6px;"></div>
+      <div id="notes"></div>
+      <div style="margin-top:8px;" id="tags"></div>
+    </div>
+    <div class="meta" style="margin-top:auto;">
+      <p>Files live in <code>/public/panos/</code>. Want more fidelity? Drop higher-res JPGs with the same names and reload.</p>
+    </div>
+  </aside>
+  <div class="viewer">
+    <div id="pano"></div>
+  </div>
+  <script>
+    const panos = [
+      { file: "6a9dcc02-8f31-401c-b140-481c54d993f7.jpg", label: "Kitchen / Living", notes: "Start here; central space.", tags: ["kitchen", "living", "entry"] },
+      { file: "0e48e5c2-439f-4498-ade0-7d6771a41307.jpg", label: "Hallway (Kitchen side)", notes: "Looking toward kitchen/living.", tags: ["hallway"] },
+      { file: "3c7dca77-cefc-4249-9a2e-c6cff36b1f14.jpg", label: "Hallway (Entry side)", notes: "Entry-side view of the hall.", tags: ["hallway", "entry"] },
+      { file: "0dc837e6-fee6-4243-aa83-f5a0eb175f86.jpg", label: "Bathroom", notes: "", tags: ["bathroom"] },
+      { file: "1c47c819-169c-4929-bda6-624ecabaf169.jpg", label: "Tiled Room", notes: "Tiled room off the hall.", tags: ["room", "tiled"] },
+      { file: "5ac9a54245563e00644b3efdee0bb113.jpg", label: "Patio Door", notes: "Inside view toward patio.", tags: ["patio", "door"] },
+      { file: "7d1d626e-5b6e-485c-b763-b30873df15ac.jpg", label: "Patio Ramp", notes: "Ramp/outdoor approach.", tags: ["patio", "ramp", "outdoor"] },
+      { file: "7d88da36-6f7e-498e-acdb-5aadcceb621f.jpg", label: "Garage / Workshop", notes: "Workshop/garage view.", tags: ["garage", "workshop"] },
+      { file: "2f7547c2-aaab-42df-a031-7c6e1e13fc82.jpg", label: "Backyard", notes: "Backyard pano.", tags: ["backyard", "outdoor"] },
+    ];
+
+    const selectEl = document.getElementById("pano-select");
+    const labelEl = document.getElementById("label");
+    const notesEl = document.getElementById("notes");
+    const tagsEl = document.getElementById("tags");
+
+    panos.forEach((p, idx) => {
+      const opt = document.createElement("option");
+      opt.value = idx;
+      opt.textContent = p.label;
+      selectEl.appendChild(opt);
+    });
+
+    const viewer = new PANOLENS.Viewer({ container: document.getElementById("pano"), autoHideInfospot: false });
+    const scenes = panos.map((p) => new PANOLENS.ImagePanorama(`/panos/${p.file}`));
+    scenes.forEach((scene) => viewer.add(scene));
+
+    let current = 0;
+    function show(idx) {
+      current = (idx + panos.length) % panos.length;
+      selectEl.value = String(current);
+      viewer.setPanorama(scenes[current]);
+      const meta = panos[current];
+      labelEl.textContent = meta.label;
+      notesEl.textContent = meta.notes || " ";
+      tagsEl.innerHTML = meta.tags.map((t) => `<span class=\"pill\">${t}</span>`).join("");
+    }
+
+    selectEl.addEventListener("change", (e) => show(parseInt(e.target.value, 10)));
+    document.getElementById("prev").addEventListener("click", () => show(current - 1));
+    document.getElementById("next").addEventListener("click", () => show(current + 1));
+
+    show(0);
+  </script>
+</body>
+</html>

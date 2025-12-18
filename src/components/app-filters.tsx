@@ -1,28 +1,40 @@
+"use client";
+
 import { useMemo } from "react";
 
 import { Input } from "@/components/ui/input";
-import { labelText } from "@/components/ui/text";
 import type { AppCategory, AppStatus } from "@/data/apps";
 
 interface Props {
   search: string;
-  setSearch: (v: string) => void;
+  onSearchChange: (v: string) => void;
   category: AppCategory | "all";
-  setCategory: (v: AppCategory | "all") => void;
+  onCategoryChange: (v: AppCategory | "all") => void;
   status: AppStatus | "all";
-  setStatus: (v: AppStatus | "all") => void;
+  onStatusChange: (v: AppStatus | "all") => void;
 }
 
 export function AppFilters({
   search,
-  setSearch,
+  onSearchChange,
   category,
-  setCategory,
+  onCategoryChange,
   status,
-  setStatus,
+  onStatusChange,
 }: Props) {
   const categories = useMemo<AppCategory[]>(
-    () => ["Dubbo / DCS", "Games"],
+    () => [
+      "Apps",
+      "Dubbo / DCS",
+      "Games",
+      "Finance",
+      "Planning",
+      "Family & Home",
+      "Health & Wellness",
+      "Research & Docs",
+      "Services",
+      "Writing & Content",
+    ],
     []
   );
   const statuses = useMemo<AppStatus[]>(() => ["ok", "broken", "wip", "archived"], []);
@@ -32,22 +44,23 @@ export function AppFilters({
       <div className="md:w-1/2">
         <Input
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value)}
           placeholder="Search by name, tag, or note..."
-          aria-label="Search apps"
+          aria-label="Search apps and games"
+          className="bg-card text-foreground placeholder:text-muted-foreground"
         />
       </div>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
         <Select
           label="Category"
           value={category}
-          onChange={(value) => setCategory(value as AppCategory | "all")}
+          onChange={(value) => onCategoryChange(value as AppCategory | "all")}
           options={[{ label: "All", value: "all" }, ...categories.map((c) => ({ label: c, value: c }))]}
         />
         <Select
           label="Status"
           value={status}
-          onChange={(value) => setStatus(value as AppStatus | "all")}
+          onChange={(value) => onStatusChange(value as AppStatus | "all")}
           options={[{ label: "All", value: "all" }, ...statuses.map((s) => ({ label: s.toUpperCase(), value: s }))]}
         />
       </div>
@@ -64,10 +77,10 @@ interface SelectProps {
 
 function Select({ label, value, onChange, options }: SelectProps) {
   return (
-    <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
-      <span className={`${labelText} whitespace-nowrap`}>{label}:</span>
+    <label className="flex items-center gap-2 text-sm text-muted-foreground">
+      <span className="whitespace-nowrap">{label}:</span>
       <select
-        className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+        className="h-10 rounded-md border border-border bg-card px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
