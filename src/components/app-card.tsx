@@ -59,10 +59,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
               Open
             </Link>
           </div>
-<<<<<<< HEAD
           
-=======
->>>>>>> origin/main
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
