@@ -480,7 +480,7 @@ export const apps: CatalogItem[] = [
     name: "JoshTapApp",
     type: "game",
     category: "Games",
-    status: "ok",
+    status: "wip",
     tags: ["game", "tap", "mobile", "todo-publish"],
     primaryUrl: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
     urls: [
@@ -491,7 +491,8 @@ export const apps: CatalogItem[] = [
       { label: "Repo (joshuaparris-max/JoshTap)", url: "https://github.com/joshuaparris-max/JoshTap" },
     ],
     notes: "Combined Drive folder hosts current builds/APKs alongside repo mirrors.",
-    nextAction: "Document platform targets, unify build pipeline, and publish a stable APK/web build.",
+    nextAction: "Document platform targets, unify build pipeline, and publish a stable APK or create a minimal web demo; consolidate artifacts into a single repo/Drive index.",
+    lastTouched: "2025-12",
   },
   {
     id: "josh-nfc-audio",
@@ -636,14 +637,14 @@ export const apps: CatalogItem[] = [
     name: "TapLite MVP",
     type: "app",
     category: "Apps",
-    status: "ok",
+    status: "wip",
     tags: ["tap", "audio", "mobile", "todo-publish"],
     primaryUrl: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
     urls: [
       { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
     ],
     notes: "Prototype in Apps/ParrisTapApp/TapLiteMVP; combined Drive folder includes builds/APKs with JoshNFC/JoshTap.",
-    nextAction: "Document artifacts in Drive and add platform notes; optional web/Android demo later.",
+    nextAction: "Document artifacts in Drive and add platform notes; create a minimal web/Android demo and update primaryUrl to a Play link when ready.",
     lastTouched: "2025-12",
   },
   {
@@ -666,7 +667,7 @@ export const apps: CatalogItem[] = [
     name: "JoshNFCApp",
     type: "app",
     category: "Apps",
-    status: "ok",
+    status: "wip",
     tags: ["nfc", "mobile", "android", "download", "todo-publish"],
     primaryUrl: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
     urls: [
@@ -676,7 +677,7 @@ export const apps: CatalogItem[] = [
       { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
     ],
     notes: "Android APKs hosted locally plus combined Drive folder for JoshNFC/TapLite/JoshTap builds.",
-    nextAction: "Add source repo + README; consider web/PWA build before marking OK.",
+    nextAction: "Add source repo + README; produce a minimal PWA/web demo and deploy to gh-pages or Vercel before marking OK.",
     lastTouched: "2025-12",
   },
   {
