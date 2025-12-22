@@ -273,7 +273,7 @@ export async function seedPlatformData() {
       weekStart: "2026-01-12",
       wins: "Dad arrived safely. Convoy preparation complete.",
       drains: "Packing stress. Last minute cleaning.",
-      top3: "1. Drive Safely\n2. Unpack Essentials\n3. Relax",
+      top3: ["Drive safely", "Unpack essentials", "Relax"],
       experiment: "No screens after 9pm during the move.",
       createdAt: now,
       updatedAt: now,
