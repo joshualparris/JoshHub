@@ -52,3 +52,24 @@ export function useBookmarks() {
 export function usePins() {
   return useLiveQuery(async () => db.pins.toArray(), []);
 }
+
+export function useActivities() {
+  return useLiveQuery(async () => db.activities.orderBy("startTimeIso").reverse().toArray(), []);
+}
+
+export function useDailyMetrics() {
+  return useLiveQuery(async () => db.dailyMetrics.orderBy("date").reverse().toArray(), []);
+}
+
+export function useHealthImports() {
+  return useLiveQuery(async () => db.healthImports.orderBy("createdAt").reverse().toArray(), []);
+}
+
+export function useTelemetry(type?: string) {
+  return useLiveQuery(async () => {
+    if (type) {
+      return db.telemetry.where("type").equals(type).reverse().sortBy("timestampIso");
+    }
+    return db.telemetry.orderBy("timestampIso").reverse().toArray();
+  }, [type]);
+}

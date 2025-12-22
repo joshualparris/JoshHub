@@ -1,0 +1,8 @@
+/* Minimal header styles for JoshHub global header */
+#joshhub-header{position:fixed;left:0;right:0;top:0;height:48px;background:rgba(2,6,23,0.9);color:#e6eef6;z-index:99999;display:flex;align-items:center;padding:6px 12px;box-shadow:0 2px 8px rgba(0,0,0,0.5)}
+#joshhub-header .inner{display:flex;gap:8px;align-items:center;width:100%;max-width:1200px;margin:0 auto}
+#joshhub-header a.home{color:#7cd2ff;text-decoration:none;font-weight:600;margin-right:8px}
+#joshhub-header a.back{margin-left:auto;color:#cbd5e1;text-decoration:none}
+.jh-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit;padding:6px 10px;border-radius:8px;cursor:pointer}
+body.show-instructions *[data-jh-help]{outline:2px dashed rgba(124,210,255,0.18)}
+body{padding-top:56px}
