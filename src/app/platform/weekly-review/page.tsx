@@ -13,7 +13,7 @@ import { createWeeklyReview } from "@/lib/db/platform";
 export default function WeeklyReviewPage() {
   const reviews = usePlatformWeeklyReviews();
   const [weekStart, setWeekStart] = useState<string>(() => new Date().toISOString().slice(0, 10));
-  const [whatChanged, setWhatChanged] = useState("");
+  const [wins, setWins] = useState("");
   const [drained, setDrained] = useState("");
   const [gaveLife, setGaveLife] = useState("");
   const [top3, setTop3] = useState("");
@@ -25,16 +25,16 @@ export default function WeeklyReviewPage() {
     e.preventDefault();
     await createWeeklyReview({
       weekStart,
-      whatChanged: whatChanged.trim() || null,
-      drained: drained.trim() || null,
-      gaveLife: gaveLife.trim() || null,
+      wins: wins.trim() || null,
+      drains: drained.trim() || null,
+      givesLife: gaveLife.trim() || null,
       top3: top3
         .split(",")
         .map((t) => t.trim())
         .filter(Boolean),
       experiment: experiment.trim() || null,
     });
-    setWhatChanged("");
+    setWins("");
     setDrained("");
     setGaveLife("");
     setTop3("");
@@ -59,7 +59,7 @@ export default function WeeklyReviewPage() {
               <label className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">Week of</label>
               <Input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="md:max-w-xs" />
             </div>
-            <Textarea placeholder="What changed?" value={whatChanged} onChange={(e) => setWhatChanged(e.target.value)} />
+            <Textarea placeholder="What changed?" value={wins} onChange={(e) => setWins(e.target.value)} />
             <Textarea placeholder="What drained me?" value={drained} onChange={(e) => setDrained(e.target.value)} />
             <Textarea placeholder="What gave life?" value={gaveLife} onChange={(e) => setGaveLife(e.target.value)} />
             <Input
@@ -86,9 +86,9 @@ export default function WeeklyReviewPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-neutral-700 dark:text-slate-200">
-              {rev.whatChanged && <Line label="Changed" text={rev.whatChanged} />}
-              {rev.drained && <Line label="Drained" text={rev.drained} />}
-              {rev.gaveLife && <Line label="Gave life" text={rev.gaveLife} />}
+              {rev.wins && <Line label="Changed" text={rev.wins} />}
+              {rev.drains && <Line label="Drained" text={rev.drains} />}
+              {rev.givesLife && <Line label="Gave life" text={rev.givesLife} />}
               {rev.top3 && rev.top3.length > 0 && <Line label="Top 3" text={rev.top3.join(" · ")} />}
               {rev.experiment && <Line label="Experiment" text={rev.experiment} />}
             </CardContent>
