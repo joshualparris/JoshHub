@@ -18,9 +18,7 @@ export function useNote(id?: string) {
 }
 
 export function useTasks() {
-  return useLiveQuery(async () => {
-    return db.tasks.orderBy("updatedAt").reverse().toArray();
-  }, []);
+  return useLiveQuery(async () => db.tasks.orderBy("updatedAt").reverse().toArray(), []);
 }
 
 export function useRoutines() {
@@ -53,6 +51,7 @@ export function usePins() {
   return useLiveQuery(async () => db.pins.toArray(), []);
 }
 
+// Learn
 export function useLearnTopics() {
   return useLiveQuery(async () => db.learnTopics.orderBy("updatedAt").reverse().toArray(), []);
 }
@@ -72,6 +71,7 @@ export function useLearnSessions() {
   return useLiveQuery(async () => db.learnSessions.orderBy("createdAt").reverse().toArray(), []);
 }
 
+// Health
 export function useActivities() {
   return useLiveQuery(async () => db.activities.orderBy("startTimeIso").reverse().toArray(), []);
 }
@@ -91,4 +91,8 @@ export function useTelemetry(type?: string) {
     }
     return db.telemetry.orderBy("timestampIso").reverse().toArray();
   }, [type]);
+}
+
+export function useDigitalEvents(limit = 50) {
+  return useLiveQuery(async () => db.digitalEvents.orderBy("timestampIso").reverse().limit(limit).toArray(), [limit]);
 }

@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db/dexie";
-import { addHealthImport, recordActivity } from "@/lib/db/health";
-import { useActivities, useDailyMetrics, useHealthImports } from "@/lib/db/hooks";
+import { addDigitalEvent, addHealthImport, recordActivity } from "@/lib/db/health";
+import { useActivities, useDailyMetrics, useDigitalEvents, useHealthImports } from "@/lib/db/hooks";
 import type { ActivitySport } from "@/lib/db/schema";
 
 type ImportOutcome = {
@@ -26,6 +26,7 @@ export default function HealthImportPage() {
   const dailyMetrics = useDailyMetrics();
   const imports = useHealthImports();
   const activities = useActivities();
+  useDigitalEvents(); // ensure subscription
 
   const stats7d = useMemo(() => compute7dStats(dailyMetrics ?? []), [dailyMetrics]);
 
@@ -37,40 +38,107 @@ export default function HealthImportPage() {
     const updatedDays = new Set<string>();
 
     for (const file of Array.from(fileList)) {
-      if (!file.name.toLowerCase().endsWith(".tcx")) {
-        outcomes.push({
-          fileName: file.name,
-          status: "error",
-          message: "Unsupported file type (only .tcx for now).",
-        });
-        await addHealthImport({ fileName: file.name, status: "error", message: "Unsupported file type" });
-        continue;
-      }
-
       try {
         const text = await file.text();
-        const parsed = parseTcx(text, file.name);
-        if (parsed.activity) {
-          const activity = await recordActivity(parsed.activity);
-          if (activity.startTimeIso) updatedDays.add(activity.startTimeIso.slice(0, 10));
-          activitiesAdded += 1;
-          await addHealthImport({ fileName: file.name, status: "success", message: parsed.message });
-          outcomes.push({ fileName: file.name, status: "success", message: parsed.message ?? "Imported" });
-        } else {
+        const lower = file.name.toLowerCase();
+        if (lower.endsWith(".tcx")) {
+          const parsed = parseTcx(text, file.name);
+          if (parsed.activity) {
+            const activity = await recordActivity(parsed.activity);
+            if (activity.startTimeIso) updatedDays.add(activity.startTimeIso.slice(0, 10));
+            activitiesAdded += 1;
+            await addHealthImport({
+              fileName: file.name,
+              status: "success",
+              message: parsed.message,
+              sourceType: "tcx",
+              sizeBytes: file.size,
+              rawPreview: previewText(text),
+            });
+            outcomes.push({ fileName: file.name, status: "success", message: parsed.message ?? "Imported" });
+          } else {
+            await addHealthImport({
+              fileName: file.name,
+              status: "error",
+              message: parsed.message ?? "Unknown parsing issue",
+              sourceType: "tcx",
+              sizeBytes: file.size,
+              rawPreview: previewText(text),
+            });
+            outcomes.push({
+              fileName: file.name,
+              status: "error",
+              message: parsed.message ?? "Could not parse TCX file",
+            });
+          }
+        } else if (lower.endsWith(".json")) {
+          const parsed = parseFitJson(text, file.name);
+          for (const a of parsed.activities) {
+            const activity = await recordActivity(a);
+            if (activity.startTimeIso) updatedDays.add(activity.startTimeIso.slice(0, 10));
+            activitiesAdded += 1;
+          }
+          for (const d of parsed.dailyUpdates) {
+            const existing = await db.dailyMetrics.get(d.date);
+            await db.dailyMetrics.put({
+              date: d.date,
+              runsCount: existing?.runsCount ?? 0,
+              runDistanceM: existing?.runDistanceM ?? 0,
+              distanceM: (existing?.distanceM ?? 0) + (d.distanceM ?? 0),
+              steps: (existing?.steps ?? 0) + (d.steps ?? 0),
+              updatedAt: Date.now(),
+            });
+            updatedDays.add(d.date);
+          }
           await addHealthImport({
             fileName: file.name,
-            status: "error",
-            message: parsed.message ?? "Unknown parsing issue",
+            status: parsed.message ? "error" : "success",
+            message: parsed.message ?? `Imported ${parsed.activities.length} entries`,
+            sourceType: "fit_json",
+            sizeBytes: file.size,
+            rawPreview: previewText(text),
           });
           outcomes.push({
             fileName: file.name,
+            status: parsed.message ? "error" : "success",
+            message: parsed.message ?? `Imported ${parsed.activities.length} entries`,
+          });
+        } else if (lower.endsWith(".html") || lower.endsWith(".htm")) {
+          const parsed = parseMyActivityHtml(text);
+          for (const ev of parsed.events) {
+            await addDigitalEvent(ev);
+          }
+          await addHealthImport({
+            fileName: file.name,
+            status: parsed.events.length > 0 ? "success" : "error",
+            message: parsed.message ?? `Captured ${parsed.events.length} events`,
+            sourceType: "my_activity_html",
+            sizeBytes: file.size,
+            rawPreview: previewText(text),
+          });
+          outcomes.push({
+            fileName: file.name,
+            status: parsed.events.length > 0 ? "success" : "error",
+            message: parsed.message ?? `Captured ${parsed.events.length} events`,
+          });
+        } else {
+          outcomes.push({
+            fileName: file.name,
             status: "error",
-            message: parsed.message ?? "Could not parse TCX file",
+            message: "Unsupported file type (tcx, json, html supported).",
+          });
+          await addHealthImport({
+            fileName: file.name,
+            status: "error",
+            message: "Unsupported file type",
+            sourceType: "unknown",
+            sizeBytes: file.size,
+            rawPreview: previewText(text),
           });
         }
       } catch (err) {
         const care2g = err instanceof Error ? err.message : "Unexpected error";
-        await addHealthImport({ fileName: file.name, status: "error", message: care2g });
+        await addHealthImport({ fileName: file.name, status: "error", message: care2g, rawPreview: null, sizeBytes: file.size });
         outcomes.push({ fileName: file.name, status: "error", message: care2g });
       }
     }
@@ -138,7 +206,7 @@ export default function HealthImportPage() {
                 ref={inputRef}
                 type="file"
                 multiple
-                accept=".tcx"
+                accept=".tcx,.json,.html,.htm"
                 className="hidden"
                 onChange={(e) => handleFiles(e.target.files)}
               />
@@ -422,4 +490,114 @@ function inferSport(avgSpeedMps: number | null): ActivitySport {
     return "walk";
   }
   return "other";
+}
+
+function parseFitJson(text: string, fileName: string) {
+  try {
+    const json = JSON.parse(text);
+    const activities: Array<{
+      source: "tcx" | "fit_json";
+      fileName?: string;
+      sport: ActivitySport;
+      startTimeIso?: string | null;
+      endTimeIso?: string | null;
+      distanceM?: number | null;
+      durationSec?: number | null;
+      elevationGainM?: number | null;
+      avgSpeedMps?: number | null;
+    }> = [];
+    const dailyUpdates: Array<{ date: string; steps?: number | null; distanceM?: number | null }> = [];
+
+    // Handle common Google Fit aggregate shape: buckets -> dataset -> point
+    const buckets = Array.isArray(json?.bucket) ? json.bucket : null;
+    if (buckets) {
+      for (const bucket of buckets) {
+        const startTime = bucket.startTimeMillis ? Number(bucket.startTimeMillis) : Number(bucket.startTime) || null;
+        const endTime = bucket.endTimeMillis ? Number(bucket.endTimeMillis) : Number(bucket.endTime) || null;
+        const date = startTime ? new Date(startTime).toISOString().slice(0, 10) : null;
+        let steps = 0;
+        let distanceM = 0;
+        for (const dataset of bucket.dataset ?? []) {
+          for (const point of dataset.point ?? []) {
+            const val = point.value?.[0];
+            const fpVal = typeof val?.fpVal === "number" ? val.fpVal : null;
+            const intVal = typeof val?.intVal === "number" ? val.intVal : null;
+            if (point.dataTypeName?.includes("step_count")) steps += intVal ?? fpVal ?? 0;
+            if (point.dataTypeName?.includes("distance")) distanceM += fpVal ?? intVal ?? 0;
+          }
+        }
+        if (date) {
+          dailyUpdates.push({ date, steps, distanceM });
+        }
+        if (startTime && endTime && distanceM > 0) {
+          const durationSec = Math.max(0, (endTime - startTime) / 1000);
+          activities.push({
+            source: "fit_json",
+            fileName,
+            sport: inferSport(distanceM && durationSec ? distanceM / durationSec : null),
+            startTimeIso: new Date(startTime).toISOString(),
+            endTimeIso: new Date(endTime).toISOString(),
+            distanceM,
+            durationSec,
+            elevationGainM: null,
+            avgSpeedMps: distanceM && durationSec ? distanceM / durationSec : null,
+          });
+        }
+      }
+    }
+
+    return { activities, dailyUpdates, message: activities.length === 0 && dailyUpdates.length === 0 ? "Unrecognised JSON format" : null };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Failed to parse JSON";
+    return { activities: [], dailyUpdates: [], message };
+  }
+}
+
+function parseMyActivityHtml(html: string) {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const nodes = Array.from(doc.querySelectorAll("li, div"));
+    const events: Array<{
+      source: "my_activity_html";
+      timestampIso: string | null;
+      type: "search" | "gemini" | "youtube" | "visit" | "unknown";
+      text: string;
+      url?: string | null;
+      meta?: Record<string, unknown> | null;
+    }> = [];
+    for (const node of nodes) {
+      const textContent = node.textContent?.trim();
+      if (!textContent) continue;
+      const timeNode = node.querySelector("time");
+      const timestampIso = timeNode?.getAttribute("datetime") ?? null;
+      const link = node.querySelector("a");
+      const href = link?.getAttribute("href") ?? null;
+      const lower = textContent.toLowerCase();
+      let type: "search" | "gemini" | "youtube" | "visit" | "unknown" = "unknown";
+      if (lower.includes("search")) type = "search";
+      if (lower.includes("gemini")) type = "gemini";
+      if (lower.includes("youtube")) type = "youtube";
+      if (href) type = "visit";
+      events.push({
+        source: "my_activity_html",
+        timestampIso,
+        type,
+        text: textContent,
+        url: href,
+        meta: null,
+      });
+    }
+    return { events, message: events.length === 0 ? "No events parsed" : null };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Failed to parse HTML";
+    return { events: [], message };
+  }
+}
+
+function previewText(text: string, length = 400) {
+  if (text.length <= length) return text;
+  const head = text.slice(0, length / 2);
+  const tail = text.slice(-length / 2);
+  return `${head}\n...\n${tail}`;
 }

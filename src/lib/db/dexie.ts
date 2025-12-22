@@ -6,21 +6,23 @@ import type {
   DailyMetrics,
   FamilyRhythm,
   HealthImport,
+  DigitalEvent,
   MetricLog,
   MovementLog,
   Note,
   NutritionLog,
   Pin,
-  PlatformDecisionCard,
-  PlatformMoveOp,
-  PlatformOpportunity,
-  PlatformWeeklyReview,
   Routine,
   RoutineRun,
   SleepLog,
   Task,
   TelemetryPoint,
-  // Learn types
+  // Platform (new)
+  PlatformMoveOp,
+  PlatformDecisionCard,
+  PlatformOpportunity,
+  PlatformWeeklyReview,
+  // Learn
   LearnNote,
   LearnResource,
   LearnSession,
@@ -46,16 +48,18 @@ class JoshHubDB extends Dexie {
   dailyMetrics!: Table<DailyMetrics>;
   healthImports!: Table<HealthImport>;
   telemetry!: Table<TelemetryPoint>;
+  digitalEvents!: Table<DigitalEvent>;
+  // Platform
   platformMoveOps!: Table<PlatformMoveOp>;
   platformDecisionCards!: Table<PlatformDecisionCard>;
   platformOpportunities!: Table<PlatformOpportunity>;
   platformWeeklyReviews!: Table<PlatformWeeklyReview>;
-  // Learn tables
-  learnTopics!: Table<import("./schema").LearnTopic>;
-  learnResources!: Table<import("./schema").LearnResource>;
-  learnNotes!: Table<import("./schema").LearnNote>;
-  learnSessions!: Table<import("./schema").LearnSession>;
-  learnSettings!: Table<import("./schema").LearnSetting>;
+  // Learn
+  learnTopics!: Table<LearnTopic>;
+  learnResources!: Table<LearnResource>;
+  learnNotes!: Table<LearnNote>;
+  learnSessions!: Table<LearnSession>;
+  learnSettings!: Table<LearnSetting>;
 
   constructor() {
     super("joshhub-db");
@@ -168,6 +172,34 @@ class JoshHubDB extends Dexie {
       dailyMetrics: "date, updatedAt",
       healthImports: "id, fileName, status, createdAt",
       telemetry: "id, timestampIso, type, source",
+    });
+    this.version(7).stores({
+      notes: "id, nodeId, lifeAreaSlug, updatedAt, createdAt",
+      tasks: "id, status, dueDate, projectId, updatedAt, createdAt",
+      bookmarks: "id, url, createdAt",
+      routines: "id, name, createdAt",
+      routineRuns: "id, routineId, startedAt",
+      pins: "id, createdAt",
+      events: "id, startIso, endIso, updatedAt, createdAt",
+      sleep: "id, date",
+      movement: "id, date",
+      nutrition: "id, date",
+      metrics: "id, dateTimeIso",
+      family: "id",
+      platformMoveOps: "id, status, dueDate, sortOrder, createdAt",
+      platformDecisionCards: "id, status, dueBy, createdAt",
+      platformOpportunities: "id, stage, expectedValuePerMonth, createdAt",
+      platformWeeklyReviews: "id, weekStart, createdAt",
+      learnTopics: "id, name, category, status, tags, updatedAt, createdAt",
+      learnResources: "id, title, type, status, createdAt, updatedAt",
+      learnNotes: "id, topicId, resourceId, createdAt, updatedAt",
+      learnSessions: "id, topicId, resourceId, minutes, createdAt",
+      learnSettings: "key, updatedAt",
+      activities: "id, startTimeIso, sport, createdAt",
+      dailyMetrics: "date, updatedAt",
+      healthImports: "id, fileName, status, createdAt",
+      telemetry: "id, timestampIso, type, source",
+      digitalEvents: "id, timestampIso, type, source, createdAt",
     });
   }
 }

@@ -1,6 +1,19 @@
 import { db } from "./dexie";
 import { uuid } from "./id";
-import type { Bookmark, Note, Routine, RoutineRun, Task, TaskStatus, TaskPriority } from "./schema";
+import type {
+  Bookmark,
+  DigitalEvent,
+  Note,
+  Routine,
+  RoutineRun,
+  Task,
+  TaskPriority,
+  TaskStatus,
+  PlatformMoveOp,
+  PlatformDecisionCard,
+  PlatformOpportunity,
+  PlatformWeeklyReview,
+} from "./schema";
 
 export async function createNote(partial: Partial<Note> & { title: string }) {
   const now = Date.now();
@@ -135,19 +148,41 @@ export type BackupPayload = {
   routines: Routine[];
   routineRuns: RoutineRun[];
   pins: { id: string; createdAt: number }[];
+  platformOpportunities?: PlatformOpportunity[];
+  platformDecisionCards?: PlatformDecisionCard[];
+  platformMoveOps?: PlatformMoveOp[];
+  platformWeeklyReviews?: PlatformWeeklyReview[];
+  digitalEvents?: DigitalEvent[];
 };
 
 export async function exportAll(): Promise<BackupPayload> {
-  const [notes, tasks, bookmarks, routines, routineRuns, pins] = await Promise.all([
+  const [
+    notes,
+    tasks,
+    bookmarks,
+    routines,
+    routineRuns,
+    pins,
+    platformOpportunities,
+    platformDecisionCards,
+    platformMoveOps,
+    platformWeeklyReviews,
+    digitalEvents,
+  ] = await Promise.all([
     db.notes.toArray(),
     db.tasks.toArray(),
     db.bookmarks.toArray(),
     db.routines.toArray(),
     db.routineRuns.toArray(),
     db.pins.toArray(),
+    db.platformOpportunities?.toArray?.() ?? [],
+    db.platformDecisionCards?.toArray?.() ?? [],
+    db.platformMoveOps?.toArray?.() ?? [],
+    db.platformWeeklyReviews?.toArray?.() ?? [],
+    db.digitalEvents?.toArray?.() ?? [],
   ]);
   return {
-    version: "1",
+    version: "2",
     exportedAt: new Date().toISOString(),
     notes,
     tasks,
@@ -155,29 +190,71 @@ export async function exportAll(): Promise<BackupPayload> {
     routines,
     routineRuns,
     pins,
+    platformOpportunities,
+    platformDecisionCards,
+    platformMoveOps,
+    platformWeeklyReviews,
+    digitalEvents,
   };
 }
 
 export async function importAll(payload: BackupPayload, mode: "replace" | "merge" = "replace") {
-  const { notes = [], tasks = [], bookmarks = [], routines = [], routineRuns = [], pins = [] } =
-    payload ?? {};
+  const {
+    notes = [],
+    tasks = [],
+    bookmarks = [],
+    routines = [],
+    routineRuns = [],
+    pins = [],
+    platformOpportunities = [],
+    platformDecisionCards = [],
+    platformMoveOps = [],
+    platformWeeklyReviews = [],
+    digitalEvents = [],
+  } = payload ?? {};
   if (mode === "replace") {
-    await db.transaction("rw", [db.notes, db.tasks, db.bookmarks, db.routines, db.routineRuns, db.pins], async () => {
-      await Promise.all([
-        db.notes.clear(),
-        db.tasks.clear(),
-        db.bookmarks.clear(),
-        db.routines.clear(),
-        db.routineRuns.clear(),
-        db.pins.clear(),
-      ]);
-      await db.notes.bulkAdd(notes);
-      await db.tasks.bulkAdd(tasks);
-      await db.bookmarks.bulkAdd(bookmarks);
-      await db.routines.bulkAdd(routines);
-      await db.routineRuns.bulkAdd(routineRuns);
-      await db.pins.bulkAdd(pins);
-    });
+    await db.transaction(
+      "rw",
+      [
+        db.notes,
+        db.tasks,
+        db.bookmarks,
+        db.routines,
+        db.routineRuns,
+        db.pins,
+        db.platformOpportunities,
+        db.platformDecisionCards,
+        db.platformMoveOps,
+        db.platformWeeklyReviews,
+        db.digitalEvents,
+      ],
+      async () => {
+        await Promise.all([
+          db.notes.clear(),
+          db.tasks.clear(),
+          db.bookmarks.clear(),
+          db.routines.clear(),
+          db.routineRuns.clear(),
+          db.pins.clear(),
+          db.platformOpportunities.clear(),
+          db.platformDecisionCards.clear(),
+          db.platformMoveOps.clear(),
+          db.platformWeeklyReviews.clear(),
+          db.digitalEvents.clear(),
+        ]);
+        await db.notes.bulkAdd(notes);
+        await db.tasks.bulkAdd(tasks);
+        await db.bookmarks.bulkAdd(bookmarks);
+        await db.routines.bulkAdd(routines);
+        await db.routineRuns.bulkAdd(routineRuns);
+        await db.pins.bulkAdd(pins);
+        await db.platformOpportunities.bulkAdd(platformOpportunities);
+        await db.platformDecisionCards.bulkAdd(platformDecisionCards);
+        await db.platformMoveOps.bulkAdd(platformMoveOps);
+        await db.platformWeeklyReviews.bulkAdd(platformWeeklyReviews);
+        await db.digitalEvents.bulkAdd(digitalEvents);
+      }
+    );
   } else {
     await db.notes.bulkPut(notes);
     await db.tasks.bulkPut(tasks);
@@ -185,13 +262,31 @@ export async function importAll(payload: BackupPayload, mode: "replace" | "merge
     await db.routines.bulkPut(routines);
     await db.routineRuns.bulkPut(routineRuns);
     await db.pins.bulkPut(pins);
+    await db.platformOpportunities.bulkPut(platformOpportunities);
+    await db.platformDecisionCards.bulkPut(platformDecisionCards);
+    await db.platformMoveOps.bulkPut(platformMoveOps);
+    await db.platformWeeklyReviews.bulkPut(platformWeeklyReviews);
+    await db.digitalEvents.bulkPut(digitalEvents);
   }
 }
 
 export async function resetAll() {
   await db.transaction(
     "rw",
-    [db.notes, db.tasks, db.bookmarks, db.routines, db.routineRuns, db.pins],
+    [
+      db.notes,
+      db.tasks,
+      db.bookmarks,
+      db.routines,
+      db.routineRuns,
+      db.pins,
+      db.opportunities,
+      db.decisions,
+      db.moveOpsTasks,
+      db.platformReviews,
+      db.platformMap,
+      db.digitalEvents,
+    ],
     async () => {
       await Promise.all([
         db.notes.clear(),
@@ -200,6 +295,12 @@ export async function resetAll() {
         db.routines.clear(),
         db.routineRuns.clear(),
         db.pins.clear(),
+        db.opportunities.clear(),
+        db.decisions.clear(),
+        db.moveOpsTasks.clear(),
+        db.platformReviews.clear(),
+        db.platformMap.clear(),
+        db.digitalEvents.clear(),
       ]);
     }
   );
