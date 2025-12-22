@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/life", label: "Life" },
   { href: "/care", label: "Care" },
   { href: "/capture", label: "Capture" },
+  { href: "/insights/lifestyle", label: "Lifestyle Report" },
   { href: "/notes", label: "Notes" },
   { href: "/tasks", label: "Tasks" },
   { href: "/routines", label: "Routines" },

@@ -126,3 +126,47 @@ export type FamilyRhythm = {
   eliasChecklist: string[];
   updatedAt: number;
 };
+
+export type ActivitySport = "run" | "walk" | "ride" | "other";
+
+export type Activity = {
+  id: string;
+  source: "tcx";
+  fileName?: string;
+  sport: ActivitySport;
+  startTimeIso?: string | null;
+  endTimeIso?: string | null;
+  distanceM?: number | null;
+  durationSec?: number | null;
+  elevationGainM?: number | null;
+  calories?: number | null;
+  avgSpeedMps?: number | null;
+  createdAt: number;
+};
+
+export type DailyMetrics = {
+  date: string; // YYYY-MM-DD
+  runsCount: number;
+  runDistanceM: number;
+  distanceM: number;
+  steps?: number | null;
+  updatedAt: number;
+};
+
+export type HealthImport = {
+  id: string;
+  fileName: string;
+  status: "success" | "error";
+  message?: string | null;
+  createdAt: number;
+};
+
+export type TelemetryPoint = {
+  id: string;
+  timestampIso: string;
+  type: "hr" | "hrv" | "step" | "speed" | "other";
+  value: number;
+  unit?: string | null;
+  source?: string | null;
+  createdAt: number;
+};

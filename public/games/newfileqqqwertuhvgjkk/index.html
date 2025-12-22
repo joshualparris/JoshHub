@@ -121,6 +121,25 @@
     </div>
 
     <script>
+      if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+      // ensure input is focused and header is present
+      document.addEventListener('DOMContentLoaded', ()=>{
+        const cmd = document.getElementById('cmd'); if(cmd) cmd.focus();
+      });
+      // add back to hub quick link to header
+      if(window.JoshHubHeader && window.JoshHubHeader.addDemoButton){
+        // also add a small Back button in header area
+        const btn = document.createElement('button');
+        btn.textContent = 'Back to Hub'; btn.className='jh-btn'; btn.style.marginLeft='12px';
+        btn.addEventListener('click', ()=> location.href='/');
+        document.addEventListener('DOMContentLoaded', ()=>{
+          const h = document.querySelector('.card header .help');
+          if(!h){
+            const header = document.querySelector('.card header');
+            if(header) header.appendChild(btn);
+          }
+        });
+      }
       // Lightweight JS port mirroring the Python adventure.
       const logEl = document.getElementById("log");
       const cmdEl = document.getElementById("cmd");

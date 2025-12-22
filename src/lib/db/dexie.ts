@@ -1,8 +1,11 @@
 import Dexie, { Table } from "dexie";
 import type {
+  Activity,
   Bookmark,
   CalendarEvent,
+  DailyMetrics,
   FamilyRhythm,
+  HealthImport,
   MetricLog,
   MovementLog,
   Note,
@@ -12,6 +15,7 @@ import type {
   RoutineRun,
   SleepLog,
   Task,
+  TelemetryPoint,
 } from "./schema";
 import { uuid } from "./id";
 
@@ -28,6 +32,10 @@ class JoshHubDB extends Dexie {
   nutrition!: Table<NutritionLog>;
   metrics!: Table<MetricLog>;
   family!: Table<FamilyRhythm>;
+  activities!: Table<Activity>;
+  dailyMetrics!: Table<DailyMetrics>;
+  healthImports!: Table<HealthImport>;
+  telemetry!: Table<TelemetryPoint>;
 
   constructor() {
     super("joshhub-db");
@@ -71,6 +79,24 @@ class JoshHubDB extends Dexie {
       nutrition: "id, date",
       metrics: "id, dateTimeIso",
       family: "id",
+    });
+    this.version(4).stores({
+      notes: "id, nodeId, lifeAreaSlug, updatedAt, createdAt",
+      tasks: "id, status, dueDate, projectId, updatedAt, createdAt",
+      bookmarks: "id, url, createdAt",
+      routines: "id, name, createdAt",
+      routineRuns: "id, routineId, startedAt",
+      pins: "id, createdAt",
+      events: "id, startIso, endIso, updatedAt, createdAt",
+      sleep: "id, date",
+      movement: "id, date",
+      nutrition: "id, date",
+      metrics: "id, dateTimeIso",
+      family: "id",
+      activities: "id, startTimeIso, sport, createdAt",
+      dailyMetrics: "date, updatedAt",
+      healthImports: "id, fileName, status, createdAt",
+      telemetry: "id, timestampIso, type, source",
     });
   }
 }

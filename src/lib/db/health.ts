@@ -1,7 +1,16 @@
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "./dexie";
 import { uuid } from "./id";
-import type { SleepLog, MovementLog, NutritionLog, MetricLog } from "./schema";
+import type {
+  Activity,
+  ActivitySport,
+  DailyMetrics,
+  HealthImport,
+  MetricLog,
+  MovementLog,
+  NutritionLog,
+  SleepLog,
+} from "./schema";
 
 export async function createSleepLog(input: {
   date: string;
@@ -103,4 +112,58 @@ export async function createMetricLog(input: {
 
 export function useMetrics() {
   return useLiveQuery(async () => db.metrics.orderBy("dateTimeIso").reverse().toArray(), []);
+}
+
+export async function recordActivity(input: {
+  source: "tcx";
+  fileName?: string;
+  sport: ActivitySport;
+  startTimeIso?: string | null;
+  endTimeIso?: string | null;
+  distanceM?: number | null;
+  durationSec?: number | null;
+  elevationGainM?: number | null;
+  calories?: number | null;
+  avgSpeedMps?: number | null;
+}) {
+  const now = Date.now();
+  const activity: Activity = {
+    id: uuid(),
+    createdAt: now,
+    ...input,
+  };
+  await db.activities.put(activity);
+  await updateDailyMetricsFromActivity(activity, now);
+  return activity;
+}
+
+async function updateDailyMetricsFromActivity(activity: Activity, updatedAt: number) {
+  const date = activity.startTimeIso ? activity.startTimeIso.slice(0, 10) : null;
+  if (!date) return;
+  const existing = await db.dailyMetrics.get(date);
+  const distance = activity.distanceM ?? 0;
+  const runsCount = (existing?.runsCount ?? 0) + (activity.sport === "run" ? 1 : 0);
+  const runDistanceM = (existing?.runDistanceM ?? 0) + (activity.sport === "run" ? distance : 0);
+  const distanceM = (existing?.distanceM ?? 0) + distance;
+  const record: DailyMetrics = {
+    date,
+    runsCount,
+    runDistanceM,
+    distanceM,
+    steps: existing?.steps ?? null,
+    updatedAt,
+  };
+  await db.dailyMetrics.put(record);
+}
+
+export async function addHealthImport(input: { fileName: string; status: HealthImport["status"]; message?: string }) {
+  const record: HealthImport = {
+    id: uuid(),
+    fileName: input.fileName,
+    status: input.status,
+    message: input.message ?? null,
+    createdAt: Date.now(),
+  };
+  await db.healthImports.put(record);
+  return record;
 }
