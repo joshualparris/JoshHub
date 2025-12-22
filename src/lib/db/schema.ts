@@ -126,3 +126,155 @@ export type FamilyRhythm = {
   eliasChecklist: string[];
   updatedAt: number;
 };
+
+export type ActivitySport = "run" | "walk" | "ride" | "other";
+
+export type Activity = {
+  id: string;
+  source: "tcx";
+  fileName?: string;
+  sport: ActivitySport;
+  startTimeIso?: string | null;
+  endTimeIso?: string | null;
+  distanceM?: number | null;
+  durationSec?: number | null;
+  elevationGainM?: number | null;
+  calories?: number | null;
+  avgSpeedMps?: number | null;
+  createdAt: number;
+};
+
+export type DailyMetrics = {
+  date: string; // YYYY-MM-DD
+  runsCount: number;
+  runDistanceM: number;
+  distanceM: number;
+  steps?: number | null;
+  updatedAt: number;
+};
+
+export type HealthImport = {
+  id: string;
+  fileName: string;
+  status: "success" | "error";
+  message?: string | null;
+  createdAt: number;
+};
+
+export type TelemetryPoint = {
+  id: string;
+  timestampIso: string;
+  type: "hr" | "hrv" | "step" | "speed" | "other";
+  value: number;
+  unit?: string | null;
+  source?: string | null;
+  createdAt: number;
+};
+
+export type PlatformMoveOp = {
+  id: string;
+  title: string;
+  status: "todo" | "doing" | "done";
+  dueDate?: string;
+  notes?: string;
+  tags?: string[];
+  sortOrder?: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlatformDecisionCard = {
+  id: string;
+  question: string;
+  status: "open" | "decided" | "parked";
+  dueBy?: string;
+  decision?: string;
+  context?: string;
+  tags?: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlatformOpportunity = {
+  id: string;
+  name: string;
+  stage:
+  | "seed"
+  | "shaped"
+  | "experiment"
+  | "validated"
+  | "committed"
+  | "parked";
+  expectedValuePerMonth?: number;
+  probability?: number;
+  stressScore?: number;
+  notes?: string;
+  tags?: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PlatformWeeklyReview = {
+  id: string;
+  weekStart: string;
+  wins?: string;
+  drains?: string;
+  givesLife?: string;
+  top3?: string;
+  experiment?: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+// Learn feature types
+export type LearnStatus = "curious" | "studying" | "practising" | "on-hold";
+
+export type LearnTopic = {
+  id: string;
+  name: string;
+  category?: string | null;
+  tags: string[];
+  status: LearnStatus;
+  summary?: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type LearnResource = {
+  id: string;
+  title: string;
+  type: string; // book | article | video | course | other
+  url?: string;
+  author?: string;
+  status: "queue" | "in-progress" | "done";
+  topicIds: string[];
+  notes?: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type LearnNote = {
+  id: string;
+  topicId?: string | null;
+  resourceId?: string | null;
+  content: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
+export type LearnSession = {
+  id: string;
+  topicId?: string | null;
+  resourceId?: string | null;
+  minutes: number;
+  reflection?: string;
+  nextStep?: string;
+  createdAt: number;
+};
+
+export type LearnSetting = {
+  key: string;
+  value: string; // JSON stringified
+  updatedAt: number;
+};

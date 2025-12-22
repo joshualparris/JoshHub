@@ -1,0 +1,310 @@
+JoshHub Apps & Games QA Review (10?App Sample)
+Note: Only ten screenshots were provided for review. These correspond to ten of the games/apps listed on JoshHub. This report maps each screenshot to its live app, evaluates it against multiple dimensions (UI polish, clarity/onboarding, functionality, fun/value), estimates fix difficulty, recommends improvements, and prioritises tasks for a Codex developer. For the full 30?item portfolio the same template should be applied.
+1. Executive Summary
+Top performers:
+1. Mysterious Depths (GH) – Polished interface and theming, clear choice?based UI and ambient atmosphere. Well?structured flow and strong aesthetic.
+2. New Game – Clean dark UI with orange highlights and clear character creation flow. Good typography and layout.
+3. D&D RPG Dungeon – Functional multi?panel interface with character creation, actions and stats. Moderately polished and easy to start.
+Apps needing the most work:
+1. AA Game Adventure – Sparse UI; no instructions or context; ASCII grid is not self?explanatory. Requires onboarding and visual improvement.
+2. Max Games (Starhaven/Guess the Number) – Minimal text interface with no instructions. Feels unfinished and needs clearer goals and design.
+3. Forbidden Lands Lite – Dark theme but unclear navigation; campaign creation UI lacks guidance and suffers from missing/incomplete modules.
+Easiest quick wins:
+* Add instructions and a back?to?hub link on every game (AA Game Adventure, Max Games, Null, etc.).
+* Fix broken links and missing pages (e.g. ensure forbidden-lands-lite subroutes load correctly).
+* Improve contrast/readability by adjusting colours and adding max?width containers.
+* Provide on?screen controls legend or tooltips for movement and actions.
+* Standardise fonts and spacing across games.
+Recurring issues across the portfolio:
+* Lack of onboarding text or instructions; new users often do not know what to do.
+* Minimal or inconsistent UI styling; many games use bare?bones text on dark backgrounds.
+* Missing assets or broken links (e.g., subpages that 404 or external dependencies missing).
+* No persistent navigation; players get stuck inside a game with no way back to JoshHub.
+* Inconsistent naming/versioning (e.g. Null vs. Null v2) and no version indicator on UI.
+2. Inventory Table
+App/Game (mapped from screenshot)Live URLRepo/DocsAA Game Adventurehttps://josh-hub-96no.vercel.app/games/aa-game-adventure/index.htmlDocs exist via JoshHub card; repo on GitHub (Vite project)D&D RPG Dungeonhttps://josh-hub-96no.vercel.app/games/dnd-rpg-dungeon/index.htmlDocs describe Python/JS versions; repo availableForbidden Lands Lite (submodule of Forbidden Quests)Rooted at https://josh-hub-96no.vercel.app via router; likely part of the Forbidden Quests clientRepo ForbiddenQuests; docs indicate missing back?endORGSCAPE: The Infinite Officehttps://josh-hub-96no.vercel.app/games/infinite-office/index.htmlRepo exists; Itch.io mirrorMax Games – Starhavenhttps://josh-hub-96no.vercel.app/games/max/index.html (Starhaven tab)Included in Max/Starhaven repositoryMax Games – Guess the Numberhttps://josh-hub-96no.vercel.app/games/max/index.html (Guess the Number tab)Same repo as aboveMysterious Depthshttps://REDACTED_USER-stack.github.io/MysteriousDepths/GitHub Pages; Itch.io mirror existsNew Game (Character Creation)https://josh-hub-96no.vercel.app/games/newgame/index.htmlRepo unknown (likely local Vite project)Null – Rope & Silence (GH)https://REDACTED_USER-stack.github.io/Null/GitHub Pages; Itch.io mirrorNull – Rope & Silence (itch)https://joshuaparris.itch.io/null-html-gameItch.io release; code not necessarily open3. Per?App Reviews
+AA Game Adventure
+* First impression: Displays a blank grey grid with letters representing the player (@) and other entities. There is no header, instructions or obvious goal. Looks like a simple ASCII roguelike prototype.
+* UI/UX (scores 0–10): Visual polish 4 (plain grey background). Readability 6 (coloured letters are distinct but small). Layout/responsiveness 5 (static grid on desktop; unknown on mobile). Perceived quality 5. Theming cohesion 5.
+* Functionality: Main loop works (arrow keys move the @), but there is no on?screen indication of controls. No obvious method to interact with itecare2. There are no visible errors but the game state resets on page refresh. Score 6.
+* Fun/Engagement: Lacks context; exploring a blank grid with random letters feels purposeless. Score 5. Some may enjoy exploring but there is no win condition or feedback.
+* Effort to improve: Easy (30–60 min). The project is a static Vite build; improvements mostly involve HTML/CSS/JS.
+* Quick wins:
+* Add a header with game title and short instructions (controls, objective).
+* Place the grid in a container with a contrasting background and padding.
+* Add a “Back to JoshHub” button.
+* Colour?code itecare2 and display a legend.
+* Implement a simple scoring mechanism or goal (e.g. collect letters to form words).
+* Medium tasks:
+* Add local storage or query?string save so progress persists across reloads.
+* Create a help overlay accessible via a button.
+* Design responsive layout for small screens.
+* Add basic sound or animation on item pickup.
+* Big bets:
+* Expand into a full roguelike with procedurally generated levels and enemies.
+* Add character stats and inventory management.
+* Codex task pack:
+* Goal: Make AA Game Adventure accessible and enjoyable for new players.
+* Files: public/games/aa-game-adventure/index.html, associated CSS/JS.
+* Steps: Add header and instructions; implement legend; style the grid; create a global init() that draws UI elements; store state in localStorage; add back button linking to /apps.
+* Acceptance criteria: When loaded, the page shows a title, instructions and controls legend; arrow keys move the player; there is a visible legend; there is a Back button; the design is responsive.
+* Risks: Avoid breaking the existing movement logic; ensure localStorage usage does not corrupt state.
+D&D RPG Dungeon
+* First impression: Clear multi?panel layout with hero creation on the left, stats in the centre and actions on the right. Buttons are labelled (Attack, Magic, Heal, Run) and there is a Start Adventure button.
+* UI/UX: Visual polish 7 (nice dark gradient background and panel outlines). Readability 7 (good contrast). Layout 7. Perceived quality 7. Theming 7.
+* Functionality: Character creation form works; action buttons exist but do nothing until a foe appears. There is no visible help for beginners. The hero and enemy stats update, but there’s no error handling if fields are empty. Score 7.
+* Fun/Engagement: Basic; requires repeatedly clicking “Explore/Continue” for encounters. Without audio or feedback it can feel flat. Score 6.
+* Effort to improve: Medium (2–4 hrs). The project is a PyScript port; improvements involve JS and CSS tweaks.
+* Quick wins:
+* Add tooltips explaining stats and actions.
+* Provide a short intro/story above the form.
+* Disable the Start button until a name is entered.
+* Add a progress bar to visualise level advancement.
+* Include a Back to Hub link.
+* Medium tasks:
+* Refactor combat to include basic animations and sound effects.
+* Add different classes with unique abilities.
+* Improve mobile layout (stack panels vertically).
+* Add persistent save/load across sessions.
+* Big bets:
+* Integrate a backend for multiplayer leaderboards or cross?device save.
+* Create a map exploration mode.
+* Codex task pack:
+* Goal: Improve onboarding and add visual feedback to D&D RPG Dungeon.
+* Files: public/games/dnd-rpg-dungeon/index.html, script files.
+* Steps: Add introduction text and tooltips; implement disabled state for Start; create a progress bar component; add audio on attack/level up; restructure CSS for responsive layout.
+* Acceptance criteria: Players see instructions; cannot start without entering a name; there’s a visible progress bar; audio plays on key actions; layout is responsive.
+* Risks: Audio may not work on all devices; ensure PyScript compatibility.
+Forbidden Lands Lite
+* First impression: Top navigation bar with tabs (Characters, Exploration, Combat, Itecare2, Stronghold). Centre message invites you to create a new campaign. Looks like a dark?themed web app.
+* UI/UX: Visual polish 6 (dark purple and black theme, but heavy). Readability 6 (purple text on dark background can be low contrast). Layout 7 (two columns). Perceived quality 6. Theming 7.
+* Functionality: Campaign creation input is present but disabled (purple “+ Create Campaign” button suggests it is unavailable). Nothing else is interactive. Unknown if other tabs work; likely incomplete. Score 5.
+* Fun/Engagement: Little to do. Without a starting scenario the user cannot progress. Score 4.
+* Effort to improve: Hard (2–3 days). This appears to be part of a larger full?stack project (Forbidden Quests) that requires server functionality; local client is limited.
+* Quick wins:
+* Enable the campaign creation field and button; store campaigns in localStorage.
+* Provide at least one pre?made demo campaign for exploration.
+* Add explanatory text for each tab (“Exploration: Discover the world”, etc.).
+* Insert a back link to JoshHub.
+* Medium tasks:
+* Implement client?side views for Exploration, Combat and Itecare2 using dummy data.
+* Add modals or sidebars for editing characters.
+* Improve colour contrast (text vs. backgrounds).
+* Big bets:
+* Build out the back?end API for campaigns, characters, itecare2 and combat.
+* Integrate with a database for persistent worlds.
+* Codex task pack:
+* Goal: Provide a usable prototype of Forbidden Lands Lite with local campaign management.
+* Files: public/games/forbidden-lands-lite/index.html (if exists); client folder.
+* Steps: Enable new campaign creation (input and button) storing campaigns in localStorage; create dummy exploration/combat pages; add text for each tab; adjust colours for contrast; include navigation back to hub.
+* Acceptance criteria: Users can create/select campaigns locally; navigation tabs show placeholder content; all text is readable; there is a back link.
+* Risks: Without a back?end the game remains static; ensure local storage operations are safe.
+ORGSCAPE: The Infinite Office
+* First impression: Retro blue/white interface reminiscent of early text adventures, with a minimap of a grid labelled “Stationery Vaults”. A large text area invites you to type commands (help, etc.).
+* UI/UX: Visual polish 6 (clear but plain). Readability 7 (dark text on light background). Layout 7 (left column map, right column text). Perceived quality 6. Theming 6.
+* Functionality: Typing commands interacts with the game; help prints available commands. No controls legend on screen. 404s do not appear; the game loads correctly. Score 7.
+* Fun/Engagement: This is a text?based roguelike; fans of interactive fiction will enjoy exploring, but the lack of sound or highlights may deter others. Score 6.
+* Effort to improve: Medium (2–4 hrs). Code likely uses a JS game engine; enhancements revolve around UI and helper features.
+* Quick wins:
+* Add a header with game title and description.
+* Provide a toggleable help window listing commands.
+* Centre the interface and limit its width for readability.
+* Implement a back button.
+* Medium tasks:
+* Add mini?animations when moving between roocare2.
+* Implement save/load functionality.
+* Improve map styling (dynamically update visited roocare2).
+* Big bets:
+* Add multiplayer or leaderboard features.
+* Expand with narrative events and quests.
+* Codex task pack:
+* Goal: Make ORGSCAPE friendlier and more polished without altering core mechanics.
+* Files: public/games/infinite-office/index.html, JS modules.
+* Steps: Insert header and help overlay; wrap main container with max?width; add a back button; refactor map drawing to highlight visited tiles; implement simple localStorage save and load.
+* Acceptance criteria: Users see the title and controls; they can open help; map shows visited roocare2; there is a back link; layout remains readable on mobile.
+* Risks: Changing layout may break keyboard focus; ensure command input remains responsive.
+Max Games – Starhaven
+* First impression: Dark, minimal text interface with Max Games header and tabs (“Play Starhaven”, “Play Guess the Number”). The Starhaven tab shows a description of a place (Grand Atrium) and commands like help/go/talk.
+* UI/UX: Visual polish 5 (barebones dark screen). Readability 6 (white monospaced text on black). Layout 5 (single large text area and small input). Perceived quality 5. Theming 5.
+* Functionality: The command input works; you can type commands but there is no guidance. Score 6.
+* Fun/Engagement: Low; there’s no narrative context or goal; the player must guess actions. Score 5.
+* Effort to improve: Easy (30–60 min). Mostly UI and onboarding improvements.
+* Quick wins:
+* Add instructions above the command box (“Type help for commands”).
+* Limit the width of the text area; enlarge the input for readability.
+* Provide context or goal (e.g. “You’re a detective in Starhaven…”).
+* Add a back link.
+* Medium tasks:
+* Implement a simple event log or quest tracker.
+* Improve the theme with fonts and colours.
+* Big bets:
+* Expand Starhaven into a full adventure with branching story.
+* Codex task pack:
+* Goal: Make Starhaven usable and informative for first?time players.
+* Files: public/games/max/index.html (Starhaven component).
+* Steps: Add context and instructions; enlarge input field; style text area with max?width and border; insert back button; implement at least one narrative hook.
+* Acceptance criteria: Players understand the game’s premise; they see a list of commands; the interface is readable; there is a back link.
+* Risks: Overcomplicating may break existing logic; keep changes incremental.
+Max Games – Guess the Number
+* First impression: Same dark interface; the Guess the Number tab just states “Welcome to Guess the Number! Type a number and press Enter.” No input box is visible until you click inside the command area.
+* UI/UX: Visual polish 5. Readability 6. Layout 5. Perceived quality 5. Theming 5.
+* Functionality: Users can type a number; the game likely responds with “too high/too low” but there is no feedback in the screenshot. Score 6.
+* Fun/Engagement: Minimal; number guessing games need quick feedback and scoreboard to be fun. Score 4.
+* Effort to improve: Easy (30–60 min). The script is simple.
+* Quick wins:
+* Add instructions and number range (e.g. 1–100) above the input.
+* Provide feedback after each guess in the main text area.
+* Show number of attempts and best score.
+* Use a larger font and coloured messages.
+* Medium tasks:
+* Implement difficulty levels (range 1–50, 1–100, etc.).
+* Save high scores locally.
+* Big bets:
+* Turn into a mini?game hub with timers and achievements.
+* Codex task pack:
+* Goal: Make Guess the Number engaging and user friendly.
+* Files: public/games/max/index.html (Guess component).
+* Steps: Add static instructions; update JS to display feedback and attempt count; style messages; implement a basic scoreboard using localStorage; ensure the input is focused on page load; add back link.
+* Acceptance criteria: On first load, players see instructions and an input; after each guess they see feedback; attempt count updates; high score persists across sessions; there is a back link.
+* Risks: None major; ensure scoreboard resets correctly.
+Mysterious Depths (GH)
+* First impression: Striking diagonal?striped background with a central panel. Text describes waking up in darkness and offers two choices (“Reach out in the darkness”; “Call out: ‘Hello?’”). A polished HTML Twine?style interactive fiction.
+* UI/UX: Visual polish 8 (beautiful backdrop and modern font). Readability 8 (good contrast). Layout 8 (centered box). Perceived quality 8. Theming 8.
+* Functionality: Choice buttons work (not testable here but typical Twine). Sound and settings icon are present. Score 7.
+* Fun/Engagement: Engaging narrative choices and polished presentation. Score 7.
+* Effort to improve: Hard (1+ week) if rewriting; likely built with Twine/ink. For minor tweaks, Medium.
+* Quick wins:
+* Add a ‘Back to Hub’ link somewhere unobtrusive.
+* Provide a summary or hint about the story genre.
+* Ensure keyboard navigation works for accessibility.
+* Medium tasks:
+* Add save/load system if not already present.
+* Include optional narration voice or soundscape.
+* Big bets:
+* Expand the story with more branching paths and achievements.
+* Codex task pack:
+* Goal: Improve navigation and accessibility for Mysterious Depths.
+* Files: Twine HTML file (embedded in GitHub Pages); injection may require editing Twine export.
+* Steps: Add a persistent link to JoshHub in the footer; implement keyboard navigation for choice buttons; update metadata for SEO; test for screen reader compatibility.
+* Acceptance criteria: There is a visible link back to JoshHub; all choices are focusable via keyboard; alt text and ARIA labels exist for interactive elements.
+* Risks: Modifying Twine output can be brittle; changes may break compile pipeline.
+New Game (Character Creation)
+* First impression: Elegant dark?mode interface with orange accents. Large sections for Name, Race, Class, Attributes. Buttons to auto assign points and begin journey. Resembles a polished RPG character creator.
+* UI/UX: Visual polish 8. Readability 8. Layout 8. Perceived quality 7 (some sections like combat/inventory are hidden). Theming 8.
+* Functionality: The UI presents fields but does not enforce validation. Attributes can be changed via plus/minus but there’s no sign of limits beyond the “Points Remaining” counter. The game portion is not visible (maybe hidden below). Score 7.
+* Fun/Engagement: Character creation is appealing; but without a game loop it may feel incomplete. Score 7.
+* Effort to improve: Medium (2–4 hrs) for UI polish; Hard (1+ week) if building full game behind it.
+* Quick wins:
+* Validate input and disable “Begin Your Journey” until a name and class are selected.
+* Make the points counters update visually on adjustment.
+* Add tooltips for each attribute describing the effect.
+* Provide a short description of the story and objectives.
+* Add a back link.
+* Medium tasks:
+* Implement the subsequent game pages (town, combat, inventory) with placeholder content.
+* Add saving/loading of character via localStorage.
+* Make layout responsive.
+* Big bets:
+* Build a complete RPG with exploration, quests and turn?based combat.
+* Codex task pack:
+* Goal: Make New Game’s character creation robust and ready for further development.
+* Files: public/games/newgame/index.html, associated JS/CSS.
+* Steps: Add form validation; bind plus/minus buttons to update points and disable them when points run out; implement tooltips; show/hide subsequent sections as needed; add a back button; restructure CSS for responsiveness.
+* Acceptance criteria: Users cannot start without valid inputs; points update; attributes have tooltips; there is back navigation; layout scales on mobile.
+* Risks: Changing the attribute logic could break future game integration.
+Null – Rope & Silence (GH)
+* First impression: Dark, minimal layout with small white text. The game begins with “You wake into silence…” and includes a right?hand sidebar summarising inventory and known routes. A small command field appears at the bottom with suggested commands.
+* UI/UX: Visual polish 7 (stylish but some areas are small). Readability 6 (low contrast in places). Layout 7 (split view with navigation map). Perceived quality 7. Theming 7.
+* Functionality: Commands are executed by typing or clicking on suggested actions. Inventory and routes update. Score 7.
+* Fun/Engagement: It’s a tactile text adventure; may be engaging to players who enjoy atmospheric games. Score 6.
+* Effort to improve: Hard (2–3 days) because the code is likely complex Twine/ink output; modifications require careful editing.
+* Quick wins:
+* Improve contrast by lightening text and darkening backgrounds.
+* Add a back link to JoshHub.
+* Provide a short description of the game’s premise.
+* Medium tasks:
+* Add persistent saving/loading of progress.
+* Implement keyboard navigation for action buttons.
+* Add optional hints or help.
+* Big bets:
+* Expand content with more routes, itecare2 and puzzles.
+* Add audio and ambient sound effects.
+* Codex task pack:
+* Goal: Enhance accessibility and navigation for Null (GH).
+* Files: HTML file in GitHub Pages; editing Twine output may be required.
+* Steps: Adjust CSS variables for text and background colours; insert a back link; add ARIA labels and focus management; implement optional hint system; add save/load using localStorage.
+* Acceptance criteria: Text is readable; there is a visible back link; players can return later to continue progress; hints can be toggled.
+* Risks: Twine code is compiled; editing may break macros; test thoroughly.
+Null – Rope & Silence (itch)
+* First impression: Similar to the GH version but hosted on itch.io. The right?hand itch side panel includes “View all by joshuaparris” and “Add to Collection” buttons. Layout is narrower due to itch’s frame.
+* UI/UX: Scores similar to GH version: Visual polish 7, readability 6, layout 7, perceived quality 7, theming 7.
+* Functionality: Works as the GH version; but the itch wrapper adds extra buttons and reduces width. Score 7.
+* Fun/Engagement: Same as GH version; 6.
+* Effort to improve: Hard if editing the itch build; modifications must be uploaded via itch. For purely cosmetic changes, Medium.
+* Quick wins:
+* Ensure a back link to JoshHub is accessible within the game frame (could be in the description on itch page).
+* Add a note on the itch page describing the game and linking to the GitHub version.
+* Medium tasks:
+* Update itch build with improved contrast and accessibility features (mirroring GH improvements).
+* Big bets:
+* Expand the itch version with additional content and achievements.
+* Codex task pack:
+* Goal: Bring the itch version of Null into parity with the GH version.
+* Files: The HTML build uploaded to itch; description text on itch.
+* Steps: Rebuild the Twine file with improved colours and navigation; ensure the compiled HTML is uploaded to itch; edit the itch game page description to include a back link to JoshHub.
+* Acceptance criteria: The game looks consistent with the GH version; there is a visible link back to JoshHub; itch page includes a descriptive summary.
+* Risks: Uploading to itch may require manual steps; test the compiled file before publishing.
+4. Ranking Summary
+Best looking ? least polished
+1. Mysterious Depths (8/10) – striking visuals, good typography and layout.
+2. New Game (8/10) – cohesive dark theme and strong presentation.
+3. D&D RPG Dungeon (7/10) – tidy multi?panel layout.
+4. Null (GH/itch) (7/10) – atmospheric but some contrast issues.
+5. ORGSCAPE (6/10) – functional but dated aesthetic.
+6. Forbidden Lands Lite (6/10) – dark theme but low contrast.
+7. AA Game Adventure (4/10) – extremely plain.
+8. Max Games (Starhaven/Guess Number) (5/10) – minimal text interface.
+Most functional ? least functional
+1. D&D RPG Dungeon (7/10) – fully playable with hero actions and progression.
+2. ORGSCAPE (7/10) – command parser works and map updates.
+3. Null (GH/itch) (7/10) – text adventure functions as intended.
+4. New Game (7/10) – character creator works but main game hidden.
+5. Mysterious Depths (7/10) – interactive fiction; likely fully functional.
+6. AA Game Adventure (6/10) – movement works but lacks goal.
+7. Max Games (6/10) – commands work but there is no guidance.
+8. Forbidden Lands Lite (5/10) – campaign creation disabled; limited functionality.
+Most fun/valuable ? least fun/valuable
+1. Mysterious Depths – engaging narrative choices and polished feel.
+2. New Game – satisfying character creation with potential for deeper play.
+3. D&D RPG Dungeon – simple but addictive RPG loop.
+4. Null – atmospheric text adventure, appeals to story lovers.
+5. ORGSCAPE – interesting concept but needs more feedback.
+6. AA Game Adventure – low stakes and lacks objectives.
+7. Max Games – minimal enjoyment without instructions.
+8. Forbidden Lands Lite – little content; feels like a stub.
+Easiest to improve ? hardest to improve
+1. Max Games – small codebase; mostly text and basic JS.
+2. AA Game Adventure – simple grid; front?end only.
+3. Guess the Number (Max) – trivial to enhance.
+4. New Game – UI improvements are straightforward; building a full game is harder.
+5. D&D RPG Dungeon – moderate JS/HTML edits.
+6. ORGSCAPE – moderate; improvements require some game logic updates.
+7. Forbidden Lands Lite – built on a full?stack project; enabling more features is complex.
+8. Null & Mysterious Depths – Twine/ink builds; editing compiled HTML is brittle.
+Highest ROI quick wins (impact ÷ effort)
+1. AA Game Adventure – adding instructions and visual polish will make it usable; very low effort.
+2. Max Games – Guess the Number – simple UI tweaks drastically improve clarity.
+3. Max Games – Starhaven – adding narrative context and commands list adds immediate value.
+4. ORGSCAPE – help overlay and back button improve usability significantly.
+5. D&D RPG Dungeon – instructions and feedback make the game more engaging.
+6. New Game – input validation and tooltips strengthen the character creator.
+7. Forbidden Lands Lite – enabling campaign creation and dummy data bring it to life.
+8. Null (GH/itch) – improved contrast and navigation aid accessibility.
+5. Codex Sprint Plan
+Sprint 0 – Stabilise JoshHub (1–2 hrs) - Implement a consistent “Back to JoshHub” link on all game pages (AA Game, Max Games, New Game, ORGSCAPE, etc.). Test that it returns to /apps. - Fix obvious 404s by checking each game’s index path and ensuring it exists in public/games/<slug>/index.html. - Run a link audit to ensure Play/Docs/Repo buttons point to valid destinations.
+Sprint 1 – UI polish & onboarding (1 day) - For AA Game Adventure and Max Games, add headers, instructions, legends and styling (padding, containers, fonts). Make the input fields visible and enlarge them. - For D&D RPG Dungeon, New Game and ORGSCAPE, add tooltips and introductory text. Ensure Start buttons are disabled until required fields are filled. - Adjust colour contrast across Forbidden Lands Lite and Null to meet accessibility guidelines. - Add responsive CSS to all pages so they scale on mobile.
+Sprint 2 – Gameplay & usefulness improvements (2–3 days) - Extend AA Game with scoring/collectible itecare2 and a simple win condition. - Add localStorage save/load to D&D RPG Dungeon, ORGSCAPE and New Game. - For Forbidden Lands Lite, implement local campaign creation and placeholder content for other tabs. - For Max Games, introduce difficulty levels and a simple narrative or quest tracker. - For Null and Mysterious Depths, add hint systecare2 and optional accessibility settings. Rebuild the Twine/ink source to include these features.
+6. Appendices
+Notable console errors or missing assets: - None observed in the provided screenshots. Full testing should include opening DevTools and checking for 404s and JS errors for each app.
+If you only have two hours, do this: 1. Add a header, instructions and back link to AA Game Adventure and Max Games (both variants). These are easy fixes that dramatically improve usability. 2. Ensure D&D RPG Dungeon has a help tooltip and disables the Start button until the name is filled. 3. Run a link audit to patch any missing pages (especially Forbidden Lands Lite). Provide at least one dummy campaign to explore.
+

@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tile Game</title>
+  <title>Tile Game</title>
+
   <script type="module" crossorigin src="/assets/index-DLW691Yo.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-D24KVEvJ.css">
+  <link rel="stylesheet" href="/css/joshhub-header.css">
+  <script src="/js/joshhub-header.js" defer></script>
 </head>
 <body>
   <div id="ui">
@@ -23,7 +26,33 @@
     <button id="btn-right" class="pad-btn" aria-label="Right">→</button>
     <button id="btn-interact" class="pad-btn interact" aria-label="Interact">Space</button>
   </div>
-  
+  
+
 </body>
+<script>
+  // Defensive canvas setup and user-friendly error message if app assets fail
+  (function(){
+    if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+    const canvas = document.getElementById('canvas');
+    function fit(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    fit(); window.addEventListener('resize', fit);
+
+    // If the game module does not set a known flag, show guidance after a short timeout
+    setTimeout(()=>{
+      if(!window.gameInitialized){
+        const err = document.getElementById('error');
+        err.style.display = 'block';
+        err.textContent = 'Game failed to initialize — missing assets or script. Try reloading or return to the hub.';
+        const btn = document.createElement('button');
+        btn.textContent = 'Back to Hub';
+        btn.className = 'btn';
+        btn.style.marginTop = '8px';
+        btn.addEventListener('click', ()=> location.href='/');
+        err.appendChild(document.createElement('br'));
+        err.appendChild(btn);
+      }
+    }, 1500);
+  })();
+</script>
 </html>
 

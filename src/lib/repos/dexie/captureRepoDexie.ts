@@ -150,9 +150,9 @@ export function createCaptureRepoDexie(): CaptureRepo {
         return;
       }
       // fallback: try all
-      await db.notes.delete(id).catch(() => {});
-      await db.tasks.delete(id).catch(() => {});
-      await db.bookmarks.delete(id).catch(() => {});
+      await db.notes.delete(id).catch(() => { });
+      await db.tasks.delete(id).catch(() => { });
+      await db.bookmarks.delete(id).catch(() => { });
     },
     async search(query: string) {
       const q = query.trim().toLowerCase();

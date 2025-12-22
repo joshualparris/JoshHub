@@ -9,6 +9,8 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" href="./icons/icon-192.svg">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/css/joshhub-header.css">
+  <script src="/js/joshhub-header.js" defer></script>
   <meta name="theme-color" content="#0f172a" />
 </head>
 <body>
@@ -19,6 +21,7 @@
         <button id="darkToggle" class="btn small">Dark</button>
         <button id="scanBtn" class="btn primary">Start NFC Scan</button>
         <button id="testTagBtn" class="btn">Test Tag</button>
+        <button id="demoModeBtn" class="btn" title="Demo Mode (desktop fallback)">Demo Mode</button>
         <button id="nfcDebugBtn" class="btn small">NFC Debug</button>
         <button id="exportBtn" class="btn small">Export</button>
         <button id="importBtn" class="btn small">Import</button>
@@ -107,5 +110,42 @@
 
   <script src="db.js"></script>
   <script src="app.js"></script>
+  <script>
+    // Demo Mode: simulate tag playback via WebAudio and populate player UI for desktop users
+    (function(){
+      if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+      const demoBtn = document.getElementById('demoModeBtn');
+      function demoPlay(){
+        try{
+          const audioEl = document.getElementById('audio');
+          const title = document.getElementById('playerTitle');
+          const track = document.getElementById('playerTrack');
+          title.textContent = 'Demo Card';
+          track.textContent = 'Generated tone';
+
+          // Try to use existing audio element if tracks available
+          if(audioEl && audioEl.canPlayType){
+            // generate short tone via WebAudio and connect to audio element via MediaStream
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = 'sine'; o.frequency.value = 440;
+            o.connect(g); g.connect(ctx.destination);
+            g.gain.setValueAtTime(0.0001, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.1, ctx.currentTime + 0.02);
+            o.start();
+            g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.2);
+            setTimeout(()=>{ o.stop(); ctx.close(); }, 1400);
+          }
+        }catch(e){ console.warn('Demo play failed', e); }
+      }
+      demoBtn.addEventListener('click', demoPlay);
+
+      // Also register demo button in global header if available
+      if(window.JoshHubHeader && window.JoshHubHeader.addDemoButton){
+        window.JoshHubHeader.addDemoButton('Demo Mode', demoPlay);
+      }
+    })();
+  </script>
 </body>
 </html>
