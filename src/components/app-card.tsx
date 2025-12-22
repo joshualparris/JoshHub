@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { ExternalLink, Star } from "lucide-react";
 
 import { StatusChip } from "@/components/status-chip";
@@ -107,7 +106,9 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
                     onOpen?.(app);
                     return;
                   }
-                } catch { }
+                } catch (error) {
+                  console.debug("App link check failed", error);
+                }
                 alert("This link appears to be missing.");
               }}
             >
