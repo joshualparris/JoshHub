@@ -1,21 +1,62 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>OrgScape — Play</title>
-    <meta http-equiv="refresh" content="0;url=https://joshuaparrisdadlan-stack.github.io/OrgScape/" />
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
-      .box { text-align:center; }
-      a { color: #0366d6; }
-    </style>
-  </head>
-  <body>
-    <div class="box">
-      <h1>OrgScape</h1>
-      <p>Redirecting to the hosted OrgScape build. If you are not redirected, <a href="https://joshuaparrisdadlan-stack.github.io/OrgScape/">click here to open OrgScape</a>.</p>
-      <p><small>If you'd prefer a fully-local copy, tell me and I'll mirror the build under `public/games/orgscape/` when available.</small></p>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>ORGSCAPE: The Infinite Office</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/css/joshhub-header.css">
+  <script src="/js/joshhub-header.js" defer></script>
+</head>
+<body>
+<div id="container">
+  <header>
+    <h1>ORGSCAPE: The Infinite Office</h1>
+    <button id="darkmode-toggle" title="Toggle Dark Mode">??</button>
+    <p class="subtitle">Welcome to the endless workplace. Seek the Missing Directive!</p>
+    <p style="margin:8px 0;color:#9aa3b5;">Get started: type <code>help</code> or try <code>go north</code>. Core commands are listed to the right. <button onclick="location.href='/'" style="margin-left:12px;padding:6px 8px;border-radius:8px;">Back to Hub</button></p>
+  </header>
+  <main>
+    <section id="sidepanels">
+      <div class="panel" id="map-panel">
+        <h2>Floor Map</h2>
+        <div id="floor-map"></div>
+        <div id="map-legend"></div>
+      </div>
+      <div class="panel" id="inventory-panel">
+        <h2>Inventory</h2>
+        <ul id="inventory-list"></ul>
+      </div>
+      <div class="panel" id="tasks-panel">
+        <h2>Tasks</h2>
+        <ul id="tasks-list"></ul>
+      </div>
+      <div class="panel" id="orgchart-panel">
+        <h2>Org Chart</h2>
+        <ul id="orgchart-list"></ul>
+      </div>
+      <div class="panel" id="reputation-panel">
+        <h2>Faction Reputation</h2>
+        <div id="reputation-bars"></div>
+      </div>
+    </section>
+    <section id="gamelog-section">
+      <div id="gamelog"></div>
+      <div id="event-choices"></div>
+      <form id="command-form" autocomplete="off">
+        <input id="command-input" type="text" placeholder="Type command..." autofocus autocomplete="off"/>
+        <button type="submit">?</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <span>&copy; 2025 ORGSCAPE: The Infinite Office | A Browser Roguelike by joshuaparrisdadlan-stack</span>
+  </footer>
+</div>
+<script src="game.js"></script>
+<script>
+  if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+  const legend = document.createElement('div');
+  legend.style.padding = '8px'; legend.style.color = '#9aa3b5'; legend.innerHTML = '<strong>Commands</strong>: help, go N/S/E/W, take, use, inv, look';
+  const gp = document.getElementById('gamelog-section');
+  if(gp) gp.prepend(legend);
+</script>
+</body>
 </html>

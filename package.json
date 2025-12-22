@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "generate-projects": "node ./scripts/generate-projects-inventory.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
@@ -33,6 +34,6 @@
     "eslint-config-next": "16.0.6",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^1.5.0"
+    "vitest": "^4.0.15"
   }
 }

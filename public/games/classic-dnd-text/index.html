@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Classic D&D 5e Text Adventure</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/css/joshhub-header.css">
+  <script src="/js/joshhub-header.js" defer></script>
 </head>
 <body>
   <div id="game-container">
@@ -15,6 +17,7 @@
           <div id="char-details">HP: <span id="brief-hp">10</span> | AC: <span id="brief-ac">13</span> | Gold: <span id="brief-gold">0</span></div>
         </div>
       </div>
+      <div style="margin-left:12px;color:#9aa3b5;">Welcome — Use arrow keys or the minimap. <button onclick="location.href='/'" style="margin-left:12px;padding:6px 8px;border-radius:8px;">Back to Hub</button></div>
     </header>
 
     <section id="main-play">
@@ -83,5 +86,15 @@
     <div id="map-coords">(0,0)</div>
   </div>
   <script src="game.js"></script>
+  <script>
+    if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+    // ensure minimap shows at least a placeholder
+    const mapCanvas = document.getElementById('map-canvas');
+    if(mapCanvas && mapCanvas.getContext){
+      const ctx = mapCanvas.getContext('2d');
+      ctx.fillStyle = '#0b1220'; ctx.fillRect(0,0,mapCanvas.width,mapCanvas.height);
+      ctx.fillStyle = '#9aa3b5'; ctx.fillRect(90,90,20,20); // player marker
+    }
+  </script>
 </body>
 </html>

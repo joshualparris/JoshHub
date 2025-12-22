@@ -20,6 +20,8 @@
   </style>
 </head>
 <body>
+  <link rel="stylesheet" href="/css/joshhub-header.css">
+  <script src="/js/joshhub-header.js" defer></script>
   <header>
     <h1>Max Games</h1>
     <button id="play-starhaven">Play Starhaven</button>
@@ -36,5 +38,25 @@
   </main>
 
   <script type="module" src="./max.js"></script>
+  <script>
+    if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+    // Show quick Starhaven summary when player clicks the Starhaven tab
+    document.getElementById('play-starhaven').addEventListener('click', ()=>{
+      const out = document.getElementById('output');
+      out.innerHTML = '<strong>Starhaven — A Text Murder Mystery</strong><br/>You are aboard the luxury space station Starhaven. Type "help" for commands. Objective: solve the mystery within the time limit.';
+      document.getElementById('command').focus();
+    });
+
+    // Make Guess the Number input friendly
+    document.getElementById('play-guess').addEventListener('click', ()=>{
+      const out = document.getElementById('output');
+      out.innerHTML = '<strong>Guess the Number</strong><br/>Type a number between 1 and 100 and press Enter. Attempts will be counted.';
+      const cmd = document.getElementById('command');
+      cmd.placeholder = 'Enter a number (1-100)';
+      cmd.focus();
+    });
+    // Focus input on load
+    window.addEventListener('load', ()=>document.getElementById('command').focus());
+  </script>
 </body>
 </html>

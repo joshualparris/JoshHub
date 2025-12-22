@@ -36,6 +36,20 @@ export const apps: CatalogItem[] = [
     lastTouched: "2025-11",
   },
   {
+    id: "53-buckland-tenant-welcome-pack",
+    name: "53 Buckland Tenant Welcome Pack",
+    type: "app",
+    category: "Family & Home",
+    status: "ok",
+    tags: ["property", "welcome-pack", "drive"],
+    primaryUrl: "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing",
+    urls: [
+      { label: "View", url: "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing" }
+    ],
+    notes: "House manual for 53 Buckland St — entry, solar, dishwasher, plants. Source: local DOCX.",
+    lastTouched: "2025-12",
+  },
+  {
     id: "dcs-prep",
     name: "DCS Prep App",
     type: "app",
@@ -245,7 +259,10 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "buckland", "browser", "playable"],
     primaryUrl: "/games/buckland-v2/index.html",
-    urls: [{ label: "Play", url: "/games/buckland-v2/index.html" }],
+    urls: [
+      { label: "Play", url: "/games/buckland-v2/index.html" },
+      { label: "Docs", url: "/docs/buckland-game.html" },
+    ],
     notes: "Local browser build hosted inside JoshHub public assets (v2).",
     nextAction: "Optionally publish to itch/GitHub Pages for external access.",
   },
@@ -396,11 +413,22 @@ export const apps: CatalogItem[] = [
     primaryUrl: "/games/dnd-rpg-dungeon/index.html",
     urls: [
       { label: "Play (Browser)", url: "/games/dnd-rpg-dungeon/index.html" },
-      { label: "Docs", url: "/docs/dnd-rpg-python.html" },
+      { label: "Docs", url: "/docs/dnd-rpg-python" },
     ],
     notes: "Browser port of the local text dungeon crawler hosted inside JoshHub.",
     nextAction: "Balance enemy tuning and consider adding save slots.",
     lastTouched: "2025-12",
+  },
+  {
+    id: "learn",
+    name: "Learn",
+    type: "app",
+    category: "Life OS",
+    status: "ok",
+    tags: ["learning", "topics", "offline-first"],
+    primaryUrl: "/learn",
+    urls: [{ label: "Open", url: "/learn" }],
+    notes: "Personal learning OS inside JoshHub",
   },
   {
     id: "classic-dnd-text",
@@ -1156,19 +1184,7 @@ export const apps: CatalogItem[] = [
     nextAction: "Optional: mirror a read-only copy in /public/docs; add a published template link if desired.",
     lastTouched: "2025-12",
   },
-  {
-    id: "buckland-tenant-pack",
-    name: "53 Buckland Tenant Welcome Pack",
-    type: "app",
-    category: "Family & Home",
-    status: "ok",
-    tags: ["property", "welcome-pack", "playable"],
-    primaryUrl: "/docs/buckland-tenant-pack.html",
-    urls: [{ label: "View", url: "/docs/buckland-tenant-pack.html" }],
-    notes: "House manual for 53 Buckland St (entry, solar, dishwasher, plants, etc.). Source: 53 Buckland Street Tenants Instructions and Tips.docx (local).",
-    nextAction: "Export/share PDF and keep appliance notes updated.",
-    lastTouched: "2025-12",
-  },
+
   {
     id: "christmas-rotation",
     name: "Pfeiffer/Parris Christmas Rotation System",
@@ -1246,6 +1262,338 @@ export const apps: CatalogItem[] = [
     ],
     notes: "Hosted on Vercel. To run locally: open a terminal, `cd Projects/HugCoach`, then `npm install` and `npm run dev`. To add a Play link pointing to a local export, copy it into JoshHub's `public/games/hugcoach/`.",
     nextAction: "Verify link in dashboard and remove local file-based links if needed.",
+    lastTouched: "2025-12",
+  },
+
+  {
+    id: "archives",
+    name: "Archives",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Archives",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Archives" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Archives/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "assets",
+    name: "Assets",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Assets",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Assets" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Assets/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "cursor",
+    name: "cursor",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/cursor",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/cursor" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/cursor/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "joshhub-sandbox",
+    name: "JoshHub-sandbox",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-sandbox",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-sandbox" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-sandbox/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "joshhub-untracked-backup-20251218-143524",
+    name: "JoshHub-untracked-backup-20251218-143524",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143524",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143524" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143524/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "joshhub-untracked-backup-20251218-143614",
+    name: "JoshHub-untracked-backup-20251218-143614",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143614",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143614" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshHub-untracked-backup-20251218-143614/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "llm",
+    name: "LLM",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LLM",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LLM" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LLM/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "misc",
+    name: "Misc",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Misc",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Misc" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Misc/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "new-folder",
+    name: "New folder",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/New%20folder",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/New%20folder" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/New%20folder/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "npm-1-4-9",
+    name: "npm-1.4.9",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/npm-1.4.9",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/npm-1.4.9" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/npm-1.4.9/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "parrisdubbomoverapp-main",
+    name: "ParrisDubboMoverApp-main",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/ParrisDubboMoverApp-main",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/ParrisDubboMoverApp-main" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/ParrisDubboMoverApp-main/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "vscode",
+    name: "vscode",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/vscode",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/vscode" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/vscode/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "vscode-win32-x64-1-106-2",
+    name: "VSCode-win32-x64-1.106.2",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/VSCode-win32-x64-1.106.2",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/VSCode-win32-x64-1.106.2" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/VSCode-win32-x64-1.106.2/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "wild2",
+    name: "Wild2",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Wild2",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Wild2" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Wild2/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+
+  {
+    id: "apps",
+    name: "Apps",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Apps",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Apps" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Apps/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "docs",
+    name: "Docs",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Docs",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Docs" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Docs/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "games",
+    name: "Games",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Games",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Games" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Games/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "joshtap",
+    name: "JoshTap",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshTap",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshTap" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/JoshTap/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "letsplaydnd",
+    name: "LetsPlayDnd",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LetsPlayDnd",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LetsPlayDnd" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/LetsPlayDnd/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "newgame",
+    name: "NewGame",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/NewGame",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/NewGame" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/NewGame/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "python",
+    name: "Python",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Python",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Python" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Python/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
+    lastTouched: "2025-12",
+  },
+  {
+    id: "whirringwilderness",
+    name: "WhirringWilderness",
+    type: "app",
+    category: "Apps",
+    status: "wip",
+    tags: ["auto-generated"],
+    primaryUrl: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/WhirringWilderness",
+    urls: [
+      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/WhirringWilderness" },
+      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/WhirringWilderness/README.md" }
+    ],
+    notes: "Auto-generated skeleton entry. Edit src/data/apps.ts to customise.",
     lastTouched: "2025-12",
   },
 ];

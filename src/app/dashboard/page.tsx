@@ -24,7 +24,7 @@ import { apps } from "@/data/apps";
 import { lifeAreas, type LifeArea } from "@/data/life";
 import { addRecent, loadRecent } from "@/lib/recent";
 import { loadPinnedLife } from "@/lib/pins";
-import { useNotes, useTasks, useRoutineRunsAll } from "@/lib/db/hooks";
+import { useNotes, useTasks, useDailyMetrics } from "@/lib/db/hooks";
 import { useEvents } from "@/lib/db/events";
 import { useSleep, useMovement, useNutrition, useMetrics } from "@/lib/db/health";
 import { useFamilyRhythm } from "@/lib/db/family";
@@ -41,7 +41,7 @@ export default function DashboardPage() {
   const nutrition = useNutrition();
   const metrics = useMetrics();
   const rhythm = useFamilyRhythm();
-  const routineRuns = useRoutineRunsAll();
+  const dailyMetrics = useDailyMetrics();
 
   const todayLabel = useMemo(
     () =>
@@ -126,11 +126,22 @@ export default function DashboardPage() {
     return Math.round(avg);
   }, [sleep]);
 
-  const runsThisWeek = useMemo(() => {
+  const activityWeek = useMemo(() => {
     const now = new Date().getTime();
     const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
-    return (routineRuns ?? []).filter((r) => r.startedAt >= sevenDaysAgo).length;
-  }, [routineRuns]);
+    const metrics7d = (dailyMetrics ?? []).filter(
+      (d) => new Date(`${d.date}T00:00:00`).getTime() >= sevenDaysAgo
+    );
+    return metrics7d.reduce(
+      (acc, d) => ({
+        runsCount: acc.runsCount + d.runsCount,
+        runDistanceM: acc.runDistanceM + (d.runDistanceM ?? 0),
+        distanceM: acc.distanceM + (d.distanceM ?? 0),
+        steps: acc.steps + (d.steps ?? 0),
+      }),
+      { runsCount: 0, runDistanceM: 0, distanceM: 0, steps: 0 }
+    );
+  }, [dailyMetrics]);
 
   const latestMove = useMemo(
     () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
@@ -144,14 +155,6 @@ export default function DashboardPage() {
     () => (metrics ?? []).sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso))[0],
     [metrics]
   );
-
-  const movementWeekMinutes = useMemo(() => {
-    const now = new Date().getTime();
-    const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
-    return (movement ?? [])
-      .filter((m) => new Date(m.date).getTime() >= sevenDaysAgo)
-      .reduce((total, m) => total + m.minutes, 0);
-  }, [movement]);
 
   const focusAnchors = [
     "Keep Jesus at the centre; lead with curiosity and kindness.",
@@ -205,7 +208,12 @@ export default function DashboardPage() {
               },
               { label: "Upcoming", value: nextEvents.length, hint: "events", icon: CalendarClock },
               { label: "Notes", value: notes?.length ?? 0, hint: "workspace", icon: BookOpen },
-              { label: "Runs (7d)", value: runsThisWeek, hint: "routines", icon: Activity },
+              {
+                label: "Runs (7d)",
+                value: activityWeek.runsCount,
+                hint: `${(activityWeek.runDistanceM / 1000).toFixed(1)} km`,
+                icon: Activity,
+              },
             ].map((stat) => {
               const Icon = stat.icon;
               return (
@@ -262,7 +270,7 @@ export default function DashboardPage() {
                 key={item.id}
                 href={item.primaryUrl}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noreferrer"
                 onClick={() => addRecent(item)}
                 className="group flex flex-col gap-2 rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-white to-sky-50 px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:from-slate-900 dark:to-slate-800"
               >
@@ -305,7 +313,7 @@ export default function DashboardPage() {
                     <a
                       href={item.primaryUrl}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noreferrer"
                       className="font-semibold text-red-800 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 rounded-sm dark:text-red-100"
                     >
                       {item.name}
@@ -372,8 +380,18 @@ export default function DashboardPage() {
               },
               {
                 label: "Movement (7d)",
-                value: movementWeekMinutes > 0 ? `${movementWeekMinutes} min` : "No movement logged",
-                detail: latestMove ? `${latestMove.date} • ${latestMove.type} ${latestMove.minutes}m` : "Move and log to track momentum",
+                value:
+                  activityWeek.distanceM > 0
+                    ? `${(activityWeek.distanceM / 1000).toFixed(1)} km`
+                    : activityWeek.steps > 0
+                      ? `${activityWeek.steps} steps`
+                      : "No movement logged",
+                detail:
+                  activityWeek.distanceM > 0
+                    ? "Totals from imported activities"
+                    : latestMove
+                      ? `${latestMove.date} • ${latestMove.type} ${latestMove.minutes}m`
+                      : "Import a TCX or log movement to start tracking",
                 icon: Dumbbell,
               },
               {
@@ -536,14 +554,14 @@ export default function DashboardPage() {
                     <p className="font-medium text-neutral-900 dark:text-white">{item.name}</p>
                     <p className="text-xs text-neutral-500 dark:text-slate-400">{item.category}</p>
                   </div>
-                    <a
-                      href={item.primaryUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm dark:text-slate-200"
-                    >
-                      Open
-                    </a>
+                  <a
+                    href={item.primaryUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm text-neutral-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm dark:text-slate-200"
+                  >
+                    Open
+                  </a>
                 </div>
               ))
             )}
