@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Panoramas Index</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+            margin: 2rem;
+            color: #111
+        }
+
+        a {
+            color: blue
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Panoramas</h1>
+    <p>This folder lists available panorama collections. Next.js does not provide directory listings by default, so this
+        index page is used to surface available panos.</p>
+    <div id="content">
+        <p>Looking for specific panos? Use the links below or drop exported equirectangular JPGs into
+            <code>/public/panos/&lt;collection&gt;/</code>.</p>
+        <ul>
+            <li><a href="/panos/boundary-road/">Boundary Road (viewer placeholder)</a></li>
+        </ul>
+    </div>
+    <h2>How to add panos</h2>
+    <ol>
+        <li>Create a folder under <code>public/panos/</code>, e.g. <code>public/panos/boundary-road/</code>.</li>
+        <li>Copy your equirectangular images (JPG/PNG) into that folder.</li>
+        <li>Add an <code>index.json</code> if you want hotspots/ordering, or add an <code>index.html</code> viewer.</li>
+        <li>I can integrate a small viewer (Pannellum) to auto-detect images — tell me if you want that.</li>
+    </ol>
+</body>
+
+</html>

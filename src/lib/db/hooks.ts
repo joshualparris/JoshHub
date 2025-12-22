@@ -53,6 +53,25 @@ export function usePins() {
   return useLiveQuery(async () => db.pins.toArray(), []);
 }
 
+export function useLearnTopics() {
+  return useLiveQuery(async () => db.learnTopics.orderBy("updatedAt").reverse().toArray(), []);
+}
+
+export function useLearnTopic(id?: string) {
+  return useLiveQuery(async () => {
+    if (!id) return undefined;
+    return db.learnTopics.get(id);
+  }, [id]);
+}
+
+export function useLearnResources() {
+  return useLiveQuery(async () => db.learnResources.orderBy("updatedAt").reverse().toArray(), []);
+}
+
+export function useLearnSessions() {
+  return useLiveQuery(async () => db.learnSessions.orderBy("createdAt").reverse().toArray(), []);
+}
+
 export function useActivities() {
   return useLiveQuery(async () => db.activities.orderBy("startTimeIso").reverse().toArray(), []);
 }

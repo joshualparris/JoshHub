@@ -1,3 +1,4 @@
+/* global document, window */
 // JoshHub global header injector
 (function(){
   function createHeader(){

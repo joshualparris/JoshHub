@@ -1,0 +1,1 @@
+# HugCoach Sandbox\n\nThis folder is a sandbox for experimenting with the HugCoach integration without touching the main project.\n\n- Branch: sandbox/hugcoach\n- Created: 12/18/2025 14:01:23\n\nPlace any experimental files here (redirects, builds, exports).
