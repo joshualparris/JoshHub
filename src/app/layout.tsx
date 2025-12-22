@@ -9,6 +9,7 @@ import { ThemeInitializer, ThemeToggle } from "@/components/theme-toggle";
 const navLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/apps", label: "Apps" },
+  { href: "/platform", label: "Platform" },
   { href: "/projects", label: "Projects" },
   { href: "/map", label: "Everything Map" },
   { href: "/life", label: "Life" },
