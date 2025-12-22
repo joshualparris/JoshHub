@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,20 +34,15 @@
   <link rel="stylesheet" href="/css/joshhub-header.css">
   <script src="/js/joshhub-header.js" defer></script>
 </head>
+
 <body>
   <aside>
-    <div>
-      <h1>Boundary Road Panos</h1>
-      <p>WSAD/mouse drag to look. Use the list to jump between rooms.</p>
-    </div>
+    <h1>Boundary Road Panos</h1>
+    <p>Explore the key rooms with the Panolens viewer.</p>
     <label>
       <span class="meta">Choose a room</span>
       <select id="pano-select"></select>
     </label>
-    <div style="display:flex; gap:8px;">
-      <button id="prev">◀ Prev</button>
-      <button id="next">Next ▶</button>
-    </div>
     <div class="meta">
       <div id="label" style="font-weight:600; margin-bottom:6px;"></div>
       <div id="notes"></div>
@@ -85,7 +81,6 @@
         selectEl.appendChild(opt);
       });
 
-      // Ensure header present
       if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
 
       const viewer = new PANOLENS.Viewer({ container: document.getElementById("pano"), autoHideInfospot: false });
@@ -114,7 +109,7 @@
         const meta = panos[current];
         labelEl.textContent = meta.label;
         notesEl.textContent = meta.notes || " ";
-        tagsEl.innerHTML = meta.tags.map((t) => `<span class=\"pill\">${t}</span>`).join("");
+        tagsEl.innerHTML = meta.tags.map((t) => `<span class="pill">${t}</span>`).join("");
       }
 
       selectEl.addEventListener("change", (e) => show(parseInt(e.target.value, 10)));
@@ -125,4 +120,5 @@
     })();
   </script>
 </body>
+
 </html>

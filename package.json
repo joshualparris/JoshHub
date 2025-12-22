@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "generate-projects": "node ./scripts/generate-projects-inventory.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

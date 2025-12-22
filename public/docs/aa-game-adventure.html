@@ -1,47 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AA Game Adventure</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AA Game Adventure Docs</title>
+  <meta name="description" content="Notes and how-to for the AA Game Adventure Vite prototype hosted inside JoshHub." />
   <style>
-    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
-    h1, h2 { color: #f0a8ff; margin-bottom: 0.4em; }
-    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 960px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
-    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-    .muted { color: #9aa3b5; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 0; background: #f4f4f7; color: #111; line-height: 1.6; }
+    main { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 3rem; }
+    h1 { font-size: 2rem; margin-bottom: 0.4rem; }
+    h2 { margin-top: 1.75rem; font-size: 1.2rem; }
+    p, li { margin: 0.4rem 0; }
+    ul { padding-left: 1.25rem; }
+    a { color: #1d4ed8; }
+    .note { background: #fff; border-radius: 12px; padding: 1.1rem 1.25rem; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08); border: 1px solid rgba(15, 23, 42, 0.08); margin-top: 1.5rem; }
   </style>
 </head>
 <body>
-  <div class="card">
+  <main>
+    <p class="text-muted-foreground text-xs uppercase tracking-[0.3em]">Documentation</p>
     <h1>AA Game Adventure</h1>
-    <p class="muted">TypeScript + Vite 2D tile RPG engine in <code class="mono">Games/AAGAMEADVENTURE/AAGAMEADVENTURE</code>. This page surfaces run/build notes from the README so it’s reachable via JoshHub.</p>
+    <p class="text-muted-foreground text-sm">
+      This static doc captures the current state of the playable Vite prototype hosted inside JoshHub.
+      It explains how to launch, where to find the map data, and how to refresh the build.
+    </p>
 
-    <h2>Repository Layout</h2>
-    <ul>
-      <li><code class="mono">src/engine</code>: pure deterministic game logic (state, step, map, schema, commands, systems).</li>
-      <li><code class="mono">src/adapters</code>: loop, canvas, input, audio, persistence, renderer.</li>
-      <li><code class="mono">src/mods</code>: optional plugins (combat, shop, procedural, etc.).</li>
-      <li><code class="mono">tools/</code>: helpers for applying example maps.</li>
-    </ul>
+    <section class="note" aria-label="Play quickstart">
+      <h2>Play quickstart</h2>
+      <ul>
+        <li>Use the Apps dashboard Play button to open <code>/games/aa-game-adventure/index.html</code>.</li>
+        <li>Arrow keys/WASD move the player; touch controls appear on mobile automatically.</li>
+        <li>Interact with NPCs, loot chests, and portal to room2 while the game saves locally.</li>
+      </ul>
+    </section>
 
-    <h2>How to Run</h2>
-    <ol>
-      <li>Open terminal:<br><span class="mono">cd "/mnt/c/Users/joshu/OneDrive - LA TROBE UNIVERSITY/Desktop/Projects/Games/AAGAMEADVENTURE/AAGAMEADVENTURE"</span></li>
-      <li>Install deps:<br><span class="mono">npm install</span></li>
-      <li>Start dev server:<br><span class="mono">npm run dev</span></li>
-      <li>Build (once type errors are cleaned up):<br><span class="mono">npm run build</span></li>
-    </ol>
-    <p class="muted">Note: current build is blocked by TypeScript errors in procedural mod/tests. Fix those or bypass tests for a quick static build.</p>
+    <section>
+      <h2>Assets & map data</h2>
+      <p>
+        The tutorial map that ships with this build lives at
+        <a href="../games/aa-game-adventure/src/data/maps/tutorial.v1.json">/games/aa-game-adventure/src/data/maps/tutorial.v1.json</a>,
+        which describes the tiles, NPC guard, treasure chest, and portal metadata.
+      </p>
+      <p>The remainder of the assets (sprites, audio, CSS) live next to the compiled bundle inside the same public folder.</p>
+    </section>
 
-    <h2>Next Actions</h2>
-    <ul>
-      <li>Resolve TS errors in <code class="mono">src/mods/procedural</code> and tests (entity typing, node types).</li>
-      <li>Produce a production build and copy <code class="mono">dist/</code> to <code class="mono">public/games/aa-game-adventure/</code> for a playable JoshHub link.</li>
-      <li>Optionally strip failing test files from build step for a fast demo build.</li>
-    </ul>
-  </div>
+    <section>
+      <h2>Development workflow</h2>
+      <ul>
+        <li>Source code lives in <code>Family/AModuleDnd/AModuleDnd</code> outside of JoshHub.</li>
+        <li>Run <code>npm run build</code> in that Vite project and copy the resulting <code>dist/</code> contents into JoshHub/public/games/aa-game-adventure to refresh the playable bundle.</li>
+        <li>Document any map, NPC, or save-slot changes here so the dashboard notes always line up with the live bundle.</li>
+      </ul>
+    </section>
+  </main>
 </body>
 </html>
