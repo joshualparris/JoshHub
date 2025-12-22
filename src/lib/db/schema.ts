@@ -1,3 +1,4 @@
+// Core types
 export type Note = {
   id: string;
   nodeId?: string;
@@ -127,11 +128,12 @@ export type FamilyRhythm = {
   updatedAt: number;
 };
 
+// Health
 export type ActivitySport = "run" | "walk" | "ride" | "other";
 
 export type Activity = {
   id: string;
-  source: "tcx";
+  source: "tcx" | "fit_json";
   fileName?: string;
   sport: ActivitySport;
   startTimeIso?: string | null;
@@ -158,6 +160,9 @@ export type HealthImport = {
   fileName: string;
   status: "success" | "error";
   message?: string | null;
+  sourceType?: "tcx" | "fit_json" | "my_activity_html" | "unknown";
+  sizeBytes?: number | null;
+  rawPreview?: string | null;
   createdAt: number;
 };
 
@@ -171,6 +176,18 @@ export type TelemetryPoint = {
   createdAt: number;
 };
 
+export type DigitalEvent = {
+  id: string;
+  source: "my_activity_html" | "fit_json" | "manual" | "unknown";
+  timestampIso: string | null;
+  type: "search" | "gemini" | "youtube" | "visit" | "unknown";
+  text: string;
+  url?: string | null;
+  meta?: Record<string, unknown> | null;
+  createdAt: number;
+};
+
+// Platform (new upstream schema)
 export type PlatformMoveOp = {
   id: string;
   title: string;
@@ -198,13 +215,7 @@ export type PlatformDecisionCard = {
 export type PlatformOpportunity = {
   id: string;
   name: string;
-  stage:
-  | "seed"
-  | "shaped"
-  | "experiment"
-  | "validated"
-  | "committed"
-  | "parked";
+  stage: "seed" | "shaped" | "experiment" | "validated" | "committed" | "parked";
   expectedValuePerMonth?: number;
   probability?: number;
   stressScore?: number;
@@ -217,12 +228,12 @@ export type PlatformOpportunity = {
 export type PlatformWeeklyReview = {
   id: string;
   weekStart: string;
-  wins?: string;
-  drains?: string;
-  givesLife?: string;
-  top3?: string;
-  experiment?: string;
-  notes?: string;
+  wins?: string | null;
+  drains?: string | null;
+  givesLife?: string | null;
+  top3?: string[] | null;
+  experiment?: string | null;
+  notes?: string | null;
   createdAt: string;
   updatedAt: string;
 };

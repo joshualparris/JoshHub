@@ -9,6 +9,7 @@ import type {
   MetricLog,
   MovementLog,
   NutritionLog,
+  DigitalEvent,
   SleepLog,
 } from "./schema";
 
@@ -115,7 +116,7 @@ export function useMetrics() {
 }
 
 export async function recordActivity(input: {
-  source: "tcx";
+  source: "tcx" | "fit_json";
   fileName?: string;
   sport: ActivitySport;
   startTimeIso?: string | null;
@@ -156,14 +157,41 @@ async function updateDailyMetricsFromActivity(activity: Activity, updatedAt: num
   await db.dailyMetrics.put(record);
 }
 
-export async function addHealthImport(input: { fileName: string; status: HealthImport["status"]; message?: string }) {
+export async function addHealthImport(input: {
+  fileName: string;
+  status: HealthImport["status"];
+  message?: string;
+  sourceType?: HealthImport["sourceType"];
+  sizeBytes?: number | null;
+  rawPreview?: string | null;
+}) {
   const record: HealthImport = {
     id: uuid(),
     fileName: input.fileName,
     status: input.status,
     message: input.message ?? null,
+    sourceType: input.sourceType ?? "unknown",
+    sizeBytes: input.sizeBytes ?? null,
+    rawPreview: input.rawPreview ?? null,
     createdAt: Date.now(),
   };
   await db.healthImports.put(record);
+  return record;
+}
+
+export async function addDigitalEvent(event: {
+  source: DigitalEvent["source"];
+  timestampIso: string | null;
+  type: DigitalEvent["type"];
+  text: string;
+  url?: string | null;
+  meta?: Record<string, unknown> | null;
+}) {
+  const record: DigitalEvent = {
+    id: uuid(),
+    ...event,
+    createdAt: Date.now(),
+  };
+  await db.digitalEvents.put(record);
   return record;
 }
