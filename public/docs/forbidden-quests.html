@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forbidden Quests</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #0f1115; color: #e7e9ee; margin: 0; padding: 32px; line-height: 1.6; }
+    h1, h2 { color: #f0a8ff; margin-bottom: 0.4em; }
+    .card { background: #161922; border: 1px solid #252a36; border-radius: 12px; padding: 20px; max-width: 960px; box-shadow: 0 12px 30px rgba(0,0,0,0.35); }
+    .mono { font-family: Consolas, "SFMono-Regular", Menlo, Monaco, monospace; background: #0c0f17; padding: 10px 12px; border-radius: 8px; border: 1px solid #242a36; overflow-x: auto; }
+    a { color: #d9b7ff; }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    .muted { color: #9aa3b5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Forbidden Quests</h1>
+    <p class="muted">Status: WIP. Source folder: <code class="mono">Games/ForbiddenQuests-source</code> (full-stack Vite/Express + Drizzle).</p>
+
+    <h2>What’s Here</h2>
+    <ul>
+      <li>Client: <code class="mono">client/</code></li>
+      <li>Server: <code class="mono">server/</code></li>
+      <li>Shared types/assets, Tailwind config, Drizzle schema.</li>
+    </ul>
+
+    <h2>Next Steps to Host</h2>
+    <ul>
+      <li>Install & build: <span class="mono">npm install && npm run build</span> (from <code class="mono">ForbiddenQuests-source</code>).</li>
+      <li>Provide env/DB if required by the backend; consider a static-only client build if no server is needed.</li>
+      <li>Deploy to a runtime (Vercel/Render/fly) or produce a static export to <code class="mono">/public/games/forbidden-quests/</code>.</li>
+    </ul>
+
+    <h2>Local Run (dev)</h2>
+    <div class="mono">
+      cd "Games/ForbiddenQuests-source"<br>
+      npm install<br>
+      npm run dev
+    </div>
+    <p class="muted">Adjust scripts/env as needed if the server expects DB credentials.</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+body {
+  background: #201c1b;
+  color: #eee;
+  font-family: 'Georgia', serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+#game-container {
+  background: #2e2826;
+  padding: 2em;
+  border-radius: 10px;
+  max-width: 600px;
+  box-shadow: 0 6px 24px #000a;
+}
+#story {
+  margin-bottom: 1.5em;
+  font-size: 1.12em;
+  min-height: 6em;
+}
+#choices button {
+  margin: 0.33em 0.5em 0.33em 0;
+  font-size: 1em;
+  padding: 0.6em 1.5em;
+  border-radius: 6px;
+  border: none;
+  background: #7c5d41;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#choices button:hover {
+  background: #a78453;
+}
+#dice {
+  margin-top: 1.2em;
+  font-size: 1em;
+  color: #edd19b;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* HUD & layout */
+#hud {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:0.8em;
+}
+#character-summary{display:flex;gap:12px;align-items:center}
+#character-summary button{background:#5a4637;color:#fff;border-radius:6px;padding:6px 10px;border:none;cursor:pointer}
+#char-brief{font-size:0.95em}
+
+/* Character Creator */
+#character-creator{background:#241f1e;color:#f6efe6;padding:1em;border-radius:8px;margin-top:1em}
+#character-creator.hidden{display:none}
+#character-creator label{display:block;margin:0.4em 0}
+#ability-scores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.score-box{background:#362b26;padding:8px;border-radius:6px}
+.score-box button{margin-left:6px}
+.cc-actions{margin-top:0.8em}
+
+/* Minimap */
+#minimap{position:fixed;right:18px;bottom:18px;width:220px;background:rgba(18,16,15,0.9);color:#fff;padding:8px;border-radius:8px;box-shadow:0 6px 18px #000a;font-family:monospace}
+#map-canvas{display:block;background:#0f0d0b;border-radius:4px;width:200px;height:200px}
+#map-controls{display:flex;flex-direction:column;align-items:center;margin-top:6px}
+#map-controls button{background:#3e332b;color:#fff;border:none;padding:6px 8px;margin:3px;border-radius:4px;cursor:pointer}
+#map-controls div{display:flex;gap:8px}
+#map-coords{text-align:center;margin-top:6px;font-size:0.85em}
+
+/* Responsive tweaks */
+@media (max-width:640px){
+  #game-container{max-width:92%;padding:1em}
+  #minimap{right:8px;bottom:8px;width:180px}
+  #map-canvas{width:160px;height:160px}
+}
