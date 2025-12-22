@@ -18,7 +18,7 @@ function fetchHtml(url) {
 function extractApps(html) {
   const results = [];
   // Try to capture headings containing links: <h3><a href="...">Title</a></h3>
-  const headingLinkRegex = /<h[23][^>]*>\s*<a[^>]*href=\"([^\"]+)\"[^>]*>([^<]+)<\/a>\s*<\/h[23]>/gim;
+  const headingLinkRegex = /<h[23][^>]*>\s*<a[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>\s*<\/h[23]>/gim;
   let m;
   const seen = new Set();
   while ((m = headingLinkRegex.exec(html))) {
@@ -46,7 +46,7 @@ function extractApps(html) {
   }
 
   // Additional heuristic: capture large anchor lists with titles and urls in the apps section
-  const anchorRegex = /<a[^>]*href=\"(https?:[^\"]+)\"[^>]*>([^<]{3,200}?)<\/a>/gim;
+  const anchorRegex = /<a[^>]*href="(https?:[^"]+)"[^>]*>([^<]{3,200}?)<\/a>/gim;
   while ((m = anchorRegex.exec(html))) {
     const url = m[1].trim();
     const title = m[2].trim();
