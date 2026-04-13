@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal — The Multiverse</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cricare2on+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+  :root{--bg:#03020a;--accent:#7c5cfc;--accent2:#c084fc;--text:#e8e0ff;--dim:#7c72a8;--glow:rgba(124,92,252,0.4)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Cricare2on Pro',Georgia,serif;overflow:hidden}
+  .portal-wrap{position:fixed;inset:0;z-index:1;display:flex;align-itecare2:center;justify-content:center}
+  .vortex{position:relative;width:380px;height:380px}
+  .ring{position:absolute;inset:0;border-radius:50%;animation:spin linear infinite}
+  .ring-1{border:2px solid transparent;border-top-color:var(--accent);border-right-color:var(--accent);box-shadow:0 0 30px var(--glow),inset 0 0 30px var(--glow);animation-duration:3s}
+  .ring-2{inset:20px;border:1px solid transparent;border-top-color:var(--accent2);border-left-color:var(--accent2);opacity:.7;animation-duration:2.2s;animation-direction:reverse}
+  .ring-3{inset:40px;border:1px solid transparent;border-bottom-color:#a78bfa;border-right-color:#a78bfa;opacity:.5;animation-duration:4s}
+  .ring-4{inset:60px;border:2px solid transparent;border-top-color:rgba(124,92,252,.4);animation-duration:1.8s;animation-direction:reverse}
+  .portal-core{position:absolute;inset:80px;border-radius:50%;background:radial-gradient(circle at center,#1a0a3a 0%,#0d0520 40%,#03020a 100%);box-shadow:0 0 60px rgba(124,92,252,.3),0 0 120px rgba(124,92,252,.15),inset 0 0 40px rgba(124,92,252,.2);animation:pulse 3s ease-in-out infinite}
+  .portal-symbol{position:absolute;inset:80px;border-radius:50%;display:flex;align-itecare2:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:rgba(192,132,252,.6);animation:pulse 3s ease-in-out infinite;z-index:2}
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
+  .content{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-itecare2:center;justify-content:center;pointer-events:none}
+  .from-label{font-style:italic;font-size:.95rem;color:var(--dim);letter-spacing:.15em;margin-bottom:1rem;opacity:0;animation:fadeUp .8s ease .3s forwards}
+  .flavour{font-style:italic;font-size:1.4rem;color:var(--text);text-align:center;max-width:480px;line-height:1.7;padding:0 2rem;opacity:0;animation:fadeUp 1s ease .6s forwards;margin-top:230px}
+  .destination-label{margin-top:2rem;font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--accent2);letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeUp .8s ease 1s forwards}
+  .progress-wrap{margin-top:2rem;width:220px;height:2px;background:rgba(124,92,252,.15);border-radius:2px;overflow:hidden;opacity:0;animation:fadeUp .5s ease 1.2s forwards}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;box-shadow:0 0 8px var(--glow);transition:width .1s linear}
+  .skip-btn{margin-top:1.5rem;font-family:'Cricare2on Pro',serif;font-size:.85rem;color:var(--dim);letter-spacing:.1em;cursor:pointer;pointer-events:all;opacity:0;border:none;background:none;animation:fadeUp .5s ease 1.5s forwards;transition:color .2s}
+  .skip-btn:hover{color:var(--text)}
+  .whoosh{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at center,var(--accent),var(--bg));opacity:0;pointer-events:none;transition:opacity .6s ease}
+  .whoosh.active{opacity:1}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="portal-wrap">
+  <div class="vortex">
+    <div class="ring ring-1"></div><div class="ring ring-2"></div>
+    <div class="ring ring-3"></div><div class="ring ring-4"></div>
+    <div class="portal-core"></div>
+    <div class="portal-symbol">⬡</div>
+  </div>
+</div>
+<div class="content">
+  <div class="from-label" id="fromLabel">departing <span id="fromName">—</span></div>
+  <div class="flavour" id="flavourText">The air shimmers. Reality folds.</div>
+  <div class="destination-label" id="destName">Unknown Realm</div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <button class="skip-btn" id="skipBtn">skip →</button>
+</div>
+<div class="whoosh" id="whoosh"></div>
+<script>
+const PORTALS={
+  "whispering-wilds":{label:"Whispering Wilds",url:"https://REDACTED_USER-stack.github.io/whispering-wilds/",portals:[{to:"null",flavour:"The forest exhales. The trees thin to wire. Silence arrives like a wall."},{to:"mystery-depths",flavour:"The roots descend. The soil becomes cold water. Something ancient stirs below."},{to:"infinite-office",flavour:"The break room window opens onto something green. You climb through the glass."}]},
+  "null":{label:"Null",url:"https://REDACTED_USER-stack.github.io/Null/",portals:[{to:"whispering-wilds",flavour:"The rope slackens. Green arrives. Noise."},{to:"infinite-office",flavour:"The rope becomes a lanyard. The silence becomes a hum. Fluorescent."},{to:"mystery-depths",flavour:"The beads are cold. Very cold. The ground is gone."}]},
+  "mystery-depths":{label:"Mystery Depths",url:"https://REDACTED_USER-stack.github.io/MysteriousDepths/",portals:[{to:"whispering-wilds",flavour:"The water drains upward. Roots. Leaves. Light."},{to:"wastes-courier",flavour:"The seabed cracks. Dust pours in. You are standing in a wasteland."},{to:"null",flavour:"There is no sound here. There never was."}]},
+  "infinite-office":{label:"The Infinite Office",url:"https://REDACTED_USER-stack.github.io/OrgScape/",portals:[{to:"null",flavour:"The fluorescents cut out. The lanyard becomes rope. The silence is total."},{to:"whispering-wilds",flavour:"The break room window opens onto something green. You climb through."}]},
+  "wastes-courier":{label:"Wastes Courier",url:"https://joshualparris.github.io/wastes-courier-roguelike/",portals:[{to:"mystery-depths",flavour:"The parcel dissolves. Salt water. Dark. You delivered something to the bottom of the world."},{to:"whispering-wilds",flavour:"The wasteland softens. Green. The delivery was to a forest that shouldn't exist."}]},
+  "simple-rpg":{label:"Simple RPG",url:"https://REDACTED_USER-stack.github.io/LetsPlayDnd/",portals:[{to:"whispering-wilds",flavour:"The dungeon opens. Stone becomes bark. You are outside, in a living forest."}]},
+  "midnight-line":{label:"The Midnight Line",url:"https://joshuaparris-max.github.io/Midnight-Line/",portals:[{to:"null",flavour:"The lights go out. The station disappears. Rope. Silence."},{to:"mystery-depths",flavour:"The platform descends. The train never surfaces."}]},
+  "starhaven":{label:"Starhaven",url:"https://joshuaparris-max.github.io/StarHaven/",portals:[{to:"midnight-line",flavour:"The stars rearrange. You are on a train. It is very late."},{to:"mystery-depths",flavour:"The telescope points down instead of up. Below is ocean."}]},
+  "whirring-wilderness":{label:"Whirring Wilderness",url:"https://joshuaparris-max.github.io/WhirringWilderness/",portals:[{to:"null",flavour:"The gears stop. The vines turn to rope. Silence."}]}
+};
+const URLS=Object.fromEntries(Object.entries(PORTALS).map(([k,v])=>[k,v.url]));
+const LABELS=Object.fromEntries(Object.entries(PORTALS).map(([k,v])=>[k,v.label]));
+const paracare2=new URLSearchParacare2(window.location.search);
+const from=paracare2.get("from")||"";
+const to=paracare2.get("to")||"";
+let flavour="Reality folds. The air shimmers. You pass through.";
+if(PORTALS[from]){const m=PORTALS[from].portals.find(p=>p.to===to);if(m)flavour=m.flavour;}
+const destUrl=URLS[to]||paracare2.get("url")||null;
+const destLabel=LABELS[to]||to.replace(/-/g," ")||"Unknown Realm";
+const fromLabel=LABELS[from]||from.replace(/-/g," ")||"";
+document.getElementById("flavourText").textContent=flavour;
+document.getElementById("destName").textContent=destLabel;
+document.getElementById("fromName").textContent=fromLabel;
+if(!fromLabel)document.getElementById("fromLabel").style.display="none";
+const bar=document.getElementById("progressBar");
+const DELAY=4000;const start=Date.now();
+function tick(){const pct=Math.min(100,((Date.now()-start)/DELAY)*100);bar.style.width=pct+"%";if(pct<100)requestAnimationFrame(tick);else doRedirect();}
+requestAnimationFrame(tick);
+function doRedirect(){if(!destUrl)return;const w=document.getElementById("whoosh");w.classList.add("active");setTimeout(()=>{window.location.href=destUrl+"?portal=true&from="+encodeURIComponent(to);},600);}
+document.getElementById("skipBtn").addEventListener("click",doRedirect);
+</script>
+</body>
+</html>
