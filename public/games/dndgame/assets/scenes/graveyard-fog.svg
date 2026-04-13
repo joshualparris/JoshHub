@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">Foggy Graveyard</title>
+  <desc id="desc">A graveyard of dark headstones, iron fencing, and drifting mist.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#121b31"/>
+      <stop offset="58%" stop-color="#32415b"/>
+      <stop offset="100%" stop-color="#7b7d74"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="420" fill="url(#sky)"/>
+  <circle cx="188" cy="78" r="31" fill="#dfe5d9" opacity="0.78"/>
+  <rect y="306" width="900" height="114" fill="#13151a"/>
+  <path d="M0 286L96 260L196 278L302 244L400 268L500 236L600 260L700 228L816 254L900 240V420H0Z" fill="#191d24"/>
+  <path d="M84 220V312" stroke="#232933" stroke-width="8"/>
+  <path d="M112 240V312" stroke="#232933" stroke-width="8"/>
+  <path d="M162 210V312" stroke="#232933" stroke-width="10"/>
+  <path d="M188 232V312" stroke="#232933" stroke-width="8"/>
+  <path d="M268 214V312" stroke="#232933" stroke-width="10"/>
+  <path d="M316 246V312" stroke="#232933" stroke-width="8"/>
+  <path d="M410 222V312" stroke="#232933" stroke-width="10"/>
+  <path d="M462 236V312" stroke="#232933" stroke-width="8"/>
+  <path d="M564 214V312" stroke="#232933" stroke-width="10"/>
+  <path d="M620 238V312" stroke="#232933" stroke-width="8"/>
+  <path d="M724 226V312" stroke="#232933" stroke-width="10"/>
+  <path d="M786 242V312" stroke="#232933" stroke-width="8"/>
+  <path d="M0 328C82 308 170 304 258 322C361 342 462 350 566 338C677 325 792 302 900 316V420H0Z" fill="#0d1014" opacity="0.92"/>
+  <ellipse cx="250" cy="286" rx="210" ry="38" fill="#d4d5d0" opacity="0.13"/>
+  <ellipse cx="626" cy="302" rx="248" ry="44" fill="#d4d5d0" opacity="0.12"/>
+</svg>

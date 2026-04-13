@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">Moonlit Ruins</title>
+  <desc id="desc">Broken estate walls beneath a pale moon and creeping ivy.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#18213f"/>
+      <stop offset="52%" stop-color="#38405e"/>
+      <stop offset="100%" stop-color="#55605d"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="420" fill="url(#sky)"/>
+  <circle cx="678" cy="84" r="34" fill="#dde4df" opacity="0.9"/>
+  <rect y="300" width="900" height="120" fill="#12161d"/>
+  <path d="M0 296L118 256L210 278L318 222L420 248L520 214L632 238L730 210L826 242L900 230V420H0Z" fill="#191f29"/>
+  <path d="M118 178H240V314H118Z" fill="#25303b"/>
+  <path d="M154 138H210V178H154Z" fill="#2c3945"/>
+  <path d="M334 154H472V314H334Z" fill="#232c36"/>
+  <path d="M374 104H426V154H374Z" fill="#2b3642"/>
+  <path d="M592 168H772V314H592Z" fill="#212933"/>
+  <path d="M640 110H708V168H640Z" fill="#2a3440"/>
+  <path d="M182 186C152 230 160 272 142 314" fill="none" stroke="#4b6c4b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M682 176C662 224 664 264 650 314" fill="none" stroke="#4b6c4b" stroke-width="10" stroke-linecap="round"/>
+  <path d="M98 340C202 308 316 312 432 340C554 370 692 366 900 332V420H0Z" fill="#0d1116" opacity="0.9"/>
+  <path d="M0 356C104 336 188 334 286 352C390 370 500 372 610 356C708 340 790 328 900 338" fill="none" stroke="#91a8a1" stroke-opacity="0.22" stroke-width="8"/>
+</svg>
