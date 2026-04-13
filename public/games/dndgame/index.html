@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicles of the Sword Coast</title>
+<link rel="stylesheet" href="./styles/main.css">
+</head>
+<body>
+<div id="app">
+  <div id="title-screen">
+    <div class="title-main">Chronicles of the Sword Coast</div>
+    <div class="title-sub">A Fantasy Browser RPG</div>
+    <div class="title-divider"></div>
+    <div class="title-buttons">
+      <button class="btn btn-primary btn-lg" id="new-game-btn">New Adventure</button>
+      <button class="btn btn-lg" id="load-btn" style="display:none">Continue Journey</button>
+      <button class="btn btn-lg" id="title-help-btn">How To Play</button>
+    </div>
+    <div class="title-flavor">A modular rebuild from a recovered prototype snapshot.</div>
+  </div>
+
+  <div id="char-creation"></div>
+
+  <div id="game-screen">
+    <div class="game-header">
+      <div class="location-display" id="location-name">Protector's Enclave, Neverwinter</div>
+      <div class="char-brief" id="char-brief"></div>
+      <div class="header-btns">
+        <button class="btn btn-sm" id="toggle-sidebar-btn">Sheet</button>
+        <button class="btn btn-sm" id="rest-btn">Rest</button>
+        <button class="btn btn-sm" id="save-btn">Save</button>
+        <button class="btn btn-sm" id="help-btn">Help</button>
+      </div>
+    </div>
+
+    <div class="game-body">
+      <div class="game-main">
+        <div class="scene-panel" id="scene-panel">
+          <img class="scene-image" id="scene-image" alt="">
+          <div class="scene-overlay">
+            <div class="scene-kicker" id="scene-kicker"></div>
+            <div class="scene-title" id="scene-title"></div>
+            <div class="scene-caption" id="scene-caption"></div>
+            <div class="scene-tags" id="scene-tags"></div>
+          </div>
+        </div>
+        <div class="narrative-panel" id="narrative-panel">
+          <div class="narrative-text" id="narrative"></div>
+        </div>
+        <div class="action-panel">
+          <div class="actions" id="actions"></div>
+        </div>
+      </div>
+
+      <aside class="game-sidebar" id="sidebar">
+        <div class="sidebar-tabs" id="sidebar-tabs">
+          <div class="sidebar-tab active" data-tab="character">Character</div>
+          <div class="sidebar-tab" data-tab="inventory">Inventory</div>
+          <div class="sidebar-tab" data-tab="quests">Quests</div>
+          <div class="sidebar-tab" data-tab="spells">Spells</div>
+          <div class="sidebar-tab" data-tab="log">Log</div>
+          <div class="sidebar-tab" data-tab="help">Help</div>
+        </div>
+        <div class="sidebar-content">
+          <div class="sidebar-panel active" id="panel-character"></div>
+          <div class="sidebar-panel" id="panel-inventory"></div>
+          <div class="sidebar-panel" id="panel-quests"></div>
+          <div class="sidebar-panel" id="panel-spells"></div>
+          <div class="sidebar-panel" id="panel-log"></div>
+          <div class="sidebar-panel" id="panel-help"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

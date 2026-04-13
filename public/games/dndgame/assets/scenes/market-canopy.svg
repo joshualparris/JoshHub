@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">Market Canopies at Night</title>
+  <desc id="desc">A fantasy market scene with layered tents, lamps, and warm colors.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#15203c"/>
+      <stop offset="60%" stop-color="#3a3458"/>
+      <stop offset="100%" stop-color="#9c5531"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="420" fill="url(#sky)"/>
+  <circle cx="158" cy="94" r="32" fill="#f4ddb2" opacity="0.8"/>
+  <rect y="310" width="900" height="110" fill="#171119"/>
+  <path d="M0 262L72 222L148 248L233 198L320 244L406 184L492 232L579 194L662 236L744 212L818 244L900 226V420H0Z" fill="#221829"/>
+  <path d="M54 232L140 168L228 232Z" fill="#8d3a2f"/>
+  <path d="M178 242L286 154L392 242Z" fill="#c88338"/>
+  <path d="M354 232L474 142L596 232Z" fill="#6f2f46"/>
+  <path d="M556 238L668 162L778 238Z" fill="#aa6132"/>
+  <path d="M714 250L822 182L900 238V250Z" fill="#5f6b3b"/>
+  <rect x="96" y="232" width="10" height="78" fill="#36251f"/>
+  <rect x="215" y="242" width="10" height="68" fill="#36251f"/>
+  <rect x="420" y="232" width="10" height="78" fill="#36251f"/>
+  <rect x="625" y="238" width="10" height="72" fill="#36251f"/>
+  <rect x="806" y="250" width="10" height="60" fill="#36251f"/>
+  <circle cx="154" cy="230" r="11" fill="#f5be5e"/>
+  <circle cx="322" cy="244" r="13" fill="#f5be5e"/>
+  <circle cx="519" cy="232" r="11" fill="#f5be5e"/>
+  <circle cx="727" cy="248" r="13" fill="#f5be5e"/>
+  <path d="M0 340C93 318 186 314 276 332C375 352 474 353 571 337C680 319 791 304 900 325V420H0Z" fill="#0d0a12" opacity="0.9"/>
+</svg>

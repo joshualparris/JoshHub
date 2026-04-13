@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-labelledby="title desc">
+  <title id="title">Hotenow Rift</title>
+  <desc id="desc">A volcanic rift with lava glow, black rock, and embers in the sky.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#250d16"/>
+      <stop offset="45%" stop-color="#5a1d1b"/>
+      <stop offset="100%" stop-color="#f07d2d"/>
+    </linearGradient>
+    <linearGradient id="lava" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffd15a"/>
+      <stop offset="55%" stop-color="#f9751c"/>
+      <stop offset="100%" stop-color="#a61d13"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="420" fill="url(#sky)"/>
+  <path d="M0 252L88 208L188 234L286 180L392 224L500 150L600 210L694 156L804 202L900 178V420H0Z" fill="#261416"/>
+  <path d="M0 326L128 290L220 308L340 266L444 302L550 246L652 286L754 248L900 278V420H0Z" fill="#130d0f"/>
+  <path d="M424 420L500 208L560 420Z" fill="url(#lava)"/>
+  <path d="M224 420L286 286L334 420Z" fill="url(#lava)" opacity="0.85"/>
+  <path d="M668 420L726 278L772 420Z" fill="url(#lava)" opacity="0.82"/>
+  <path d="M82 108L104 130L86 150L112 170" fill="none" stroke="#ffbb55" stroke-width="4" stroke-linecap="round"/>
+  <path d="M676 84L694 102L680 122L704 142" fill="none" stroke="#ffbb55" stroke-width="4" stroke-linecap="round"/>
+  <path d="M790 122L808 144L792 162L818 184" fill="none" stroke="#ffbb55" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="142" cy="80" r="4" fill="#ffcc77"/>
+  <circle cx="218" cy="58" r="5" fill="#ffcc77"/>
+  <circle cx="534" cy="92" r="4" fill="#ffcc77"/>
+  <circle cx="744" cy="60" r="4" fill="#ffcc77"/>
+  <path d="M0 350C102 326 200 324 300 340C412 358 528 364 636 348C754 330 830 320 900 326V420H0Z" fill="#090608" opacity="0.94"/>
+</svg>
