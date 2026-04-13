@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wilds - Sail West</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+  <script defer src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0a0e14;
+      --panel: #121927;
+      --panel-2: #0c111b;
+      --accent: #f5c063;
+      --accent-2: #62d0ff;
+      --muted: #93a0b6;
+      --good: #9be9c9;
+      --warn: #f29d6b;
+      --danger: #ff6b6b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Manrope", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #233048 0%, #0a0e14 55%), #0a0e14;
+      color: #e9eef7;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(18, 25, 39, 0.98), rgba(12, 17, 27, 0.98));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 24px 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(90deg, rgba(245, 192, 99, 0.18), transparent 70%);
+    }
+
+    header h1 {
+      font-family: "Cinzel", serif;
+      font-size: 26px;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    header p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .content {
+      padding: 24px 28px 28px;
+    }
+
+    .game-area {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 22px;
+    }
+
+    .main-panel {
+      background: var(--panel-2);
+      border: 1px solid rgba(245, 192, 99, 0.2);
+      border-radius: 12px;
+      padding: 18px;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(98, 208, 255, 0.12);
+      color: var(--accent-2);
+      border: 1px solid rgba(98, 208, 255, 0.3);
+    }
+
+    .story-text {
+      flex: 1;
+      overflow-y: auto;
+      font-size: 15px;
+      line-height: 1.7;
+      padding-right: 6px;
+    }
+
+    .story-text p {
+      margin: 12px 0;
+    }
+
+    .story-text strong {
+      color: var(--accent);
+    }
+
+    .story-text em {
+      color: var(--good);
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    button {
+      padding: 12px 14px;
+      background: linear-gradient(90deg, rgba(245, 192, 99, 0.9), rgba(245, 192, 99, 0.6));
+      color: #1a1406;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: left;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      transform: translateX(4px);
+      background: linear-gradient(90deg, rgba(155, 233, 201, 0.9), rgba(245, 192, 99, 0.8));
+    }
+
+    button:active {
+      transform: translateX(2px);
+    }
+
+    .sidebar {
+      background: var(--panel-2);
+      border: 1px solid rgba(98, 208, 255, 0.2);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 13px;
+    }
+
+    .sidebar h3 {
+      font-size: 13px;
+      color: var(--good);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(155, 233, 201, 0.3);
+      padding-bottom: 8px;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      color: var(--muted);
+    }
+
+    .stat strong {
+      color: #e9eef7;
+    }
+
+    .stat .accent {
+      color: var(--accent-2);
+    }
+
+    .inventory-item {
+      background: rgba(98, 208, 255, 0.08);
+      border-left: 2px solid var(--accent-2);
+      padding: 8px 10px;
+      margin: 6px 0;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .journal {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px;
+      max-height: 180px;
+      overflow-y: auto;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .journal p {
+      margin: 6px 0;
+    }
+
+    #game-container {
+      display: none;
+    }
+
+    #game-container.ready {
+      display: grid;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-2);
+      border-radius: 3px;
+    }
+
+    @media (max-width: 900px) {
+      .game-area {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <header>
+        <h1>Wilds - Sail West</h1>
+        <p>Lead a crew through mythic waters, bargaining, battling, and choosing the legend you become.</p>
+      </header>
+      <div class="content">
+        <div id="game-container" class="game-area">
+          <div class="main-panel">
+            <div class="status-row">
+              <span class="pill">Day <span id="day">1</span></span>
+              <span class="pill">Heading <span id="heading">West</span></span>
+              <span class="pill">Wind <span id="wind">Fair</span></span>
+              <span class="pill">Sea <span id="sea">Calm</span></span>
+              <span class="pill">Goal <span id="goal">Break the horizon</span></span>
+            </div>
+            <div id="story" class="story-text"></div>
+            <div id="choices" class="choices"></div>
+          </div>
+          <div class="sidebar">
+            <h3>Ship Status</h3>
+            <div class="stat"><span>Hull</span><strong id="hull">100%</strong></div>
+            <div class="stat"><span>Crew</span><strong id="crew">10/10</strong></div>
+            <div class="stat"><span>Supplies</span><strong id="supplies">100%</strong></div>
+            <div class="stat"><span>Morale</span><strong id="morale">Confident</strong></div>
+            <div class="stat"><span>Gold</span><strong id="gold">0</strong></div>
+            <div class="stat"><span>Renown</span><strong id="renown">0</strong></div>
+
+            <h3 style="margin-top: 18px;">Crew</h3>
+            <div id="companions"></div>
+
+            <h3 style="margin-top: 18px;">Inventory</h3>
+            <div id="inventory"></div>
+
+            <h3 style="margin-top: 18px;">Discoveries</h3>
+            <div id="discoveries"></div>
+
+            <h3 style="margin-top: 18px;">Captain's Log</h3>
+            <div id="journal" class="journal"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <py-script>
+import random
+
+class Game:
+    def __init__(self):
+        self.state = {
+            "scene": "harbor",
+            "hull": 100,
+            "crew": 10,
+            "supplies": 100,
+            "morale": 70,
+            "gold": 24,
+            "renown": 0,
+            "day": 1,
+            "wind": "Fair",
+            "sea": "Calm",
+            "heading": "West",
+            "goal": "Break the horizon",
+            "inventory": ["Map", "Compass", "Rope", "Tar", "Dried Citrus"],
+            "discoveries": ["Harbor of Origin"],
+            "flags": set(),
+            "log": ["Departure day. The harbor bell fades behind us."],
+            "companions": {
+                "Nyra (Navigator)": {"rapport": 55, "trait": "reads the wind"},
+                "Hawk (Boatswain)": {"rapport": 48, "trait": "iron discipline"},
+                "Mira (Medic)": {"rapport": 60, "trait": "steady hands"},
+            },
+        }
+
+        self.scenes = {
+            "harbor": {
+                "text": self.text_harbor,
+                "choices": [
+                    {"label": "Visit the shipwrights for upgrades", "target": "shipwright"},
+                    {"label": "Hear rumors at the tavern", "target": "tavern"},
+                    {"label": "Stock extra supplies", "target": "market"},
+                    {"label": "Set sail immediately", "target": "open_sea", "effects": {"log": ["We cast off at dawn."]}},
+                ],
+            },
+            "shipwright": {
+                "text": "The dry docks smell of tar and cedar. The master shipwright offers modest upgrades if you can pay.",
+                "choices": [
+                    {"label": "Reinforce the hull (-10 gold, +12 hull)", "target": "harbor", "effects": {"gold": -10, "hull": 12, "log": ["Paid for hull reinforcement."]}, "cond": lambda s: s["gold"] >= 10},
+                    {"label": "Storm sails (-14 gold, new option in storms)", "target": "harbor", "effects": {"gold": -14, "flags_add": ["storm_sails"], "log": ["Installed storm sails."]}, "cond": lambda s: s["gold"] >= 14},
+                    {"label": "Lighten the rigging (-6 gold, +1 day speed)", "target": "harbor", "effects": {"gold": -6, "flags_add": ["swift_rigging"], "log": ["Rigging rebalanced for speed."]}, "cond": lambda s: s["gold"] >= 6},
+                    {"label": "Return to the harbor", "target": "harbor"},
+                ],
+            },
+            "market": {
+                "text": "Merchants shout over one another. You can buy supplies or a rare navigator's charm.",
+                "choices": [
+                    {"label": "Buy extra provisions (-8 gold, +18 supplies)", "target": "harbor", "effects": {"gold": -8, "supplies": 18, "log": ["Stocked fresh provisions."]}, "cond": lambda s: s["gold"] >= 8},
+                    {"label": "Buy a wind charm (-12 gold, calmer weather)", "target": "harbor", "effects": {"gold": -12, "flags_add": ["wind_charm"], "log": ["Wind charm hung from the mast."]}, "cond": lambda s: s["gold"] >= 12},
+                    {"label": "Save coin for later", "target": "harbor"},
+                ],
+            },
+            "tavern": {
+                "text": "Sailors swap tales of a western mist gate, a living reef, and a city built on whale backs.",
+                "choices": [
+                    {"label": "Pay for a secret chart (-9 gold)", "target": "harbor", "effects": {"gold": -9, "flags_add": ["secret_chart"], "inventory_add": ["Secret Chart"], "log": ["Bought a secret chart rumored to reveal a mist gate."]}, "cond": lambda s: s["gold"] >= 9},
+                    {"label": "Hire a daring scout (-6 gold, +1 crew)", "target": "harbor", "effects": {"gold": -6, "crew": 1, "log": ["Hired a daring scout named Alix."]}, "cond": lambda s: s["gold"] >= 6},
+                    {"label": "Share a drink with your crew (+morale)", "target": "harbor", "effects": {"morale": 8, "log": ["Crew spirits lifted in the tavern."]}},
+                ],
+            },
+            "open_sea": {
+                "text": self.text_open_sea,
+                "choices": [
+                    {"label": "Follow the sunset current", "target": "sunset_current", "effects": {"day": 1}},
+                    {"label": "Sail into the fog bank", "target": "fog_bank", "effects": {"day": 1}},
+                    {"label": "Hold a crew drill", "target": "crew_drill", "effects": {"day": 1}},
+                    {"label": "Check the secret chart", "target": "mist_gate", "cond": lambda s: "Secret Chart" in s["inventory"]},
+                ],
+            },
+            "crew_drill": {
+                "text": "You drill the crew on reef maneuvers and emergency repairs. Discipline rises.",
+                "choices": [
+                    {"label": "Continue west", "target": "open_sea", "effects": {"morale": 5, "hull": 3, "log": ["Crew drilled on reef maneuvers."]}},
+                ],
+            },
+            "sunset_current": {
+                "text": "A warm current carries you swiftly west. Dolphins follow in the wake and the crew sings.",
+                "choices": [
+                    {"label": "Press your advantage", "target": "open_sea", "effects": {"supplies": -6, "morale": 4, "renown": 2}},
+                    {"label": "Anchor for fishing", "target": "fishing_cove", "effects": {"day": 1}},
+                ],
+            },
+            "fishing_cove": {
+                "text": "You find a hidden cove thick with fish. The cook smiles for the first time in days.",
+                "choices": [
+                    {"label": "Feast and rest", "target": "open_sea", "effects": {"supplies": 12, "morale": 10, "log": ["Rested at a hidden cove."]}},
+                ],
+            },
+            "fog_bank": {
+                "text": "The fog closes around you. Bells ring softly somewhere ahead.",
+                "choices": [
+                    {"label": "Use the wind charm to cut through", "target": "calm_break", "cond": lambda s: "wind_charm" in s["flags"]},
+                    {"label": "Send a boat with a lantern", "target": "ghost_bell"},
+                    {"label": "Turn back to clear seas", "target": "open_sea", "effects": {"day": 1, "supplies": -5}},
+                ],
+            },
+            "calm_break": {
+                "text": "The charm thrums. The fog thins like a curtain and you slip into clear water.",
+                "choices": [
+                    {"label": "Log the safe passage", "target": "open_sea", "effects": {"renown": 3, "log": ["Wind charm cleared the fog bank."]}},
+                ],
+            },
+            "ghost_bell": {
+                "text": "A wreck drifts in the mist. The bell tolls once as if struck by an unseen hand.",
+                "choices": [
+                    {"label": "Board the wreck", "target": "wreck_board"},
+                    {"label": "Salvage from a distance", "target": "wreck_salvage"},
+                ],
+            },
+            "wreck_board": {
+                "text": "Inside the wreck, a sealed chest and a weathered journal wait. The air is icy.",
+                "choices": [
+                    {"label": "Take the chest and leave", "target": "open_sea", "effects": {"inventory_add": ["Sealed Chest"], "log": ["Recovered a sealed chest from a wreck."], "renown": 4}},
+                    {"label": "Read the journal", "target": "journal_revelation"},
+                ],
+            },
+            "journal_revelation": {
+                "text": "The journal speaks of a reef that moves like a beast and guards a pearl of storms.",
+                "choices": [
+                    {"label": "Seek the living reef", "target": "living_reef", "effects": {"discoveries_add": ["Reef of the Living"], "log": ["Learned of a living reef that guards a storm pearl."]}},
+                    {"label": "Return to open sea", "target": "open_sea"},
+                ],
+            },
+            "wreck_salvage": {
+                "text": "You pull supplies from the drift and leave before the fog thickens.",
+                "choices": [
+                    {"label": "Back to open sea", "target": "open_sea", "effects": {"supplies": 10, "log": ["Recovered supplies from a drifting wreck."]}},
+                ],
+            },
+            "living_reef": {
+                "text": "The reef moves, breathing in slow tides. A pearl glows at its heart.",
+                "choices": [
+                    {"label": "Attempt a daring dive", "target": "reef_dive"},
+                    {"label": "Leave it alone", "target": "open_sea", "effects": {"morale": 3}},
+                ],
+            },
+            "reef_dive": {
+                "text": "Divers return with the storm pearl, but one is injured. The pearl hums with power.",
+                "choices": [
+                    {"label": "Use the pearl to calm weather", "target": "open_sea", "effects": {"flags_add": ["storm_pearl"], "morale": 4, "crew": -1, "log": ["Claimed the storm pearl at a cost."]}},
+                ],
+            },
+            "mist_gate": {
+                "text": "The secret chart marks a corridor of mist. The sea shimmers as if reality thins.",
+                "choices": [
+                    {"label": "Enter the mist gate", "target": "mist_gate_crossing"},
+                    {"label": "Mark the location and retreat", "target": "open_sea", "effects": {"renown": 2, "log": ["Marked the mist gate for later."]}},
+                ],
+            },
+            "mist_gate_crossing": {
+                "text": "The ship hums. For a moment, stars appear beneath your feet. Then a new sea surrounds you.",
+                "choices": [
+                    {"label": "Explore the star sea", "target": "star_sea"},
+                    {"label": "Look for a way back", "target": "open_sea", "effects": {"day": 2, "morale": -3}},
+                ],
+            },
+            "star_sea": {
+                "text": "Islands float in the air, tethered by chains of light. A city sits upon the largest.",
+                "choices": [
+                    {"label": "Dock at the sky city", "target": "sky_city"},
+                    {"label": "Harvest starlight crystals", "target": "starlight_harvest"},
+                ],
+            },
+            "starlight_harvest": {
+                "text": "You collect crystals that hum in your palms. The crew whispers, half in awe, half afraid.",
+                "choices": [
+                    {"label": "Return to open sea", "target": "open_sea", "effects": {"inventory_add": ["Starlight Crystals"], "renown": 6, "log": ["Harvested starlight crystals."]}},
+                ],
+            },
+            "sky_city": {
+                "text": "The sky city welcomes you with cautious grace. Scholars offer maps of western winds.",
+                "choices": [
+                    {"label": "Trade for maps (-10 gold, +knowledge)", "target": "open_sea", "effects": {"gold": -10, "flags_add": ["sky_maps"], "renown": 8, "discoveries_add": ["Sky City"], "log": ["Traded with the sky scholars for wind maps."]}, "cond": lambda s: s["gold"] >= 10},
+                    {"label": "Accept a scholar aboard (+renown, -supplies)", "target": "open_sea", "effects": {"renown": 10, "supplies": -8, "crew": 1, "log": ["A sky scholar joined the voyage."]}},
+                ],
+            },
+            "storm_front": {
+                "text": "Dark clouds tower ahead. Lightning flickers over the water.",
+                "choices": [
+                    {"label": "Ride it out", "target": "storm_ride"},
+                    {"label": "Use storm sails", "target": "storm_sails", "cond": lambda s: "storm_sails" in s["flags"]},
+                    {"label": "Use the storm pearl", "target": "storm_pearl", "cond": lambda s: "storm_pearl" in s["flags"]},
+                ],
+            },
+            "storm_ride": {
+                "text": "The ship groans but holds. You emerge battered and wiser.",
+                "choices": [
+                    {"label": "Log the ordeal", "target": "open_sea", "effects": {"hull": -12, "morale": -6, "renown": 4, "log": ["Survived a brutal storm."]}},
+                ],
+            },
+            "storm_sails": {
+                "text": "Your storm sails bite the wind. The ship rides the waves with dangerous grace.",
+                "choices": [
+                    {"label": "Break through", "target": "open_sea", "effects": {"hull": -4, "renown": 6, "log": ["Storm sails carried us through lightning seas."]}},
+                ],
+            },
+            "storm_pearl": {
+                "text": "The pearl glows. The storm softens into rain and you glide forward in eerie calm.",
+                "choices": [
+                    {"label": "Continue west", "target": "open_sea", "effects": {"renown": 8, "morale": 5, "log": ["Storm pearl calmed a tempest."]}},
+                ],
+            },
+            "iron_isles": {
+                "text": "Iron cliffs rise from the sea. The islands are rich with ore and guarded by fierce clans.",
+                "choices": [
+                    {"label": "Negotiate for supplies", "target": "iron_trade"},
+                    {"label": "Attempt a stealthy raid", "target": "iron_raid"},
+                    {"label": "Move on", "target": "open_sea"},
+                ],
+            },
+            "iron_trade": {
+                "text": "The clans respect honesty. You trade gold for iron fittings and provisions.",
+                "choices": [
+                    {"label": "Return to open sea", "target": "open_sea", "effects": {"gold": -8, "hull": 6, "supplies": 8, "renown": 4, "log": ["Traded with the Iron Isles clans."]}, "cond": lambda s: s["gold"] >= 8},
+                ],
+            },
+            "iron_raid": {
+                "text": "Your raid is fast but costly. You escape with ore but your crew is shaken.",
+                "choices": [
+                    {"label": "Sail hard into the night", "target": "open_sea", "effects": {"crew": -1, "supplies": 6, "morale": -8, "renown": -2, "log": ["Raided the Iron Isles and paid the price."]}},
+                ],
+            },
+            "merchant_wake": {
+                "text": "A merchant fleet appears on the horizon. They signal for aid.",
+                "choices": [
+                    {"label": "Provide escort for coin", "target": "escort_mission"},
+                    {"label": "Trade for rumors", "target": "merchant_rumors"},
+                ],
+            },
+            "escort_mission": {
+                "text": "You guard the merchants through a pirate zone. The merchants pay generously.",
+                "choices": [
+                    {"label": "Continue west", "target": "open_sea", "effects": {"gold": 18, "renown": 6, "log": ["Escorted merchants through pirate waters."]}},
+                ],
+            },
+            "merchant_rumors": {
+                "text": "The merchants speak of a city built on the backs of whales and a navigable coral maze.",
+                "choices": [
+                    {"label": "Seek the whale city", "target": "whale_city"},
+                    {"label": "Find the coral maze", "target": "coral_maze"},
+                ],
+            },
+            "whale_city": {
+                "text": "Massive whales surface, bearing structures carved into their backs. A floating city rises and falls with the tide.",
+                "choices": [
+                    {"label": "Ask for sanctuary", "target": "whale_sanctuary"},
+                    {"label": "Trade for lore", "target": "whale_trade"},
+                ],
+            },
+            "whale_sanctuary": {
+                "text": "The whale riders offer you fresh water and a blessing for the voyage.",
+                "choices": [
+                    {"label": "Continue west", "target": "open_sea", "effects": {"supplies": 14, "morale": 8, "discoveries_add": ["Whale City"], "renown": 8, "log": ["Received sanctuary from the whale city."]}},
+                ],
+            },
+            "whale_trade": {
+                "text": "You trade spices for a song-map that hints at a continent beyond the mist.",
+                "choices": [
+                    {"label": "Continue west", "target": "open_sea", "effects": {"inventory_add": ["Song Map"], "renown": 6, "log": ["Traded for a song-map of the western continent."]}},
+                ],
+            },
+            "coral_maze": {
+                "text": "The coral maze is a living labyrinth. One wrong turn will tear the hull open.",
+                "choices": [
+                    {"label": "Navigate carefully", "target": "maze_success"},
+                    {"label": "Retreat", "target": "open_sea", "effects": {"morale": -3}},
+                ],
+            },
+            "maze_success": {
+                "text": "You thread the coral maze and find a hidden lagoon full of rare shells.",
+                "choices": [
+                    {"label": "Collect shells and rest", "target": "open_sea", "effects": {"gold": 12, "supplies": 6, "renown": 4, "log": ["Navigated the coral maze safely."]}},
+                ],
+            },
+            "continent_sighting": {
+                "text": "The fog parts. A vast continent looms, untouched and wild. The crew holds its breath.",
+                "choices": [
+                    {"label": "Make landfall", "target": "continent_landing"},
+                    {"label": "Sail along the coast", "target": "coast_run"},
+                    {"label": "Turn back with proof", "target": "ending_navigator"},
+                ],
+            },
+            "continent_landing": {
+                "text": "You step onto unknown soil. Forests stretch for miles and the air smells of new rain.",
+                "choices": [
+                    {"label": "Claim the land for your people", "target": "ending_founders"},
+                    {"label": "Leave offerings and depart", "target": "ending_wanderer"},
+                ],
+            },
+            "coast_run": {
+                "text": "You map the coastline. Strange lights flicker inland, but you choose caution over curiosity.",
+                "choices": [
+                    {"label": "Return as a hero", "target": "ending_navigator"},
+                    {"label": "Seek the inland lights", "target": "inland_lights"},
+                ],
+            },
+            "inland_lights": {
+                "text": "A hidden valley reveals a city of glass trees and silent guardians.",
+                "choices": [
+                    {"label": "Parley with the guardians", "target": "ending_ambassador"},
+                    {"label": "Withdraw quietly", "target": "ending_wanderer"},
+                ],
+            },
+            "ending_founders": {
+                "text": "<strong>The Founders</strong><br>You establish the first western colony. Your name is carved into the prow of history.",
+                "choices": [{"label": "Play again", "target": "harbor"}],
+            },
+            "ending_navigator": {
+                "text": "<strong>The Navigator</strong><br>You return with proof and maps. The world opens because you did.",
+                "choices": [{"label": "Play again", "target": "harbor"}],
+            },
+            "ending_ambassador": {
+                "text": "<strong>The Ambassador</strong><br>You negotiate peace with the guardians and become the bridge between worlds.",
+                "choices": [{"label": "Play again", "target": "harbor"}],
+            },
+            "ending_wanderer": {
+                "text": "<strong>The Wanderer</strong><br>You choose the sea over crowns. The myths keep your true path hidden.",
+                "choices": [{"label": "Play again", "target": "harbor"}],
+            },
+        }
+
+        self.current_scene = "harbor"
+
+    def clamp(self, value, min_v, max_v):
+        return max(min_v, min(max_v, value))
+
+    def morale_label(self):
+        morale = self.state["morale"]
+        if morale >= 80:
+            return "Inspired"
+        if morale >= 60:
+            return "Confident"
+        if morale >= 40:
+            return "Wary"
+        if morale >= 20:
+            return "Tense"
+        return "Fractured"
+
+    def apply_effects(self, effects):
+        if not effects:
+            return
+        for key, value in effects.items():
+            if key == "log":
+                self.state["log"].extend(value)
+            elif key == "inventory_add":
+                for item in value:
+                    if item not in self.state["inventory"]:
+                        self.state["inventory"].append(item)
+            elif key == "discoveries_add":
+                for item in value:
+                    self.state["discoveries"].append(item)
+            elif key == "flags_add":
+                for item in value:
+                    self.state["flags"].add(item)
+            elif key in ["hull", "crew", "supplies", "morale", "gold", "renown", "day"]:
+                self.state[key] = self.state[key] + value
+            else:
+                self.state[key] = value
+
+        self.state["hull"] = self.clamp(self.state["hull"], 0, 120)
+        self.state["supplies"] = self.clamp(self.state["supplies"], 0, 140)
+        self.state["morale"] = self.clamp(self.state["morale"], 0, 100)
+        self.state["crew"] = self.clamp(self.state["crew"], 0, 12)
+
+    def random_event(self):
+        roll = random.random()
+        if roll < 0.12:
+            self.state["supplies"] = self.clamp(self.state["supplies"] - 8, 0, 140)
+            self.state["log"].append("Supplies spoiled in the heat.")
+        elif roll < 0.24:
+            self.state["hull"] = self.clamp(self.state["hull"] - 8, 0, 120)
+            self.state["log"].append("Hidden rocks scraped the hull.")
+        elif roll < 0.36:
+            self.state["morale"] = self.clamp(self.state["morale"] + 6, 0, 100)
+            self.state["log"].append("A clear night lifted spirits.")
+        elif roll < 0.48:
+            self.state["gold"] += 4
+            self.state["log"].append("Found salvage drifting in a crate.")
+        elif roll < 0.58:
+            self.state["wind"] = random.choice(["Fair", "Brisk", "Gusty"])
+            self.state["sea"] = random.choice(["Calm", "Rolling", "Choppy"])
+            self.state["log"].append("The weather shifted as the day turned.")
+        elif roll < 0.68:
+            self.state["log"].append("A pod of whales followed the ship for hours.")
+        elif roll < 0.78:
+            self.current_scene = random.choice(["storm_front", "merchant_wake", "iron_isles"])
+            self.state["log"].append("A new encounter rises on the horizon.")
+        else:
+            self.state["log"].append("The sea is quiet. You make good time.")
+
+    def text_harbor(self):
+        return (
+            "The ship waits at the end of the pier. The horizon glows with the promise of unknown waters. "
+            "You are Captain of the Wanderer, and your crew looks to you for the story you will write.")
+
+    def text_open_sea(self):
+        return (
+            "The open sea stretches forever. The crew watches you for the next call. "
+            "Every day westward feels like a step into legend.")
+
+    def get_scene_data(self):
+        return self.scenes.get(self.current_scene, self.scenes["harbor"])
+
+    def render(self):
+        scene_data = self.get_scene_data()
+        story_el = document.getElementById("story")
+        choices_el = document.getElementById("choices")
+
+        text = scene_data["text"]
+        if callable(text):
+            text = text()
+        story_el.innerHTML = f"<p>{text}</p>"
+
+        choices_el.innerHTML = ""
+        for choice in scene_data.get("choices", []):
+            cond = choice.get("cond")
+            if cond and not cond(self.state):
+                continue
+            btn = document.createElement("button")
+            btn.textContent = choice["label"]
+            btn.onclick = lambda _, c=choice: self.make_choice(c)
+            choices_el.appendChild(btn)
+
+        document.getElementById("hull").textContent = f"{self.state['hull']}%"
+        document.getElementById("crew").textContent = f"{self.state['crew']}/10"
+        document.getElementById("supplies").textContent = f"{self.state['supplies']}%"
+        document.getElementById("morale").textContent = self.morale_label()
+        document.getElementById("gold").textContent = str(self.state["gold"])
+        document.getElementById("renown").textContent = str(self.state["renown"])
+        document.getElementById("day").textContent = str(self.state["day"])
+        document.getElementById("heading").textContent = self.state["heading"]
+        document.getElementById("wind").textContent = self.state["wind"]
+        document.getElementById("sea").textContent = self.state["sea"]
+        document.getElementById("goal").textContent = self.state["goal"]
+
+        inv_el = document.getElementById("inventory")
+        inv_el.innerHTML = "".join(f"<div class='inventory-item'>- {item}</div>" for item in self.state["inventory"])
+
+        disc_el = document.getElementById("discoveries")
+        disc_el.innerHTML = "".join(f"<div class='inventory-item'>- {item}</div>" for item in self.state["discoveries"])
+
+        companions_el = document.getElementById("companions")
+        companions_el.innerHTML = "".join(
+            f"<div class='inventory-item'>{name}: {data['trait']} (rapport {data['rapport']})</div>"
+            for name, data in self.state["companions"].items()
+        )
+
+        journal_el = document.getElementById("journal")
+        journal_el.innerHTML = "".join(f"<p>Day {i + 1}: {entry}</p>" for i, entry in enumerate(self.state["log"][-8:]))
+
+    def make_choice(self, choice):
+        self.apply_effects(choice.get("effects"))
+        if choice.get("effects") and "day" in choice["effects"]:
+            self.state["day"] = self.state["day"] + choice["effects"]["day"]
+
+        if self.state["day"] >= 18 and self.current_scene not in ["continent_sighting", "ending_founders", "ending_navigator", "ending_ambassador", "ending_wanderer"]:
+            if random.random() < 0.28:
+                self.current_scene = "continent_sighting"
+            else:
+                self.current_scene = choice["target"]
+        else:
+            self.current_scene = choice["target"]
+
+        if self.current_scene == "open_sea":
+            self.random_event()
+
+        self.render()
+
+# Initialize game
+game = Game()
+
+def init_game():
+    container = document.getElementById("game-container")
+    container.classList.add("ready")
+    game.render()
+
+init_game()
+  </py-script>
+</body>
+</html>
