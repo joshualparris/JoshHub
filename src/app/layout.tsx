@@ -10,6 +10,7 @@ const navLinks = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/apps", label: "Apps" },
   { href: "/projects", label: "Projects" },
+  { href: "/game-lab", label: "Game Lab" },
   { href: "/map", label: "Everything Map" },
   { href: "/life", label: "Life" },
   { href: "/care", label: "Care" },
