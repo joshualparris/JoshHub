@@ -30,7 +30,7 @@ Downgrade projects that are:
 | Project name | Path | Type | Professional relevance | Technical health | Git health | Portfolio value | Cleanup urgency | Score /100 | Recommended action | Next action | Risk if ignored |
 |---|---|---|---|---|---|---|---|---:|---|---|---|
 | Avance Professional Development | `C:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\02_Personal\Avance` | source repo | High - directly MSP/professional development aligned | High - active Next.js app, documented roadmap; OneDrive and archive clutter remain | Medium - Git repo with 4 modified app files | High | Medium-high | 90 | develop / stabilise | Stabilise the core MSP workflow, review modified files, then implement top TODO itecare2: shift detail pages, work logs, knowledge entries, troubleshooting playbooks | Best MSP-aligned project loses momentum; OneDrive/archive clutter may create build or sync risk |
-| JoshHub | `C:\Users\joshua.parris\JoshHub` | source repo + catalog/dashboard | High - central project inventory and personal OS | Medium-low - active app but mixed lockfiles, stale links, many untracked assets | Low - `main` has many modified/deleted/untracked files; local branch ahead/behind origin | High | Very high | 79 | stabilise / consolidate | Commit or stash intentional work, separate static assets from app source, normalise package manager, audit `src\data\apps.ts` | Central catalog becomes unreliable; untracked work may be lost; stale local paths keep spreading confusion |
+| JoshHub | `C:\Users\joshua.parris\JoshHub` | source repo + catalog/dashboard with nested subprojects | High - central project inventory and personal OS | Medium-low - active app but mixed lockfiles, stale links, many untracked assets and nested repos | Low - `main` has many modified/deleted/untracked files; local branch ahead/behind origin | High | Very high | 79 | stabilise / consolidate | Commit or stash intentional work, run a nested repo scan, separate source repos from static assets, normalise package manager, audit `src\data\apps.ts` | Central catalog becomes unreliable; nested repos could be damaged by broad cleanup; untracked work may be lost |
 | DCSPrep / DCSPD | `C:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\DCSPrepApp` | source repo | Medium-high - useful training/portfolio bridge, but DCS-specific | Medium-high - clean Next.js app with documented known issues | High - clean `main`, GitHub remote `DCSPD.git` | Medium-high | Medium-high | 79 | stabilise / maintain | Keep as portfolio/training project; move off OneDrive if file locking appears; archive duplicate zip files after backup | Duplicate zips and OneDrive sync issues may create stale copies or build friction |
 | Parris Compass / Waypoint | `C:\parris-compass` | source repo | Medium - wellbeing/professional habits value, less direct MSP alignment | High - clean documented Next.js source repo | High - clean `main`, GitHub remote `Waypoint.git` | Medium | Low-medium | 74 | maintain / develop selectively | Treat `parris-compass` as the source of truth for Waypoint; keep scope distinct from JoshHub | May overlap with JoshHub as another dashboard unless purpose boundaries are clear |
 | Sylvie Phonics | `C:\Users\joshua.parris\Downloads\Other\Sylvie Phonics\Learning-Path-Engine\Learning-Path-Engine` | source repo | Medium - learning/portfolio potential, not core MSP | Medium-high - active pnpm workspace, but in Downloads | Medium - Git repo with modified and untracked files; only `gitsafe-backup` remote observed | Medium-high | High | 70 | recover / stabilise | Move out of Downloads only after backup and Git verification; confirm stable remote; decide whether it is portfolio or archive | Valuable source remains in a risky location; modified work may become hard to protect |
@@ -38,9 +38,11 @@ Downgrade projects that are:
 | NebulaDice | `C:\Users\joshua.parris\Documents\NebulaDice` | source code, no git | Low-medium - creative/technical value, not current MSP priority | Medium - Python/FastAPI/Rich source with requirements, but unknown runtime health | Low - no Git repo | Medium | Medium | 56 | archive / recover | If preserving, initialise Git or back up; otherwise archive as lower-priority creative project | Source can be lost or diverge from zip/frontend duplicates |
 | JoshHub duplicate workspace copy | `C:\Users\joshua.parris\dev\JoshHub` | duplicate / unclear | Low | Low - appears to contain `node_modules` only | Low - no Git repo observed | Low | Medium-high | 23 | ignore / archive | Verify it has no unique source, then mark for deletion/archive outside active repo space | Clutter and false-positive project identity |
 | NebulaDice duplicate workspace copy | `C:\Users\joshua.parris\dev\NebulaDice` | duplicate / unclear | Low | Low - frontend folder only, no Git metadata observed | Low | Low | Medium-high | 25 | ignore / archive | Verify it has no unique source, then archive or remove from active workspace | Confuses the true NebulaDice source location |
-| Game Fixer | inside `C:\Users\joshua.parris\JoshHub` | static build / catalog asset | Low-medium | Unclear - static local asset, not standalone source confirmed | Low/unknown | Low-medium | Medium | 40 | archive / catalog-only | Keep only if JoshHub should host it; otherwise move to archived assets after backup | Static build may be mistaken for source; contributes to JoshHub repo clutter |
-| PartyAI | inside `C:\Users\joshua.parris\JoshHub` | unclear / untracked local asset | Low-medium | Unclear | Low/unknown | Low-medium | Medium-high | 38 | do not touch yet / archive | Identify whether it has unique source before cleanup | Untracked app content could be accidentally deleted or keep bloating JoshHub |
-| Serenity / Serenity-Keep-Flying | inside `C:\Users\joshua.parris\JoshHub` | static build / catalog asset | Low-medium | Unclear - static local build observed | Low/unknown | Low-medium | Medium | 40 | archive / catalog-only | Decide whether it remains a hosted asset or moves to archive storage | Static asset clutter and source-of-truth confusion |
+| PartyAI | `C:\Users\joshua.parris\JoshHub\PartyAI` | nested source repo / subproject inside JoshHub | Low-medium - possible portfolio/AI app value, not core MSP priority | Medium-unclear - has `.git`, `package.json`, and about 22K files, but runtime health not audited | Medium-unknown - nested Git repo, status not yet classified | Medium | Very high | 58 | do not touch yet / recover | Run nested repo Git status and package review before any JoshHub cleanup touches it | Broad JoshHub cleanup could accidentally delete, move, or stage a real nested source repo |
+| Serenity / Serenity-Keep-Flying | `C:\Users\joshua.parris\JoshHub\Serenity-Keep-Flying` | nested source repo / subproject inside JoshHub | Low-medium - possible game/portfolio value, not core MSP priority | Medium-unclear - has `.git`, `package.json`, and about 23K files, but runtime health not audited | Medium-unknown - nested Git repo, status not yet classified | Medium | Very high | 58 | do not touch yet / recover | Run nested repo Git status and package review before any JoshHub cleanup touches it | Broad JoshHub cleanup could accidentally delete, move, or stage a real nested source repo |
+| Game Fixer | `C:\Users\joshua.parris\JoshHub\Game-Fixer` | static assets / source-unclear | Low-medium | Unclear - about 19K files and no `.git`; source repo not confirmed | Low/unknown - no nested Git repo observed | Low-medium | High | 41 | do not touch yet / archive | Classify as source, static build, or archive before moving or deleting | Static/source-unclear content may be mistaken for disposable clutter or real source |
+| JoshHub archive folder | `C:\Users\joshua.parris\JoshHub\archive` | archive / static | Low | Low-unclear - about 84K files and no `.git` | Low/unknown - no Git repo observed | Low | High | 30 | do not touch yet / archive | Inventory at a high level before deciding what belongs outside the active repo | Large archive could hide useful source or greatly bloat JoshHub |
+| JoshHub projects folder | `C:\Users\joshua.parris\JoshHub\projects` | workspace / static / unclear | Low-medium | Unclear - about 3K files and no `.git` | Low/unknown - no Git repo observed | Low-medium | Medium-high | 37 | do not touch yet / clarify | Classify each child project before cleanup | Could contain source-like material without Git protection |
 | Wilds - Sail West / Wilds variants | inside `C:\Users\joshua.parris\JoshHub` | static build / catalog asset | Low-medium | Unclear - several local game folders observed | Low/unknown | Medium if polished, otherwise low | Medium-high | 42 | consolidate / archive | Group Wilds variants and identify a single kept build/source path | Multiple variants make catalog links stale and cleanup risky |
 | Life Dashboard | not confirmed as standalone repo in Copilot excerpt | catalog-only / unclear | Medium if daily-use, lower for employment | Unknown | Unknown | Low-medium | Medium | 45 | do not touch yet / clarify | Check JoshHub catalog/source references before deciding | Could distract from MSP work if treated as a full project without evidence |
 | JoshPath | not confirmed as standalone repo in Copilot excerpt | catalog-only / unclear | Unknown | Unknown | Unknown | Unknown | Low-medium | 35 | do not touch yet / clarify | Locate source or catalog entry only after core cleanup | May be stale naming or duplicate concept |
@@ -76,6 +78,7 @@ Score bands:
 - If a project is in Downloads but valuable, move it only after backup and Git checks.
 - If a project has no Git repo but meaningful source code, initialise or connect Git only after confirming it is the correct copy.
 - If a project has dirty Git state, inspect changes before backup, move, archive, or deletion.
+- For JoshHub specifically, do not run broad `git add -A`, delete, move, or archive untracked folders until nested Git repositories are identified.
 - If a project is static build only, do not treat it as the source of truth unless source cannot be recovered.
 - If a project is DCS-specific and no longer central to employment, downgrade priority unless portfolio value is strong.
 - If a project supports Microsoft 365, endpoint support, ticketing, documentation, automation, asset tracking, or MSP workflows, increase priority.
@@ -83,6 +86,24 @@ Score bands:
 - If a project has unclear purpose, unclear source, or unclear ownership, do not delete or move it until verified.
 - If two projects overlap in purpose, keep the one with better Git health, clearer source, stronger relevance, and easier next action.
 - If a project cannot be explained in one sentence after review, add a documentation task before development work.
+
+## JoshHub Nested Repo Safety Step
+
+Before any JoshHub cleanup, run a nested project classification pass:
+
+- List all folders under `C:\Users\joshua.parris\JoshHub` that contain `.git`.
+- List all folders under `C:\Users\joshua.parris\JoshHub` that contain `package.json`.
+- Classify each found folder as `source repo`, `nested source repo`, `static asset`, `archive`, or `unclear`.
+- Record Git status separately for the JoshHub root repo and each nested Git repo.
+- Do not delete, move, archive, or broad-stage untracked folders until this classification is complete.
+
+Known updated evidence:
+
+- `PartyAI` has `.git`, `package.json`, and about 22K files, so it is a nested source repo/subproject inside JoshHub.
+- `Serenity-Keep-Flying` has `.git`, `package.json`, and about 23K files, so it is a nested source repo/subproject inside JoshHub.
+- `archive` has about 84K files and no `.git`, so treat it as archive/static until proven otherwise.
+- `Game-Fixer` has about 19K files and no `.git`, so treat it as static assets or source-unclear.
+- `projects` has about 3K files and no `.git`, so treat it as workspace/static/unclear.
 
 ## Recommended Top 5 Workstreacare2
 
@@ -132,22 +153,24 @@ Evidence from audit:
 - Mixed package managers: `package-lock.json` and `pnpm-lock.yaml`.
 - Catalog source: `src/data/apps.ts`.
 - Stale local `file://` references found in app catalog entries.
+- Updated nested repo evidence: `PartyAI` and `Serenity-Keep-Flying` each have `.git` and `package.json`, so they are nested source repos/subprojects rather than static assets.
+- Other large untracked folders require classification: `archive` has about 84K files and no Git, `Game-Fixer` has about 19K files and no Git, and `projects` has about 3K files and no Git.
 
 First 30-minute task:
 
-Run a targeted Git status review and classify changes into: app code, docs, static assets, generated logs, and archive candidates.
+Run a nested repo scan first: list all folders under JoshHub containing `.git`, list all folders containing `package.json`, then classify each as source repo, nested source repo, static asset, archive, or unclear.
 
 First 2-hour task:
 
-Create a cleanup branch that updates `src/data/apps.ts` to reflect only maintained projects, and move static/game asset decisions into a documented backlog.
+Create a cleanup branch that documents the nested repo classification, updates `src/data/apps.ts` only where source-of-truth evidence is clear, and moves static/game/archive decisions into a documented backlog.
 
 What to avoid:
 
-Do not use broad `git add -A` in the dirty working tree. Do not add new catalog scope before stale links and source-of-truth entries are cleaned.
+Do not use broad `git add -A`, delete, move, or archive untracked folders until nested Git repositories are identified and protected. Do not add new catalog scope before stale links and source-of-truth entries are cleaned.
 
 Definition of done:
 
-JoshHub has a documented source-of-truth catalog, package manager choice is clear, and static assets are either intentionally tracked or marked for archive.
+JoshHub has a documented source-of-truth catalog, package manager choice is clear, nested repos are listed separately from root app assets, and static/archive folders are intentionally tracked or marked for later archive.
 
 ### 3. DCSPrep / DCSPD
 
@@ -253,6 +276,7 @@ Goal: understand before acting.
 - Record duplicate candidates.
 - Record stale paths and catalog-only entries.
 - Identify projects with missing source, missing Git, or dirty Git.
+- For JoshHub, run the nested repo scan before classifying untracked folders as clutter.
 - Write a one-sentence purpose for each major project.
 
 Output:
@@ -267,6 +291,7 @@ Goal: prevent accidental loss.
 
 - Confirm which folders are true source folders.
 - Check Git status before moving, archiving, or consolidating.
+- In JoshHub, check Git status separately for the root repo and for nested repos such as `PartyAI` and `Serenity-Keep-Flying`.
 - Back up valuable source folders before structural cleanup.
 - Preserve uncommitted work until reviewed.
 - Note projects with no remote, missing remote, or unknown Git history.
@@ -332,10 +357,12 @@ Output:
 
 | Project name | Path | Reason to pause | Risk type | Evidence needed | Revisit trigger |
 |---|---|---|---|---|---|
-| JoshHub working tree | `C:\Users\joshua.parris\JoshHub` | Many modified, deleted, and untracked files | Data loss / Git confusion | Change-by-change classification | Before any broad cleanup, staging, or package-manager change |
-| PartyAI | inside `C:\Users\joshua.parris\JoshHub` | Untracked local folder; source status unclear | Accidental deletion / source loss | Determine whether unique source exists | During JoshHub static asset audit |
-| Game Fixer | inside `C:\Users\joshua.parris\JoshHub` | Static build/catalog asset, not standalone source confirmed | Source-of-truth confusion | Find source repo or confirm static-only status | During JoshHub catalog cleanup |
-| Serenity-Keep-Flying | inside `C:\Users\joshua.parris\JoshHub` | Static build/catalog asset, not standalone source confirmed | Source-of-truth confusion | Find source repo or confirm static-only status | During JoshHub catalog cleanup |
+| JoshHub working tree | `C:\Users\joshua.parris\JoshHub` | Many modified, deleted, and untracked files, including nested repos | Data loss / Git confusion / nested repo damage | Change-by-change classification and nested repo scan | Before any broad cleanup, staging, delete, move, archive, or package-manager change |
+| PartyAI | `C:\Users\joshua.parris\JoshHub\PartyAI` | Nested source repo inside JoshHub with `.git`, `package.json`, and about 22K files | Accidental deletion / source loss / accidental broad staging | Nested repo Git status, package review, source purpose | Before any JoshHub cleanup touches untracked folders |
+| Game Fixer | `C:\Users\joshua.parris\JoshHub\Game-Fixer` | About 19K files and no `.git`; static assets or source-unclear | Source-of-truth confusion | Find source repo or confirm static-only status | During JoshHub catalog cleanup |
+| Serenity-Keep-Flying | `C:\Users\joshua.parris\JoshHub\Serenity-Keep-Flying` | Nested source repo inside JoshHub with `.git`, `package.json`, and about 23K files | Accidental deletion / source loss / accidental broad staging | Nested repo Git status, package review, source purpose | Before any JoshHub cleanup touches untracked folders |
+| JoshHub archive folder | `C:\Users\joshua.parris\JoshHub\archive` | Large archive/static folder with about 84K files and no `.git` | Bloat / accidental source loss if misclassified | High-level inventory and confirmation no unique source exists | During JoshHub archive/static cleanup |
+| JoshHub projects folder | `C:\Users\joshua.parris\JoshHub\projects` | Workspace/static/unclear folder with about 3K files and no `.git` | Source-of-truth confusion | Child folder classification and package/source scan | During JoshHub nested project classification |
 | Wilds variants | inside `C:\Users\joshua.parris\JoshHub` | Multiple variants observed | Duplicate confusion | Decide source-of-truth build/source path | During JoshHub game asset consolidation |
 | Life Dashboard | unknown / catalog-only from current evidence | No standalone source confirmed in Copilot excerpt | Scope creep / stale catalog | Locate repo or catalog entry | After JoshHub catalog cleanup begins |
 | JoshPath | unknown / catalog-only from current evidence | No standalone source confirmed in Copilot excerpt | Scope creep / stale catalog | Locate repo or catalog entry | After higher-priority projects are stabilised |
@@ -351,13 +378,19 @@ Output:
 - `Avance` has `app.zip` at the repo root, likely duplicating build/archive output.
 - `dev\JoshHub` and `dev\NebulaDice` appear to be duplicate working directories without Git metadata.
 - `waypoint` and `parris-compass` are not the same repo: `parris-compass` is the main Waypoint source, while `waypoint` is a smaller Vite/AnchorFlow prototype.
-- `Game Fixer`, `Serenity`, and `Wilds` folders inside JoshHub should be treated as local hosted/static assets until source repos are confirmed.
+- `PartyAI` and `Serenity-Keep-Flying` are nested source repos/subprojects inside JoshHub because both contain `.git` and `package.json`.
+- `Game-Fixer` has about 19K files and no `.git`; treat it as static assets or source-unclear until source is confirmed.
+- `archive` has about 84K files and no `.git`; treat it as archive/static until proven otherwise.
+- `projects` has about 3K files and no `.git`; treat it as workspace/static/unclear until child folders are classified.
+- `Wilds` folders inside JoshHub should be treated as local hosted/static assets until source repos are confirmed.
 
 ## Git and Repository Health Summary
 
 | Project | Branch | Remote | Status summary | Concern |
 |---|---|---|---|---|
-| JoshHub | `main` | `origin` GitHub plus `care2pquest` backup | Many modified/deleted/untracked files; local branch reported ahead and behind origin | Highest cleanup risk; do not broad-stage |
+| JoshHub | `main` | `origin` GitHub plus `care2pquest` backup | Many modified/deleted/untracked files; local branch reported ahead and behind origin | Highest cleanup risk; do not broad-stage; nested repos must be classified first |
+| PartyAI | unknown | nested `.git` present | Nested source repo/subproject inside JoshHub with `package.json` and about 22K files | Do not touch until nested repo Git status is inspected |
+| Serenity-Keep-Flying | unknown | nested `.git` present | Nested source repo/subproject inside JoshHub with `package.json` and about 23K files | Do not touch until nested repo Git status is inspected |
 | Avance Professional Development | `main` | GitHub `AvanceProfessionalDevelopment.git` | 4 modified app files | OneDrive location and root archive/build clutter |
 | DCSPrep / DCSPD | `main` | GitHub `DCSPD.git` | Clean | OneDrive file-locking risk documented |
 | Parris Compass / Waypoint | `main` | GitHub `Waypoint.git` | Clean | Purpose overlap with JoshHub unless boundaries stay clear |
@@ -379,11 +412,16 @@ Output:
 3. DCSPrep / DCSPD - useful portfolio/training project; keep stable.
 4. Parris Compass / Waypoint - maintain with clear boundaries.
 5. Sylvie Phonics - secondary project after relocation/backup.
-6. Waypoint / AnchorFlow prototype - preserve or archive as experiment.
-7. NebulaDice - archive or initialise Git if worth preserving.
-8. Game Fixer / PartyAI / Serenity / Wilds static assets - catalog/static asset cleanup only.
-9. dev workspace duplicate JoshHub - verify and archive/ignore.
-10. dev workspace duplicate NebulaDice - verify and archive/ignore.
+6. PartyAI - nested source repo inside JoshHub; protect first, evaluate later.
+7. Serenity-Keep-Flying - nested source repo inside JoshHub; protect first, evaluate later.
+8. Waypoint / AnchorFlow prototype - preserve or archive as experiment.
+9. NebulaDice - archive or initialise Git if worth preserving.
+10. Game Fixer - static assets or source-unclear; classify before archive.
+11. Wilds variants - catalog/static asset cleanup only unless source repo is found.
+12. JoshHub archive folder - large archive/static folder; inventory before moving.
+13. JoshHub projects folder - workspace/static/unclear; classify child folders.
+14. dev workspace duplicate JoshHub - verify and archive/ignore.
+15. dev workspace duplicate NebulaDice - verify and archive/ignore.
 
 ## Immediate Next Actions
 
@@ -392,7 +430,8 @@ Output:
 3. Stabilise JoshHub's Git state before adding new catalog features.
 4. Keep Avance as the primary development target for MSP capability.
 5. Move or back up Sylvie Phonics only after confirming its Git state and remote.
-6. Put unclear/static/duplicated projects into Do Not Touch Yet until source-of-truth evidence exists.
+6. Before JoshHub cleanup, run the nested repo scan and protect `PartyAI` and `Serenity-Keep-Flying` as nested source repos.
+7. Put unclear/static/duplicated projects into Do Not Touch Yet until source-of-truth evidence exists.
 
 ## Observed Evidence vs Interpretation
 
@@ -400,6 +439,8 @@ Observed evidence:
 
 - Avance is a Git repo with README, TODO, VISION, app package metadata, and modified source files.
 - JoshHub is an active Next.js repo with a catalog source file, many untracked folders, and mixed lockfiles.
+- PartyAI and Serenity-Keep-Flying are nested source repos/subprojects inside JoshHub because both contain `.git` and `package.json`.
+- JoshHub `archive`, `Game-Fixer`, and `projects` do not have `.git` in the updated evidence and should be classified as archive/static/source-unclear before cleanup.
 - DCSPrepApp is a clean Git repo with README, known issues, todo notes, and OneDrive path warnings.
 - `parris-compass` is the main Waypoint repo; `waypoint` is a different Vite React app.
 - Sylvie Phonics is a Git repo in Downloads with a pnpm workspace and modified files.
@@ -409,6 +450,7 @@ Interpretation:
 
 - Avance should be the highest professional priority because it is MSP-oriented and already in active development.
 - JoshHub should be stabilised early because it is the central inventory and has the riskiest Git/worktree state.
+- PartyAI and Serenity-Keep-Flying should be protected during JoshHub cleanup because nested repos can be damaged by broad staging, deletion, moving, or archiving.
 - DCSPrep should remain a useful training/portfolio app, but not outrank Avance.
 - Parris Compass is worth maintaining, but its role should stay distinct from JoshHub.
 - Sylvie Phonics is worth protecting if kept, but should move out of Downloads after backup and Git checks.
