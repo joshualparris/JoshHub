@@ -10,11 +10,17 @@ import {
   CheckCircle2,
   ClipboardCheck,
   Compass,
+  DollarSign,
   Dumbbell,
+  Heart,
   HeartPulse,
   Layers,
   Link as LinkIcon,
+  MessageSquare,
+  ShieldCheck,
   Sparkles,
+  Stethoscope,
+  Timer,
   UtensilsCrossed,
 } from "lucide-react";
 
@@ -161,6 +167,84 @@ export default function DashboardPage() {
     "Protect presence with Kristy and the kids before screens.",
     "Move, hydrate, and breathe before diving into work.",
   ];
+
+  const lifeCommandCenter = [
+    {
+      title: "Finances",
+      icon: DollarSign,
+      value: "$19,185.23 spent",
+      detail: "$12,628.67 left in plan",
+      action: { label: "Review plan spend", href: "/care" },
+      accent: "text-sky-700 dark:text-sky-200",
+      bg: "bg-sky-100 dark:bg-sky-900/40",
+    },
+    {
+      title: "Health",
+      icon: HeartPulse,
+      value: sleepAvg != null ? `${(sleepAvg / 60).toFixed(1)}h sleep avg` : "No sleep trend yet",
+      detail:
+        activityWeek.distanceM > 0
+          ? `${(activityWeek.distanceM / 1000).toFixed(1)} km movement this week`
+          : "Add movement or sleep logs to track trends",
+      action: { label: "Open health hub", href: "/health" },
+      accent: "text-emerald-700 dark:text-emerald-200",
+      bg: "bg-emerald-100 dark:bg-emerald-900/40",
+    },
+    {
+      title: "Social",
+      icon: MessageSquare,
+      value: `${nextEvents.length} upcoming events`,
+      detail: nextEvents[0] ? `Next: ${nextEvents[0].title}` : "No social plans captured",
+      action: { label: "Open calendar", href: "/calendar" },
+      accent: "text-violet-700 dark:text-violet-200",
+      bg: "bg-violet-100 dark:bg-violet-900/40",
+    },
+    {
+      title: "Work",
+      icon: Compass,
+      value: `${openTasks.length} open tasks`,
+      detail: taskToday.length > 0 ? `${taskToday.length} due today` : "No due tasks for today",
+      action: { label: "Open tasks", href: "/tasks" },
+      accent: "text-amber-700 dark:text-amber-200",
+      bg: "bg-amber-100 dark:bg-amber-900/40",
+    },
+  ] as const;
+
+  const familyCarePanels = [
+    {
+      title: "Sylvie · NDIS",
+      icon: ShieldCheck,
+      summary: "Plan spend 60.3% with 10.3% uplift since last checkpoint.",
+      bullets: [
+        "Track claim frequency by provider and flag unusual spikes.",
+        "Review highest-use providers weekly and pre-book priority sessions.",
+      ],
+      href: "/care",
+      cta: "Open care dashboard",
+    },
+    {
+      title: "Kristy · MS support",
+      icon: Stethoscope,
+      summary: "Keep meds, symptoms, appointments, and energy windows in one place.",
+      bullets: [
+        "Capture symptom notes in under 60 seconds when they happen.",
+        "Bundle care tasks into calm daily routines to reduce decision load.",
+      ],
+      href: "/health/metrics",
+      cta: "Log metrics",
+    },
+    {
+      title: "Family ops",
+      icon: Heart,
+      summary: "School logistics, routines, and weekly rhythms visible at a glance.",
+      bullets: [
+        "Lock in classroom reminders, pickups, and weekly touchpoints.",
+        "Use short checklists so everyone knows today’s top 1–2 priorities.",
+      ],
+      href: "/family",
+      cta: "Open family hub",
+    },
+  ] as const;
 
   return (
     <div className="space-y-8">
@@ -328,6 +412,41 @@ export default function DashboardPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-3 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
+            <div>
+              <CardTitle>Life command center</CardTitle>
+              <p className="text-sm text-neutral-600 dark:text-slate-300">
+                One place for finances, health, social, and work.
+              </p>
+            </div>
+            <Timer className="h-5 w-5 text-neutral-500 dark:text-slate-300" />
+          </CardHeader>
+          <CardContent className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            {lifeCommandCenter.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                >
+                  <div className="mb-2 flex items-center gap-2">
+                    <div className={`rounded-full p-2 ${item.bg}`}>
+                      <Icon className={`h-4 w-4 ${item.accent}`} />
+                    </div>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">{item.title}</p>
+                  </div>
+                  <p className="text-base font-semibold text-neutral-900 dark:text-white">{item.value}</p>
+                  <p className="mt-1 text-xs text-neutral-500 dark:text-slate-400">{item.detail}</p>
+                  <Button asChild variant="ghost" className="mt-2 h-auto px-0 py-0 text-sm">
+                    <Link href={item.action.href}>{item.action.label}</Link>
+                  </Button>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
         <Card className="lg:col-span-2 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
           <CardHeader>
             <CardTitle>Up next</CardTitle>
@@ -431,6 +550,37 @@ export default function DashboardPage() {
       </section>
 
       <section className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-3 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
+          <CardHeader>
+            <CardTitle>Family & care priorities</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-3 md:grid-cols-3">
+            {familyCarePanels.map((panel) => {
+              const Icon = panel.icon;
+              return (
+                <div
+                  key={panel.title}
+                  className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                >
+                  <div className="mb-2 flex items-center gap-2">
+                    <Icon className="h-4 w-4 text-neutral-600 dark:text-slate-300" />
+                    <p className="font-semibold text-neutral-900 dark:text-white">{panel.title}</p>
+                  </div>
+                  <p className="text-sm text-neutral-700 dark:text-slate-200">{panel.summary}</p>
+                  <ul className="mt-2 space-y-1 text-xs text-neutral-600 dark:text-slate-300">
+                    {panel.bullets.map((line) => (
+                      <li key={line}>• {line}</li>
+                    ))}
+                  </ul>
+                  <Button asChild variant="outline" className="mt-3 w-full">
+                    <Link href={panel.href}>{panel.cta}</Link>
+                  </Button>
+                </div>
+              );
+            })}
+          </CardContent>
+        </Card>
+
         <Card className="border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
           <CardHeader>
             <CardTitle>Recent notes</CardTitle>
