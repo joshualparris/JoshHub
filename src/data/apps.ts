@@ -1228,7 +1228,7 @@ export const apps: CatalogItem[] = [
     notes: "Long-range Christmas hosting rotation mapped out to ~2050 (static page).",
     nextAction: "Add reminders/exports if needed.",
     lastTouched: "2025-12",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1262,7 +1262,7 @@ export const apps: CatalogItem[] = [
     notes: "Static client build hosted locally in JoshHub. Full project still has server side; local build runs client-only.",
     nextAction: "If backend features needed, deploy full app with env/DB; otherwise keep static build updated.",
     lastTouched: "2025-12",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1281,7 +1281,7 @@ export const apps: CatalogItem[] = [
     notes: "Static client build hosted locally in JoshHub. Full project on GitHub; prototype also available under Max.",
     nextAction: "If backend features are needed, deploy full app to Vercel with env/DB and update link.",
     lastTouched: "2025-12",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1298,7 +1298,7 @@ export const apps: CatalogItem[] = [
     ],
     notes: "Static build hosted inside JoshHub; workspace app also available via /external/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1312,7 +1312,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Game-Booster/" }],
     notes: "Workspace app served via /external/Game-Booster/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1326,7 +1326,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Game-Fixer/" }],
     notes: "Workspace app served via /external/Game-Fixer/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1340,7 +1340,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Health-Data-Manager/" }],
     notes: "Workspace app served via /external/Health-Data-Manager/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1354,7 +1354,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Hub-Improvement/" }],
     notes: "Workspace app served via /external/Hub-Improvement/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1368,7 +1368,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Josh-Guardian/" }],
     notes: "Workspace app served via /external/Josh-Guardian/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1382,7 +1382,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/Josh-Platform/" }],
     notes: "Workspace app served via /external/Josh-Platform/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1396,7 +1396,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/games/neverwinter-tales/index.html" }],
     notes: "Redirected to the fixed local build at /games/neverwinter-tales/index.html.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1411,7 +1411,7 @@ export const apps: CatalogItem[] = [
     description: "A text adventure inspired by D&D 5e. Explore Neverwinter, interact with NPCs, engage in skill checks, and uncover lore.",
     notes: "Vue 3 text adventure with full D&D 5e mechanics. Features skill checks, dialogue trees, and location-based exploration.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1425,7 +1425,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/NextJS-Expert/" }],
     notes: "Workspace app served via /external/NextJS-Expert/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1439,7 +1439,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Status", url: "/docs/ourdcs.html" }],
     notes: "Local workspace path is currently unavailable; see status page.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1453,7 +1453,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/StarhavenMystery/" }],
     notes: "Workspace game served via /external/StarhavenMystery/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1467,7 +1467,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Open (Local)", url: "/external/WhisperingWildsDocs/" }],
     notes: "Workspace docs served via /external/WhisperingWildsDocs/.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1481,7 +1481,7 @@ export const apps: CatalogItem[] = [
     urls: [{ label: "Play (Local)", url: "/games/serenity-keep-flying/index.html" }],
     notes: "Local browser build hosted inside JoshHub assets.",
     lastTouched: "2026-02",
-    availability: "local",
+    availability: "unknown",
     metadataConfidence: "verified",
   },
   {
@@ -1741,19 +1741,6 @@ export const apps: CatalogItem[] = [
       { label: "Live", url: "https://avance-pd.vercel.app/", type: "live" },
       { label: "Legacy", url: "https://avance-professional-development.vercel.app/", type: "alternate" }
     ],
-    metadataConfidence: "verified",
-    availability: "web",
-  },
-  {
-    id: "waypoint",
-    name: "Waypoint",
-    type: "app",
-    category: "Apps",
-    status: "ok",
-    tags: ["waypoint", "azure"],
-    primaryUrl: "https://waypoint-azure.vercel.app/",
-    liveUrl: "https://waypoint-azure.vercel.app/",
-    urls: [{ label: "Live", url: "https://waypoint-azure.vercel.app/", type: "live" }],
     metadataConfidence: "verified",
     availability: "web",
   },

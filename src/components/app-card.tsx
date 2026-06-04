@@ -38,6 +38,16 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
     }
   };
 
+  const openableUrlExists = Boolean(
+    app.liveUrl ||
+      app.primaryUrl ||
+      app.urls.some(
+        (url) =>
+          url.type !== "repo" &&
+          !/repo/i.test(url.label) &&
+          (url.url.startsWith("/") || /^https?:\/\//i.test(url.url))
+      )
+  );
   const isLocalOnly = app.availability === "local" || (!app.liveUrl && !app.primaryUrl && app.localPath);
   const needsReview = app.status === "needs-review" || app.metadataConfidence === "needs-review";
 
@@ -103,7 +113,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
 
         <div className="mt-auto pt-2 space-y-2">
           <div className="flex flex-wrap gap-2">
-            {(app.liveUrl || app.primaryUrl) && (
+            {openableUrlExists && (
               <Button size="sm" className="gap-2 h-8" onClick={handleOpen}>
                 <Globe className="h-3.5 w-3.5" />
                 Open App
