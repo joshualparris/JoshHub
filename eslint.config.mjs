@@ -12,6 +12,7 @@ export default tseslint.config(
       'build/**',
       'node_modules/**',
       'public/games/**', // big bundled JS
+      'public/portal-adapter.js', // ignore legacy client-side JS
       'eslint.config.mjs', // don't lint this config file
     ],
   },
