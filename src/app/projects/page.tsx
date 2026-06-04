@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { labelText, metaText, mutedText } from "@/components/ui/text";
 import { apps, type AppStatus } from "@/data/apps";
 
-const statusOrder: AppStatus[] = ["broken", "wip", "ok", "archived"];
+const statusOrder: AppStatus[] = ["active", "maintained", "ok", "wip", "paused", "complete", "broken", "archived", "needs-review", "archive-candidate", "duplicate-candidate", "unknown"];
 const sortOptions = [
   { label: "Status", value: "status" },
   { label: "Last touched", value: "lastTouched" },

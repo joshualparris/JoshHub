@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
+    "dev:turbo": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "generate-projects": "node ./scripts/generate-projects-inventory.js"
+    "generate-projects": "node ./scripts/generate-projects-inventory.js",
+    "validate:apps": "tsx ./scripts/validate-apps.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
@@ -30,6 +32,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9",
     "eslint-config-next": "16.0.6",
     "tailwindcss": "^4",

@@ -30,7 +30,20 @@ export default function AppsPageClient({ searchParams, apps }: Props) {
 
   const filteredApps = useMemo(() => {
     const term = search.trim().toLowerCase();
-    const statusOrder: Record<AppStatus, number> = { ok: 0, wip: 1, broken: 2, archived: 3 };
+    const statusOrder: Record<string, number> = { 
+      active: 0,
+      maintained: 1,
+      ok: 2, 
+      wip: 3, 
+      paused: 4,
+      complete: 5,
+      broken: 6, 
+      archived: 7,
+      "needs-review": 8,
+      "archive-candidate": 9,
+      "duplicate-candidate": 10,
+      unknown: 11
+    };
 
     return apps
       .filter((app) => {

@@ -20,7 +20,7 @@ export async function createTopic(partial: Partial<LearnTopic> & Pick<LearnTopic
         name: partial.name,
         category: partial.category ?? null,
         tags: partial.tags ?? [],
-        status: (partial.status as any) ?? "curious",
+        status: (partial.status as LearnTopic["status"]) ?? "curious",
         summary: partial.summary ?? "",
         createdAt: now,
         updatedAt: now,
@@ -31,12 +31,22 @@ export async function createTopic(partial: Partial<LearnTopic> & Pick<LearnTopic
 
 export async function updateTopic(id: string, patch: Partial<LearnTopic>) {
     patch.updatedAt = Date.now();
-    await db.learnTopics.update(id, patch as any);
+    await db.learnTopics.update(id, patch);
     return db.learnTopics.get(id);
 }
 
 export async function deleteTopic(id: string) {
     await db.learnTopics.delete(id);
+}
+
+export async function searchTopics(query: string): Promise<LearnTopic[]> {
+    const q = query.toLowerCase();
+    return db.learnTopics
+        .filter((t) =>
+            t.name.toLowerCase().includes(q) ||
+            (t.summary?.toLowerCase().includes(q) ?? false)
+        )
+        .toArray();
 }
 
 // Resources
@@ -52,7 +62,7 @@ export async function createResource(partial: Partial<LearnResource> & Pick<Lear
         type: partial.type,
         url: partial.url,
         author: partial.author,
-        status: (partial.status as any) ?? "queue",
+        status: (partial.status as LearnResource["status"]) ?? "queue",
         topicIds: partial.topicIds ?? [],
         notes: partial.notes ?? "",
         createdAt: now,
@@ -64,7 +74,7 @@ export async function createResource(partial: Partial<LearnResource> & Pick<Lear
 
 export async function updateResource(id: string, patch: Partial<LearnResource>) {
     patch.updatedAt = Date.now();
-    await db.learnResources.update(id, patch as any);
+    await db.learnResources.update(id, patch);
     return db.learnResources.get(id);
 }
 
@@ -141,6 +151,7 @@ export default {
     createTopic,
     updateTopic,
     deleteTopic,
+    searchTopics,
     listResources,
     createResource,
     updateResource,
