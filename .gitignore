@@ -46,3 +46,10 @@ next-env.d.ts
 *.apk
 *.tar.gz
 
+# Temporary audit and sync files
+local_files.txt
+remote_files.txt
+git-status-porcelain.txt
+untracked-list.txt
+*.txt.tmp
+
