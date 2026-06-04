@@ -16,6 +16,8 @@ const VALID_STATUSES: AppStatus[] = [
 
 const VALID_CONFIDENCE: MetadataConfidence[] = ["verified", "inferred", "needs-review"];
 
+const VALID_AVAILABILITY = ["web", "local", "hybrid", "unknown"];
+
 function validateInventory() {
   const errors: ValidationError[] = [];
   const ids = new Set<string>();
@@ -80,6 +82,19 @@ function validateInventory() {
 
     if (app.sourceOfTruth && app.duplicateOf) {
       errors.push({ id, name, type: 'error', message: 'Entry is marked as source of truth but also points to a duplicate', field: 'sourceOfTruth' });
+    }
+
+    // 5. Availability
+    if (app.availability && !VALID_AVAILABILITY.includes(app.availability)) {
+      errors.push({ id, name, type: 'error', message: `Invalid availability: ${app.availability}`, field: 'availability' });
+    }
+
+    if (app.availability === 'web' && !app.liveUrl && !app.primaryUrl) {
+      errors.push({ id, name, type: 'warning', message: 'Marked as web app but has no live or primary URL', field: 'availability' });
+    }
+
+    if (app.availability === 'local' && !app.localPath) {
+      errors.push({ id, name, type: 'warning', message: 'Marked as local-only but has no localPath', field: 'availability' });
     }
   });
 
