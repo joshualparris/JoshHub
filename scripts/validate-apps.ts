@@ -74,7 +74,20 @@ function validateInventory() {
     if (liveUrl && /^file:\/\/\//i.test(liveUrl)) {
       errors.push({ id, name, type: 'error', message: 'file:/// URL found in liveUrl (should be in localPath)', field: 'liveUrl' });
     }
+    // Check urls and alternateLinks for unsupported or file protocols
+    const linkEntries = [
+      ...(urls || []),
+      ...(app.alternateLinks || []),
+    ];
 
+    linkEntries.forEach((link, index) => {
+      if (!link.url) return;
+      if (/^file:\/\//i.test(link.url)) {
+        errors.push({ id, name, type: 'warning', message: `file:/// URL found in link ${link.label || index} (should be localPath if local)`, field: 'urls' });
+      } else if (!/^https?:\/\//i.test(link.url) && !link.url.startsWith('/') && !link.url.startsWith('./') && !link.url.startsWith('../')) {
+        errors.push({ id, name, type: 'warning', message: `Unsupported URL protocol in link ${link.label || index}: ${link.url}`, field: 'urls' });
+      }
+    });
     // 4. Content
     if (!app.notes && app.status === 'needs-review') {
       errors.push({ id, name, type: 'warning', message: 'Entry needs review but has no notes explaining why', field: 'notes' });
