@@ -1494,8 +1494,6 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://hug-coach.vercel.app/",
     urls: [
       { label: "Play (Hosted)", url: "https://hug-coach.vercel.app/" },
-      { label: "Local folder", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive%20-%20LA%20TROBE%20UNIVERSITY/Desktop/Projects/HugCoach" },
-      { label: "README", url: "file:///C:/Users/jparris@ltu.edu.au/OneDrive%20-%20LA%20TROBE%20UNIVERSITY/Desktop/Projects/HugCoach/README.md" },
     ],
     notes:
       "Hosted on Vercel. To run locally: open a terminal, `cd Projects/HugCoach`, then `npm install` and `npm run dev`. To add a Play link pointing to a local export, copy it into JoshHub's `public/games/hugcoach/`.",
