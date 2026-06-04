@@ -74,13 +74,30 @@ export default function InventoryHealthPage() {
     const missingLive = apps.filter(app => !app.liveUrl && !app.primaryUrl).length;
     const missingPath = apps.filter(app => !app.localPath && !app.urls.some(u => u.label.toLowerCase().includes("local"))).length;
     
+    const localOnly = apps.filter(app => app.availability === "local").length;
+    const hybrid = apps.filter(app => app.availability === "hybrid").length;
+    const multiDeployment = apps.filter(app => app.alternateLinks && app.alternateLinks.length > 0).length;
+
     // Simple duplicate detection (same name or same path)
     const nameMap = new Map<string, string[]>();
+    const repoMap = new Map<string, string[]>();
+    const liveMap = new Map<string, string[]>();
+
     apps.forEach(app => {
-      const existing = nameMap.get(app.name.toLowerCase()) || [];
-      nameMap.set(app.name.toLowerCase(), [...existing, app.id]);
+      const nameKey = app.name.toLowerCase();
+      nameMap.set(nameKey, [...(nameMap.get(nameKey) || []), app.id]);
+      
+      if (app.repoUrl) {
+        repoMap.set(app.repoUrl, [...(repoMap.get(app.repoUrl) || []), app.id]);
+      }
+      if (app.liveUrl) {
+        liveMap.set(app.liveUrl, [...(liveMap.get(app.liveUrl) || []), app.id]);
+      }
     });
+
     const duplicateNames = Array.from(nameMap.values()).filter(ids => ids.length > 1).length;
+    const duplicateRepos = Array.from(repoMap.values()).filter(ids => ids.length > 1).length;
+    const duplicateLives = Array.from(liveMap.values()).filter(ids => ids.length > 1).length;
 
     return {
       total,
@@ -91,6 +108,11 @@ export default function InventoryHealthPage() {
       missingLive,
       missingPath,
       duplicateNames,
+      duplicateRepos,
+      duplicateLives,
+      localOnly,
+      hybrid,
+      multiDeployment,
       archiveCandidates: apps.filter(app => app.status === "archive-candidate").length,
     };
   }, []);
@@ -251,6 +273,25 @@ export default function InventoryHealthPage() {
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${(stats.missingPath / stats.total) * 100}%` }}></div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-2 text-xs">
+              <div className="p-2 bg-muted/50 rounded-lg">
+                <span className="text-muted-foreground block mb-1">Local Only</span>
+                <span className="text-lg font-bold">{stats.localOnly}</span>
+              </div>
+              <div className="p-2 bg-muted/50 rounded-lg">
+                <span className="text-muted-foreground block mb-1">Hybrid Access</span>
+                <span className="text-lg font-bold">{stats.hybrid}</span>
+              </div>
+              <div className="p-2 bg-muted/50 rounded-lg">
+                <span className="text-muted-foreground block mb-1">Multi-Deploy</span>
+                <span className="text-lg font-bold">{stats.multiDeployment}</span>
+              </div>
+              <div className="p-2 bg-muted/50 rounded-lg">
+                <span className="text-muted-foreground block mb-1">Duplicate Repos</span>
+                <span className="text-lg font-bold text-rose-500">{stats.duplicateRepos}</span>
               </div>
             </div>
 

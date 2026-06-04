@@ -17,7 +17,9 @@ async function exists(url: string) {
 export async function resolveAppUrl(app: CatalogItem): Promise<string | null> {
     const candidates: string[] = [];
 
+    if (app.liveUrl) candidates.push(app.liveUrl);
     if (app.primaryUrl) candidates.push(app.primaryUrl);
+    
     // prefer external absolute links after primary
     const absolute = app.urls.filter((u) => /^https?:\/\//i.test(u.url)).map((u) => u.url);
     const relative = app.urls.filter((u) => !/^https?:\/\//i.test(u.url)).map((u) => u.url);
