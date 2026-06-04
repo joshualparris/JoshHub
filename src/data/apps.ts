@@ -694,7 +694,7 @@ export const apps: CatalogItem[] = [
     category: "Apps",
     status: "archived",
     tags: ["tap", "audio", "archived"],
-    primaryUrl: "https://publish.todo.invalid/tap-lite-mvp-removed",
+    primaryUrl: "",
     urls: [
       { label: "Storybook (Drive)", url: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing" },
     ],
@@ -2072,12 +2072,11 @@ export const apps: CatalogItem[] = [
     metadataConfidence: "verified",
     availability: "web",
   },
-  {
     id: "grey-realcare2",
     name: "Grey Realcare2",
     type: "game",
     category: "Games",
-    status: "ok",
+    status: "broken",
     tags: ["game", "grey", "realcare2", "replit"],
     primaryUrl: "https://a7d7c8d4-f588-4e1a-a1eb-23f46fa50d0b-00-2qe90krr96xo5.janeway.replit.dev/",
     urls: [
@@ -2086,6 +2085,7 @@ export const apps: CatalogItem[] = [
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
+    notes: "Deployment not found on Replit; link preserved for potential recovery.",
   },
   {
     id: "grey-march",
