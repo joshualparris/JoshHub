@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Module DnD - Enhanced RPG</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #eee;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    #game-container {
+      display: flex;
+      height: 100vh;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    #game-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    #canvas {
+      border: 3px solid #00d4ff;
+      background: linear-gradient(180deg, #0f3460 0%, #1a1a2e 100%);
+      flex: 1;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    #ui-bottom {
+      background: rgba(26, 26, 46, 0.9);
+      border: 2px solid #00d4ff;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    }
+
+    #sidebar {
+      width: 250px;
+      background: rgba(26, 26, 46, 0.95);
+      border: 2px solid #00d4ff;
+      border-radius: 5px;
+      padding: 15px;
+      overflow-y: auto;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+
+    .stat-name {
+      color: #00d4ff;
+    }
+
+    .stat-value {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .stat-bar {
+      width: 100%;
+      height: 20px;
+      background: #0a0a0a;
+      border: 1px solid #00d4ff;
+      margin: 4px 0 8px 0;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .stat-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #00ff00, #00ff00);
+      transition: width 0.3s ease;
+    }
+
+    .section-title {
+      color: #00ff00;
+      font-weight: bold;
+      margin-top: 15px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #00ff00;
+      padding-bottom: 5px;
+    }
+
+    .quest-item {
+      background: rgba(0, 255, 0, 0.1);
+      border-left: 3px solid #00ff00;
+      padding: 8px;
+      margin: 5px 0;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.3s;
+    }
+
+    .quest-item:hover {
+      background: rgba(0, 255, 0, 0.2);
+    }
+
+    .quest-item.active {
+      background: rgba(0, 255, 0, 0.3);
+      border-left: 5px solid #00ff00;
+    }
+
+    .inventory-item {
+      background: rgba(255, 200, 100, 0.1);
+      border: 1px solid #ffc864;
+      padding: 5px;
+      margin: 3px 0;
+      font-size: 12px;
+      border-radius: 3px;
+    }
+
+    button {
+      background: #00d4ff;
+      border: none;
+      color: #000;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      background: #00ff00;
+      transform: scale(1.05);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    .message {
+      background: rgba(0, 255, 0, 0.2);
+      border: 1px solid #00ff00;
+      padding: 8px;
+      border-radius: 4px;
+      margin: 5px 0;
+      font-size: 12px;
+      max-height: 60px;
+      overflow-y: auto;
+    }
+
+    .title-bar {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #00ff00;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0a0a0a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #00d4ff;
+      border-radius: 4px;
+    }
+
+    #message-log {
+      max-height: 80px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #666;
+      padding: 8px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .level-up {
+      animation: pulse 0.5s ease-out 3;
+      color: #ffff00;
+      font-weight: bold;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <div id="game-area">
+      <div class="title-bar">A Module DnD - Enhanced Adventure [Wasd to Move, Space to interact/attack]</div>
+      <canvas id="canvas"></canvas>
+      <div id="ui-bottom">
+        <button id="btn-attack">⚔️ Attack</button>
+        <button id="btn-interact">💬 Interact</button>
+        <button id="btn-rest">😴 Rest</button>
+        <button id="btn-inventory">🎒 Inventory</button>
+        <button id="btn-map">🗺️ Map</button>
+        <button id="btn-reset">🔄 New Game</button>
+        <div id="message-log"></div>
+      </div>
+    </div>
+    <div id="sidebar">
+      <div class="stat">
+        <span class="stat-name">Level:</span>
+        <span class="stat-value" id="level">1</span>
+      </div>
+      <div class="stat">
+        <span class="stat-name">EXP:</span>
+        <span class="stat-value" id="exp">0/100</span>
+      </div>
+
+      <div class="stat-bar">
+        <div class="stat-fill" id="hp-fill"></div>
+      </div>
+      <div class="stat">
+        <span class="stat-name">HP:</span>
+        <span class="stat-value" id="hp">100/100</span>
+      </div>
+
+      <div class="stat-bar">
+        <div class="stat-fill" id="mana-fill"></div>
+      </div>
+      <div class="stat">
+        <span class="stat-name">Mana:</span>
+        <span class="stat-value" id="mana">50/50</span>
+      </div>
+
+      <div class="stat">
+        <span class="stat-name">Gold:</span>
+        <span class="stat-value" id="gold">50</span>
+      </div>
+
+      <div class="stat">
+        <span class="stat-name">Area:</span>
+        <span class="stat-value" id="area">Village</span>
+      </div>
+
+      <div class="section-title">⚔️ Stats</div>
+      <div class="stat">
+        <span class="stat-name">ATK:</span>
+        <span class="stat-value" id="atk">5</span>
+      </div>
+      <div class="stat">
+        <span class="stat-name">DEF:</span>
+        <span class="stat-value" id="def">2</span>
+      </div>
+
+      <div class="section-title">📜 Active Quest</div>
+      <div id="active-quest" class="quest-item active">No active quest</div>
+
+      <div class="section-title">🎯 Quests</div>
+      <div id="quests-list"></div>
+
+      <div class="section-title">🎒 Inventory</div>
+      <div id="inventory-list"></div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Set canvas size
+    canvas.width = window.innerWidth - 280;
+    canvas.height = window.innerHeight - 120;
+
+    const TILE_SIZE = 40;
+    const GRID_WIDTH = Math.floor(canvas.width / TILE_SIZE);
+    const GRID_HEIGHT = Math.floor(canvas.height / TILE_SIZE);
+
+    // Game state
+    const player = {
+      x: 5,
+      y: 5,
+      hp: 100,
+      maxHp: 100,
+      mana: 50,
+      maxMana: 50,
+      level: 1,
+      exp: 0,
+      expToLevel: 100,
+      gold: 50,
+      atk: 5,
+      def: 2,
+      inventory: ['Shortsword', 'Health Potion', 'Bread'],
+      position: { x: 5, y: 5 }
+    };
+
+    const entities = [];
+    const quests = [
+      { id: 1, name: 'Defeat Goblin Scout', location: 'Forest', reward: 50, status: 'active', target: 'goblin' },
+      { id: 2, name: 'Collect 3 Herbs', location: 'Forest', reward: 30, status: 'available', target: 'herb' },
+      { id: 3, name: 'Visit the Tavern', location: 'Village', reward: 25, status: 'available', target: 'tavern' },
+      { id: 4, name: 'Defeat Orc Warrior', location: 'Mountain', reward: 100, status: 'available', target: 'orc' }
+    ];
+
+    const messageLog = [];
+
+    // Entity class
+    class Entity {
+      constructor(x, y, type, name) {
+        this.x = x;
+        this.y = y;
+        this.type = type; // 'enemy', 'npc', 'item', 'chest'
+        this.name = name;
+        this.hp = type === 'enemy' ? 20 + Math.random() * 10 : 0;
+        this.maxHp = this.hp;
+        this.loot = type === 'enemy' ? Math.floor(10 + Math.random() * 20) : 0;
+      }
+
+      draw() {
+        const screenX = this.x * TILE_SIZE;
+        const screenY = this.y * TILE_SIZE;
+
+        switch(this.type) {
+          case 'enemy':
+            ctx.fillStyle = '#ff4444';
+            ctx.fillRect(screenX + 2, screenY + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('G', screenX + TILE_SIZE/2, screenY + TILE_SIZE/2 + 4);
+            break;
+          case 'npc':
+            ctx.fillStyle = '#44ff44';
+            ctx.fillRect(screenX + 2, screenY + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+            ctx.fillStyle = 'black';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('?', screenX + TILE_SIZE/2, screenY + TILE_SIZE/2 + 4);
+            break;
+          case 'item':
+            ctx.fillStyle = '#ffff44';
+            ctx.beginPath();
+            ctx.arc(screenX + TILE_SIZE/2, screenY + TILE_SIZE/2, TILE_SIZE/4, 0, Math.PI * 2);
+            ctx.fill();
+            break;
+          case 'chest':
+            ctx.fillStyle = '#cc8844';
+            ctx.fillRect(screenX + 4, screenY + 8, TILE_SIZE - 8, TILE_SIZE - 12);
+            ctx.strokeStyle = '#886633';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(screenX + 4, screenY + 8, TILE_SIZE - 8, TILE_SIZE - 12);
+            break;
+        }
+      }
+    }
+
+    function initGame() {
+      entities.length = 0;
+      messageLog.length = 0;
+      addMessage('Welcome to A Module DnD! Explore, fight goblins, and complete quests.');
+
+      // Spawn enemies
+      entities.push(new Entity(12, 8, 'enemy', 'Goblin Scout'));
+      entities.push(new Entity(18, 15, 'enemy', 'Goblin Ranger'));
+      entities.push(new Entity(10, 20, 'enemy', 'Orc Warrior'));
+
+      // Spawn NPCs
+      entities.push(new Entity(8, 5, 'npc', 'Village Elder'));
+      entities.push(new Entity(15, 5, 'npc', 'Merchant'));
+
+      // Spawn items
+      entities.push(new Entity(20, 10, 'item', 'Herb'));
+      entities.push(new Entity(17, 18, 'item', 'Herb'));
+      entities.push(new Entity(7, 18, 'item', 'Herb'));
+
+      // Spawn chests
+      entities.push(new Entity(25, 25, 'chest', 'Treasure Chest'));
+
+      updateUI();
+    }
+
+    function addMessage(msg) {
+      messageLog.unshift(msg);
+      if (messageLog.length > 5) messageLog.pop();
+      document.getElementById('message-log').innerHTML = messageLog.map(m => `<div>${m}</div>`).join('');
+    }
+
+    function movePlayer(dx, dy) {
+      const newX = player.x + dx;
+      const newY = player.y + dy;
+
+      if (newX < 0 || newX >= GRID_WIDTH || newY < 0 || newY >= GRID_HEIGHT) return;
+
+      player.x = newX;
+      player.y = newY;
+
+      const entityAtPos = entities.find(e => e.x === player.x && e.y === player.y);
+      if (entityAtPos) {
+        interact(entityAtPos);
+      }
+
+      regen();
+    }
+
+    function interact(entity) {
+      if (entity.type === 'enemy') {
+        combat(entity);
+      } else if (entity.type === 'npc') {
+        addMessage(`📢 ${entity.name}: "Welcome, brave adventurer!"`);
+      } else if (entity.type === 'item') {
+        player.inventory.push(entity.name);
+        addMessage(`✅ Picked up ${entity.name}!`);
+        entities.splice(entities.indexOf(entity), 1);
+        checkQuestProgress('herb');
+      } else if (entity.type === 'chest') {
+        const reward = Math.floor(50 + Math.random() * 100);
+        player.gold += reward;
+        addMessage(`💰 Found ${reward} gold!`);
+        entities.splice(entities.indexOf(entity), 1);
+      }
+      updateUI();
+    }
+
+    function combat(enemy) {
+      const playerDmg = Math.max(1, player.atk + Math.floor(Math.random() * 5) - 2);
+      const enemyDmg = Math.max(1, Math.floor(Math.random() * 5) - player.def);
+
+      enemy.hp -= playerDmg;
+      addMessage(`⚔️ You hit ${enemy.name} for ${playerDmg} damage!`);
+
+      if (enemy.hp <= 0) {
+        addMessage(`💀 ${enemy.name} defeated!`);
+        player.gold += enemy.loot;
+        player.exp += 25;
+        addMessage(`✨ +25 EXP, +${enemy.loot} Gold`);
+        checkLevelUp();
+        checkQuestProgress('goblin');
+        if (enemy.name.includes('Orc')) checkQuestProgress('orc');
+        entities.splice(entities.indexOf(enemy), 1);
+      } else {
+        player.hp -= enemyDmg;
+        addMessage(`💔 ${enemy.name} hits you for ${enemyDmg} damage!`);
+        if (player.hp <= 0) {
+          addMessage('💀 YOU DIED! Game Over.');
+          player.hp = 0;
+        }
+      }
+      updateUI();
+    }
+
+    function checkLevelUp() {
+      while(player.exp >= player.expToLevel) {
+        player.exp -= player.expToLevel;
+        player.level++;
+        player.maxHp += 20;
+        player.hp = player.maxHp;
+        player.atk += 2;
+        player.def += 1;
+        addMessage(`🎉 LEVEL UP! You are now level ${player.level}!`);
+      }
+    }
+
+    function checkQuestProgress(type) {
+      quests.forEach(q => {
+        if (q.target === type && q.status === 'active') {
+          q.status = 'completed';
+          player.gold += q.reward;
+          addMessage(`🏆 Quest Complete: "${q.name}" +${q.reward} Gold!`);
+        }
+      });
+    }
+
+    function rest() {
+      if (player.gold < 10) {
+        addMessage('💰 Not enough gold to rest (costs 10)');
+        return;
+      }
+      player.gold -= 10;
+      player.hp = player.maxHp;
+      player.mana = player.maxMana;
+      addMessage('😴 You rest and recover fully.');
+      updateUI();
+    }
+
+    function regen() {
+      if (player.mana < player.maxMana) player.mana += 2;
+      if (player.hp < player.maxHp) player.hp += 1;
+    }
+
+    function updateUI() {
+      document.getElementById('level').textContent = player.level;
+      document.getElementById('exp').textContent = player.exp + '/' + player.expToLevel;
+      document.getElementById('hp').textContent = player.hp + '/' + player.maxHp;
+      document.getElementById('hp-fill').style.width = (player.hp / player.maxHp * 100) + '%';
+      document.getElementById('mana').textContent = player.mana + '/' + player.maxMana;
+      document.getElementById('mana-fill').style.width = (player.mana / player.maxMana * 100) + '%';
+      document.getElementById('gold').textContent = player.gold;
+      document.getElementById('atk').textContent = player.atk;
+      document.getElementById('def').textContent = player.def;
+
+      const active = quests.find(q => q.status === 'active');
+      document.getElementById('active-quest').textContent = active ? active.name : 'No active quest';
+
+      document.getElementById('quests-list').innerHTML = quests
+        .filter(q => q.status !== 'completed')
+        .map(q => `<div class="quest-item ${q.status === 'active' ? 'active' : ''}">${q.name} <span style="color:#ffc864">${q.reward}xp</span></div>`)
+        .join('');
+
+      document.getElementById('inventory-list').innerHTML = player.inventory
+        .map(item => `<div class="inventory-item">• ${item}</div>`)
+        .join('');
+    }
+
+    function draw() {
+      // Draw background grid
+      ctx.fillStyle = '#0f3460';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw grid
+      ctx.strokeStyle = 'rgba(0, 212, 255, 0.1)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < GRID_WIDTH; x++) {
+        ctx.beginPath();
+        ctx.moveTo(x * TILE_SIZE, 0);
+        ctx.lineTo(x * TILE_SIZE, canvas.height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < GRID_HEIGHT; y++) {
+        ctx.beginPath();
+        ctx.moveTo(0, y * TILE_SIZE);
+        ctx.lineTo(canvas.width, y * TILE_SIZE);
+        ctx.stroke();
+      }
+
+      // Draw entities
+      entities.forEach(entity => entity.draw());
+
+      // Draw player
+      ctx.fillStyle = '#00d4ff';
+      ctx.fillRect(player.x * TILE_SIZE + 2, player.y * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+      ctx.fillStyle = 'white';
+      ctx.font = 'bold 16px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('@', player.x * TILE_SIZE + TILE_SIZE/2, player.y * TILE_SIZE + TILE_SIZE/2 + 5);
+
+      // Draw player HP above player
+      ctx.fillStyle = '#ff4444';
+      ctx.font = '10px Arial';
+      ctx.fillText(`${player.hp}/${player.maxHp}`, player.x * TILE_SIZE + TILE_SIZE/2, player.y * TILE_SIZE - 5);
+    }
+
+    function gameLoop() {
+      draw();
+      if (player.hp > 0) {
+        requestAnimationFrame(gameLoop);
+      }
+    }
+
+    // Event listeners
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+      keys[e.key.toLowerCase()] = true;
+      if (e.key === ' ') interact(entities.find(e => e.x === player.x && e.y === player.y));
+      if (e.key === 'w') movePlayer(0, -1);
+      if (e.key === 'a') movePlayer(-1, 0);
+      if (e.key === 's') movePlayer(0, 1);
+      if (e.key === 'd') movePlayer(1, 0);
+    });
+
+    document.getElementById('btn-attack').addEventListener('click', () => {
+      const enemy = entities.find(e => e.type === 'enemy' && Math.abs(e.x - player.x) + Math.abs(e.y - player.y) <= 2);
+      if (enemy) combat(enemy);
+      else addMessage('❌ No nearby enemies!');
+    });
+
+    document.getElementById('btn-interact').addEventListener('click', () => {
+      const entity = entities.find(e => e.x === player.x && e.y === player.y);
+      if (entity) interact(entity);
+      else addMessage('❌ Nothing to interact with.');
+    });
+
+    document.getElementById('btn-rest').addEventListener('click', rest);
+    document.getElementById('btn-reset').addEventListener('click', () => {
+      player.hp = 100;
+      player.maxHp = 100;
+      player.mana = 50;
+      player.maxMana = 50;
+      player.level = 1;
+      player.exp = 0;
+      player.gold = 50;
+      player.atk = 5;
+      player.def = 2;
+      player.inventory = ['Shortsword', 'Health Potion', 'Bread'];
+      player.x = 5;
+      player.y = 5;
+      initGame();
+    });
+
+    // Start game
+    initGame();
+    gameLoop();
+  </script>
+</body>
+</html>

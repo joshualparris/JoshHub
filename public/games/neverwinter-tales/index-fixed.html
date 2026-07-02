@@ -1,0 +1,543 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Neverwinter -- Tales of the North</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#0f172a",
+              slate: "#1e293b",
+              parchment: "#f8f4e6",
+              ember: "#b45309",
+            },
+            fontFamily: {
+              display: ["Cinzel", "serif"],
+              body: ["IM Fell English", "serif"],
+            },
+            boxShadow: {
+              glow: "0 0 0 1px rgba(148,163,184,0.15), 0 0 24px rgba(30,41,59,0.65)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-ink via-slate to-black text-gray-100 font-body pb-24">
+    <div id="app" class="max-w-6xl mx-auto px-6 py-6">
+      <header class="mb-4">
+        <h1 class="text-3xl font-display tracking-wide text-amber-100">Neverwinter -- Tales of the North</h1>
+        <p class="text-slate-200">A text adventure inspired by D&amp;D 5e. Type commands or use dialogue buttons.</p>
+      </header>
+
+      <main class="grid grid-cols-1 lg:grid-cols-10 gap-6">
+        <section class="lg:col-span-7 bg-slate-900/80 rounded-lg shadow-glow border border-slate-700/40">
+          <div class="px-4 py-3 border-b border-slate-700/40 flex items-center justify-between">
+            <div>
+              <h2 class="font-display text-xl text-amber-100">Game Log</h2>
+              <div class="text-xs text-amber-200">Current location: {{ currentLocation ? currentLocation.name : 'Unknown' }}</div>
+            </div>
+            <div class="text-xs text-slate-300">Commands: move, look, talk, choose #, inventory, help</div>
+          </div>
+          <div class="h-[420px] overflow-y-auto px-4 py-3 space-y-2">
+            <div
+              v-for="(entry, idx) in gameLog"
+              :key="idx"
+              class="text-sm leading-relaxed"
+              :class="{
+                'text-gray-100': entry.type === 'narrative',
+                'text-red-400': entry.type === 'combat',
+                'text-blue-300': entry.type === 'info',
+                'text-amber-300': entry.type === 'lore',
+                'text-green-400': entry.type === 'success',
+              }"
+            >
+              {{ entry.text }}
+            </div>
+          </div>
+          <div class="px-4 py-3 border-t border-slate-700/40">
+            <div v-if="dialogueResponses.length" class="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <button
+                v-for="(resp, rIdx) in dialogueResponses"
+                :key="rIdx"
+                @click="chooseResponse(rIdx)"
+                class="text-left px-3 py-2 rounded-md bg-slate-800/70 border border-slate-700/40 text-amber-100 hover:border-amber-300 hover:text-amber-200 transition"
+              >
+                {{ rIdx + 1 }}. {{ resp.text }}
+              </button>
+            </div>
+            <div v-else class="text-xs text-slate-300">No dialogue options. Type "talk" to start a conversation.</div>
+          </div>
+        </section>
+
+        <aside class="lg:col-span-3 space-y-4">
+          <div class="bg-slate-900/80 rounded-lg shadow-glow border border-slate-700/40 p-4 text-gray-100">
+            <h2 class="font-display text-lg text-amber-100">Character Sheet</h2>
+            <div class="mt-2 text-sm space-y-1">
+              <div><span class="text-slate-300">Name:</span> {{ player.name }}</div>
+              <div><span class="text-slate-300">HP:</span> {{ player.hp }}/{{ player.maxHp }}</div>
+              <div><span class="text-slate-300">AC:</span> {{ armorClass }}</div>
+              <div class="text-xs mt-2"><span class="text-slate-400">STR:</span> {{ player.str }} ({{ strMod }})</div>
+              <div class="text-xs"><span class="text-slate-400">DEX:</span> {{ player.dex }} ({{ dexMod }})</div>
+              <div class="text-xs"><span class="text-slate-400">CON:</span> {{ player.con }} ({{ conMod }})</div>
+              <div class="text-xs"><span class="text-slate-400">INT:</span> {{ player.int }} ({{ intMod }})</div>
+              <div class="text-xs"><span class="text-slate-400">WIS:</span> {{ player.wis }} ({{ wisMod }})</div>
+              <div class="text-xs"><span class="text-slate-400">CHA:</span> {{ player.cha }} ({{ chaMod }})</div>
+            </div>
+            <div class="mt-3">
+              <h3 class="font-display text-sm uppercase tracking-wide text-amber-200">Inventory</h3>
+              <ul class="mt-1 text-sm text-gray-100 space-y-1">
+                <li v-for="(item, idx) in inventory" :key="idx">- {{ item }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-lg shadow-glow border border-slate-700/40 p-4">
+            <h2 class="font-display text-lg text-amber-100">Travel</h2>
+            <div class="mt-2 space-y-2">
+              <button
+                v-for="loc in locations"
+                :key="loc.id"
+                @click="travel(loc.id)"
+                class="w-full text-left px-3 py-2 rounded-md bg-slate-800/70 border border-slate-700/40 text-amber-100 hover:border-amber-300 hover:text-amber-200 transition text-sm"
+              >
+                {{ loc.name }}
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-lg shadow-glow border border-slate-700/40 p-4">
+            <h2 class="font-display text-lg text-amber-100">NPCs Nearby</h2>
+            <div class="mt-2 space-y-2">
+              <button
+                v-for="npc in npcsInLocation"
+                :key="npc.id"
+                @click="startDialogue(npc.id)"
+                class="w-full text-left px-3 py-2 rounded-md bg-slate-800/70 border border-slate-700/40 text-blue-300 hover:border-amber-300 hover:text-amber-200 transition text-sm"
+              >
+                {{ npc.name }} <span class="text-xs text-slate-400">({{ npc.role }})</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <form @submit.prevent="submitCommand" class="fixed bottom-0 left-0 right-0 bg-black/90 border-t border-slate-700/60">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex gap-2">
+          <input
+            v-model="userInput"
+            type="text"
+            placeholder="Type a command... (e.g., look, move Blacklake, talk Rosene, choose 1)"
+            class="flex-1 bg-slate-800/80 text-gray-100 placeholder:text-slate-400 px-3 py-2 rounded-md border border-slate-700/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
+          />
+          <button
+            type="submit"
+            class="px-4 py-2 bg-amber-700 hover:bg-amber-600 text-white rounded-md transition"
+          >
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const { createApp } = Vue;
+
+      // Embed all game data
+      const LOCATIONS = [
+        {
+          id: "hall-of-echoes",
+          name: "Hall of Echoes",
+          description: "The grand hall echoes with the whispers of a thousand adventurers. Stone pillars stretch to an unseen ceiling, and the air hums with magic.",
+          ambience: "Whispers echo off ancient stone.",
+          npcs: ["sage-aldric", "merchant-theron"],
+        },
+        {
+          id: "beached-leviathan",
+          name: "Beached Leviathan",
+          description: "The skeleton of an enormous sea creature lies half-buried in the sand. Strange bioluminescent fungi glow softly in its ribcage.",
+          ambience: "Eerie, distant sounds of the sea.",
+          npcs: ["madame-rosene"],
+        },
+        {
+          id: "shadowfen-swamp",
+          name: "Shadowfen Swamp",
+          description: "Twisted trees rise from murky water. Will-o'-wisps dance between the branches, and you can hear the croaks of unseen creatures.",
+          ambience: "Croaking, squelching sounds.",
+          npcs: ["witch-morrigan"],
+        },
+        {
+          id: "crystalline-caves",
+          name: "Crystalline Caves",
+          description: "Massive crystals jut from floor and ceiling, refracting light into rainbow patterns. The air feels charged with energy.",
+          ambience: "A faint crystalline humming.",
+          npcs: ["guardian-kael"],
+        },
+        {
+          id: "market-square",
+          name: "Market Square",
+          description: "Despite the late hour, lanterns glow in the market. Stalls line the square, and merchants call out their wares in hushed tones.",
+          ambience: "Merchants haggling quietly.",
+          npcs: ["merchant-theron", "beggar-eli"],
+        },
+      ];
+
+      const NPCS = [
+        {
+          id: "sage-aldric",
+          name: "Sage Aldric",
+          role: "Lorekeeper",
+          description: "An elderly wizard with stars in his eyes, studying ancient texts.",
+          dialogueTree: {
+            start: {
+              text: "Ah, an adventurer! I have much to teach, if you wish to listen.",
+              responses: [
+                { text: "Tell me about Neverwinter.", nextNode: "lore" },
+                { text: "Do you have work for me?", nextNode: "quest" },
+                { text: "Goodbye.", nextNode: null },
+              ],
+            },
+            lore: {
+              text: "Neverwinter stands at a crossroads of power. Ancient magic stirs beneath the city...",
+              responses: [{ text: "Continue.", nextNode: "start" }],
+            },
+            quest: {
+              text: "I seek three Crystals of Remembrance. Bring them to me, and I will reward you.",
+              responses: [{ text: "I accept.", nextNode: "accept_quest" }],
+            },
+            accept_quest: {
+              text: "Excellent! Search the Crystalline Caves to the east.",
+              responses: [{ text: "Back to the hall.", nextNode: null }],
+            },
+          },
+        },
+        {
+          id: "madame-rosene",
+          name: "Madame Rosene",
+          role: "Fortune Teller",
+          description: "Wrapped in violet silks, she gazes into a bowl of dark water.",
+          dialogueTree: {
+            start: {
+              text: "The cards whisper of your fate, traveler. Destiny calls you to great deeds.",
+              responses: [
+                { text: "Read my fortune.", nextNode: "fortune" },
+                { text: "What do you know?", nextNode: "knowledge" },
+              ],
+            },
+            fortune: {
+              text: "I see... danger and glory intertwined. You will face a choice that changes everything.",
+              responses: [{ text: "Back.", nextNode: null }],
+            },
+            knowledge: {
+              text: "Neverwinter harbors secrets. Some sleep beneath the city, waiting to rise.",
+              responses: [{ text: "Back.", nextNode: null }],
+            },
+          },
+        },
+        {
+          id: "witch-morrigan",
+          name: "Witch Morrigan",
+          role: "Herbalist",
+          description: "A mysterious figure surrounded by swamp mist and strange herbs.",
+          dialogueTree: {
+            start: {
+              text: "You've wandered far from safety, child. The swamp has few friends.",
+              responses: [
+                { text: "I seek something.", nextNode: "offer" },
+                { text: "Leave me be.", nextNode: null },
+              ],
+            },
+            offer: {
+              text: "Perhaps I can help... for the right price. Bring me moonflowers from the north.",
+              responses: [{ text: "I will find them.", nextNode: null }],
+            },
+          },
+        },
+        {
+          id: "guardian-kael",
+          name: "Guardian Kael",
+          role: "Crystal Sentinel",
+          description: "A figure made of living crystal, glowing with inner light.",
+          dialogueTree: {
+            start: {
+              text: "I am the keeper of this place. Few mortals reach so deep.",
+              responses: [
+                { text: "I seek the Crystals.", nextNode: "crystals" },
+                { text: "I mean no harm.", nextNode: "peace" },
+              ],
+            },
+            crystals: {
+              text: "The Crystals chose their own guardians. Prove your worth through combat or wisdom.",
+              responses: [{ text: "I accept your challenge.", nextNode: null }],
+            },
+            peace: {
+              text: "Peace is always welcome here. You may rest in this place.",
+              responses: [{ text: "Thank you.", nextNode: null }],
+            },
+          },
+        },
+        {
+          id: "merchant-theron",
+          name: "Merchant Theron",
+          role: "Trader",
+          description: "A sharp-eyed merchant always looking for a good deal.",
+          dialogueTree: {
+            start: {
+              text: "Well met! I have wares of exceptional quality. Interested?",
+              responses: [
+                { text: "Show me your inventory.", nextNode: "shop" },
+                { text: "No thanks.", nextNode: null },
+              ],
+            },
+            shop: {
+              text: "I have potions, scrolls, and rare items. What catches your eye?",
+              responses: [{ text: "Perhaps later.", nextNode: null }],
+            },
+          },
+        },
+        {
+          id: "beggar-eli",
+          name: "Beggar Eli",
+          role: "Street Urchin",
+          description: "A young street urchin with sharp eyes and quick fingers.",
+          dialogueTree: {
+            start: {
+              text: "Spare some coin, friend? Or perhaps you'd like to hear some rumors?",
+              responses: [
+                { text: "What rumors?", nextNode: "rumors" },
+                { text: "I have no coin.", nextNode: null },
+              ],
+            },
+            rumors: {
+              text: "They say the Shadow Cult stirs in the Shadowfen. Stay away from there.",
+              responses: [{ text: "Good to know.", nextNode: null }],
+            },
+          },
+        },
+      ];
+
+      const LORE = {
+        "hall-of-echoes": [
+          { title: "The First Adventurers", text: "This hall was built to celebrate those brave souls who first challenged the darkness." },
+          { title: "Ancient Magic", text: "The stones themselves seem to absorb and reflect magical energy." },
+        ],
+        "beached-leviathan": [
+          { title: "The Great Beast", text: "Legends say this creature was drawn from the deep by a powerful ritual." },
+          { title: "Forbidden Knowledge", text: "Scholars debate whether the leviathan was summoned or came of its own will." },
+        ],
+        "shadowfen-swamp": [
+          { title: "Twisted Land", text: "The swamp is said to be cursed, warping nature in strange ways." },
+          { title: "Hidden Threats", text: "Many have vanished in the Shadowfen. Few speak of what lurks there." },
+        ],
+        "crystalline-caves": [
+          { title: "Crystal Heart", text: "The caves are a natural wonder, forming over millennia." },
+          { title: "Mystical Resonance", text: "Magic flows through these crystals like lifeblood." },
+        ],
+      };
+
+      // Game app
+      createApp({
+        data() {
+          return {
+            player: {
+              name: "Adventurer",
+              level: 1,
+              str: 14,
+              dex: 12,
+              con: 13,
+              int: 13,
+              wis: 11,
+              cha: 12,
+              hp: 11,
+              maxHp: 11,
+            },
+            inventory: ["Worn cloak", "Traveler's rations", "Rusty dagger"],
+            gameLog: [
+              {
+                type: "narrative",
+                text: "You arrive in Neverwinter as the city settles into twilight. A grand hall welcomes you, its stone walls echoing with history.",
+              },
+            ],
+            currentLocationId: "hall-of-echoes",
+            currentDialogue: { npcId: null, nodeId: null },
+            userInput: "",
+            locations: LOCATIONS,
+            npcs: NPCS,
+            lore: LORE,
+          };
+        },
+        computed: {
+          strMod() { return Math.floor((this.player.str - 10) / 2); },
+          dexMod() { return Math.floor((this.player.dex - 10) / 2); },
+          conMod() { return Math.floor((this.player.con - 10) / 2); },
+          intMod() { return Math.floor((this.player.int - 10) / 2); },
+          wisMod() { return Math.floor((this.player.wis - 10) / 2); },
+          chaMod() { return Math.floor((this.player.cha - 10) / 2); },
+          armorClass() { return 10 + this.dexMod; },
+          currentLocation() {
+            return this.locations.find((l) => l.id === this.currentLocationId) || this.locations[0];
+          },
+          npcsInLocation() {
+            if (!this.currentLocation) return [];
+            return this.npcs.filter((n) => this.currentLocation.npcs.includes(n.id));
+          },
+          currentNPC() {
+            return this.npcs.find((n) => n.id === this.currentDialogue.npcId) || null;
+          },
+          currentNode() {
+            if (!this.currentNPC || !this.currentDialogue.nodeId) return null;
+            return this.currentNPC.dialogueTree[this.currentDialogue.nodeId] || null;
+          },
+          dialogueResponses() {
+            return this.currentNode && this.currentNode.responses ? this.currentNode.responses : [];
+          },
+        },
+        methods: {
+          append(type, text) {
+            this.gameLog.unshift({ type, text });
+          },
+          describeLocation() {
+            if (!this.currentLocation) return;
+            this.append("narrative", this.currentLocation.description);
+            this.append("info", `Ambience: ${this.currentLocation.ambience}`);
+            const loreForLoc = this.lore[this.currentLocation.id];
+            if (loreForLoc && loreForLoc.length) {
+              const pick = loreForLoc[Math.floor(Math.random() * loreForLoc.length)];
+              this.append("lore", `Lore -- ${pick.title}: ${pick.text}`);
+            }
+          },
+          travel(locationId) {
+            const loc = this.locations.find((l) => l.id === locationId);
+            if (!loc) return;
+            this.currentLocationId = loc.id;
+            this.currentDialogue = { npcId: null, nodeId: null };
+            this.append("narrative", `You travel to ${loc.name}.`);
+            this.describeLocation();
+          },
+          startDialogue(npcId) {
+            const npc = this.npcs.find((n) => n.id === npcId);
+            if (!npc) return;
+            this.currentDialogue = { npcId: npc.id, nodeId: "start" };
+            this.append("narrative", `${npc.name} (${npc.role}) turns to you.`);
+            this.append("narrative", npc.dialogueTree.start.text);
+          },
+          chooseResponse(index) {
+            if (!this.currentNode || !this.currentNPC) return;
+            const resp = this.currentNode.responses[index];
+            if (!resp) return;
+            this.append("info", `You: ${resp.text}`);
+            if (resp.nextNode) {
+              this.moveDialogue(resp.nextNode);
+            } else {
+              this.endDialogue();
+            }
+          },
+          moveDialogue(nodeId) {
+            if (!this.currentNPC) return;
+            const node = this.currentNPC.dialogueTree[nodeId];
+            if (!node) {
+              this.endDialogue();
+              return;
+            }
+            this.currentDialogue.nodeId = nodeId;
+            if (node.text) {
+              this.append("narrative", node.text);
+            }
+            if (!node.responses || !node.responses.length) {
+              this.endDialogue();
+            }
+          },
+          endDialogue() {
+            this.currentDialogue = { npcId: null, nodeId: null };
+            this.append("info", "Dialogue ended.");
+          },
+          showInventory() {
+            this.append("info", `Inventory: ${this.inventory.join(", ")}`);
+          },
+          submitCommand() {
+            const input = (this.userInput || "").trim();
+            if (!input) return;
+            this.userInput = "";
+            this.append("info", `> ${input}`);
+
+            const parts = input.split(/\s+/);
+            const cmd = parts[0].toLowerCase();
+            const rest = parts.slice(1).join(" ");
+
+            if (cmd === "help") {
+              this.append("info", "Commands: move <location>, look, talk [npc], choose <number>, inventory, help");
+              return;
+            }
+
+            if (cmd === "move") {
+              if (!rest) {
+                this.append("info", "Move where?");
+                return;
+              }
+              const loc = this.locations.find(
+                (l) => l.name.toLowerCase() === rest.toLowerCase() || l.id.toLowerCase() === rest.toLowerCase()
+              );
+              if (!loc) {
+                this.append("info", "Unknown location.");
+                return;
+              }
+              this.travel(loc.id);
+              return;
+            }
+
+            if (cmd === "look") {
+              this.describeLocation();
+              return;
+            }
+
+            if (cmd === "talk") {
+              if (!rest) {
+                if (this.npcsInLocation.length) {
+                  this.startDialogue(this.npcsInLocation[0].id);
+                } else {
+                  this.append("info", "No one is nearby.");
+                }
+                return;
+              }
+              const npc = this.npcs.find(
+                (n) => n.name.toLowerCase() === rest.toLowerCase() || n.id.toLowerCase() === rest.toLowerCase()
+              );
+              if (!npc) {
+                this.append("info", "No such NPC.");
+                return;
+              }
+              this.startDialogue(npc.id);
+              return;
+            }
+
+            if (cmd === "choose") {
+              const idx = parseInt(parts[1], 10);
+              if (isNaN(idx) || idx < 1) {
+                this.append("info", "Choose which option? Example: choose 1");
+                return;
+              }
+              this.chooseResponse(idx - 1);
+              return;
+            }
+
+            if (cmd === "inventory") {
+              this.showInventory();
+              return;
+            }
+
+            this.append("info", "Unknown command. Type 'help'.");
+          },
+        },
+        mounted() {
+          this.describeLocation();
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
