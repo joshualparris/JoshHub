@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": {
+    "deploymentEnabled": {
+      "codex/local-backup-*": false,
+      "codex/local-snapshot-*": false
+    }
+  }
+}
