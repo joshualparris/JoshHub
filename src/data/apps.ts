@@ -1974,7 +1974,6 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://power-app-delta.vercel.app/",
     urls: [
       { label: "Vercel", url: "https://power-app-delta.vercel.app/" },
-      { label: "GitHub Pages", url: "https://joshuaparris-max.github.io/PowerApp/" },
       { label: "Repo", url: "https://github.com/joshuaparris-max/PowerApp" },
     ],
     lastTouched: "2026-06",
@@ -2064,9 +2063,9 @@ export const apps: CatalogItem[] = [
     category: "Games",
     status: "ok",
     tags: ["game", "serenity", "firefly", "vercel"],
-    primaryUrl: "http://skill-deploy-ubokv1ax71.vercel.app/",
+    primaryUrl: "https://skill-deploy-ubokv1ax71.vercel.app/",
     urls: [
-      { label: "Live", url: "http://skill-deploy-ubokv1ax71.vercel.app/" },
+      { label: "Live", url: "https://skill-deploy-ubokv1ax71.vercel.app/" },
     ],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
