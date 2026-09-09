@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { FileUp, ArrowRight, RefreshCcw, Download, Plus, AlertTriangle } from "lucide-react";
+import { useMemo, useState } from "react";
+import { FileUp, ArrowRight, RefreshCcw, Plus, AlertTriangle } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { apps, type CatalogItem } from "@/data/apps";
-import { cn } from "@/lib/utils";
 import { parseAuditCsv, type AuditRow, type CsvRowError } from "@/lib/parsing/csv";
+import { cn } from "@/lib/utils";
 
 interface MatchResult {
   row: AuditRow;
@@ -22,17 +23,29 @@ export function CSVImportPreview() {
   const [errors, setErrors] = useState<CsvRowError[]>([]);
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (!file) return;
 
     setFileName(file.name);
+    setData([]);
+    setErrors([]);
+
     const reader = new FileReader();
-    reader.onload = (event) => {
-      const text = event.target?.result as string;
-      const result = parseAuditCsv(text);
+    reader.onload = (loadEvent) => {
+      const fileText = loadEvent.target?.result;
+      if (typeof fileText !== "string") {
+        setErrors([{ line: 1, message: `Could not read ${file.name} as text.` }]);
+        return;
+      }
+
+      const result = parseAuditCsv(fileText);
       setData(result.rows);
       setErrors(result.errors);
+    };
+    reader.onerror = () => {
+      setData([]);
+      setErrors([{ line: 1, message: `Could not read ${file.name}.` }]);
     };
     reader.readAsText(file);
   };
@@ -43,27 +56,26 @@ export function CSVImportPreview() {
       let matchType: MatchResult["matchType"] = "none";
       const conflicts: string[] = [];
 
-      // Try exact name match
-      match = apps.find((a) => a.name.toLowerCase() === row.name.toLowerCase());
+      match = apps.find((catalogItem) => catalogItem.name.toLowerCase() === row.name.toLowerCase());
       if (match) {
         matchType = "exact-name";
       } else {
-        // Try path match
-        match = apps.find((a) => a.localPath === row.localPath);
-        if (match) matchType = "path";
-        else {
-          // Try repo match
-          match = apps.find((a) => a.repoUrl === row.repoUrl);
+        match = apps.find((catalogItem) => catalogItem.localPath === row.localPath);
+        if (match) {
+          matchType = "path";
+        } else {
+          match = apps.find((catalogItem) => catalogItem.repoUrl === row.repoUrl);
           if (match) matchType = "repo";
         }
       }
 
       if (match) {
-        // Check for conflicts
-        if (row.repoUrl && match.repoUrl && row.repoUrl !== match.repoUrl)
+        if (row.repoUrl && match.repoUrl && row.repoUrl !== match.repoUrl) {
           conflicts.push("repoUrl");
-        if (row.localPath && match.localPath && row.localPath !== match.localPath)
+        }
+        if (row.localPath && match.localPath && row.localPath !== match.localPath) {
           conflicts.push("localPath");
+        }
       }
 
       return { row, match, matchType, conflicts };
@@ -73,9 +85,9 @@ export function CSVImportPreview() {
   const stats = useMemo(() => {
     return {
       total: matches.length,
-      new: matches.filter((m) => m.matchType === "none").length,
-      matched: matches.filter((m) => m.matchType !== "none").length,
-      conflicts: matches.filter((m) => m.conflicts.length > 0).length,
+      new: matches.filter((matchResult) => matchResult.matchType === "none").length,
+      matched: matches.filter((matchResult) => matchResult.matchType !== "none").length,
+      conflicts: matches.filter((matchResult) => matchResult.conflicts.length > 0).length,
     };
   }, [matches]);
 
@@ -99,8 +111,8 @@ export function CSVImportPreview() {
                 CSV Import Failed
               </div>
               <ul className="list-disc pl-5 space-y-1 text-xs">
-                {errors.map((err, idx) => (
-                  <li key={idx}>{err.message}</li>
+                {errors.map((error) => (
+                  <li key={`${error.line}-${error.message}`}>{error.message}</li>
                 ))}
               </ul>
             </div>
@@ -144,11 +156,6 @@ export function CSVImportPreview() {
             Comparing audit data with existing JoshHub inventory
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" className="gap-2">
-            <Download className="h-4 w-4" /> Export Merged JSON
-          </Button>
-        </div>
       </div>
 
       {errors.length > 0 && (
@@ -159,8 +166,8 @@ export function CSVImportPreview() {
             {errors.length === 1 ? "was" : "were"} skipped:
           </div>
           <ul className="list-disc pl-5 space-y-1 text-xs max-h-32 overflow-y-auto">
-            {errors.map((err, idx) => (
-              <li key={idx}>{err.message}</li>
+            {errors.map((error) => (
+              <li key={`${error.line}-${error.message}`}>{error.message}</li>
             ))}
           </ul>
         </div>
@@ -220,23 +227,25 @@ export function CSVImportPreview() {
             </tr>
           </thead>
           <tbody className="divide-y">
-            {matches.map((m, i) => (
+            {matches.map((matchResult, rowIndex) => (
               <tr
-                key={i}
-                className={cn(m.conflicts.length > 0 && "bg-rose-50/50 dark:bg-rose-950/10")}
+                key={`${matchResult.row.name}-${rowIndex}`}
+                className={cn(
+                  matchResult.conflicts.length > 0 && "bg-rose-50/50 dark:bg-rose-950/10"
+                )}
               >
                 <td className="px-4 py-4">
-                  <div className="font-semibold">{m.row.name}</div>
+                  <div className="font-semibold">{matchResult.row.name}</div>
                   <div className="text-xs text-muted-foreground font-mono mt-1">
-                    {m.row.localPath || "No path"}
+                    {matchResult.row.localPath || "No path"}
                   </div>
                 </td>
                 <td className="px-4 py-4 text-center">
-                  {m.match ? (
+                  {matchResult.match ? (
                     <div className="flex flex-col items-center gap-1">
                       <ArrowRight className="h-4 w-4 text-emerald-500" />
                       <Badge variant="outline" className="text-[10px] py-0">
-                        {m.matchType}
+                        {matchResult.matchType}
                       </Badge>
                     </div>
                   ) : (
@@ -244,20 +253,23 @@ export function CSVImportPreview() {
                   )}
                 </td>
                 <td className="px-4 py-4">
-                  {m.match ? (
+                  {matchResult.match ? (
                     <div>
                       <div className="font-semibold flex items-center gap-2">
-                        {m.match.name}
-                        {m.conflicts.length > 0 && (
+                        {matchResult.match.name}
+                        {matchResult.conflicts.length > 0 && (
                           <AlertTriangle className="h-3 w-3 text-rose-500" />
                         )}
                       </div>
                       <div className="text-xs text-muted-foreground font-mono mt-1">
-                        {m.match.localPath || "No path"}
+                        {matchResult.match.localPath || "No path"}
                       </div>
-                      {m.conflicts.map((c) => (
-                        <div key={c} className="text-[10px] text-rose-600 mt-1 font-medium">
-                          Conflict: {c}
+                      {matchResult.conflicts.map((conflictField) => (
+                        <div
+                          key={conflictField}
+                          className="text-[10px] text-rose-600 mt-1 font-medium"
+                        >
+                          Conflict: {conflictField}
                         </div>
                       ))}
                     </div>
@@ -266,7 +278,7 @@ export function CSVImportPreview() {
                   )}
                 </td>
                 <td className="px-4 py-4">
-                  {m.match ? (
+                  {matchResult.match ? (
                     <Badge
                       variant="outline"
                       className="bg-emerald-50 text-emerald-700 border-emerald-200"
@@ -285,17 +297,5 @@ export function CSVImportPreview() {
         </table>
       </div>
     </div>
-  );
-}
-
-function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
-  return (
-    <input
-      className={cn(
-        "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-        className
-      )}
-      {...props}
-    />
   );
 }
