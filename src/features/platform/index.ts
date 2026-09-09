@@ -3,7 +3,6 @@ import { moveOpsRepo } from "../../lib/repos/dexie/platform/moveOpsRepoDexie";
 import { decisionCardsRepo } from "../../lib/repos/dexie/platform/decisionCardsRepoDexie";
 import { opportunitiesRepo } from "../../lib/repos/dexie/platform/opportunitiesRepoDexie";
 import { weeklyReviewsRepo } from "../../lib/repos/dexie/platform/weeklyReviewsRepoDexie";
-import { seedPlatformData } from "../../lib/repos/dexie/platform/seed";
 import {
   PlatformMoveOp,
   PlatformDecisionCard,

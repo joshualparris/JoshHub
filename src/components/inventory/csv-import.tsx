@@ -15,7 +15,7 @@ interface AuditRow {
   repoUrl?: string;
   lastTouched?: string;
   status?: string;
-  [key: string]: any;
+  [key: string]: string | undefined;
 }
 
 interface MatchResult {
@@ -47,7 +47,7 @@ export function CSVImportPreview() {
         .filter((line) => line.trim())
         .map((line) => {
           const values = line.split(",").map((v) => v.trim().replace(/^"|"$/g, ""));
-          const row: any = {};
+          const row: Record<string, string> = {};
           headers.forEach((header, i) => {
             row[header] = values[i];
           });

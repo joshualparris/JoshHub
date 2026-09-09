@@ -84,7 +84,7 @@ Every number below is reproducible; the command is given with the finding.
 - **Verify:** the script in `CONFORMANCE.md` under P7.
 - **Status:** Open
 
-### [ ] XC-03 — `components` and `features` import each other · Medium
+### [x] XC-03 — `components` and `features` import each other · Medium
 - **Principles:** P14, P3
 - **Where:** `src/components` ↔ `src/features`
 - **Problem:** The layer graph is clean in every direction except one:
@@ -104,12 +104,9 @@ Every number below is reproducible; the command is given with the finding.
   written down what its layers are — so "is this a violation?" is currently
   unanswerable, which is worse than a violation. It is also why `src/features`
   means three different things (FEAT-07).
-- **Fix:** Write the hierarchy down in `CONFORMANCE.md` (proposed there:
-  `app → features → components → lib → data`, with `components` as
-  presentation-only), then break the cycle by moving `components/platform/*`
-  into `features/platform/`, where its data already lives.
-- **Verify:** the script in `CONFORMANCE.md` under P14.
-- **Status:** Open
+- **Fix:** Write the hierarchy down in `CONFORMANCE.md` (`app → features → components → lib → data`, with `components` as presentation-only), move `components/platform/*` into `features/platform/ui/`, and enforce `import/no-restricted-paths` as an error in `eslint.config.mjs`.
+- **Verify:** `npm run lint` and CI.
+- **Status:** Fixed
 
 ### [ ] XC-04 — Two-thirds of source files carry no comments at all · Medium
 - **Principles:** P12

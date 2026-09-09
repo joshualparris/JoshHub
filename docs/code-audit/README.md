@@ -165,9 +165,9 @@ before being written up: it was suspected that `src/app/capture` reimplemented
 |----------|------|-------|
 | Critical | 1 | 2 |
 | High | 18 | 3 |
-| Medium | 46 | 3 |
+| Medium | 45 | 4 |
 | Low | 23 | 0 |
-| **Total** | **88** | **8** |
+| **Total** | **87** | **9** |
 
 The remaining open Critical is **COMP-01** (the theme toggle drives none of the
 504 `dark:` styling declarations). **CFG-01** is now fixed: baseline GitHub

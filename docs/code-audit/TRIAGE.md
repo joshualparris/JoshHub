@@ -189,11 +189,11 @@ Unit conversion, aggregation and threshold logic sit inside `useMemo` in
 components, which is *why* P15 is at two test files — the logic worth testing is
 stranded in JSX. Fixing this makes XC-05 and XC-01 easier at the same time.
 
-### 25. XC-03 — Break the `components` ↔ `features` cycle · Medium
-`CONFORMANCE.md` now defines the hierarchy (`app → features → components → lib →
-data`) for the first time. Move `components/platform/*` into
-`features/platform/`, where its data already lives, then turn on
-`no-restricted-paths`.
+### 25. [x] XC-03 — Break the `components` ↔ `features` cycle · Medium
+`CONFORMANCE.md` defines the hierarchy (`app → features → components → lib →
+data`). Completed: moved `components/platform/*` into `features/platform/ui/`,
+cleaned all reverse imports, and made `import/no-restricted-paths` a blocking
+error in `eslint.config.mjs`.
 
 ### 26. XC-01 — Shrink the 27 functions over 100 lines · High
 `DashboardPage` is 727 lines. Take these opportunistically — whenever you touch

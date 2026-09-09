@@ -138,16 +138,6 @@ export default function InventoryHealthPage() {
       .sort((a, b) => b.value - a.value);
   }, [stats.byStatus]);
 
-  const categoryData = useMemo(() => {
-    return Object.entries(stats.byCategory)
-      .map(([name, value]) => ({
-        name,
-        value,
-      }))
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 10);
-  }, [stats.byCategory]);
-
   const filteredProjects = useMemo(() => {
     return apps.filter((project) => {
       const matchesSearch =

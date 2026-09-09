@@ -19,10 +19,10 @@ JoshHub is **buildable again, has working baseline GitHub Actions CI, and is par
 
 The current code audit records:
 
-- **93 findings total**
-- **5 fixed audit findings**
-- **88 open findings**
-- open severity rollup: **1 Critical, 18 High, 46 Medium, 23 Low**
+- **96 findings total**
+- **9 fixed audit findings**
+- **87 open findings**
+- open severity rollup: **1 Critical, 18 High, 45 Medium, 23 Low**
 - 30 route files and 6 components still await a full line-by-line read for file-specific issues
 
 The source of truth for those numbers is `docs/code-audit/README.md`. Recalculate rather than copying these numbers forward after findings are resolved.
@@ -145,31 +145,22 @@ If the tool/session begins degrading, stop optional exploration and checkpoint c
 
 ## 5. Exact next work: remaining Wave 1 enforcement
 
-### Completed Wave 1 baseline
+### Completed Wave 1 baseline & Wave 1C mechanical enforcement
 
 - **CFG-01 — CI:** fixed in `081a7d9` and verified by green run `34337559585`.
 - **CFG-02 — terminating tests:** fixed in `8b741f5` and verified inside the same CI run.
+- **P13 Prettier:** format:check active and blocking in CI.
+- **P10 In-place mutations:** check:mutation active and blocking in CI.
+- **P2 Duplicate module basenames:** check:duplicate-modules active and blocking in CI.
+- **P14 Directional dependencies (XC-03):** layer hierarchy defined (`app -> features -> components -> lib -> data`), reverse imports eliminated, and `import/no-restricted-paths` enforced as a blocking error in CI.
 
-The workflow currently runs:
-
-- `npm ci`;
-- `npm run lint`;
-- `npm test`;
-- `npm run build`;
-- `npm run validate:apps`.
-
-`node scripts/check-assets.js` is intentionally not a required CI gate yet because the audit already records known asset/catalogue failures and CFG-06. Add it when those known failures are resolved.
-
-### NEXT atomic task — Wave 1C mechanical enforcement
+### NEXT atomic task — Wave 2 / Wave 3 stabilisation
 
 Follow `docs/code-audit/TRIAGE.md` and `CONFORMANCE.md`.
 
-1. Add **Prettier** and a terminating `prettier --check` CI gate in a small, reviewable change. Do not mix the dependency/setup commit with a repository-wide formatting sweep unless explicitly justified.
-2. Add the precise P10 in-place-mutation and P2 duplicate-basename checks as deterministic CI gates, validating the commands against the current tree before enabling them.
-3. Resolve XC-03 (`components` <-> `features` cycle) before enabling `eslint-plugin-import` / `no-restricted-paths`; do not introduce a permanently red architecture gate.
-4. Re-enable `react-hooks/set-state-in-effect` as a warning only after APP-08 is resolved.
-
-Do not skip straight to theme or feature work until the remaining Wave 1 enforcement decision is deliberately completed or deferred with a recorded reason.
+1. **COMP-01 (Theme system root cause):** Connect data-theme to Tailwind dark variants across remaining views.
+2. **PUB-02 (Missing local assets):** Resolve the 12 missing HTML game/doc builds in `public/` and promote `check:assets` from advisory to blocking.
+3. **DATA-04 / SCAF-04 (LifeArea vocabulary):** Consolidate `LifeArea` definitions into one canonical source of truth.
 
 ---
 

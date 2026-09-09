@@ -410,13 +410,13 @@ app  →  features  →  components  →  lib  →  data
 **Verify:** the layer-graph script in report 16, or once configured,
 `eslint-plugin-import`'s `no-restricted-paths`.
 
-**Now:** ❌ One cycle: `components → features` (8 imports) and
-`features → components` (6). Everything else already flows correctly. Open:
-XC-03.
+**Now:** ✅ Broken and clean. All platform stateful components were moved into
+`features/platform/ui/`, presentation components in `src/components` have zero
+imports from `src/features`, and the layer hierarchy flows strictly unidirectional
+(`app → features → components → lib → data`). XC-03 closed.
 
-**Enforced by:** nothing yet. Proposed: resolve XC-03, then add
-`no-restricted-paths`. Do not install a permanently failing architecture gate
-before fixing the known cycle.
+**Enforced by:** ✅ `eslint-plugin-import` rule `import/no-restricted-paths` is
+configured at `"error"` level in `eslint.config.mjs` and enforced in CI on every push and PR.
 
 ---
 
@@ -508,7 +508,7 @@ Verify every entry point asserts a schema or validates all required fields befor
 | P11 | Invariants | ❌ 3/14 | ◐ |
 | P12 | Comments explain why | ❌ | n/a |
 | P13 | Consistent structure | ❌ | ✗ |
-| P14 | Directional dependencies | ❌ | ✗ |
+| P14 | Directional dependencies | ✅ | ✅ |
 | P15 | Tests protect behaviour | ❌ | ◐ |
 | P16 | Fail loudly / degrade gracefully | ⚠️ | ◐ |
 | P17 | YAGNI | ⚠️ | ◐ |
@@ -524,8 +524,8 @@ remaining prevention mechanisms to land.
 1. **✅ Baseline CI (CFG-01)** — landed in `081a7d9`; first run `34337559585`
    passed lint, terminating tests, production build, and app-catalogue validation.
 2. **Prettier** — retires most of P13 and part of P4, permanently.
-3. **`no-restricted-paths`** — fully mechanises P14 after XC-03 removes the known
-   layer cycle.
+3. **✅ `no-restricted-paths` (XC-03)** — landed; enforces directional layering as
+   a blocking error in CI.
 4. **Two greps in CI** — the P10 mutation check and the P2 duplicate-basename
    check. Validate them against the current tree before making them gates.
 
