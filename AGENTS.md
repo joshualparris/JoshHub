@@ -140,15 +140,19 @@ A moving branch is a reason to compare deltas, not a reason to rediscover everyt
 
 Use the repository's real verification commands and do not confuse deployment success with behavioural correctness.
 
-Current audit note: until CFG-02 is fixed, `npm test` starts Vitest watch mode and is not suitable as a terminating CI command. Use a terminating Vitest invocation such as `npx vitest run` for verification.
+`npm test` is a terminating `vitest run` command. Use `npm run test:watch` only when interactive watch mode is deliberately wanted.
 
 For each atomic change, run the smallest relevant tests first, then the broader checks needed for confidence. Before declaring a stabilisation checkpoint complete, include applicable checks such as:
 
-- lint;
-- terminating Vitest run;
-- production build;
-- app catalogue validation;
-- asset/link checks;
+- `npm run format:check`;
+- `npm run lint`;
+- `npm test`;
+- `npm run build`;
+- `npm run validate:apps`;
+- `npm run check:assets`;
+- `npm run check:mutation`;
+- `npm run check:duplicate-modules`;
+- `npm run check:conflict-markers`;
 - focused regression tests for the behaviour changed.
 
 Record what actually ran. Do not say tests passed if they were not executed.
