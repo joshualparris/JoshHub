@@ -129,15 +129,53 @@ export function listSessions(): Promise<LearnSession[]> {
   return db.learnSessions.orderBy("createdAt").reverse().toArray();
 }
 
-// Prompt templates stored as JSON in learnSettings.key === 'promptTemplates'
-export async function getPromptTemplates() {
-  const row = await db.learnSettings.get("promptTemplates");
-  if (!row) return [] as { name: string; template: string }[];
-  try {
-    return JSON.parse(row.value) as { name: string; template: string }[];
-  } catch {
-    return [];
+export class CorruptStorageError extends Error {
+  constructor(
+    public readonly storageKey: string,
+    message: string,
+    options?: { cause?: unknown }
+  ) {
+    super(`Corrupt storage at key "${storageKey}": ${message}`, options);
+    this.name = "CorruptStorageError";
   }
+}
+
+export interface PromptTemplate {
+  name: string;
+  template: string;
+}
+
+// Prompt templates stored as JSON in learnSettings.key === 'promptTemplates'
+export async function getPromptTemplates(): Promise<PromptTemplate[]> {
+  const row = await db.learnSettings.get("promptTemplates");
+  if (!row) return [];
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(row.value);
+  } catch (cause) {
+    throw new CorruptStorageError("promptTemplates", "Stored JSON is malformed", { cause });
+  }
+
+  if (!Array.isArray(parsed)) {
+    throw new CorruptStorageError("promptTemplates", "Stored value is not an array");
+  }
+
+  for (const item of parsed) {
+    if (
+      typeof item !== "object" ||
+      item === null ||
+      typeof (item as { name?: unknown }).name !== "string" ||
+      typeof (item as { template?: unknown }).template !== "string"
+    ) {
+      throw new CorruptStorageError(
+        "promptTemplates",
+        "Each template item must be an object with string 'name' and 'template' properties"
+      );
+    }
+  }
+
+  return parsed as PromptTemplate[];
 }
 
 export async function savePromptTemplates(arr: { name: string; template: string }[]) {

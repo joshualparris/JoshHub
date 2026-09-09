@@ -40,6 +40,16 @@ The source of truth for those numbers is `docs/code-audit/README.md`. Recalculat
 - `081a7d9` — added baseline GitHub Actions CI on pushes to `main` and pull requests.
 - CI run `34337559585` passed dependency install, lint, tests, production build, and app-catalogue validation.
 - `c29b48a`, `3739218`, `b658228` — updated the audit finding, triage, and rollup to reflect the verified CI work.
+- `7dd79cc` — introduced `import/no-restricted-paths` at `"error"` level in `eslint.config.mjs` for directional dependencies (P14).
+- `004aaf7` — added blocking mechanical CI checks for mutation (`check:mutation`), duplicate modules (`check:duplicate-modules`), conflict markers, and formatting (`format:check`).
+- `b6cbc7f` — expanded engineering principles from 15 to 18 principles (`AGENTS.md`, `CONFORMANCE.md`, `README.md`, `PROJECT_STATE.md`).
+- `3b6bbf1` — resolved duplicate `care-client.tsx` wrapper to allow the existing `check:duplicate-modules` CI gate to pass.
+- `3631931` — eliminated `components` <-> `features` reverse import cycle (XC-03) and cleaned code-quality lints across 18 principles.
+- Corrective actions checkpoint:
+  - **P16 (Fail Loudly):** Fixed `getPromptTemplates()` in `src/lib/repos/dexie/learnRepoDexie.ts` to throw typed `CorruptStorageError` preserving error cause on corrupt JSON or malformed schema; updated `PromptTemplatesEditor.tsx` to surface errors gracefully without wiping database. Tested in `learnRepoDexie.test.ts`.
+  - **P18 (Boundary Validation) & P1/P17:** Replaced naïve string split in `src/components/inventory/csv-import.tsx` with RFC-4180 parser and Zod schema (`AuditRowSchema`) in `src/lib/parsing/csv.ts`. Displays line-by-line validation errors in UI. Tested in `csv.test.ts`.
+  - **P15 (Behavioural Tests):** Test suite expanded to 11 test files and 58 passing tests.
+  - **Attributions & Open Debt:** Accurately attributed P14 `import/no-restricted-paths` to `7dd79cc` and P2 `check:duplicate-modules` to `004aaf7`. Explicitly scoped open technical debt in `inventory-health` (353 lines) and `care-client` (250+ lines) under XC-01 and XC-02.
 
 Do not redo these from memory. Inspect the commits and audit reports if they need to be changed.
 
@@ -149,10 +159,12 @@ If the tool/session begins degrading, stop optional exploration and checkpoint c
 
 - **CFG-01 — CI:** fixed in `081a7d9` and verified by green run `34337559585`.
 - **CFG-02 — terminating tests:** fixed in `8b741f5` and verified inside the same CI run.
-- **P13 Prettier:** format:check active and blocking in CI.
-- **P10 In-place mutations:** check:mutation active and blocking in CI.
-- **P2 Duplicate module basenames:** check:duplicate-modules active and blocking in CI.
-- **P14 Directional dependencies (XC-03):** layer hierarchy defined (`app -> features -> components -> lib -> data`), reverse imports eliminated, and `import/no-restricted-paths` enforced as a blocking error in CI.
+- **P13 Prettier:** format:check active and blocking in CI (introduced in `004aaf7`).
+- **P10 In-place mutations:** check:mutation active and blocking in CI (introduced in `004aaf7`).
+- **P2 Duplicate module basenames:** check:duplicate-modules active and blocking in CI (introduced in `004aaf7`, `care-client` wrapper resolved in `3b6bbf1`).
+- **P14 Directional dependencies (XC-03):** `import/no-restricted-paths` introduced as blocking error in `7dd79cc`; layer hierarchy cycle resolved in `3631931`.
+- **P16 Fail loudly at boundaries:** typed `CorruptStorageError` introduced in `learnRepoDexie.ts` preventing silent database corruption.
+- **P18 Boundary validation:** RFC-4180 parsing with Zod schema validation in `csv.ts` preventing unvalidated row imports.
 
 ### NEXT atomic task — Wave 2 / Wave 3 stabilisation
 

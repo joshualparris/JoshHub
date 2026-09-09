@@ -33,9 +33,10 @@ export default function PromptTemplatesEditor({ onClose }: { onClose: () => void
         if (!mounted) return;
         setText(JSON.stringify(arr, null, 2));
       })
-      .catch(() => {
+      .catch((e: unknown) => {
         if (!mounted) return;
-        setText("[]");
+        const msg = e instanceof Error ? e.message : String(e);
+        setError(`Failed to load stored prompt templates: ${msg}`);
       });
     return () => {
       mounted = false;
@@ -75,7 +76,10 @@ export default function PromptTemplatesEditor({ onClose }: { onClose: () => void
         <textarea
           className="w-full h-96 border rounded p-2 font-mono text-sm"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            if (error) setError(null);
+          }}
         />
 
         {error ? <div className="mt-2 text-sm text-red-600">{error}</div> : null}

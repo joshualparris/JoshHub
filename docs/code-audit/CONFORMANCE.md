@@ -82,8 +82,11 @@ findings below.
 `life.ts`). Open: DB-04, DATA-02, DATA-04, LIB-01, LIB-04, FEAT-01, FEAT-02,
 FEAT-03, COMP-04, APP-03, APP-06, SCAF-02, CFG-07.
 
-**Enforced by:** nothing yet. Proposed: the duplicate-basename check above as a
-CI step — cheap, and it catches the most common shape.
+**Enforced by:** ◐ `check:duplicate-modules` in `package.json` introduced in
+commit `004aaf7` and enforced as a blocking gate in GitHub Actions CI. Commit
+`3b6bbf1` resolved the duplicate `care-client.tsx` wrapper to allow the gate to
+pass cleanly. While duplicate basenames are now mechanically prevented, domain
+concept duplication remains open across the named findings above.
 
 ---
 
@@ -166,7 +169,7 @@ PY
 ```
 
 **Now:** ❌ 27 functions over 100 lines, 45 over 60, of 299. Largest is
-`DashboardPage` at 727. Open: XC-01.
+`DashboardPage` at 727. Open: XC-01 (including `InventoryHealthPage` in `app/projects/inventory-health/page.tsx` at 353 lines and `CareClient` in `features/care/care-client.tsx` at 250+ lines).
 
 **Enforced by:** nothing yet. Proposed: once under the bar, a test asserting no
 function exceeds 150 lines — the same shape as the backup registry-drift test.
@@ -229,8 +232,10 @@ Expect no output; each hit is a candidate for extraction. This is a review
 prompt, not a gate — a trivial `filter(x => x.id === id)` is fine, a predicate
 encoding a business rule is not.
 
-**Now:** ❌ **22 files** carry inline logic — 7 arithmetic, 15 more with ranking
-or eligibility rules. Open: XC-02, LIB-01, COMP-06.
+**Now:** ❌ **21 files** carry inline logic — 6 arithmetic, 15 more with ranking
+or eligibility rules. Open: XC-02 (including inline status aggregation in
+`inventory-health` and date/form logic in `care-client`), LIB-01. (Note:
+COMP-06 CSV parsing was extracted to pure module `src/lib/parsing/csv.ts` with tests).
 
 **Enforced by:** nothing yet — it needs judgement.
 
@@ -322,7 +327,7 @@ its invariant written down *and tested*.
 | Catalogue | ids unique, URLs well-formed, statuses valid | ✅ validator runs in CI |
 | Local assets | every referenced `/games` and `/docs` path exists | ⚠️ script exists, not a CI gate yet |
 | Event times | `startIso`/`endIso` are always true ISO instants | ❌ APP-01 |
-| CSV import | quoted fields containing commas parse correctly | ❌ COMP-06 |
+| CSV import | quoted fields containing commas parse correctly and rows validate against schema | ✅ tested in `src/lib/parsing/csv.test.ts` |
 
 **Referential invariants** — none currently tested, none previously listed
 
@@ -340,14 +345,15 @@ its invariant written down *and tested*.
 All three now run automatically in CI — the first two blocking, the third
 advisory until PUB-02 closes.
 
-**Now:** ❌ **3 of 14 invariants enforced.** The backup round-trip and the
-registry-drift test are covered by the test suite; the catalogue validator now
-runs on every push. The asset check runs advisory. The entire referential half
-is unprotected — nothing stops a note pointing at a life area that no longer
-exists, which matters immediately because DATA-04 proposes renaming every slug.
+**Now:** ❌ **4 of 14 invariants enforced.** The backup round-trip, the
+registry-drift test, and the CSV import parser are covered by the test suite; the
+catalogue validator runs on every push. The asset check runs advisory. The entire
+referential half is unprotected — nothing stops a note pointing at a life area
+that no longer exists, which matters immediately because DATA-04 proposes
+renaming every slug.
 
-**Enforced by:** ◐ baseline GitHub Actions CI plus the existing backup tests.
-The remaining named invariants still need behavioural tests/gates.
+**Enforced by:** ◐ baseline GitHub Actions CI plus the existing backup and CSV
+tests. The remaining named invariants still need behavioural tests/gates.
 
 ---
 
@@ -413,10 +419,11 @@ app  →  features  →  components  →  lib  →  data
 **Now:** ✅ Broken and clean. All platform stateful components were moved into
 `features/platform/ui/`, presentation components in `src/components` have zero
 imports from `src/features`, and the layer hierarchy flows strictly unidirectional
-(`app → features → components → lib → data`). XC-03 closed.
+(`app → features → components → lib → data`). XC-03 closed in `3631931`.
 
 **Enforced by:** ✅ `eslint-plugin-import` rule `import/no-restricted-paths` is
-configured at `"error"` level in `eslint.config.mjs` and enforced in CI on every push and PR.
+configured at `"error"` level in `eslint.config.mjs` (introduced in commit
+`7dd79cc`) and enforced in CI on every push and PR.
 
 ---
 
@@ -429,11 +436,12 @@ pure calculation module has a test. Not a coverage percentage — a named list.
 production build, and `npm run validate:apps` on pushes to `main` and pull
 requests.
 
-**Now:** ❌ **2 test files for 132 source files.** 7 of 9 critical paths remain
-untested: ICS parsing, daily-metrics roll-up, CSV import, catalogue invariants as
-behavioural tests, lifestyle analytics, tag parsing, date helpers. Open: XC-05,
-LIB-06, DATA-08. The important improvement is that the existing tests now run
-automatically and terminate correctly.
+**Now:** ❌ **11 test files for 134 source files.** Critical path testing expanded:
+CSV import (`csv.test.ts`), Dexie learn persistence corruption (`learnRepoDexie.test.ts`),
+ICS parsing, time calculation, tag logic, and care logic now have tests alongside
+backup and tree tests. Remaining untested critical paths: daily-metrics roll-up,
+catalogue invariants as behavioural tests, and lifestyle analytics. Open: XC-05,
+LIB-06, DATA-08.
 
 **Enforced by:** ◐ GitHub Actions CI (`081a7d9`) now runs `npm test` on every
 push to `main` and pull request; CFG-02 is fixed by `8b741f5`. CI prevents tested
@@ -452,9 +460,13 @@ git grep -nE "catch\s*\([a-zA-Z0-9_]+\)\s*\{\s*(console\.(log|error|warn)\([^)]*
 ```
 Review each hit; verify errors at data/parsing boundaries throw or surface explicit failure results to callers.
 
-**Now:** ⚠️ Mixed. Several catch blocks swallow errors or log without rethrowing (e.g. in ICS parsing, import fallbacks, and local sync); recent forms added user-facing validation feedback, but comprehensive boundary assertions and React error boundaries are not yet standard across every route.
+**Now:** ⚠️ Substantially improved. `getPromptTemplates()` in `src/lib/repos/dexie/learnRepoDexie.ts`
+throws explicit `CorruptStorageError` preserving error cause rather than silently returning
+empty array on malformed storage; `PromptTemplatesEditor.tsx` renders visible error state.
+Tested in `learnRepoDexie.test.ts`. Several other catch blocks across routes still require systematic review.
 
-**Enforced by:** ◐ partial linting (`no-empty`); comprehensive enforcement requires boundary tests asserting that bad input throws and UI tests asserting graceful fallback.
+**Enforced by:** ◐ linting (`no-empty`) and behavioural boundary tests asserting
+that corrupted persisted state throws rather than quietly vanishing.
 
 ---
 
@@ -485,9 +497,13 @@ git grep -nE "(JSON\.parse|parseICS|parseCSV|restoreUserData)" -- src
 ```
 Verify every entry point asserts a schema or validates all required fields before storage.
 
-**Now:** ❌ Mixed. The app catalogue has structural validation in CI (`validate:apps`); tag parsing, comma lists, and URLs have dedicated runtime validators. However, full backup restore (`backup.ts`), CSV imports, and ICS feeds still rely on partial manual duck-typing rather than strict boundary schema validation. Open: DB-07, COMP-06.
+**Now:** ⚠️ Improved. The app catalogue has structural validation in CI (`validate:apps`);
+CSV import uses an RFC-4180 parser with Zod schema boundary validation (`AuditRowSchema` in `src/lib/parsing/csv.ts`)
+reporting row-by-row errors; tag parsing, comma lists, and URLs have dedicated runtime validators.
+Full backup restore (`backup.ts`) and raw ICS feeds still need strict schema validation. Open: DB-07.
 
-**Enforced by:** ◐ `npm run validate:apps` for the app catalogue; runtime parsers for tags and URLs. Full external input schema validation is not yet mechanically enforced across backup and file import flows.
+**Enforced by:** ◐ `npm run validate:apps` for the app catalogue; runtime Zod schemas
+and parsers for CSV imports, tags, and URLs.
 
 ---
 
@@ -496,7 +512,7 @@ Verify every entry point asserts a schema or validates all required fields befor
 | | Principle | State | Enforced |
 |---|---|---|---|
 | P1 | Understand before changing | ⚠️ | ◐ |
-| P2 | One source of truth | ❌ | ✗ |
+| P2 | One source of truth | ❌ | ◐ |
 | P3 | Related things together | ⚠️ | ✗ |
 | P4 | Boring obvious names | ❌ | ✗ |
 | P5 | Small functions | ❌ | ✗ |
@@ -504,30 +520,29 @@ Verify every entry point asserts a schema or validates all required fields befor
 | P7 | UI vs business logic | ❌ | ✗ |
 | P8 | No fake-as-live | ⚠️ | ◐ |
 | P9 | Delete dead code | ❌ | ✗ |
-| P10 | Don't mutate | ❌ | ✗ |
-| P11 | Invariants | ❌ 3/14 | ◐ |
+| P10 | Don't mutate | ❌ | ◐ |
+| P11 | Invariants | ❌ 4/14 | ◐ |
 | P12 | Comments explain why | ❌ | n/a |
-| P13 | Consistent structure | ❌ | ✗ |
+| P13 | Consistent structure | ❌ | ◐ |
 | P14 | Directional dependencies | ✅ | ✅ |
 | P15 | Tests protect behaviour | ❌ | ◐ |
 | P16 | Fail loudly / degrade gracefully | ⚠️ | ◐ |
 | P17 | YAGNI | ⚠️ | ◐ |
-| P18 | Zero trust for external data | ❌ | ◐ |
+| P18 | Zero trust for external data | ⚠️ | ◐ |
 
-**No principle is fully green yet.** The 9 September protocol/CI work materially
-improves enforcement for P1, P8, P11 and P15, while P6 was already partially
-enforced. Full conformance still requires the checks themselves to pass and the
-remaining prevention mechanisms to land.
+**Only P14 is fully green.** The protocol, CI gates, and behavioral tests materially
+improve enforcement for P1, P2, P6, P8, P10, P11, P13, P14, P15, P16, P17, and P18.
+Full conformance across all principles requires remaining open debt (XC-01, XC-02,
+XC-04, DB-04, DATA-04) to be resolved.
 
-## The remaining high-leverage enforcement changes
+## The mechanical enforcement changes landed
 
-1. **✅ Baseline CI (CFG-01)** — landed in `081a7d9`; first run `34337559585`
-   passed lint, terminating tests, production build, and app-catalogue validation.
-2. **Prettier** — retires most of P13 and part of P4, permanently.
-3. **✅ `no-restricted-paths` (XC-03)** — landed; enforces directional layering as
-   a blocking error in CI.
-4. **Two greps in CI** — the P10 mutation check and the P2 duplicate-basename
-   check. Validate them against the current tree before making them gates.
-
-Do these alongside the remaining Wave 1 work in `TRIAGE.md`, not after — they
-are what stops the other findings from returning.
+1. **✅ Baseline CI (CFG-01)** — landed in `081a7d9`; runs lint, terminating tests,
+   production build, and app-catalogue validation.
+2. **✅ Prettier formatting gate (`format:check`)** — landed in `004aaf7`.
+3. **✅ `no-restricted-paths` (XC-03)** — landed in `7dd79cc`; layer cycle resolved
+   in `3631931`.
+4. **✅ Mechanical sanity checks in CI** — `check:mutation` and `check:duplicate-modules`
+   landed as blocking gates in `004aaf7`.
+5. **✅ Runtime Zod boundary validation** — CSV import parsing validated with
+   Zod schema in `src/lib/parsing/csv.ts`.

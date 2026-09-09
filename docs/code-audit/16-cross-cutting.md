@@ -129,32 +129,33 @@ Every number below is reproducible; the command is given with the finding.
 - **Verify:** the script in `CONFORMANCE.md` under P12.
 - **Status:** Open
 
-### [ ] XC-05 — Seven of nine critical paths have no tests · High
+### [ ] XC-05 — Critical path test coverage · High
 - **Principles:** P15, P11
 - **Where:** *(all of `src/`)*
-- **Problem:** **2 test files for 132 source files.** By critical path:
+- **Problem:** **11 test files for 134 source files.** By critical path:
 
   | Path | Tested |
   |---|---|
   | Backup / restore round-trip | ✅ `backup.test.ts` |
   | Everything-map tree building | ✅ `tree.test.ts` |
-  | ICS parsing | ❌ |
+  | ICS parsing | ✅ `ics.test.ts` |
+  | CSV import & boundary validation | ✅ `csv.test.ts` |
+  | Dexie learn storage corruption | ✅ `learnRepoDexie.test.ts` |
+  | App catalogue invariants | ✅ (validated by `validate-apps.ts` in CI) |
+  | Tag parsing & comma lists | ✅ `tagging.test.ts`, `comma-list.test.ts` |
+  | Date / time helpers | ✅ `time.test.ts` |
+  | Care logic | ✅ `logic.test.ts` |
+  | Task grouping | ✅ `grouping.test.ts` |
   | Daily metrics roll-up | ❌ (and DB-07 says it is wrong) |
-  | CSV import | ❌ (and COMP-06 says it is wrong) |
-  | App catalogue invariants | ❌ (validator exists, never run — CFG-01) |
   | Lifestyle analytics | ❌ |
-  | Tag parsing | ❌ |
-  | Date helpers | ❌ |
 
 - **Why it matters:** P15 names exactly these categories — calculations, data
-  transformations, backups, migrations. Three of the untested paths already have
-  confirmed defects recorded elsewhere in this audit. The tests would not merely
-  guard behaviour; they would have found the bugs.
-- **Fix:** Add a test with each fix rather than as a separate campaign — DB-07
-  with the metrics fix, COMP-06 with the CSV fix, LIB-06 with the analytics
-  wiring, APP-01 with the timezone fix. Target stated in `CONFORMANCE.md`.
-- **Verify:** the script in `CONFORMANCE.md` under P15.
-- **Status:** Open
+  transformations, backups, migrations. Two critical paths still lack tests and have
+  confirmed defects recorded elsewhere in this audit (DB-07, LIB-06).
+- **Fix:** Add a test with each remaining fix — DB-07 with the metrics fix,
+  LIB-06 with the analytics wiring.
+- **Verify:** `npm test` and CI.
+- **Status:** In Progress (substantially improved: 11 test files, 58 passing tests)
 
 ### [ ] XC-06 — Four file-naming conventions, and three duplicated module names · Low
 - **Principles:** P4, P13
