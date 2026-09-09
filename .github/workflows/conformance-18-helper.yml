@@ -1,0 +1,154 @@
+name: Conformance 18 helper
+
+on:
+  push:
+    branches:
+      - audit/conformance-18-final-20260909
+
+permissions:
+  contents: write
+
+jobs:
+  repair-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/conformance-18-final-20260909
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Bring forward staged correctness work
+        run: |
+          git fetch origin audit/conformance-health-idempotence-20260909:refs/remotes/origin/audit/conformance-health-idempotence-20260909
+          git fetch origin audit/conformance-zero-warnings-20260909:refs/remotes/origin/audit/conformance-zero-warnings-20260909
+          git show origin/audit/conformance-health-idempotence-20260909:src/lib/db/health.ts > src/lib/db/health.ts
+          git show origin/audit/conformance-health-idempotence-20260909:src/lib/db/health.test.ts > src/lib/db/health.test.ts
+          git show origin/audit/conformance-zero-warnings-20260909:src/lib/parsing/csv.ts > src/lib/parsing/csv.ts
+          git show origin/audit/conformance-zero-warnings-20260909:src/lib/parsing/csv.test.ts > src/lib/parsing/csv.test.ts
+      - name: Close callers and warning debt
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, re
+
+          def read(path):
+              return Path(path).read_text()
+
+          def write(path, text):
+              Path(path).write_text(text)
+
+          def replace_required(text, before, after, label):
+              if before not in text:
+                  raise RuntimeError(f"Expected fragment not found: {label}")
+              return text.replace(before, after, 1)
+
+          # A green lint step must mean zero warnings.
+          package_path = Path('package.json')
+          package = json.loads(package_path.read_text())
+          package['scripts']['lint'] = 'eslint --max-warnings=0'
+          package_path.write_text(json.dumps(package, indent=2) + '\n')
+
+          # Remove obsolete lint suppressions.
+          for path in ['src/app/notes/[id]/page.tsx', 'src/app/routines/[id]/page.tsx']:
+              text = read(path)
+              text = text.replace('/* eslint-disable react-hooks/set-state-in-effect */\n', '', 1)
+              write(path, text)
+
+          # Delete an unused derived chart dataset rather than suppressing it.
+          path = 'src/app/projects/inventory-health/page.tsx'
+          text = read(path)
+          text, count = re.subn(
+              r'\n  const categoryData = useMemo\(\(\) => \{\n    return Object\.entries\(stats\.byCategory\)\n      \.map\(\(\[name, value\]\) => \(\{\n        name,\n        value,\n      \}\)\)\n      \.sort\(\(a, b\) => b\.value - a\.value\)\n      \.slice\(0, 10\);\n  \}, \[stats\.byCategory\]\);\n',
+              '\n',
+              text,
+              count=1,
+          )
+          if count != 1:
+              raise RuntimeError('Expected categoryData block not found')
+          write(path, text)
+
+          # Remove unused seed import; do not keep speculative code alive via imports.
+          path = 'src/features/platform/index.ts'
+          text = read(path)
+          text = text.replace('import { seedPlatformData } from "../../lib/repos/dexie/platform/seed";\n', '', 1)
+          write(path, text)
+
+          # Do not bind an exception we intentionally ignore.
+          path = 'src/lib/repos/dexie/learnRepoDexie.ts'
+          text = read(path)
+          text = replace_required(text, '} catch (e) {', '} catch {', 'learn prompt template catch')
+          write(path, text)
+
+          # Inventory CSV is an external boundary: parse RFC-style quoting, validate a required name,
+          # and surface malformed data to the user instead of silently shifting columns.
+          path = 'src/components/inventory/csv-import.tsx'
+          text = read(path)
+          text = replace_required(
+              text,
+              'import { cn } from "@/lib/utils";\n',
+              'import { parseCsvRecords } from "@/lib/parsing/csv";\nimport { cn } from "@/lib/utils";\n',
+              'CSV parser import',
+          )
+          text = text.replace('  [key: string]: any;\n', '')
+          text = replace_required(
+              text,
+              '  const [fileName, setFileName] = useState<string | null>(null);\n',
+              '  const [fileName, setFileName] = useState<string | null>(null);\n  const [parseError, setParseError] = useState<string | null>(null);\n',
+              'CSV error state',
+          )
+          old_parser = '''      // Simple CSV parser\n      const lines = text.split(/\\r?\\n/);\n      if (lines.length < 1) return;\n      const headers = lines[0].split(",").map((h) => h.trim().replace(/^"|"$/g, ""));\n\n      const parsedData = lines\n        .slice(1)\n        .filter((line) => line.trim())\n        .map((line) => {\n          const values = line.split(",").map((v) => v.trim().replace(/^"|"$/g, ""));\n          const row: any = {};\n          headers.forEach((header, i) => {\n            row[header] = values[i];\n          });\n          return row as AuditRow;\n        });\n\n      setData(parsedData);'''
+          new_parser = '''      try {\n        const parsedData = parseCsvRecords(text).map((record, rowIndex): AuditRow => {\n          const name = record.name?.trim();\n          if (!name) {\n            throw new Error(`CSV row ${rowIndex + 2} is missing the required name column.`);\n          }\n          return {\n            name,\n            localPath: record.localPath || undefined,\n            repoUrl: record.repoUrl || undefined,\n            lastTouched: record.lastTouched || undefined,\n            status: record.status || undefined,\n          };\n        });\n        setParseError(null);\n        setData(parsedData);\n      } catch (error) {\n        setData([]);\n        setParseError(error instanceof Error ? error.message : "Could not parse CSV file.");\n      }'''
+          text = replace_required(text, old_parser, new_parser, 'naive CSV parser')
+          text = replace_required(
+              text,
+              '                setData([]);\n                setFileName(null);\n',
+              '                setData([]);\n                setFileName(null);\n                setParseError(null);\n',
+              'CSV reset',
+          )
+          text = replace_required(
+              text,
+              '          <div className="text-center">\n            <h3 className="text-lg font-medium">Upload Project Audit CSV</h3>\n            <p className="text-sm text-muted-foreground">\n              Select the CSV file generated by the Copilot audit\n            </p>\n          </div>\n',
+              '          <div className="text-center">\n            <h3 className="text-lg font-medium">Upload Project Audit CSV</h3>\n            <p className="text-sm text-muted-foreground">\n              Select the CSV file generated by the Copilot audit\n            </p>\n            {parseError && <p className="mt-2 text-sm text-destructive">{parseError}</p>}\n          </div>\n',
+              'CSV error UI',
+          )
+          write(path, text)
+
+          # Health daily rollups are derived from stored activities. Fit daily aggregates may set
+          # steps, but must never increment distance a second time or add steps on every re-import.
+          path = 'src/app/health/import/page.tsx'
+          text = read(path)
+          text = replace_required(
+              text,
+              'import { addDigitalEvent, addHealthImport, recordActivity } from "@/lib/db/health";\n',
+              'import { addDigitalEvent, addHealthImport, recordActivity, setDailySteps } from "@/lib/db/health";\n',
+              'health helper import',
+          )
+          text = text.replace('for (const a of parsed.activities) {', 'for (const activityInput of parsed.activities) {', 1)
+          text = text.replace('const activity = await recordActivity(a);', 'const activity = await recordActivity(activityInput);', 1)
+          old_daily = '''          for (const d of parsed.dailyUpdates) {\n            const existing = await db.dailyMetrics.get(d.date);\n            await db.dailyMetrics.put({\n              date: d.date,\n              runsCount: existing?.runsCount ?? 0,\n              runDistanceM: existing?.runDistanceM ?? 0,\n              distanceM: (existing?.distanceM ?? 0) + (d.distanceM ?? 0),\n              steps: (existing?.steps ?? 0) + (d.steps ?? 0),\n              updatedAt: Date.now(),\n            });\n            updatedDays.add(d.date);\n          }'''
+          new_daily = '''          for (const dailyUpdate of parsed.dailyUpdates) {\n            if (dailyUpdate.steps != null) {\n              await setDailySteps(dailyUpdate.date, dailyUpdate.steps);\n            }\n            updatedDays.add(dailyUpdate.date);\n          }'''
+          text = replace_required(text, old_daily, new_daily, 'Fit daily additive rollup')
+          write(path, text)
+          PY
+      - run: npm run format
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run validate:apps
+      - run: npm run check:mutation
+      - run: npm run check:conflict-markers
+      - run: npm run check:assets
+      - run: npm run check:duplicate-modules
+      - name: Commit verified repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json src
+          git diff --cached --quiet || git commit -m "fix: close health, CSV and warning conformance gaps"
+          git push origin HEAD:audit/conformance-18-final-20260909
