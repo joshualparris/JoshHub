@@ -7,7 +7,7 @@
 **Primary branch:** `main`  
 **State date:** 9 September 2026  
 **Baseline inspected for this stabilisation session:** `db5a10993c30d3a78d85fa3149b9fed115b0f898`  
-**Latest verified code checkpoint before this state update:** `081a7d959579e54fa51af4142661f5759d6228a8`
+**Latest verified code checkpoint before this state update:** `6da5fff76b91176ba98eb89163d7e8b61aee2ff8`
 
 > This file is a handoff, not a substitute for git. If `main` has advanced, compare the delta from the baseline/last completed checkpoint rather than restarting the whole audit.
 
@@ -45,7 +45,7 @@ The source of truth for those numbers is `docs/code-audit/README.md`. Recalculat
 - `b6cbc7f` — expanded engineering principles from 15 to 18 principles (`AGENTS.md`, `CONFORMANCE.md`, `README.md`, `PROJECT_STATE.md`).
 - `3b6bbf1` — resolved duplicate `care-client.tsx` wrapper to allow the existing `check:duplicate-modules` CI gate to pass.
 - `3631931` — eliminated `components` <-> `features` reverse import cycle (XC-03) and cleaned code-quality lints across 18 principles.
-- Corrective actions checkpoint:
+- `6da5fff` — resolved P16/P18 failures, added behavioral test coverage, corrected attributions; verified by green CI run `34348688832`:
   - **P16 (Fail Loudly):** Fixed `getPromptTemplates()` in `src/lib/repos/dexie/learnRepoDexie.ts` to throw typed `CorruptStorageError` preserving error cause on corrupt JSON or malformed schema; updated `PromptTemplatesEditor.tsx` to surface errors gracefully without wiping database. Tested in `learnRepoDexie.test.ts`.
   - **P18 (Boundary Validation) & P1/P17:** Replaced naïve string split in `src/components/inventory/csv-import.tsx` with RFC-4180 parser and Zod schema (`AuditRowSchema`) in `src/lib/parsing/csv.ts`. Displays line-by-line validation errors in UI. Tested in `csv.test.ts`.
   - **P15 (Behavioural Tests):** Test suite expanded to 11 test files and 58 passing tests.
