@@ -4,83 +4,87 @@ import { useMemo, useState } from "react";
 
 import { AppCard } from "@/components/app-card";
 import { AppFilters } from "@/components/app-filters";
-import type { AppCategory, AppStatus, CatalogItem } from "@/data/apps";
-import { addRecent } from "@/lib/recent";
+import type { CatalogItem } from "@/data/apps";
+import {
+  filterAndRankApps,
+  statusFilterFromQuery,
+  type AppsCategoryFilter,
+  type AppsStatusFilter,
+} from "@/features/apps/catalogue";
 import { usePinnedApps } from "@/features/apps/hooks/usePinnedApps";
-
-type AppsStatusFilter = AppStatus | "all";
-type AppsCategoryFilter = AppCategory | "all";
+import { addRecent } from "@/lib/recent";
 
 interface Props {
   searchParams?: { status?: string };
   apps: CatalogItem[];
 }
 
+function AppsCatalogueHeader() {
+  return (
+    <div>
+      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Catalogue</p>
+      <h1 className="text-3xl font-semibold text-foreground">Apps & Games</h1>
+      <p className="text-muted-foreground">
+        Search, filter, and open every app or game from one place.
+      </p>
+    </div>
+  );
+}
+
+function AppsGrid({
+  apps,
+  pinnedIds,
+  onTogglePinned,
+  onOpen,
+}: {
+  apps: CatalogItem[];
+  pinnedIds: string[];
+  onTogglePinned: (id: string) => void;
+  onOpen: (app: CatalogItem) => void;
+}) {
+  if (apps.length === 0) {
+    return <p className="text-sm text-muted-foreground">No items match that search.</p>;
+  }
+  return (
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {apps.map((app) => (
+        <AppCard
+          key={app.id}
+          app={app}
+          pinned={pinnedIds.includes(app.id)}
+          onTogglePinned={() => onTogglePinned(app.id)}
+          onOpen={onOpen}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function AppsPageClient({ searchParams, apps }: Props) {
-  const statusParam = searchParams?.status;
-  const allowedStatus: AppStatus[] = ["ok", "broken", "wip", "archived"];
-  const initialStatus: AppsStatusFilter = allowedStatus.includes(statusParam as AppStatus)
-    ? (statusParam as AppStatus)
-    : "all";
-
   const [search, setSearch] = useState("");
-  const [status, setStatus] = useState<AppsStatusFilter>(initialStatus);
+  const [status, setStatus] = useState<AppsStatusFilter>(() =>
+    statusFilterFromQuery(searchParams?.status)
+  );
   const [category, setCategory] = useState<AppsCategoryFilter>("all");
+  const [recentError, setRecentError] = useState<string | null>(null);
   const { pinnedIds, togglePinned } = usePinnedApps();
+  const filteredApps = useMemo(
+    () => filterAndRankApps(apps, { search, status, category, pinnedIds }),
+    [apps, category, pinnedIds, search, status]
+  );
 
-  const filteredApps = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    const statusOrder: Record<string, number> = {
-      active: 0,
-      maintained: 1,
-      ok: 2,
-      wip: 3,
-      paused: 4,
-      complete: 5,
-      broken: 6,
-      archived: 7,
-      "needs-review": 8,
-      "archive-candidate": 9,
-      "duplicate-candidate": 10,
-      unknown: 11,
-    };
-
-    return apps
-      .filter((app) => {
-        if (category !== "all" && app.category !== category) return false;
-        if (status !== "all" && app.status !== status) return false;
-        if (term) {
-          const haystack = [app.name, app.category, app.notes ?? "", ...(app.tags ?? [])]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
-          if (!haystack.includes(term)) return false;
-        }
-        return true;
-      })
-      .sort((a, b) => {
-        const aPinned = pinnedIds.includes(a.id);
-        const bPinned = pinnedIds.includes(b.id);
-        if (aPinned && !bPinned) return -1;
-        if (!aPinned && bPinned) return 1;
-
-        const aStatus = statusOrder[a.status] ?? 99;
-        const bStatus = statusOrder[b.status] ?? 99;
-        if (aStatus !== bStatus) return aStatus - bStatus;
-
-        return a.name.localeCompare(b.name);
-      });
-  }, [apps, category, status, search, pinnedIds]);
+  function rememberOpenedApp(app: CatalogItem) {
+    try {
+      addRecent(app);
+      setRecentError(null);
+    } catch (error) {
+      setRecentError(error instanceof Error ? error.message : "Could not update recent history.");
+    }
+  }
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Catalogue</p>
-        <h1 className="text-3xl font-semibold text-foreground">Apps & Games</h1>
-        <p className="text-muted-foreground">
-          Search, filter, and open every app or game from one place.
-        </p>
-      </div>
+      <AppsCatalogueHeader />
       <AppFilters
         search={search}
         onSearchChange={setSearch}
@@ -89,21 +93,13 @@ export default function AppsPageClient({ searchParams, apps }: Props) {
         category={category}
         onCategoryChange={setCategory}
       />
-      {filteredApps.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No items match that search.</p>
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredApps.map((app) => (
-            <AppCard
-              key={app.id}
-              app={app}
-              pinned={pinnedIds.includes(app.id)}
-              onTogglePinned={() => togglePinned(app.id)}
-              onOpen={addRecent}
-            />
-          ))}
-        </div>
-      )}
+      {recentError && <p className="text-sm text-destructive">{recentError}</p>}
+      <AppsGrid
+        apps={filteredApps}
+        pinnedIds={pinnedIds}
+        onTogglePinned={togglePinned}
+        onOpen={rememberOpenedApp}
+      />
     </div>
   );
 }
