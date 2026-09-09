@@ -1,8 +1,5 @@
 import { z } from "zod";
 
-/**
- * Error thrown when CSV string violates RFC-4180 structure (e.g. unterminated quote).
- */
 export class CsvParseError extends Error {
   constructor(
     message: string,
@@ -14,119 +11,187 @@ export class CsvParseError extends Error {
   }
 }
 
-/**
- * RFC-4180 compliant low-level CSV row parser.
- * Supports quoted fields containing commas, escaped quotes (""), and multiline fields.
- */
-export function parseCsvRows(text: string): string[][] {
-  // Strip UTF-8 BOM if present
-  const source = text.startsWith("\uFEFF") ? text.slice(1) : text;
-  if (!source.trim()) {
-    return [];
-  }
+type CsvParserState = "field-start" | "unquoted" | "quoted" | "after-quote";
 
-  const rows: string[][] = [];
-  let currentRow: string[] = [];
-  let currentField = "";
-  let inQuotes = false;
-  let line = 1;
-  let col = 0;
-  let quoteStartLine = 1;
-  let quoteStartCol = 0;
-
-  let i = 0;
-  while (i < source.length) {
-    const char = source[i];
-    col++;
-
-    if (inQuotes) {
-      if (char === '"') {
-        if (i + 1 < source.length && source[i + 1] === '"') {
-          // Escaped quote per RFC-4180 section 2.7
-          currentField += '"';
-          i += 2;
-          col++;
-          continue;
-        } else {
-          // Closing quote
-          inQuotes = false;
-          i++;
-          continue;
-        }
-      } else {
-        if (char === "\n") {
-          line++;
-          col = 0;
-        }
-        currentField += char;
-        i++;
-        continue;
-      }
-    } else {
-      if (char === '"') {
-        inQuotes = true;
-        quoteStartLine = line;
-        quoteStartCol = col;
-        i++;
-        continue;
-      } else if (char === ",") {
-        currentRow.push(currentField);
-        currentField = "";
-        i++;
-        continue;
-      } else if (char === "\r") {
-        if (i + 1 < source.length && source[i + 1] === "\n") {
-          i++;
-        }
-        currentRow.push(currentField);
-        currentField = "";
-        rows.push(currentRow);
-        currentRow = [];
-        line++;
-        col = 0;
-        i++;
-        continue;
-      } else if (char === "\n") {
-        currentRow.push(currentField);
-        currentField = "";
-        rows.push(currentRow);
-        currentRow = [];
-        line++;
-        col = 0;
-        i++;
-        continue;
-      } else {
-        currentField += char;
-        i++;
-        continue;
-      }
-    }
-  }
-
-  if (inQuotes) {
-    throw new CsvParseError("Unterminated quoted field", quoteStartLine, quoteStartCol);
-  }
-
-  if (currentField !== "" || currentRow.length > 0) {
-    currentRow.push(currentField);
-    rows.push(currentRow);
-  }
-
-  // Strip trailing blank row resulting from a trailing newline
-  if (rows.length > 0) {
-    const last = rows[rows.length - 1];
-    if (last.length === 1 && last[0].trim() === "") {
-      rows.pop();
-    }
-  }
-
-  return rows;
+interface ParsedCsvRecord {
+  fields: string[];
+  startLine: number;
 }
 
-/**
- * Strict schema for project inventory audit rows.
- * Enforces non-empty name at the boundary while preserving arbitrary extra columns.
- */
+// JoshHub has no CSV dependency and this screen only needs local preview import.
+// Keep the supported quoting rules explicit and reject ambiguous syntax rather
+// than silently coercing malformed rows into confident match results.
+function parseCsvRecords(text: string): ParsedCsvRecord[] {
+  const source = text.startsWith("\uFEFF") ? text.slice(1) : text;
+  if (source.length === 0) return [];
+
+  const records: ParsedCsvRecord[] = [];
+  let currentFields: string[] = [];
+  let currentField = "";
+  let state: CsvParserState = "field-start";
+  let sourceIndex = 0;
+  let line = 1;
+  let column = 1;
+  let recordStartLine = 1;
+  let quotedFieldStartLine = 1;
+  let quotedFieldStartColumn = 1;
+
+  const finishField = () => {
+    currentFields.push(currentField);
+    currentField = "";
+    state = "field-start";
+  };
+
+  const finishRecord = () => {
+    finishField();
+    records.push({ fields: currentFields, startLine: recordStartLine });
+    currentFields = [];
+  };
+
+  const consumeRecordBreak = () => {
+    if (source[sourceIndex] === "\r" && source[sourceIndex + 1] === "\n") {
+      sourceIndex += 2;
+    } else {
+      sourceIndex += 1;
+    }
+    line += 1;
+    column = 1;
+    finishRecord();
+    recordStartLine = line;
+  };
+
+  while (sourceIndex < source.length) {
+    const character = source[sourceIndex];
+
+    if (state === "quoted") {
+      if (character === '"') {
+        state = "after-quote";
+        sourceIndex += 1;
+        column += 1;
+        continue;
+      }
+
+      if (character === "\r") {
+        if (source[sourceIndex + 1] === "\n") {
+          currentField += "\r\n";
+          sourceIndex += 2;
+        } else {
+          currentField += "\r";
+          sourceIndex += 1;
+        }
+        line += 1;
+        column = 1;
+        continue;
+      }
+
+      if (character === "\n") {
+        currentField += "\n";
+        sourceIndex += 1;
+        line += 1;
+        column = 1;
+        continue;
+      }
+
+      currentField += character;
+      sourceIndex += 1;
+      column += 1;
+      continue;
+    }
+
+    if (state === "after-quote") {
+      if (character === '"') {
+        currentField += '"';
+        state = "quoted";
+        sourceIndex += 1;
+        column += 1;
+        continue;
+      }
+
+      if (character === ",") {
+        finishField();
+        sourceIndex += 1;
+        column += 1;
+        continue;
+      }
+
+      if (character === "\r" || character === "\n") {
+        consumeRecordBreak();
+        continue;
+      }
+
+      throw new CsvParseError("Unexpected character after closing quote", line, column);
+    }
+
+    if (state === "field-start") {
+      if (character === '"') {
+        state = "quoted";
+        quotedFieldStartLine = line;
+        quotedFieldStartColumn = column;
+        sourceIndex += 1;
+        column += 1;
+        continue;
+      }
+
+      if (character === ",") {
+        finishField();
+        sourceIndex += 1;
+        column += 1;
+        continue;
+      }
+
+      if (character === "\r" || character === "\n") {
+        consumeRecordBreak();
+        continue;
+      }
+
+      currentField += character;
+      state = "unquoted";
+      sourceIndex += 1;
+      column += 1;
+      continue;
+    }
+
+    if (character === '"') {
+      throw new CsvParseError("Quote character must begin a quoted field", line, column);
+    }
+
+    if (character === ",") {
+      finishField();
+      sourceIndex += 1;
+      column += 1;
+      continue;
+    }
+
+    if (character === "\r" || character === "\n") {
+      consumeRecordBreak();
+      continue;
+    }
+
+    currentField += character;
+    sourceIndex += 1;
+    column += 1;
+  }
+
+  if (state === "quoted") {
+    throw new CsvParseError(
+      "Unterminated quoted field",
+      quotedFieldStartLine,
+      quotedFieldStartColumn
+    );
+  }
+
+  if (state === "after-quote" || state === "unquoted" || currentFields.length > 0) {
+    finishField();
+    records.push({ fields: currentFields, startLine: recordStartLine });
+  }
+
+  return records;
+}
+
+export function parseCsvRows(text: string): string[][] {
+  return parseCsvRecords(text).map((record) => record.fields);
+}
+
 export const AuditRowSchema = z
   .object({
     name: z
@@ -153,30 +218,34 @@ export interface CsvImportResult<T> {
   headers: string[];
 }
 
-/**
- * Validates and parses project audit CSV text into typed AuditRow items.
- * Fails loudly on invalid syntax and reports row-by-row boundary validation errors.
- */
+function duplicateHeaderNames(headers: string[]): string[] {
+  const seenHeaders = new Set<string>();
+  const duplicateHeaders = new Set<string>();
+
+  for (const header of headers) {
+    if (seenHeaders.has(header)) duplicateHeaders.add(header);
+    seenHeaders.add(header);
+  }
+
+  return [...duplicateHeaders];
+}
+
 export function parseAuditCsv(text: string): CsvImportResult<AuditRow> {
-  let rawRows: string[][];
+  let parsedRecords: ParsedCsvRecord[];
   try {
-    rawRows = parseCsvRows(text);
-  } catch (err: unknown) {
-    if (err instanceof CsvParseError) {
+    parsedRecords = parseCsvRecords(text);
+  } catch (error: unknown) {
+    if (error instanceof CsvParseError) {
       return {
         rows: [],
-        errors: [{ line: err.line, message: err.message }],
+        errors: [{ line: error.line, message: error.message }],
         headers: [],
       };
     }
-    return {
-      rows: [],
-      errors: [{ line: 1, message: err instanceof Error ? err.message : String(err) }],
-      headers: [],
-    };
+    throw error;
   }
 
-  if (rawRows.length === 0) {
+  if (parsedRecords.length === 0) {
     return {
       rows: [],
       errors: [{ line: 1, message: "CSV content is empty" }],
@@ -184,11 +253,37 @@ export function parseAuditCsv(text: string): CsvImportResult<AuditRow> {
     };
   }
 
-  const headers = rawRows[0].map((h) => h.trim().replace(/^"|"$/g, ""));
+  const headerRecord = parsedRecords[0];
+  const headers = headerRecord.fields.map((header) => header.trim());
+
+  if (headers.some((header) => header.length === 0)) {
+    return {
+      rows: [],
+      errors: [{ line: headerRecord.startLine, message: "CSV headers must not be blank" }],
+      headers,
+    };
+  }
+
+  const duplicateHeaders = duplicateHeaderNames(headers);
+  if (duplicateHeaders.length > 0) {
+    return {
+      rows: [],
+      errors: [
+        {
+          line: headerRecord.startLine,
+          message: `CSV headers must be unique; duplicate: ${duplicateHeaders.join(", ")}`,
+        },
+      ],
+      headers,
+    };
+  }
+
   if (!headers.includes("name")) {
     return {
       rows: [],
-      errors: [{ line: 1, message: "CSV header missing required 'name' column" }],
+      errors: [
+        { line: headerRecord.startLine, message: "CSV header missing required 'name' column" },
+      ],
       headers,
     };
   }
@@ -196,32 +291,33 @@ export function parseAuditCsv(text: string): CsvImportResult<AuditRow> {
   const rows: AuditRow[] = [];
   const errors: CsvRowError[] = [];
 
-  for (let rowIndex = 1; rowIndex < rawRows.length; rowIndex++) {
-    const rawValues = rawRows[rowIndex];
-    const lineNumber = rowIndex + 1;
+  for (const record of parsedRecords.slice(1)) {
+    if (record.fields.every((value) => !value.trim())) continue;
 
-    // Skip entirely empty row
-    if (rawValues.every((v) => !v.trim())) {
+    if (record.fields.length !== headers.length) {
+      errors.push({
+        line: record.startLine,
+        message: `Row starting at line ${record.startLine}: expected ${headers.length} columns but found ${record.fields.length}`,
+      });
       continue;
     }
 
-    const rowObj: Record<string, string> = {};
-    headers.forEach((header, colIndex) => {
-      if (header) {
-        rowObj[header] = rawValues[colIndex]?.trim() ?? "";
-      }
+    const rowObject: Record<string, string> = {};
+    headers.forEach((header, columnIndex) => {
+      rowObject[header] = record.fields[columnIndex];
     });
 
-    const parsed = AuditRowSchema.safeParse(rowObj);
-    if (parsed.success) {
-      rows.push(parsed.data);
-    } else {
-      const issueMessages = parsed.error.issues.map((i) => i.message).join("; ");
-      errors.push({
-        line: lineNumber,
-        message: `Row ${lineNumber}: ${issueMessages}`,
-      });
+    const parsedRow = AuditRowSchema.safeParse(rowObject);
+    if (parsedRow.success) {
+      rows.push(parsedRow.data);
+      continue;
     }
+
+    const issueMessages = parsedRow.error.issues.map((issue) => issue.message).join("; ");
+    errors.push({
+      line: record.startLine,
+      message: `Row starting at line ${record.startLine}: ${issueMessages}`,
+    });
   }
 
   return { rows, errors, headers };

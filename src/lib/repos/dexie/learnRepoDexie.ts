@@ -1,6 +1,11 @@
 import { db } from "@/lib/db/dexie";
 import { uuid } from "@/lib/db/id";
 import type { LearnTopic, LearnResource, LearnNote, LearnSession } from "@/lib/db/schema";
+import {
+  parsePromptTemplatesJson,
+  PromptTemplatesSchema,
+  type PromptTemplate,
+} from "@/lib/learn/prompt-templates";
 
 // Simple adapter for Learn tables using Dexie. Keeps calling code small and
 // consistent with other repo adapters in the codebase.
@@ -140,52 +145,33 @@ export class CorruptStorageError extends Error {
   }
 }
 
-export interface PromptTemplate {
-  name: string;
-  template: string;
-}
-
 // Prompt templates stored as JSON in learnSettings.key === 'promptTemplates'
 export async function getPromptTemplates(): Promise<PromptTemplate[]> {
   const row = await db.learnSettings.get("promptTemplates");
   if (!row) return [];
 
-  let parsed: unknown;
   try {
-    parsed = JSON.parse(row.value);
+    return parsePromptTemplatesJson(row.value);
   } catch (cause) {
-    throw new CorruptStorageError("promptTemplates", "Stored JSON is malformed", { cause });
+    throw new CorruptStorageError(
+      "promptTemplates",
+      "Stored value is not valid prompt-template JSON",
+      { cause }
+    );
   }
-
-  if (!Array.isArray(parsed)) {
-    throw new CorruptStorageError("promptTemplates", "Stored value is not an array");
-  }
-
-  for (const item of parsed) {
-    if (
-      typeof item !== "object" ||
-      item === null ||
-      typeof (item as { name?: unknown }).name !== "string" ||
-      typeof (item as { template?: unknown }).template !== "string"
-    ) {
-      throw new CorruptStorageError(
-        "promptTemplates",
-        "Each template item must be an object with string 'name' and 'template' properties"
-      );
-    }
-  }
-
-  return parsed as PromptTemplate[];
 }
 
-export async function savePromptTemplates(arr: { name: string; template: string }[]) {
+export async function savePromptTemplates(templates: PromptTemplate[]) {
+  // Validate again at the persistence boundary so a future caller cannot bypass
+  // the editor and write malformed template data into IndexedDB.
+  const validatedTemplates = PromptTemplatesSchema.parse(templates);
   const now = Date.now();
   await db.learnSettings.put({
     key: "promptTemplates",
-    value: JSON.stringify(arr),
+    value: JSON.stringify(validatedTemplates),
     updatedAt: now,
   });
-  return arr;
+  return validatedTemplates;
 }
 
 export default {
