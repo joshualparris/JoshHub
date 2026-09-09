@@ -6,8 +6,8 @@
 **Repository:** `joshualparris/JoshHub`  
 **Primary branch:** `main`  
 **State date:** 9 September 2026  
-**Baseline inspected for this handoff:** `db5a10993c30d3a78d85fa3149b9fed115b0f898`  
-**Agent working protocol added:** `d04dcedf0f5ccc88a6bed71cdd3fe3b31b2e87c1`
+**Baseline inspected for this stabilisation session:** `db5a10993c30d3a78d85fa3149b9fed115b0f898`  
+**Latest verified code checkpoint before this state update:** `081a7d959579e54fa51af4142661f5759d6228a8`
 
 > This file is a handoff, not a substitute for git. If `main` has advanced, compare the delta from the baseline/last completed checkpoint rather than restarting the whole audit.
 
@@ -15,25 +15,31 @@
 
 ## 1. Current overall state
 
-JoshHub is **buildable again and part-way through a formal stabilisation/audit**, but it does **not yet conform** to the agreed engineering principles.
+JoshHub is **buildable again, has working baseline GitHub Actions CI, and is part-way through a formal stabilisation/audit**, but it does **not yet conform** to all agreed engineering principles.
 
 The current code audit records:
 
 - **93 findings total**
-- **3 fixed audit findings**
-- **90 open findings**
-- open severity rollup: **2 Critical, 19 High, 46 Medium, 23 Low**
+- **5 fixed audit findings**
+- **88 open findings**
+- open severity rollup: **1 Critical, 18 High, 46 Medium, 23 Low**
 - 30 route files and 6 components still await a full line-by-line read for file-specific issues
 
 The source of truth for those numbers is `docs/code-audit/README.md`. Recalculate rather than copying these numbers forward after findings are resolved.
 
-### Completed stabilisation already recorded by the audit
+### Completed stabilisation/checkpoints recorded so far
 
 - `3c0bf78` — repaired the widespread `ms` -> `care2` corruption and restored the build.
 - `e94e809` — fixed the canonical backup system so omitted tables, destructive Platform restores, and incomplete reset behaviour are covered.
 - `ead6146` — labelled dashboard example figures and fixed the known dashboard live-query mutation/hydration issues.
 - `db5a109` — added the conformance scorecard and cross-cutting principle sweep.
-- `d04dced` — added `AGENTS.md`, the durable operating protocol for future coding agents.
+- `d04dced` — added `AGENTS.md`, the durable working protocol for future coding agents.
+- `7e99a44` — added this durable project-state handoff.
+- `689ed32` — updated `.github/copilot-instructions.md` so AI agents resume from `AGENTS.md` and this file instead of rediscovering the repo.
+- `8b741f5` — changed `npm test` to terminating `vitest run` and added `npm run test:watch`.
+- `081a7d9` — added baseline GitHub Actions CI on pushes to `main` and pull requests.
+- CI run `34337559585` passed dependency install, lint, tests, production build, and app-catalogue validation.
+- `c29b48a`, `3739218`, `b658228` — updated the audit finding, triage, and rollup to reflect the verified CI work.
 
 Do not redo these from memory. Inspect the commits and audit reports if they need to be changed.
 
@@ -125,38 +131,33 @@ If the tool/session begins degrading, stop optional exploration and checkpoint c
 
 ---
 
-## 5. Exact next work: Wave 1
+## 5. Exact next work: remaining Wave 1 enforcement
 
-The current authoritative next step is **Wave 1 — Stop flying blind** from `docs/code-audit/TRIAGE.md`.
+### Completed Wave 1 baseline
 
-### Wave 1A — CFG-01: add CI · Critical
+- **CFG-01 — CI:** fixed in `081a7d9` and verified by green run `34337559585`.
+- **CFG-02 — terminating tests:** fixed in `8b741f5` and verified inside the same CI run.
 
-Add CI on push so broken production builds and regressions are visible before deployment. The audit specifies running:
+The workflow currently runs:
 
-- lint;
-- terminating Vitest run;
-- production build;
-- `validate:apps`;
-- `check-assets`.
+- `npm ci`;
+- `npm run lint`;
+- `npm test`;
+- `npm run build`;
+- `npm run validate:apps`.
 
-Do not call this finished until the workflow actually executes successfully.
+`node scripts/check-assets.js` is intentionally not a required CI gate yet because the audit already records known asset/catalogue failures and CFG-06. Add it when those known failures are resolved.
 
-### Wave 1B — CFG-02: make tests terminate · High
+### NEXT atomic task — Wave 1C mechanical enforcement
 
-The audit records `npm test` as watch mode. Change the script/CI usage so automated verification exits deterministically.
+Follow `docs/code-audit/TRIAGE.md` and `CONFORMANCE.md`.
 
-Until this lands, use a terminating invocation such as `npx vitest run` when verifying work.
+1. Add **Prettier** and a terminating `prettier --check` CI gate in a small, reviewable change. Do not mix the dependency/setup commit with a repository-wide formatting sweep unless explicitly justified.
+2. Add the precise P10 in-place-mutation and P2 duplicate-basename checks as deterministic CI gates, validating the commands against the current tree before enabling them.
+3. Resolve XC-03 (`components` <-> `features` cycle) before enabling `eslint-plugin-import` / `no-restricted-paths`; do not introduce a permanently red architecture gate.
+4. Re-enable `react-hooks/set-state-in-effect` as a warning only after APP-08 is resolved.
 
-### Wave 1C — mechanical enforcement
-
-After the basic CI path works, add the enforcement described by TRIAGE/CONFORMANCE:
-
-- Prettier + `prettier --check` in CI;
-- dependency-direction enforcement using `eslint-plugin-import` / `no-restricted-paths` once the existing layer cycle is reconciled;
-- precise CI checks for known duplicate-source-of-truth and in-place-mutation patterns;
-- restore `react-hooks/set-state-in-effect` as a warning after its blocking finding is fixed.
-
-Do this as small, reviewable commits rather than one sweeping formatting/architecture commit.
+Do not skip straight to theme or feature work until the remaining Wave 1 enforcement decision is deliberately completed or deferred with a recorded reason.
 
 ---
 
@@ -166,12 +167,12 @@ Follow `docs/code-audit/TRIAGE.md`; do not invent a new ordering without a reaso
 
 Current sequence is broadly:
 
-1. CI/testing/enforcement.
-2. Theme-system root causes.
-3. Live user-facing defects.
-4. source-of-truth/architecture consolidation.
-5. repository weight and hygiene.
-6. structural decomposition/testing work.
+1. remaining CI/testing/enforcement;
+2. theme-system root causes;
+3. live user-facing defects;
+4. source-of-truth/architecture consolidation;
+5. repository weight and hygiene;
+6. structural decomposition/testing work;
 7. consistency/polish.
 
 Important known later items include:
@@ -199,16 +200,18 @@ The detailed IDs, severity, evidence, and recommended order live in TRIAGE and t
 
 Never write "tests passed" unless they were actually run in the current change context.
 
-For a normal stabilisation checkpoint, record the commands that were executed and their result. Depending on the files changed this can include:
+Baseline CI now provides automatic verification for every push to `main` and pull request. Depending on the files changed, focused local/agent checks should still run before the push where possible.
 
-- focused Vitest tests;
-- `npx vitest run`;
+Current baseline CI checks:
+
 - `npm run lint`;
+- `npm test` (`vitest run`);
 - `npm run build`;
-- `npm run validate:apps`;
-- `npm run check-assets`.
+- `npm run validate:apps`.
 
-If a command is currently broken or unavailable, record that as a blocker instead of silently skipping it.
+Future checks should include `node scripts/check-assets.js` once the known failures are corrected, plus the mechanical conformance gates described in Wave 1C.
+
+If a command is broken or unavailable, record that as a blocker instead of silently skipping it.
 
 When a code-audit finding is resolved, update its checkbox/status and the appropriate rollups. The audit should remain an executable to-do list, not stale history.
 
