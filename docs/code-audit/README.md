@@ -95,61 +95,78 @@ referenced from a commit message or an issue.
 | # | Area | Files | Report | Status |
 |---|------|-------|--------|--------|
 | 01 | `src/lib/db` — persistence, schema, backup | 11 | [01-src-lib-db.md](01-src-lib-db.md) | ✅ Audited |
-| 02 | `src/lib` core — recent, pins, date, utils, analytics, react | 9 | — | Not started |
-| 03 | `src/lib` scaffolding — models, logic, seed, repos | 21 | — | Not started |
-| 04 | `src/data` — apps catalogue, life areas, events | 6 | — | Not started |
-| 05 | `src/app` — routes and pages | 50 | — | Partially reviewed |
-| 06 | `src/components` — shared UI | 32 | — | Not started |
-| 07 | `src/features` — everything-map, apps, platform | 9 | — | Not started |
-| 08 | Root config — package.json, tsconfig, next.config, eslint | 15 | — | Not started |
-| 09 | `.github` — workflows and Copilot instructions | 1 | — | Not started |
-| 10 | `scripts` — inventory and sync scripts | 6 | — | Not started |
-| 11 | `docs` — project documentation | 12 | — | Not started |
-| 12 | `public/games` — hosted game builds (excl. josh-nfc-audio) | 161 | — | Not started |
-| 13 | `public/games/josh-nfc-audio` — includes a committed Android build tree | 569 | — | Not started |
-| 14 | `public` other — docs, panos, textures, portal, assets | 44 | — | Not started |
-| 15 | `projects`, `experimental` | 2 | — | Not started |
+| 02 | `src/lib` core — recent, pins, date, utils, analytics, react | 9 | [02-src-lib-core.md](02-src-lib-core.md) | ✅ Audited |
+| 03 | `src/lib` scaffolding — models, logic, seed, repos | 21 | [03-src-lib-scaffolding.md](03-src-lib-scaffolding.md) | ✅ Audited |
+| 04 | `src/data` — apps catalogue, life areas, events | 6 | [04-src-data.md](04-src-data.md) | ✅ Audited |
+| 05 | `src/app` — routes and pages | 50 | [05-src-app.md](05-src-app.md) | ◐ Cross-cutting complete; 30 files await a line-by-line read |
+| 06 | `src/components` — shared UI | 32 | [06-src-components.md](06-src-components.md) | ◐ Cross-cutting complete; 6 files await a line-by-line read |
+| 07 | `src/features` — everything-map, apps, platform | 9 | [07-src-features.md](07-src-features.md) | ✅ Audited |
+| 08 | Root config — package.json, tsconfig, next.config, eslint | 15 | [08-root-config.md](08-root-config.md) | ✅ Audited |
+| 09 | `.github` — workflows and Copilot instructions | 1 | [09-11-tooling-and-docs.md](09-11-tooling-and-docs.md) | ✅ Audited |
+| 10 | `scripts` — inventory and sync scripts | 6 | [09-11-tooling-and-docs.md](09-11-tooling-and-docs.md) | ✅ Audited |
+| 11 | `docs` — project documentation | 12 | [09-11-tooling-and-docs.md](09-11-tooling-and-docs.md) | ✅ Audited |
+| 12 | `public/games` — hosted game builds (excl. josh-nfc-audio) | 161 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited (policy level) |
+| 13 | `public/games/josh-nfc-audio` — includes a committed Android build tree | 569 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited (policy level) |
+| 14 | `public` other — docs, panos, textures, portal, assets | 44 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited (policy level) |
+| 15 | `projects`, `experimental` | 2 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited |
 
-Area 05 is marked *partially reviewed* rather than audited: `dashboard`,
-`settings/backups`, `care` and `life` have been read in full, the rest have not.
+**Areas 05 and 06 are marked ◐, not ✅.** Every finding in them labelled
+*(all 50)* or *(repo-wide)* was verified by search across the entire area, so
+those are complete. What remains is a line-by-line read of 30 route files and 6
+components for file-specific issues — both reports list exactly which, and
+`src/app/health/import/page.tsx` is the priority.
+
+**Areas 12–14 are audited at policy level.** They are 774 compiled bundles,
+sourcemaps and Gradle artefacts; reading each one individually would tell you
+nothing. Findings there are measured rather than read.
+
+### → Start with [TRIAGE.md](TRIAGE.md)
+
+The reports say what is wrong. **TRIAGE.md says what to do first**, ordered by
+blast radius. Read that one when deciding what to work on.
 
 ---
 
 ## Parked observations
 
-Things noticed while auditing a different area. They are recorded here so they
-are not lost, and get written up properly — with an ID — when their own area is
-audited. Do not fix from this list alone; read the area first.
+Things noticed while auditing a different area, held here until that area is
+properly read and they can be written up with an ID. **The list is currently
+empty** — everything parked during the first pass has been promoted:
 
-- **Area 08 (root):** `Game-Fixer`, `PartyAI` and `Serenity-Keep-Flying` are
-  committed as submodule gitlinks (mode `160000`) but there is no `.gitmodules`
-  file, so a fresh clone produces three permanently empty directories that
-  `git submodule update --init` cannot populate. `Game-Fixer` is registered
-  twice — once at the root and once as `projects/Game-Fixer` — pointing at the
-  same commit.
-- **Area 08 / 11 (docs):** there are two separate task backlogs, `tasks.md` at
-  the root and `docs/tasks.md`, with different content (P2). The root one
-  references `src/lib/supabase/server.ts`, which does not exist in this repo.
-- **Area 03:** the `models` / `captureRepo` / `logic` / `seed` layer (~692 lines
-  from the "Prompt 16 foundation" handoff) has no importers in the running app.
-  The standing preference is to wire it up rather than delete it — check whether
-  `src/app/capture` reimplements `autoSort` before deciding.
-- **Area 04 / 05:** two different `LifeArea` vocabularies exist —
-  `src/data/life.ts` uses `work-dcs` / `tech-projects`, `src/lib/models/life.ts`
-  uses `work` / `tech` / `inbox` (P2). Harmless only because the second is
-  currently unused.
-- **Area 04:** `src/data/apps.ts` lists `ResearchGems`, and a Vercel project
-  points at `ResearchAtlas`; neither repository exists on GitHub, so both are
-  dead links.
+| Was parked as | Now |
+|---|---|
+| Submodule gitlinks with no `.gitmodules` | CFG-03 |
+| Two task backlogs, one referencing Supabase | CFG-07 |
+| ~690 lines of unwired scaffolding | SCAF-01 |
+| Two `LifeArea` vocabularies | DATA-04 |
+| `ResearchGems` / `ResearchAtlas` dead links | DATA-05 |
+
+One parked assumption turned out to be **wrong**, which is why they get checked
+before being written up: it was suspected that `src/app/capture` reimplemented
+`logic/autoSort`. It does not — the capture page is three manual forms. Wiring
+`autoSort` in would be a new feature, not deduplication. SCAF-01 records this.
 
 ## Rollup
 
+86 findings across all 15 areas.
+
 | Severity | Open | Fixed |
 |----------|------|-------|
-| Critical | 0 | 2 |
-| High | 1 | 1 |
-| Medium | 5 | 0 |
-| Low | 2 | 0 |
-| **Total** | **8** | **3** |
+| Critical | 2 | 2 |
+| High | 15 | 1 |
+| Medium | 44 | 0 |
+| Low | 22 | 0 |
+| **Total** | **83** | **3** |
 
-Last updated after report 01.
+The two open Criticals are **CFG-01** (there is no CI, so nothing catches a
+broken build — production deploys failed for months undetected) and **COMP-01**
+(the theme toggle drives none of the 504 `dark:` styling declarations).
+
+Counts are produced by counting `### [ ]` and `### [x]` headings across the
+reports — re-run after ticking anything off:
+
+```bash
+cd docs/code-audit
+grep -c '^### \[ \]' 0*.md 1*.md   # open
+grep -c '^### \[x\]' 0*.md 1*.md   # fixed
+```
