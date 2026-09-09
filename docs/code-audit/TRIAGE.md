@@ -1,7 +1,8 @@
 # Triage — what to fix, in what order
 
-The audit found **86 findings across 15 areas** — 3 already fixed, 83 open
-(2 Critical, 15 High, 44 Medium, 22 Low). This is the order to fix them in,
+The audit found **93 findings** — 3 already fixed, 90 open
+(2 Critical, 19 High, 46 Medium, 23 Low) across 15 areas plus a cross-cutting
+sweep. This is the order to fix them in,
 ranked by blast radius: how many other things an issue breaks, how much damage it
 does to the principles, and how much other work depends on it being right.
 
@@ -40,6 +41,21 @@ Run on push: `lint`, `vitest run`, `build`, `validate:apps`, `check-assets`.
 ### 2. CFG-02 — `npm test` must not hang · High
 `"test": "vitest"` starts watch mode and never exits, which blocks item 1 from
 being done properly. One-word fix; do it as part of the same commit.
+
+### 2b. Add the enforcement while you are in there · High
+Four changes that close principles *mechanically* rather than one finding at a
+time. They belong in Wave 1 because every later fix is otherwise reversible.
+See `CONFORMANCE.md` for detail; XC-07 is the finding.
+
+- **Prettier** + `prettier --check` in CI — retires most of P13 and part of P4
+  permanently. Highest leverage single item after CI itself.
+- **`eslint-plugin-import` `no-restricted-paths`** — enforces the layer
+  hierarchy defined in `CONFORMANCE.md` (P14). The only principle here that can
+  be *fully* mechanised.
+- **Two greps as CI steps** — the P10 in-place-mutation check and the P2
+  duplicate-basename check. Both are precise, have no false positives today, and
+  take minutes to add.
+- **`react-hooks/set-state-in-effect` back on as a warning**, once APP-08 lands.
 
 **After wave 1 you will find out what else is broken.** Expect surprises.
 
@@ -152,6 +168,40 @@ that cannot be populated.
 
 ---
 
+## Wave 5b — The structural work the first pass missed
+
+From the cross-cutting sweep (report 16). Lower urgency than live defects, but
+this is where "conforms to the principles" is actually won or lost — and none of
+it is findable by search, so it will not surface on its own.
+
+### 23. XC-05 — Test the seven untested critical paths · High
+2 test files for 132 source files. ICS parsing, daily-metrics roll-up, CSV
+import, catalogue invariants, lifestyle analytics, tag parsing, date helpers —
+and three of those already have confirmed defects recorded elsewhere. **Do not
+run this as a campaign:** add the test with the fix, each time.
+
+### 24. XC-02 — Move calculations out of seven screens · High
+Unit conversion, aggregation and threshold logic sit inside `useMemo` in
+components, which is *why* P15 is at two test files — the logic worth testing is
+stranded in JSX. Fixing this makes XC-05 and XC-01 easier at the same time.
+
+### 25. XC-03 — Break the `components` ↔ `features` cycle · Medium
+`CONFORMANCE.md` now defines the hierarchy (`app → features → components → lib →
+data`) for the first time. Move `components/platform/*` into
+`features/platform/`, where its data already lives, then turn on
+`no-restricted-paths`.
+
+### 26. XC-01 — Shrink the 27 functions over 100 lines · High
+`DashboardPage` is 727 lines. Take these opportunistically — whenever you touch
+one, extract its calculations (item 24) and its repeated markup. Not a sweep.
+
+### 27. XC-04 — Comment the constraints, not the code · Medium
+89 of 134 files have no comments; the ones that exist mostly restate the code.
+Rule: every fix in this audit leaves behind a comment naming the constraint that
+made it a bug.
+
+---
+
 ## Wave 6 — Consistency and polish
 
 Do these as a single sweep once the above has settled, ideally with a formatter
@@ -177,6 +227,21 @@ so they stay fixed.
   the rest; only genuinely misleading duplicates get removed.
 
 ---
+
+## Does finishing this list mean the repo conforms?
+
+**No.** Working through every item above is necessary but not sufficient, for
+three reasons, all set out in `CONFORMANCE.md`:
+
+1. The audit is not finished — 30 route files and 6 components have never been
+   read line by line, so more findings exist.
+2. Fixing a finding does not stop it recurring. Only the Wave 1 enforcement does
+   that, which is why it sits at the top rather than the bottom.
+3. Several items are decisions rather than edits (SCAF-01, DATA-04), and two
+   fixes will *generate* findings — COMP-01 exposes ten unstyled pages, and
+   wiring up dead scaffolding exposes whatever is wrong inside it.
+
+`CONFORMANCE.md` holds the scorecard. Nothing on it is currently green.
 
 ## Still to read
 

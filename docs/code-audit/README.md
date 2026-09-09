@@ -109,6 +109,7 @@ referenced from a commit message or an issue.
 | 13 | `public/games/josh-nfc-audio` — includes a committed Android build tree | 569 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited (policy level) |
 | 14 | `public` other — docs, panos, textures, portal, assets | 44 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited (policy level) |
 | 15 | `projects`, `experimental` | 2 | [12-15-public-and-submodules.md](12-15-public-and-submodules.md) | ✅ Audited |
+| 16 | Cross-cutting sweep — size, layering, comments, tests | all of `src` | [16-cross-cutting.md](16-cross-cutting.md) | ✅ Audited |
 
 **Areas 05 and 06 are marked ◐, not ✅.** Every finding in them labelled
 *(all 50)* or *(repo-wide)* was verified by search across the entire area, so
@@ -120,10 +121,17 @@ components for file-specific issues — both reports list exactly which, and
 sourcemaps and Gradle artefacts; reading each one individually would tell you
 nothing. Findings there are measured rather than read.
 
-### → Start with [TRIAGE.md](TRIAGE.md)
+### The three documents above the reports
 
-The reports say what is wrong. **TRIAGE.md says what to do first**, ordered by
-blast radius. Read that one when deciding what to work on.
+| File | Answers |
+|---|---|
+| [TRIAGE.md](TRIAGE.md) | **What do I fix first?** Ordered by blast radius. |
+| [CONFORMANCE.md](CONFORMANCE.md) | **When is it done?** A checkable bar per principle, how to verify it, the measured current state, and what stops it regressing. |
+| [16-cross-cutting.md](16-cross-cutting.md) | **What did the first pass miss?** The sweep for the principles that a search cannot find. |
+
+Read TRIAGE to choose work. Read CONFORMANCE before claiming any of it is
+finished — fixing every finding is *necessary but not sufficient*, and that file
+explains exactly why.
 
 ---
 
@@ -148,15 +156,15 @@ before being written up: it was suspected that `src/app/capture` reimplemented
 
 ## Rollup
 
-86 findings across all 15 areas.
+93 findings — 15 area reports plus one cross-cutting sweep.
 
 | Severity | Open | Fixed |
 |----------|------|-------|
 | Critical | 2 | 2 |
-| High | 15 | 1 |
-| Medium | 44 | 0 |
-| Low | 22 | 0 |
-| **Total** | **83** | **3** |
+| High | 19 | 1 |
+| Medium | 46 | 0 |
+| Low | 23 | 0 |
+| **Total** | **90** | **3** |
 
 The two open Criticals are **CFG-01** (there is no CI, so nothing catches a
 broken build — production deploys failed for months undetected) and **COMP-01**
