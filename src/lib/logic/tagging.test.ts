@@ -8,11 +8,7 @@ describe("tagging", () => {
   });
 
   it("parses, normalises and de-duplicates comma separated tags", () => {
-    expect(parseTagList(" Work, family, work , #Health, ")).toEqual([
-      "work",
-      "family",
-      "health",
-    ]);
+    expect(parseTagList(" Work, family, work , #Health, ")).toEqual(["work", "family", "health"]);
   });
 
   it("extracts unique canonical hashtags", () => {

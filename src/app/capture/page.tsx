@@ -200,7 +200,9 @@ export default function CapturePage() {
                 }}
                 aria-invalid={bookmarkError ? true : undefined}
               />
-              {bookmarkError && <p className="text-sm text-red-600 dark:text-red-300">{bookmarkError}</p>}
+              {bookmarkError && (
+                <p className="text-sm text-red-600 dark:text-red-300">{bookmarkError}</p>
+              )}
               <Input
                 placeholder="Tags (comma separated)"
                 value={bookmarkTags}
