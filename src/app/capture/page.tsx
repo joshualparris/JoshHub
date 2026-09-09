@@ -1,16 +1,17 @@
-/* Capture inbox: quick add note/task/bookmark and show recent captures */
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { lifeAreas } from "@/data/life";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { PageHeader } from "@/components/ui/page-header";
+import { Textarea } from "@/components/ui/textarea";
 import { createBookmark, createNote, createTask } from "@/lib/db/actions";
 import { useBookmarks, useNotes, useTasks } from "@/lib/db/hooks";
-import { lifeAreas } from "@/data/life";
+import { parseTagList } from "@/lib/logic/tagging";
+import { isHttpUrl } from "@/lib/validation/url";
 
 export default function CapturePage() {
   const notes = useNotes();
@@ -29,33 +30,35 @@ export default function CapturePage() {
   const [savingNote, setSavingNote] = useState(false);
   const [savingTask, setSavingTask] = useState(false);
   const [savingBookmark, setSavingBookmark] = useState(false);
+  const [bookmarkError, setBookmarkError] = useState("");
 
   const recent = useMemo(() => {
-    const combined: { type: string; title: string; createdAt: number }[] = [];
-    (notes ?? []).forEach((n) =>
-      combined.push({ type: "Note", title: n.title, createdAt: n.createdAt })
-    );
-    (tasks ?? []).forEach((t) =>
-      combined.push({ type: "Task", title: t.title, createdAt: t.createdAt })
-    );
-    (bookmarks ?? []).forEach((b) =>
-      combined.push({ type: "Bookmark", title: b.title || b.url, createdAt: b.createdAt })
-    );
-    return combined.sort((a, b) => b.createdAt - a.createdAt).slice(0, 10);
+    const captures: { type: string; title: string; createdAt: number }[] = [];
+    for (const note of notes ?? []) {
+      captures.push({ type: "Note", title: note.title, createdAt: note.createdAt });
+    }
+    for (const task of tasks ?? []) {
+      captures.push({ type: "Task", title: task.title, createdAt: task.createdAt });
+    }
+    for (const bookmark of bookmarks ?? []) {
+      captures.push({
+        type: "Bookmark",
+        title: bookmark.title || bookmark.url,
+        createdAt: bookmark.createdAt,
+      });
+    }
+    return captures.sort((a, b) => b.createdAt - a.createdAt).slice(0, 10);
   }, [notes, tasks, bookmarks]);
 
-  async function onAddNote(e: FormEvent) {
-    e.preventDefault();
+  async function onAddNote(event: FormEvent) {
+    event.preventDefault();
     if (!noteTitle.trim()) return;
     try {
       setSavingNote(true);
       await createNote({
         title: noteTitle.trim(),
         body: noteBody.trim(),
-        tags: noteTags
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
+        tags: parseTagList(noteTags),
         lifeAreaSlug: noteArea || null,
       });
       setNoteTitle("");
@@ -66,18 +69,12 @@ export default function CapturePage() {
     }
   }
 
-  async function onAddTask(e: FormEvent) {
-    e.preventDefault();
+  async function onAddTask(event: FormEvent) {
+    event.preventDefault();
     if (!taskTitle.trim()) return;
     try {
       setSavingTask(true);
-      await createTask({
-        title: taskTitle.trim(),
-        tags: taskTags
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
-      });
+      await createTask({ title: taskTitle.trim(), tags: parseTagList(taskTags) });
       setTaskTitle("");
       setTaskTags("");
     } finally {
@@ -85,18 +82,21 @@ export default function CapturePage() {
     }
   }
 
-  async function onAddBookmark(e: FormEvent) {
-    e.preventDefault();
-    if (!bookmarkUrl.trim() || !bookmarkUrl.startsWith("http")) return;
+  async function onAddBookmark(event: FormEvent) {
+    event.preventDefault();
+    const url = bookmarkUrl.trim();
+    if (!isHttpUrl(url)) {
+      setBookmarkError("Enter a complete http:// or https:// URL.");
+      return;
+    }
+
     try {
       setSavingBookmark(true);
+      setBookmarkError("");
       await createBookmark({
-        title: bookmarkTitle || bookmarkUrl,
-        url: bookmarkUrl.trim(),
-        tags: bookmarkTags
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean),
+        title: bookmarkTitle.trim() || url,
+        url,
+        tags: parseTagList(bookmarkTags),
       });
       setBookmarkTitle("");
       setBookmarkUrl("");
@@ -124,23 +124,23 @@ export default function CapturePage() {
               <Input
                 placeholder="Title"
                 value={noteTitle}
-                onChange={(e) => setNoteTitle(e.target.value)}
+                onChange={(event) => setNoteTitle(event.target.value)}
               />
               <Textarea
                 placeholder="Body (optional)"
                 value={noteBody}
-                onChange={(e) => setNoteBody(e.target.value)}
+                onChange={(event) => setNoteBody(event.target.value)}
               />
               <div className="grid gap-2 md:grid-cols-2">
                 <Input
                   placeholder="Tags (comma separated)"
                   value={noteTags}
-                  onChange={(e) => setNoteTags(e.target.value)}
+                  onChange={(event) => setNoteTags(event.target.value)}
                 />
                 <select
                   value={noteArea}
-                  onChange={(e) => setNoteArea(e.target.value)}
-                  className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+                  onChange={(event) => setNoteArea(event.target.value)}
+                  className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <option value="">Area (optional)</option>
                   {lifeAreas.map((area) => (
@@ -150,7 +150,7 @@ export default function CapturePage() {
                   ))}
                 </select>
               </div>
-              <Button type="submit" className="w-full" disabled={savingNote}>
+              <Button type="submit" className="w-full" disabled={savingNote || !noteTitle.trim()}>
                 {savingNote ? "Saving..." : "Save note"}
               </Button>
             </form>
@@ -166,14 +166,14 @@ export default function CapturePage() {
               <Input
                 placeholder="Task title"
                 value={taskTitle}
-                onChange={(e) => setTaskTitle(e.target.value)}
+                onChange={(event) => setTaskTitle(event.target.value)}
               />
               <Input
                 placeholder="Tags (comma separated)"
                 value={taskTags}
-                onChange={(e) => setTaskTags(e.target.value)}
+                onChange={(event) => setTaskTags(event.target.value)}
               />
-              <Button type="submit" className="w-full" disabled={savingTask}>
+              <Button type="submit" className="w-full" disabled={savingTask || !taskTitle.trim()}>
                 {savingTask ? "Saving..." : "Add task"}
               </Button>
             </form>
@@ -189,17 +189,22 @@ export default function CapturePage() {
               <Input
                 placeholder="Title"
                 value={bookmarkTitle}
-                onChange={(e) => setBookmarkTitle(e.target.value)}
+                onChange={(event) => setBookmarkTitle(event.target.value)}
               />
               <Input
                 placeholder="https://..."
                 value={bookmarkUrl}
-                onChange={(e) => setBookmarkUrl(e.target.value)}
+                onChange={(event) => {
+                  setBookmarkUrl(event.target.value);
+                  if (bookmarkError) setBookmarkError("");
+                }}
+                aria-invalid={bookmarkError ? true : undefined}
               />
+              {bookmarkError && <p className="text-sm text-red-600 dark:text-red-300">{bookmarkError}</p>}
               <Input
                 placeholder="Tags (comma separated)"
                 value={bookmarkTags}
-                onChange={(e) => setBookmarkTags(e.target.value)}
+                onChange={(event) => setBookmarkTags(event.target.value)}
               />
               <Button type="submit" className="w-full" disabled={savingBookmark}>
                 {savingBookmark ? "Saving..." : "Save link"}
@@ -215,18 +220,18 @@ export default function CapturePage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No captured items yet.</p>
+            <p className="text-sm text-muted-foreground">No captured items yet.</p>
           ) : (
-            recent.map((item, idx) => (
+            recent.map((item) => (
               <div
-                key={`${item.type}-${item.createdAt}-${idx}`}
-                className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
+                key={`${item.type}-${item.createdAt}`}
+                className="flex items-center justify-between rounded-md border border-border bg-card px-3 py-2 text-card-foreground"
               >
                 <div>
-                  <p className="font-medium text-neutral-900">{item.title}</p>
-                  <p className="text-xs text-neutral-500">{item.type}</p>
+                  <p className="font-medium">{item.title}</p>
+                  <p className="text-xs text-muted-foreground">{item.type}</p>
                 </div>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-muted-foreground">
                   {new Date(item.createdAt).toLocaleString()}
                 </p>
               </div>

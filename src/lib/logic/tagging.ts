@@ -13,3 +13,11 @@ export function extractHashtags(text: string): string[] {
 export function normalizeTag(tag: string): string {
   return tag.trim().toLowerCase().replace(/\s+/g, "-").replace(/^#+/, "");
 }
+
+/**
+ * Tags are identifiers, not display prose. Normalising them here means filters
+ * cannot silently treat `Work`, `work` and ` work ` as different concepts.
+ */
+export function parseTagList(value: string): string[] {
+  return Array.from(new Set(value.split(",").map(normalizeTag).filter(Boolean)));
+}

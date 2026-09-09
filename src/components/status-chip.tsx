@@ -53,10 +53,14 @@ const statusColors: Record<AppStatus, { label: string; className: string }> = {
 };
 
 interface Props {
-  status: AppStatus;
+  status: string;
+}
+
+export function getStatusPresentation(status: string) {
+  return statusColors[status as AppStatus] ?? statusColors.unknown;
 }
 
 export function StatusChip({ status }: Props) {
-  const value = statusColors[status];
+  const value = getStatusPresentation(status);
   return <Badge className={value.className}>{value.label}</Badge>;
 }
