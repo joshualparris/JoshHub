@@ -39,6 +39,7 @@
     "baseline-browser-mapping": "^2.9.19",
     "eslint": "^9",
     "eslint-config-next": "16.0.6",
+    "eslint-plugin-import": "^2.32.0",
     "fake-indexeddb": "^6.2.5",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
