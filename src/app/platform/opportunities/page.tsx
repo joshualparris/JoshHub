@@ -1,4 +1,4 @@
-import OpportunitiesList from "@/components/platform/opportunities-list";
+import { OpportunitiesList } from "@/features/platform/components/opportunities-list";
 
 export const metadata = { title: "JoshHub | Platform | Opportunities" };
 
