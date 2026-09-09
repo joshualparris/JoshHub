@@ -47,7 +47,7 @@ describe("parseCsvRows", () => {
     const csv = 'name,note\n"JoshHub ""Pro"" Edition",Special release';
     expect(parseCsvRows(csv)).toEqual([
       ["name", "note"],
-      ["JoshHub \"Pro\" Edition", "Special release"],
+      ['JoshHub "Pro" Edition', "Special release"],
     ]);
   });
 
