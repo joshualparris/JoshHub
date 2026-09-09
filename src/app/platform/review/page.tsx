@@ -1,7 +1,7 @@
-import WeeklyReviewList from "@/components/platform/weekly-review";
+import { redirect } from "next/navigation";
 
 export const metadata = { title: "JoshHub | Platform | Weekly Review" };
 
 export default function ReviewPage() {
-  return <WeeklyReviewList />;
+  redirect("/platform/weekly-review");
 }
