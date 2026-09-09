@@ -21,7 +21,7 @@ export function normalizeLifeArea(str?: string | null): LifeArea {
   if (!str) return "inbox";
   const s = str.trim().toLowerCase();
   if (isLifeArea(s)) return s;
-  // conservative synonycare2
+  // conservative synonyms
   const map: Record<string, LifeArea> = {
     dcs: "work",
     dubbo: "work",

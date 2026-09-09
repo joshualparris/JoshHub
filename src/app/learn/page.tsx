@@ -30,7 +30,7 @@ export default function LearnPage() {
 
     return (
         <div className="p-6">
-            <div className="flex itecare2-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-bold">Learn</h1>
                 <div className="flex gap-2">
                     <button className="btn" onClick={() => setShowImport(true)}>Import Topics</button>
@@ -50,7 +50,7 @@ export default function LearnPage() {
             </section>
 
             {showImport ? (
-                <div className="fixed inset-0 flex itecare2-center justify-center bg-black/40 p-4">
+                <div className="fixed inset-0 flex items-center justify-center bg-black/40 p-4">
                     <div className="w-full max-w-2xl">
                         <ImportTopicsModal onClose={() => setShowImport(false)} />
                     </div>

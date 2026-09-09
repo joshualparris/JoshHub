@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { notFound, useParacare2 } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,15 +13,15 @@ import type { RoutineItem } from "@/lib/db/schema";
 import { uuid } from "@/lib/db/id";
 
 export default function RoutineRunPage() {
-  const paracare2 = useParacare2<{ id: string }>();
-  const routineId = paracare2?.id;
+  const params = useParams<{ id: string }>();
+  const routineId = params?.id;
   const routine = useRoutine(routineId);
   const runs = useRoutineRuns(routineId);
-  const [itecare2, setItecare2] = useState<RoutineItem[]>([]);
+  const [items, setItems] = useState<RoutineItem[]>([]);
 
   useEffect(() => {
     if (routine) {
-      setItecare2(routine.itecare2);
+      setItems(routine.items);
     }
   }, [routine]);
 
@@ -30,28 +30,28 @@ export default function RoutineRunPage() {
   const current = routine;
 
   async function runRoutine() {
-    await logRoutineRun({ routineId: current.id, completedCount: itecare2.length });
+    await logRoutineRun({ routineId: current.id, completedCount: items.length });
   }
 
   function updateItem(idx: number, updates: Partial<RoutineItem>) {
-    setItecare2((prev) =>
+    setItems((prev) =>
       prev.map((item, i) => (i === idx ? { ...item, ...updates } : item))
     );
   }
 
-  async function saveItecare2() {
-    await updateRoutine(current.id, { itecare2 });
+  async function saveItems() {
+    await updateRoutine(current.id, { items });
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex itecare2-center justify-between">
+      <div className="flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Routine</p>
           <h1 className="text-3xl font-semibold text-neutral-900">{current.name}</h1>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={saveItecare2}>
+          <Button variant="outline" onClick={saveItems}>
             Save steps
           </Button>
           <Button onClick={runRoutine}>Run now</Button>
@@ -63,10 +63,10 @@ export default function RoutineRunPage() {
           <CardTitle>Steps</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          {itecare2.map((item, idx) => (
+          {items.map((item, idx) => (
             <div
               key={item.id}
-              className="flex flex-wrap itecare2-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-2"
+              className="flex flex-wrap items-center gap-2 rounded-md border border-neutral-200 bg-white px-3 py-2"
             >
               <Input
                 className="flex-1 min-w-[200px]"
@@ -93,7 +93,7 @@ export default function RoutineRunPage() {
           <Button
             variant="outline"
             onClick={() =>
-              setItecare2((prev) => [
+              setItems((prev) => [
                 ...prev,
                 { id: uuid(), label: "New step", type: "check" },
               ])
@@ -115,7 +115,7 @@ export default function RoutineRunPage() {
             (runs ?? []).map((run) => (
               <div
                 key={run.id}
-                className="flex itecare2-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
               >
                 <span>{new Date(run.startedAt).toLocaleString()}</span>
                 <span className="text-neutral-600">{run.completedCount} steps</span>

@@ -89,7 +89,7 @@ export default function DashboardPage() {
   );
 
   const nextTimeline = useMemo(() => {
-    const itecare2: {
+    const items: {
       id: string;
       type: "task" | "event";
       title: string;
@@ -99,7 +99,7 @@ export default function DashboardPage() {
 
     taskToday.forEach((t) => {
       const date = t.dueDate ? new Date(`${t.dueDate}T12:00:00`) : new Date();
-      itecare2.push({
+      items.push({
         id: `task-${t.id}`,
         type: "task",
         title: t.title,
@@ -109,7 +109,7 @@ export default function DashboardPage() {
     });
 
     nextEvents.forEach((ev) => {
-      itecare2.push({
+      items.push({
         id: `event-${ev.id}`,
         type: "event",
         title: ev.title,
@@ -118,7 +118,7 @@ export default function DashboardPage() {
       });
     });
 
-    return itecare2.sort((a, b) => a.time - b.time).slice(0, 5);
+    return items.sort((a, b) => a.time - b.time).slice(0, 5);
   }, [taskToday, nextEvents]);
 
   const sleepAvg = useMemo(() => {
@@ -225,7 +225,7 @@ export default function DashboardPage() {
     {
       title: "Kristy · MS support",
       icon: Stethoscope,
-      summary: "Keep meds, symptocare2, appointments, and energy windows in one place.",
+      summary: "Keep meds, symptoms, appointments, and energy windows in one place.",
       bullets: [
         "Capture symptom notes in under 60 seconds when they happen.",
         "Bundle care tasks into calm daily routines to reduce decision load.",
@@ -236,7 +236,7 @@ export default function DashboardPage() {
     {
       title: "Family ops",
       icon: Heart,
-      summary: "School logistics, routines, and weekly rhythcare2 visible at a glance.",
+      summary: "School logistics, routines, and weekly rhythms visible at a glance.",
       bullets: [
         "Lock in classroom reminders, pickups, and weekly touchpoints.",
         "Use short checklists so everyone knows today’s top 1–2 priorities.",
@@ -249,7 +249,7 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-r from-white via-sky-50 to-emerald-50 p-6 shadow-md dark:border-slate-800 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
-        <div className="flex flex-col gap-6 md:flex-row md:itecare2-center md:justify-between">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.2em] text-neutral-600 dark:text-slate-300">
               Today · {todayLabel}
@@ -303,7 +303,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={stat.label}
-                  className="flex itecare2-center gap-3 rounded-2xl border border-white/70 bg-white/90 px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
+                  className="flex items-center gap-3 rounded-2xl border border-white/70 bg-white/90 px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
                 >
                   <div className="rounded-full bg-sky-100 p-2 text-sky-600 shadow-sm dark:bg-sky-900/40 dark:text-sky-200">
                     <Icon className="h-4 w-4" />
@@ -329,7 +329,7 @@ export default function DashboardPage() {
           {focusAnchors.map((anchor) => (
             <div
               key={anchor}
-              className="flex itecare2-start gap-3 rounded-2xl border border-white/60 bg-white/90 p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
+              className="flex items-start gap-3 rounded-2xl border border-white/60 bg-white/90 p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
             >
               <div className="rounded-full bg-amber-100 p-2 text-amber-700 shadow-sm dark:bg-amber-900/40 dark:text-amber-200">
                 <Sparkles className="h-4 w-4" />
@@ -342,7 +342,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
-          <CardHeader className="flex flex-row itecare2-center justify-between pb-0">
+          <CardHeader className="flex flex-row items-center justify-between pb-0">
             <CardTitle>Quick launch</CardTitle>
             <span className="text-xs text-neutral-500 dark:text-slate-400">
               First six from the catalogue
@@ -358,7 +358,7 @@ export default function DashboardPage() {
                 onClick={() => addRecent(item)}
                 className="group flex flex-col gap-2 rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-white to-sky-50 px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:from-slate-900 dark:to-slate-800"
               >
-                <div className="flex itecare2-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-2">
                   <div>
                     <p className="font-semibold text-neutral-900 dark:text-white">{item.name}</p>
                     <p className="text-xs text-neutral-500 dark:text-slate-400">{item.category}</p>
@@ -391,7 +391,7 @@ export default function DashboardPage() {
               broken.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-start justify-between rounded-xl border border-red-200 bg-white/90 px-3 py-3 dark:border-red-800/60 dark:bg-red-950/40"
+                  className="flex items-start justify-between rounded-xl border border-red-200 bg-white/90 px-3 py-3 dark:border-red-800/60 dark:bg-red-950/40"
                 >
                   <div className="space-y-1">
                     <a
@@ -413,7 +413,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-3 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
-          <CardHeader className="flex flex-row itecare2-center justify-between gap-3">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
               <CardTitle>Life command center</CardTitle>
               <p className="text-sm text-neutral-600 dark:text-slate-300">
@@ -430,7 +430,7 @@ export default function DashboardPage() {
                   key={item.title}
                   className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="mb-2 flex itecare2-center gap-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <div className={`rounded-full p-2 ${item.bg}`}>
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
@@ -458,9 +458,9 @@ export default function DashboardPage() {
               nextTimeline.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-start justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-start justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="flex itecare2-start gap-3">
+                  <div className="flex items-start gap-3">
                     <div className="rounded-full bg-sky-100 p-2 text-sky-600 shadow-sm dark:bg-sky-900/40 dark:text-sky-200">
                       {item.type === "task" ? (
                         <ClipboardCheck className="h-4 w-4" />
@@ -530,7 +530,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={row.label}
-                  className="flex itecare2-start gap-3 rounded-2xl border border-neutral-200/70 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-start gap-3 rounded-2xl border border-neutral-200/70 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div className="rounded-full bg-emerald-100 p-2 text-emerald-700 shadow-sm dark:bg-emerald-900/40 dark:text-emerald-200">
                     <Icon className="h-4 w-4" />
@@ -562,7 +562,7 @@ export default function DashboardPage() {
                   key={panel.title}
                   className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="mb-2 flex itecare2-center gap-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <Icon className="h-4 w-4 text-neutral-600 dark:text-slate-300" />
                     <p className="font-semibold text-neutral-900 dark:text-white">{panel.title}</p>
                   </div>
@@ -623,7 +623,7 @@ export default function DashboardPage() {
                 <Link
                   key={area.slug}
                   href={`/life/${area.slug}`}
-                  className="flex itecare2-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{area.title}</p>
@@ -648,7 +648,7 @@ export default function DashboardPage() {
 
         <Card className="border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
           <CardHeader>
-            <CardTitle>Systecare2 & shortcuts</CardTitle>
+            <CardTitle>Systems & shortcuts</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-neutral-700 dark:text-slate-300">
             <Button asChild className="w-full">
@@ -693,12 +693,12 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             {recent.length === 0 ? (
-              <p className="text-sm text-neutral-600 dark:text-slate-300">No recently opened itecare2.</p>
+              <p className="text-sm text-neutral-600 dark:text-slate-300">No recently opened items.</p>
             ) : (
               recent.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-center justify-between rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{item.name}</p>
@@ -730,7 +730,7 @@ export default function DashboardPage() {
               Pinned areas: {pinnedAreas.length > 0 ? pinnedAreas.map((a) => a.title).join(", ") : "none yet"}.
             </p>
             <p className="rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              Broken itecare2 stay visible above so you can clear friction fast.
+              Broken items stay visible above so you can clear friction fast.
             </p>
           </CardContent>
         </Card>

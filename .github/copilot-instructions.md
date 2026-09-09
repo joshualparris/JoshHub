@@ -6,7 +6,7 @@ Brief, actionable guidance for AI coding agents working on this repository.
 - Project type: Next.js (App Router) + TypeScript + Tailwind CSS. App lives in `src/app`.
 - UI: small shadcn-style components in `src/components`; styling via Tailwind and `class-variance-authority`.
 - Data patterns:
-  - Static catalogue data: `src/data/apps.ts` is the source-of-truth for the apps catalogue. New itecare2 require `id, name, type, category, status, tags, primaryUrl, urls[]`.
+  - Static catalogue data: `src/data/apps.ts` is the source-of-truth for the apps catalogue. New items require `id, name, type, category, status, tags, primaryUrl, urls[]`.
   - Local persistent data: IndexedDB via Dexie in `src/lib/db/*` (see `dexie.ts`, `schema.ts`, and seed logic in `dexie.ts`). Prefer updating schema and seeds consistently.
 
 - Routing & structure:
@@ -26,7 +26,7 @@ Brief, actionable guidance for AI coding agents working on this repository.
   - Use the existing UI components & Tailwind utility classes — prefer composition over new heavy dependencies.
 
 - Integration points & external dependencies:
-  - Hosting: Vercel recommended (Next.js App Router); many catalogue itecare2 point to GitHub Pages or itch.io — maintain links in `src/data/apps.ts`.
+  - Hosting: Vercel recommended (Next.js App Router); many catalogue items point to GitHub Pages or itch.io — maintain links in `src/data/apps.ts`.
   - IndexedDB via `dexie` + `dexie-react-hooks` for client-side state persistence.
 
 - When changing routes or adding pages:
@@ -39,7 +39,7 @@ Brief, actionable guidance for AI coding agents working on this repository.
   - Database schema: `src/lib/db/schema.ts` and `dexie.ts` show versioned `stores` usage.
 
 - What NOT to do:
-  - Do not store catalogue itecare2 in multiple places—`src/data/apps.ts` is authoritative.
+  - Do not store catalogue items in multiple places—`src/data/apps.ts` is authoritative.
   - Avoid adding new global CSS frameworks; stick with Tailwind and existing utilities.
 
 If any guidance above is unclear or you need examples for a specific change (route, DB migration, or component), ask and include the target file path and a short goal.

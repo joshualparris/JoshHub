@@ -106,7 +106,7 @@ export function CSVImportPreview() {
   if (data.length === 0) {
     return (
       <Card className="border-dashed border-2">
-        <CardContent className="flex flex-col itecare2-center justify-center py-12 space-y-4">
+        <CardContent className="flex flex-col items-center justify-center py-12 space-y-4">
           <div className="p-4 bg-muted rounded-full">
             <FileUp className="h-8 w-8 text-muted-foreground" />
           </div>
@@ -131,9 +131,9 @@ export function CSVImportPreview() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between itecare2-center">
+      <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold flex itecare2-center gap-2">
+          <h2 className="text-2xl font-bold flex items-center gap-2">
             Import Preview: {fileName}
             <Button variant="ghost" size="sm" onClick={() => { setData([]); setFileName(null); }}>
               <RefreshCcw className="h-4 w-4" />
@@ -202,7 +202,7 @@ export function CSVImportPreview() {
                 </td>
                 <td className="px-4 py-4 text-center">
                   {m.match ? (
-                    <div className="flex flex-col itecare2-center gap-1">
+                    <div className="flex flex-col items-center gap-1">
                       <ArrowRight className="h-4 w-4 text-emerald-500" />
                       <Badge variant="outline" className="text-[10px] py-0">{m.matchType}</Badge>
                     </div>
@@ -213,7 +213,7 @@ export function CSVImportPreview() {
                 <td className="px-4 py-4">
                   {m.match ? (
                     <div>
-                      <div className="font-semibold flex itecare2-center gap-2">
+                      <div className="font-semibold flex items-center gap-2">
                         {m.match.name}
                         {m.conflicts.length > 0 && <AlertTriangle className="h-3 w-3 text-rose-500" />}
                       </div>

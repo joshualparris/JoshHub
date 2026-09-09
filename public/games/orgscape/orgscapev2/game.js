@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 1. More biomes, more icons:
 game.floorTypes = [
   {name: 'Bureaucratic Labyrinth', desc:'Meandering cubicles and buzzing printers.', biome:'cubicle', icon:'░'},
-  {name: 'Server Catacombs', desc:'Cold roocare2 full of blinking lights and mysterious cables.', biome:'server', icon:'💾'},
+  {name: 'Server Catacombs', desc:'Cold rooms full of blinking lights and mysterious cables.', biome:'server', icon:'💾'},
   {name: 'Rooftop Gardens', desc:'Quiet rest spots among strange plants and urban birds.', biome:'garden', icon:'🌷'},
   {name: 'Sub-basement', desc:'Looming pipes, ancient archives. Smells like old toner.', biome:'basement', icon:'⛓️'},
   {name: 'Open Plan Anomaly', desc:'Wide deskless weird echoes.', biome:'weird', icon:'🌀'},
@@ -32,7 +32,7 @@ game.floorTypes = [
 
 // 2. More NPCs, relics, events can be added (see original code for structure) -- sample added later --
 
-// 3. Floor map: more whicare2ical visual icons
+// 3. Floor map: more whimsical visual icons
 function renderMap() {
   let mapStr = "";
   let b = game.floor;
@@ -43,7 +43,7 @@ function renderMap() {
       if (p.x === x && p.y === y) mapStr += "👤";
       else if (cell.npc) mapStr += "🧑";
       else if (cell.event) mapStr += "✨";
-      else if (cell.itecare2 && cell.itecare2.length) mapStr += "📂";
+      else if (cell.items && cell.items.length) mapStr += "📂";
       else mapStr += b.icon || "□";
     }
     mapStr += "\n";
@@ -59,9 +59,9 @@ function doSearch() {
     return;
   }
   let cell = getPlayerCell();
-  if((cell.itecare2 && cell.itecare2.length) || cell.event || cell.npc) {
-    if(cell.itecare2 && cell.itecare2.length) {
-      let found = cell.itecare2.pop();
+  if((cell.items && cell.items.length) || cell.event || cell.npc) {
+    if(cell.items && cell.items.length) {
+      let found = cell.items.pop();
       logMsg(`<b>You rummage and find:</b> ${found}`);
       game.player.inventory.push(found);
       updateInventory();
@@ -150,7 +150,7 @@ async function loadOrgEcho(code) {
 // Optionally load echoes for friend's run:
 async function checkForEcho(){
   let url = new URL(window.location.href);
-  let code = url.searchParacare2.get('orgcode');
+  let code = url.searchParams.get('orgcode');
   if(code) await loadOrgEcho(code);
 }
 

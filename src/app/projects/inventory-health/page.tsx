@@ -248,7 +248,7 @@ export default function InventoryHealthPage() {
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <div className="flex justify-between text-sm mb-1">
-                <span className="flex itecare2-center gap-2"><GitBranch className="h-4 w-4 text-muted-foreground" /> Missing Repo URL</span>
+                <span className="flex items-center gap-2"><GitBranch className="h-4 w-4 text-muted-foreground" /> Missing Repo URL</span>
                 <span className="font-semibold">{stats.missingRepo} / {stats.total}</span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
@@ -258,7 +258,7 @@ export default function InventoryHealthPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm mb-1">
-                <span className="flex itecare2-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" /> Missing Live URL</span>
+                <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-muted-foreground" /> Missing Live URL</span>
                 <span className="font-semibold">{stats.missingLive} / {stats.total}</span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
@@ -268,7 +268,7 @@ export default function InventoryHealthPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm mb-1">
-                <span className="flex itecare2-center gap-2"><Folder className="h-4 w-4 text-muted-foreground" /> Missing Local Path</span>
+                <span className="flex items-center gap-2"><Folder className="h-4 w-4 text-muted-foreground" /> Missing Local Path</span>
                 <span className="font-semibold">{stats.missingPath} / {stats.total}</span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
@@ -308,9 +308,9 @@ export default function InventoryHealthPage() {
 
       {/* Inventory Explorer */}
       <div className="space-y-4">
-        <div className="flex flex-col md:flex-row gap-4 justify-between itecare2-start md:itecare2-center">
+        <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
           <h2 className="text-2xl font-bold">Inventory Explorer</h2>
-          <div className="flex itecare2-center gap-2">
+          <div className="flex items-center gap-2">
             <Button 
               variant="outline" 
               size="sm" 
@@ -372,7 +372,7 @@ export default function InventoryHealthPage() {
           
           <div className="flex-1"></div>
           
-          <div className="text-sm text-muted-foreground flex itecare2-center">
+          <div className="text-sm text-muted-foreground flex items-center">
             Showing {filteredProjects.length} projects
           </div>
         </div>

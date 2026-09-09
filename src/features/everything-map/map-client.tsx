@@ -39,7 +39,7 @@ export function MapClient({ initialId }: MapClientProps) {
   return (
     <div className="grid gap-4 md:grid-cols-[280px,1fr]">
       <div className="space-y-3 rounded-lg border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
-        <div className="flex itecare2-center gap-2">
+        <div className="flex items-center gap-2">
           <Search className="h-4 w-4 text-neutral-500 dark:text-slate-400" />
           <Input
             value={query}
@@ -86,7 +86,7 @@ function TocTree({ nodes, selectedId, onSelect, depth = 0 }: TocTreeProps) {
           <button
             type="button"
             onClick={() => onSelect(node.id)}
-            className={`flex w-full itecare2-center gap-2 rounded-md px-2 py-1 text-left text-sm transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:hover:bg-slate-800 dark:focus-visible:ring-slate-400 ${
+            className={`flex w-full items-center gap-2 rounded-md px-2 py-1 text-left text-sm transition hover:bg-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:hover:bg-slate-800 dark:focus-visible:ring-slate-400 ${
               selectedId === node.id ? "bg-neutral-100 font-semibold dark:bg-slate-800/80" : ""
             }`}
             style={{ paddingLeft: 8 + depth * 12 }}
@@ -162,7 +162,7 @@ function SectionDetails({ node }: { node: TocNode }) {
     <div className="space-y-4">
         <Card>
           <CardHeader>
-            <CardTitle className="flex itecare2-center justify-between gap-2">
+            <CardTitle className="flex items-center justify-between gap-2">
               <span>{node.title}</span>
               <div className="flex gap-2">
                   <Button variant="outline" size="sm" onClick={handleExport}>
@@ -170,7 +170,7 @@ function SectionDetails({ node }: { node: TocNode }) {
                 Export notes
               </Button>
               <Button asChild variant="outline" size="sm">
-                <label className="flex cursor-pointer itecare2-center">
+                <label className="flex cursor-pointer items-center">
                   <FileUp className="mr-2 h-4 w-4" />
                   Import
                   <input
@@ -241,7 +241,7 @@ function SectionDetails({ node }: { node: TocNode }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex itecare2-center gap-2">
+          <CardTitle className="flex items-center gap-2">
             <NotebookPen className="h-4 w-4" />
             Notes
           </CardTitle>
@@ -253,7 +253,7 @@ function SectionDetails({ node }: { node: TocNode }) {
                 key={note.id}
                 className="rounded-md border border-neutral-200 bg-white p-3 shadow-xs"
               >
-                <div className="flex itecare2-start justify-between gap-2">
+                <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-slate-100">{note.title}</p>
                     <p className="whitespace-pre-wrap text-sm text-neutral-700 dark:text-slate-200">
@@ -323,7 +323,7 @@ function SectionDetails({ node }: { node: TocNode }) {
               return (
               <div
                 key={note.id}
-                className="flex itecare2-start justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
+                className="flex items-start justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
               >
                 <div className="space-y-1">
                   <p className="font-medium text-neutral-900 dark:text-slate-50">{note.title}</p>

@@ -21,7 +21,7 @@ export const lifeAreas: LifeArea[] = [
   {
     slug: "faith",
     title: "Faith",
-    intro: "Practices, readings, and service rhythcare2.",
+    intro: "Practices, readings, and service rhythms.",
     sections: [
       { heading: "Practices", body: "Daily reflection, prayer blocks, weekly community." },
       { heading: "Focus", body: "Keep space for quiet mornings; align plans with values." },
@@ -64,7 +64,7 @@ export const lifeAreas: LifeArea[] = [
     title: "Work / DCS",
     intro: "Work in Dubbo and related tooling.",
     sections: [
-      { heading: "Current", body: "Prep and companion apps; keep broken itecare2 visible." },
+      { heading: "Current", body: "Prep and companion apps; keep broken items visible." },
     ],
     quickLinks: ["dcs-companion", "dcs-prep", "parris-dubbo-mover"],
     tags: ["dubbo", "dcs", "work"],

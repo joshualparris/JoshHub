@@ -98,12 +98,12 @@ export async function deleteBookmark(id: string) {
   await db.bookmarks.delete(id);
 }
 
-export async function createRoutine(input: { name: string; itecare2: Routine["itecare2"]; tags?: string[] }) {
+export async function createRoutine(input: { name: string; items: Routine["items"]; tags?: string[] }) {
   const now = Date.now();
   const routine: Routine = {
     id: uuid(),
     name: input.name,
-    itecare2: input.itecare2,
+    items: input.items,
     tags: input.tags ?? [],
     createdAt: now,
   };

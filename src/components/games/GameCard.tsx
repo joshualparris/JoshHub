@@ -16,7 +16,7 @@ export default function GameCard({ title, description, localPath, playUrl }: Pro
             </h3>
             <p className="mt-2 text-sm text-neutral-700 dark:text-slate-300">{description}</p>
 
-            <div className="mt-4 flex itecare2-center gap-3">
+            <div className="mt-4 flex items-center gap-3">
                 {playUrl ? (
                     // Playable link opens in new tab for external or local files
                     <a

@@ -7,9 +7,9 @@ export function createStarhaven(write, setStatus, onEnd) {
     }
   }
   class Room {
-    constructor(id, name, desc, x, y, itecare2 = [], npcs = []) {
+    constructor(id, name, desc, x, y, items = [], npcs = []) {
       this.id = id; this.name = name; this.desc = desc; this.x = x; this.y = y;
-      this.itecare2 = itecare2; this.npcs = npcs; this.passable = true;
+      this.items = items; this.npcs = npcs; this.passable = true;
     }
   }
   class NPC {
@@ -24,8 +24,8 @@ export function createStarhaven(write, setStatus, onEnd) {
     constructor(seed) {
       this.rng = seed ? new Random(seed) : new Random();
       this.time = 60;
-      this.roocare2 = {};
-      this.itecare2 = {};
+      this.rooms = {};
+      this.items = {};
       this.npcs = {};
       this.player_room = "atrium";
       this.inv = [];
@@ -39,8 +39,8 @@ export function createStarhaven(write, setStatus, onEnd) {
       this.look();
     }
 
-    _add_room(id, name, desc, x, y, itecare2, npcs) { this.roocare2[id] = new Room(id, name, desc, x, y, itecare2 || [], npcs || []); }
-    _add_item(id, name, desc, portable = true) { this.itecare2[id] = new Item(id, name, desc, portable); }
+    _add_room(id, name, desc, x, y, items, npcs) { this.rooms[id] = new Room(id, name, desc, x, y, items || [], npcs || []); }
+    _add_item(id, name, desc, portable = true) { this.items[id] = new Item(id, name, desc, portable); }
     _add_npc(id, name, title, room, alibi, truth, lie) { this.npcs[id] = new NPC(id, name, title, room, alibi, truth, lie); }
 
     _build_world() {
@@ -49,7 +49,7 @@ export function createStarhaven(write, setStatus, onEnd) {
       this._add_room("labs", "Bio-Labs", "Sterile corridors and nutrient fog. Security panels blink amber.", 1, 0, ["stimulant", "overwritten_log"]);
       this._add_room("hangar", "Shuttle Hangar", "Docked skiffs hum softly. The escape shuttle is locked behind red bars.", 4, 1, ["forged_card"]);
       this._add_room("command", "Command Deck", "Tiered consoles and a captain’s chair. The Master Console awaits.", 3, 0, ["thruster_invoice"]);
-      this._add_room("brig", "Security Brig", "Energy bars and cold benches. An arrest field projector hucare2.", 0, 1);
+      this._add_room("brig", "Security Brig", "Energy bars and cold benches. An arrest field projector hums.", 0, 1);
       this._add_room("gardens", "Starlight Gardens", "Bioluminescent vines wind around art installations.", 1, 2, ["dna_fiber"]);
       this._add_room("suites", "VIP Suites", "Private doors, hush-fields, and the perfume of old money.", 3, 2, ["weapon_garrote"]);
       this._add_room("service", "Service Ducts", "Tight passages. The station’s veins and secrets.", 4, 2, ["maintenance_key"]);
@@ -109,13 +109,13 @@ export function createStarhaven(write, setStatus, onEnd) {
       for (const sus of suspects) {
         this.killer_evidence[sus] = shuffle(evidence_pool[sus].slice(), this.rng).slice(0, 3);
       }
-      const movable = Object.keys(this.itecare2).filter((iid) => this.itecare2[iid].portable && iid !== "codes_token");
-      const drop_roocare2 = Object.keys(this.roocare2).filter((rid) => ![this.brigrm, this.cmdrm].includes(rid));
+      const movable = Object.keys(this.items).filter((iid) => this.items[iid].portable && iid !== "codes_token");
+      const drop_rooms = Object.keys(this.rooms).filter((rid) => ![this.brigrm, this.cmdrm].includes(rid));
       for (const iid of movable) {
-        const placed = Object.values(this.roocare2).some((r) => r.itecare2.includes(iid));
+        const placed = Object.values(this.rooms).some((r) => r.items.includes(iid));
         if (!placed) {
-          const room = drop_roocare2[Math.floor(Math.random() * drop_roocare2.length)];
-          this.roocare2[room].itecare2.push(iid);
+          const room = drop_rooms[Math.floor(Math.random() * drop_rooms.length)];
+          this.rooms[room].items.push(iid);
         }
       }
     }
@@ -132,14 +132,14 @@ export function createStarhaven(write, setStatus, onEnd) {
     }
 
     room_at_xy(x, y) {
-      return Object.values(this.roocare2).find((r) => r.x === x && r.y === y && r.passable);
+      return Object.values(this.rooms).find((r) => r.x === x && r.y === y && r.passable);
     }
-    current_room() { return this.roocare2[this.player_room]; }
+    current_room() { return this.rooms[this.player_room]; }
 
     look() {
       const r = this.current_room();
       this.say(`\n${r.name}\n${r.desc}`);
-      if (r.itecare2.length) this.say("Itecare2 here: " + r.itecare2.map((i) => this.itecare2[i].name).join(", "));
+      if (r.items.length) this.say("Items here: " + r.items.map((i) => this.items[i].name).join(", "));
       if (r.npcs.length) this.say("You see: " + r.npcs.map((n) => this.npcs[n].name).join(", "));
       const exits = [];
       for (const [d, [dx, dy]] of Object.entries(DIRS)) {
@@ -150,11 +150,11 @@ export function createStarhaven(write, setStatus, onEnd) {
     }
 
     show_map() {
-      const xs = Object.values(this.roocare2).map((r) => r.x);
-      const ys = Object.values(this.roocare2).map((r) => r.y);
+      const xs = Object.values(this.rooms).map((r) => r.x);
+      const ys = Object.values(this.rooms).map((r) => r.y);
       const W = Math.max(...xs) + 1, H = Math.max(...ys) + 1;
       const grid = Array.from({ length: H }, () => Array.from({ length: W }, () => "   "));
-      for (const r of Object.values(this.roocare2)) {
+      for (const r of Object.values(this.rooms)) {
         const label = r.name.split(" ")[0].slice(0, 3).toUpperCase();
         grid[r.y][r.x] = label;
       }
@@ -167,7 +167,7 @@ export function createStarhaven(write, setStatus, onEnd) {
 
     show_time() { this.say(`Time to solar impact: ${this.time} minutes.`); this.spend(0); }
     inv_show() {
-      if (this.inv.length) this.say("You carry: " + this.inv.map((i) => this.itecare2[i].name).join(", "));
+      if (this.inv.length) this.say("You carry: " + this.inv.map((i) => this.items[i].name).join(", "));
       else this.say("You carry nothing.");
       this.spend(0);
     }
@@ -186,8 +186,8 @@ export function createStarhaven(write, setStatus, onEnd) {
     }
 
     _sync_npcs_in_room() {
-      for (const rid of Object.keys(this.roocare2)) {
-        this.roocare2[rid].npcs = Object.keys(this.npcs).filter((nid) => this.npcs[nid].room === rid && !this.npcs[nid].arrested);
+      for (const rid of Object.keys(this.rooms)) {
+        this.rooms[rid].npcs = Object.keys(this.npcs).filter((nid) => this.npcs[nid].room === rid && !this.npcs[nid].arrested);
       }
     }
 
@@ -195,11 +195,11 @@ export function createStarhaven(write, setStatus, onEnd) {
       if (!args.length) { this.say("Take what?"); return; }
       const name = args.join(" ").toLowerCase();
       const r = this.current_room();
-      const iid = r.itecare2.find((i) => this.itecare2[i].name.toLowerCase() === name || i === name);
+      const iid = r.items.find((i) => this.items[i].name.toLowerCase() === name || i === name);
       if (!iid) { this.say("Not here."); return; }
-      const it = this.itecare2[iid];
+      const it = this.items[iid];
       if (!it.portable) { this.say("It’s fixed in place."); return; }
-      r.itecare2 = r.itecare2.filter((i) => i !== iid);
+      r.items = r.items.filter((i) => i !== iid);
       this.inv.push(iid);
       this.say(`You take the ${it.name}.`);
       this.spend(1);
@@ -208,20 +208,20 @@ export function createStarhaven(write, setStatus, onEnd) {
     drop(...args) {
       if (!args.length) { this.say("Drop what?"); return; }
       const name = args.join(" ").toLowerCase();
-      const iid = this.inv.find((i) => this.itecare2[i].name.toLowerCase() === name || i === name);
+      const iid = this.inv.find((i) => this.items[i].name.toLowerCase() === name || i === name);
       if (!iid) { this.say("You don’t have that."); return; }
       this.inv = this.inv.filter((i) => i !== iid);
-      this.current_room().itecare2.push(iid);
-      this.say(`You drop the ${this.itecare2[iid].name}.`);
+      this.current_room().items.push(iid);
+      this.say(`You drop the ${this.items[iid].name}.`);
       this.spend(1);
     }
 
     inspect(...args) {
       if (!args.length) { this.say("Inspect what?"); return; }
       const name = args.join(" ").toLowerCase();
-      const pool = [...this.inv, ...this.current_room().itecare2];
+      const pool = [...this.inv, ...this.current_room().items];
       for (const i of pool) {
-        const it = this.itecare2[i];
+        const it = this.items[i];
         if (it.name.toLowerCase() === name || i === name) {
           let detail = it.desc;
           if (this.killer_evidence[this.killer_id].includes(i)) detail += " (This ties uncomfortably close to the killer.)";
@@ -267,7 +267,7 @@ export function createStarhaven(write, setStatus, onEnd) {
       this.say(`You lay out your case against ${this.npcs[who].name}.`);
       if (guilty) {
         this.say("They blanch. A vein ticks. The room chills.");
-        this.say("Key tells: " + tips.map((e) => this.itecare2[e].name).join(", ") + ".");
+        this.say("Key tells: " + tips.map((e) => this.items[e].name).join(", ") + ".");
       } else {
         this.say("They sneer. Those 'clues' don’t hold up. Doubt creeps in.");
       }
@@ -287,8 +287,8 @@ export function createStarhaven(write, setStatus, onEnd) {
       if (n.arrested) { this.say("Already restrained."); return; }
       n.arrested = true; n.room = this.brigrm;
       this._sync_npcs_in_room();
-      if (target_id === this.killer_id && !this.roocare2[this.brigrm].itecare2.includes("codes_token")) {
-        this.roocare2[this.brigrm].itecare2.push("codes_token");
+      if (target_id === this.killer_id && !this.rooms[this.brigrm].items.includes("codes_token")) {
+        this.rooms[this.brigrm].items.push("codes_token");
       }
       this.say(`You restrain ${n.name}. Security drones escort them to the Brig.`);
       this.spend(3);
@@ -296,7 +296,7 @@ export function createStarhaven(write, setStatus, onEnd) {
 
     use_console() {
       if (this.player_room !== this.cmdrm) { this.say("You must be at the Master Console on the Command Deck."); return; }
-      const codes_here = this.roocare2[this.brigrm].itecare2.includes("codes_token");
+      const codes_here = this.rooms[this.brigrm].items.includes("codes_token");
       const killerName = this.npcs[this.killer_id].name;
       if (codes_here) {
         this.say("You splice in the Master Codes Token from the Brig. The lockout shudders…");
@@ -342,7 +342,7 @@ export function createStarhaven(write, setStatus, onEnd) {
       if (cmd === "arrest") return this.arrest(...args);
       if (cmd === "use" && args[0] && args[0].toLowerCase() === "console") return this.use_console();
       this.say("Unrecognized. Try 'help'.");
-      if (this.time <= 15 && this.time > 0) this.say(`(Alarcare2 intensify: ${this.time} minutes left.)`);
+      if (this.time <= 15 && this.time > 0) this.say(`(Alarms intensify: ${this.time} minutes left.)`);
     }
   }
 

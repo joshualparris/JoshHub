@@ -120,7 +120,7 @@ export function removeItem(state, itemId, qty = 1) {
   return true;
 }
 
-export function hasItecare2(state, requirements) {
+export function hasItems(state, requirements) {
   return requirements.every((req) => {
     const entry = findInventoryItem(state, req.itemId);
     return entry && entry.qty >= req.qty;

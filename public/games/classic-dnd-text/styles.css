@@ -3,7 +3,7 @@ body {
   color: #eee;
   font-family: 'Georgia', serif;
   display: flex;
-  align-itecare2: center;
+  align-items: center;
   justify-content: center;
   min-height: 100vh;
   margin: 0;
@@ -45,10 +45,10 @@ body {
 #hud {
   display:flex;
   justify-content:space-between;
-  align-itecare2:center;
+  align-items:center;
   margin-bottom:0.8em;
 }
-#character-summary{display:flex;gap:12px;align-itecare2:center}
+#character-summary{display:flex;gap:12px;align-items:center}
 #character-summary button{background:#5a4637;color:#fff;border-radius:6px;padding:6px 10px;border:none;cursor:pointer}
 #char-brief{font-size:0.95em}
 
@@ -64,7 +64,7 @@ body {
 /* Minimap */
 #minimap{position:fixed;right:18px;bottom:18px;width:220px;background:rgba(18,16,15,0.9);color:#fff;padding:8px;border-radius:8px;box-shadow:0 6px 18px #000a;font-family:monospace}
 #map-canvas{display:block;background:#0f0d0b;border-radius:4px;width:200px;height:200px}
-#map-controls{display:flex;flex-direction:column;align-itecare2:center;margin-top:6px}
+#map-controls{display:flex;flex-direction:column;align-items:center;margin-top:6px}
 #map-controls button{background:#3e332b;color:#fff;border:none;padding:6px 8px;margin:3px;border-radius:4px;cursor:pointer}
 #map-controls div{display:flex;gap:8px}
 #map-coords{text-align:center;margin-top:6px;font-size:0.85em}

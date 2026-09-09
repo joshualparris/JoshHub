@@ -3,7 +3,7 @@ window.LOCATIONS = [
     id: "beached-leviathan",
     name: "The Beached Leviathan",
     description:
-      "A massive ship, long grounded, now serves as tavern and refuge. Lantern light gleacare2 off salt-stained timber while sea wind slithers through warped planks. The scent of spice, tar, and ale mingles in the air as sailors trade stories.",
+      "A massive ship, long grounded, now serves as tavern and refuge. Lantern light gleams off salt-stained timber while sea wind slithers through warped planks. The scent of spice, tar, and ale mingles in the air as sailors trade stories.",
     ambience: "Creaking wood, brine-soaked air, low laughter, clinking mugs.",
     npcs: ["madame-rosene"],
     exits: ["protectors-enclave", "blacklake"],
@@ -39,7 +39,7 @@ window.LOCATIONS = [
     id: "castle-never",
     name: "Castle Never",
     description:
-      "The fortress loocare2 over the city, half restored, half scarred. Banners of the Open Lord snap in the wind, and armored patrols move with disciplined rhythm. Politics are thicker than fog inside these walls.",
+      "The fortress looms over the city, half restored, half scarred. Banners of the Open Lord snap in the wind, and armored patrols move with disciplined rhythm. Politics are thicker than fog inside these walls.",
     ambience: "Steel on stone, muffled orders, the scent of oil and old parchment.",
     npcs: ["dagult-neverember"],
     exits: ["protectors-enclave"],

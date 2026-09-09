@@ -3,15 +3,15 @@ import { notFound, redirect } from "next/navigation";
 import { getAppById } from "@/data/apps";
 
 interface Props {
-  paracare2: { id: string } | Promise<{ id: string }>;
+  params: { id: string } | Promise<{ id: string }>;
 }
 
 // Force runtime so we can always send the user to the live URL and avoid stale
 // pre-rendered 404s.
 export const dynamic = "force-dynamic";
 
-export default async function AppDetailPage({ paracare2 }: Props) {
-  const resolved = await paracare2;
+export default async function AppDetailPage({ params }: Props) {
+  const resolved = await params;
   const app = getAppById(resolved.id);
   if (!app) {
     notFound();

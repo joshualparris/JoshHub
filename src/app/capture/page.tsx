@@ -206,12 +206,12 @@ export default function CapturePage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No captured itecare2 yet.</p>
+            <p className="text-sm text-neutral-600">No captured items yet.</p>
           ) : (
             recent.map((item, idx) => (
               <div
                 key={`${item.type}-${item.createdAt}-${idx}`}
-                className="flex itecare2-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
+                className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
               >
                 <div>
                   <p className="font-medium text-neutral-900">{item.title}</p>

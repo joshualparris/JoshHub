@@ -57,9 +57,9 @@ export default function RootLayout({
           </div>
 
           <header className="sticky top-0 z-20 border-b border-white/40 bg-white/80 backdrop-blur-lg dark:border-slate-800 dark:bg-slate-900/70">
-            <div className="mx-auto flex max-w-6xl flex-wrap itecare2-center gap-3 px-4 py-4">
-              <div className="flex itecare2-center gap-3">
-                <div className="flex itecare2-center gap-2 rounded-full border border-white/60 bg-white/90 px-4 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
+            <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 rounded-full border border-white/60 bg-white/90 px-4 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
                   <span className="text-sm font-semibold tracking-tight text-neutral-900 dark:text-white">
                     JoshHub
                   </span>
@@ -67,7 +67,7 @@ export default function RootLayout({
                     living os
                   </span>
                 </div>
-                <div className="hidden itecare2-center gap-2 text-xs text-neutral-600 dark:text-slate-300 md:flex">
+                <div className="hidden items-center gap-2 text-xs text-neutral-600 dark:text-slate-300 md:flex">
                   <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1 text-emerald-700 dark:border-emerald-800/60 dark:bg-emerald-900/30 dark:text-emerald-200">
                     Faith first
                   </span>
@@ -77,7 +77,7 @@ export default function RootLayout({
                 </div>
               </div>
 
-              <nav className="flex flex-1 flex-wrap itecare2-center justify-center gap-2 text-sm">
+              <nav className="flex flex-1 flex-wrap items-center justify-center gap-2 text-sm">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
@@ -89,7 +89,7 @@ export default function RootLayout({
                 ))}
               </nav>
 
-              <div className="flex itecare2-center gap-2">
+              <div className="flex items-center gap-2">
                 <GlobalSearch />
                 <ThemeToggle />
               </div>

@@ -68,18 +68,18 @@ export function useMovement() {
 export async function createNutritionLog(input: {
   date: string;
   summary: string;
-  proteinGracare2?: number;
+  proteinGrams?: number;
   vegServes?: number;
-  satFatGracare2?: number;
+  satFatGrams?: number;
   notes?: string;
 }) {
   const log: NutritionLog = {
     id: uuid(),
     date: input.date,
     summary: input.summary,
-    proteinGracare2: input.proteinGracare2 ?? null,
+    proteinGrams: input.proteinGrams ?? null,
     vegServes: input.vegServes ?? null,
-    satFatGracare2: input.satFatGracare2 ?? null,
+    satFatGrams: input.satFatGrams ?? null,
     notes: input.notes,
     createdAt: Date.now(),
   };

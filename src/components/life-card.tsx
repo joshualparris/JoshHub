@@ -14,7 +14,7 @@ interface Props {
 export function LifeCard({ area, pinned, onTogglePin, showPin = false }: Props) {
   return (
     <Card className="h-full">
-      <CardHeader className="flex flex-row itecare2-start justify-between gap-2">
+      <CardHeader className="flex flex-row items-start justify-between gap-2">
         <div>
           <CardTitle>
             <Link

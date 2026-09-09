@@ -13,8 +13,8 @@ const STAGE_ORDER: Record<PlatformOpportunity["stage"], number> = {
 
 export const opportunitiesRepo = {
   async list() {
-    const itecare2 = await db.platformOpportunities.toArray();
-    return itecare2.sort((a, b) => {
+    const items = await db.platformOpportunities.toArray();
+    return items.sort((a, b) => {
       // 1. Stage
       const stageDiff =
         (STAGE_ORDER[a.stage] ?? 99) - (STAGE_ORDER[b.stage] ?? 99);

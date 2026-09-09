@@ -32,7 +32,7 @@ const game = {
   },
   floorTypes: [
     { name: 'Bureaucratic Labyrinth', desc: 'Meandering cubicles and buzzing printers.', biome: 'cubicle', icon: '░' },
-    { name: 'Server Catacombs', desc: 'Cold roocare2 full of blinking lights and mysterious cables.', biome: 'server', icon: '💾' },
+    { name: 'Server Catacombs', desc: 'Cold rooms full of blinking lights and mysterious cables.', biome: 'server', icon: '💾' },
     { name: 'Rooftop Gardens', desc: 'Quiet rest stops among strange plants and urban birds.', biome: 'garden', icon: '🌷' },
     { name: 'Sub-basement', desc: 'Looming pipes, ancient archives. Smells like old toner.', biome: 'basement', icon: '⛓️' },
     { name: 'Open Plan Anomaly', desc: 'Wide deskless spaces with echoes.', biome: 'weird', icon: '🌀' },
@@ -55,7 +55,7 @@ const game = {
   ],
   relics: [
     { name: "Mug of Unbreakable Focus", desc: "+1 max Sanity", bonus: "sanity" },
-    { name: "Magic Stapler", desc: "Never jacare2. Sometimes removes staples *preemptively*.", bonus: "event" },
+    { name: "Magic Stapler", desc: "Never jams. Sometimes removes staples *preemptively*.", bonus: "event" },
     { name: "Infinite Highlighter", desc: "Can draw attention or hide info as required.", bonus: "event" },
     { name: "Master Lanyard", desc: "Opens any door. Once.", bonus: "unlock" },
     { name: "Desk Plant of Resilience", desc: "Whispers motivational quotes at 3am.", bonus: "sanity" }
@@ -74,7 +74,7 @@ const game = {
       contexts: ['any']
     },
     {
-      desc: "The printer jacare2! Options: REPAIR, KICK, CALL-IT, SACRIFICE-FORM.",
+      desc: "The printer jams! Options: REPAIR, KICK, CALL-IT, SACRIFICE-FORM.",
       options: [
         {cmd:"repair", txt:"You tinker and (somehow) fix it. Facilities up, Admin resentful.", faction:{Facilities:1,Admin:-1}},
         {cmd:"kick", txt:"You kick it to life. IT Gremlin approves. Your foot throbs.", faction:{Facilities:1}},
@@ -108,8 +108,8 @@ const game = {
       outcomes: ['productive', 'pointless', 'tense', 'inspiring']
     },
     equipment: {
-      itecare2: ['printer', 'scanner', 'coffee machine', 'projector', 'whiteboard'],
-      states: ['jacare2', 'breaks', 'disappears', 'multiplies', 'speaks']
+      items: ['printer', 'scanner', 'coffee machine', 'projector', 'whiteboard'],
+      states: ['jams', 'breaks', 'disappears', 'multiplies', 'speaks']
     },
     person: {
       roles: ['colleague', 'manager', 'intern', 'visitor', 'executive'],
@@ -238,7 +238,7 @@ function generateEvent(context = {}) {
     }
     
     case 'equipment': {
-      const item = getRandom(templates.equipment.itecare2);
+      const item = getRandom(templates.equipment.items);
       const state = getRandom(templates.equipment.states);
       event = {
         desc: `The ${item} ${state}! Do you: FIX, REPORT, IGNORE, IMPROVISE?`,
@@ -263,7 +263,7 @@ function generateEvent(context = {}) {
           {cmd:"help", txt:`You help the ${role}. Good karma.`, faction: {Staff:1}, effect: energy > 2 ? 'energy:-1' : null},
           {cmd:"defer", txt:"You defer to someone else. Safe, but unhelpful.", faction: {Staff:-1}},
           {cmd:"refuse", txt:"You refuse. Harsh, but honest.", faction: {Staff:-2}},
-          {cmd:"negotiate", txt:"You negotiate tercare2. Professional.", faction: {Staff:1, Admin:1}}
+          {cmd:"negotiate", txt:"You negotiate terms. Professional.", faction: {Staff:1, Admin:1}}
         ],
         template: 'person',
         generated: true
@@ -344,7 +344,7 @@ function createFloor() {
         type: type.biome,
         seen: false,
         visits: 0,
-        itecare2: Math.random() < 0.3 ? [getRandom([
+        items: Math.random() < 0.3 ? [getRandom([
           "Old Keycard", "Blank Form", "Broken Mouse", "Crumpled Memo", getRandom(game.relics).name
         ])] : [],
         npc: Math.random()<0.18 ? getRandom(game.npcs): null,
@@ -394,17 +394,17 @@ function renderMap() {
       const cell = game.floor.grid[y][x];
       const span = document.createElement('span');
       span.className = `map-cell type-${cell.type}` +
-        (cell.itecare2 && cell.itecare2.length ? ' has-item' : '') +
+        (cell.items && cell.items.length ? ' has-item' : '') +
         (cell.event ? ' has-event' : '') +
         (cell.npc ? ' has-npc' : '') +
         (p.x===x && p.y===y ? ' player' : '');
       let icon = '□';
-      if (cell.itecare2 && cell.itecare2.length) icon = '📂';
+      if (cell.items && cell.items.length) icon = '📂';
       if (cell.event) icon = '✨';
       if (cell.npc) icon = '🧑';
       if (p.x===x && p.y===y) icon = '👤';
       span.textContent = icon;
-      span.title = `${cell.type}${cell.npc ? ' | ' + cell.npc.name : ''}${cell.event ? ' | incident' : ''}${(cell.itecare2 && cell.itecare2.length) ? ' | item(s)' : ''}`;
+      span.title = `${cell.type}${cell.npc ? ' | ' + cell.npc.name : ''}${cell.event ? ' | incident' : ''}${(cell.items && cell.items.length) ? ' | item(s)' : ''}`;
       grid.appendChild(span);
     }
   }
@@ -708,10 +708,10 @@ function cellDescription(x,y){
   ];
   if(cell.npc) lines.push(getRandom(npcPhrases));
   if(cell.event) lines.push(getRandom(eventPhrases));
-  if(cell.itecare2 && cell.itecare2.length) lines.push(getRandom(itemPhrases));
+  if(cell.items && cell.items.length) lines.push(getRandom(itemPhrases));
   if(!lines.length) lines.push(getRandom([
     "Quiet carpet stretches in every direction.",
-    "Nothing claicare2 your attention here.",
+    "Nothing claims your attention here.",
     "Only the air-conditioning acknowledges you."
   ]));
   return lines.join(" ");
@@ -742,9 +742,9 @@ function doSearch() {
     return;
   }
   let cell = getPlayerCell();
-  if((cell.itecare2 && cell.itecare2.length) || cell.event || cell.npc) {
-    if(cell.itecare2 && cell.itecare2.length) {
-      let found = cell.itecare2.pop();
+  if((cell.items && cell.items.length) || cell.event || cell.npc) {
+    if(cell.items && cell.items.length) {
+      let found = cell.items.pop();
       logMsg(`<b>You rummage and find:</b> ${found}`);
       game.player.inventory.push(found);
       updateInventory();
@@ -771,21 +771,21 @@ function doSearch() {
 // ==== ITEMS (TAKE) ====
 function doTake(arg) {
   const cell = getPlayerCell();
-  const itecare2 = (cell.itecare2 || []);
-  if (!itecare2.length) {
+  const items = (cell.items || []);
+  if (!items.length) {
     logMsg("There’s nothing here to take.");
     return;
   }
   let idx = 0;
   if (arg && arg.trim()) {
     const target = arg.toLowerCase();
-    idx = itecare2.findIndex(i => i.toLowerCase().includes(target));
+    idx = items.findIndex(i => i.toLowerCase().includes(target));
     if (idx === -1) {
       logMsg("You don't see that here.");
       return;
     }
   }
-  const picked = itecare2.splice(idx,1)[0];
+  const picked = items.splice(idx,1)[0];
   logMsg(`<b>You take:</b> ${picked}`);
   game.player.inventory.push(picked);
   updateInventory();
@@ -819,9 +819,9 @@ function doTalk(name) {
       logMsg(line);
       // If they offered a sour lolly, place it on the ground for pickup
       if (/sour lolly/i.test(line)) {
-        cell.itecare2 = cell.itecare2 || [];
-        if (!cell.itecare2.some(i => /sour lolly/i.test(i)) && !game.player.inventory.some(i => /sour lolly/i.test(i))) {
-          cell.itecare2.push("Sour Lolly");
+        cell.items = cell.items || [];
+        if (!cell.items.some(i => /sour lolly/i.test(i)) && !game.player.inventory.some(i => /sour lolly/i.test(i))) {
+          cell.items.push("Sour Lolly");
           logMsg("<i>A Sour Lolly drops onto the desk.</i> (<b>take sour</b>)");
           renderMap();
         }
@@ -862,13 +862,13 @@ function doOfficeCombat(type) {
 
 // ==== SPECIAL ACTIONS ====
 function doFile() {
-  let forcare2 = game.player.inventory.filter(f=>/form/i.test(f));
-  if(!forcare2.length) {
-    logMsg("You have no forcare2 to file!");
+  let forms = game.player.inventory.filter(f=>/form/i.test(f));
+  if(!forms.length) {
+    logMsg("You have no forms to file!");
     return;
   }
-  game.player.inventory = game.player.inventory.filter(f=>!forcare2.includes(f));
-  logMsg(`You file <b>${forcare2.length} form(s)</b>. You feel a small, hollow pride.`);
+  game.player.inventory = game.player.inventory.filter(f=>!forms.includes(f));
+  logMsg(`You file <b>${forms.length} form(s)</b>. You feel a small, hollow pride.`);
   game.player.tasks.push(getRandom([
     "Schedule a mysterious meeting",
     "Update the fax log",
@@ -883,7 +883,7 @@ function doScan() {
     logMsg("You scan the mouse. It’s still broken. But it blinks pink hopefully.");
     // Chance for an upgrade
     if(Math.random()<0.3) {
-      logMsg("The scanner transforcare2 it into a <b>Cursed Mouse</b>.");
+      logMsg("The scanner transforms it into a <b>Cursed Mouse</b>.");
       game.player.inventory.push("Cursed Mouse");
     }
   } else {
@@ -897,7 +897,7 @@ function doHack() {
   logMsg("You hack at a random terminal. Beep boop. Security doesn't notice... this time.");
   if(Math.random()<0.4) {
     let gain = "Access Chip";
-    logMsg(`You score a ${gain}! It hucare2 softly.`);
+    logMsg(`You score a ${gain}! It hums softly.`);
     game.player.inventory.push(gain);
     updateInventory();
   }
@@ -1016,7 +1016,7 @@ async function loadOrgEcho(code) {
 }
 async function checkForEcho(){
   let url = new URL(window.location.href);
-  let code = url.searchParacare2.get('orgcode');
+  let code = url.searchParams.get('orgcode');
   if(code) await loadOrgEcho(code);
 }
 // Preview report on page exit

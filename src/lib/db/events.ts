@@ -75,7 +75,7 @@ export function parseIcsEvents(icsText: string) {
 }
 
 function toIso(value: string) {
-  // Handle YYYYMMDD or YYYYMMDDTHHmcare2sZ
+  // Handle YYYYMMDD or YYYYMMDDTHHmmssZ
   if (/^\d{8}$/.test(value)) {
     const y = value.slice(0, 4);
     const m = value.slice(4, 6);

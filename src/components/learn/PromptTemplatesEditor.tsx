@@ -47,15 +47,15 @@ export default function PromptTemplatesEditor({ onClose }: { onClose: () => void
             onClose();
         } catch (e: unknown) {
             setSaving(false);
-            const care2g = e instanceof Error ? e.message : String(e);
-            setError(care2g);
+            const msg = e instanceof Error ? e.message : String(e);
+            setError(msg);
         }
     }
 
     return (
-        <div className="fixed inset-0 flex itecare2-center justify-center bg-black/50 p-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 p-4">
             <div className="w-full max-w-3xl bg-white rounded shadow p-4">
-                <div className="flex itecare2-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2">
                     <h3 className="text-lg font-semibold">Prompt Templates</h3>
                     <div className="flex gap-2">
                         <button className="btn" onClick={onClose} disabled={saving}>Cancel</button>

@@ -5,7 +5,7 @@ export function getStarterPack(): LifeItem[] {
   const mk = (partial: Partial<LifeItem> & Pick<LifeItem, 'id' | 'area' | 'type' | 'title'>) =>
     makeLifeItem({ ...partial, createdAt: now, updatedAt: now });
 
-  const itecare2: LifeItem[] = [
+  const items: LifeItem[] = [
     // Faith
     mk({ id: "faith-1", area: "faith", type: "prompt", title: "Daily Abide (10 min)" , body: "2 min gratitude\n5 min Scripture (Psalm + Gospel)\n2 min prayer for family\n1 min obedience step"}),
     mk({ id: "faith-2", area: "faith", type: "resource", title: "Quiet Time Template", body: "Short template for prayer and scripture reading."}),
@@ -36,5 +36,5 @@ export function getStarterPack(): LifeItem[] {
     mk({ id: "inbox-1", area: "inbox", type: "spark", title: "Play & Creativity: Weekly Play Block", body: "10m pick \n30m create/play \n10m share \n10m save spark note" }),
   ];
 
-  return itecare2;
+  return items;
 }

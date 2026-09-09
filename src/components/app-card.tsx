@@ -54,9 +54,9 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
   return (
     <Card className="bg-card text-foreground flex flex-col h-full">
       <CardHeader className="pb-2">
-        <div className="flex itecare2-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <CardTitle className="flex itecare2-center gap-2 flex-wrap">
+            <CardTitle className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={handleOpen}
                 disabled={!app.liveUrl && !app.primaryUrl}
@@ -81,7 +81,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
             </CardTitle>
             <p className="text-sm text-muted-foreground">{app.category}</p>
           </div>
-          <div className="flex itecare2-center gap-1 shrink-0">
+          <div className="flex items-center gap-1 shrink-0">
             <Button
               variant="ghost"
               size="icon"
@@ -135,7 +135,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
             )}
 
             {!app.liveUrl && !app.primaryUrl && !app.repoUrl && !app.localPath && (
-              <div className="text-xs text-muted-foreground flex itecare2-center gap-1.5 py-1 px-2 bg-muted/50 rounded-md">
+              <div className="text-xs text-muted-foreground flex items-center gap-1.5 py-1 px-2 bg-muted/50 rounded-md">
                 <Info className="h-3.5 w-3.5" />
                 No links available
               </div>
@@ -149,7 +149,7 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
                 <button
                   key={`${link.url}-${i}`}
                   onClick={() => window.open(link.url, "_blank")}
-                  className="text-[10px] text-muted-foreground hover:text-foreground hover:underline flex itecare2-center gap-1"
+                  className="text-[10px] text-muted-foreground hover:text-foreground hover:underline flex items-center gap-1"
                 >
                   <ExternalLink className="h-2.5 w-2.5" />
                   {link.label}

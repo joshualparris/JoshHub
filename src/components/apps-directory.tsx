@@ -8,25 +8,25 @@ import type { CatalogItem, AppCategory, AppStatus } from "@/data/apps";
 import { addRecent } from "@/lib/recent";
 
 interface Props {
-  itecare2: CatalogItem[];
+  items: CatalogItem[];
   initialStatus?: AppStatus | "all";
 }
 
-export function AppsDirectory({ itecare2, initialStatus = "all" }: Props) {
+export function AppsDirectory({ items, initialStatus = "all" }: Props) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<AppCategory | "all">("all");
   const [status, setStatus] = useState<AppStatus | "all">(initialStatus);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
-    return itecare2.filter((item) => {
+    return items.filter((item) => {
       const haystack = `${item.name} ${item.tags.join(" ")} ${item.notes ?? ""}`.toLowerCase();
       const matchesSearch = !term || haystack.includes(term);
       const matchesCategory = category === "all" || item.category === category;
       const matchesStatus = status === "all" || item.status === status;
       return matchesSearch && matchesCategory && matchesStatus;
     });
-  }, [itecare2, search, category, status]);
+  }, [items, search, category, status]);
 
   const sorted = useMemo(
     () => [...filtered].sort((a, b) => a.name.localeCompare(b.name)),
@@ -44,7 +44,7 @@ export function AppsDirectory({ itecare2, initialStatus = "all" }: Props) {
         onStatusChange={setStatus}
       />
       {filtered.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No itecare2 match that search.</p>
+        <p className="text-sm text-muted-foreground">No items match that search.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {sorted.map((app) => (

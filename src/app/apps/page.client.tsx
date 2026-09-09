@@ -12,12 +12,12 @@ type AppsStatusFilter = AppStatus | "all";
 type AppsCategoryFilter = AppCategory | "all";
 
 interface Props {
-  searchParacare2?: { status?: string };
+  searchParams?: { status?: string };
   apps: CatalogItem[];
 }
 
-export default function AppsPageClient({ searchParacare2, apps }: Props) {
-  const statusParam = searchParacare2?.status;
+export default function AppsPageClient({ searchParams, apps }: Props) {
+  const statusParam = searchParams?.status;
   const allowedStatus: AppStatus[] = ["ok", "broken", "wip", "archived"];
   const initialStatus: AppsStatusFilter = allowedStatus.includes(statusParam as AppStatus)
     ? (statusParam as AppStatus)
@@ -90,7 +90,7 @@ export default function AppsPageClient({ searchParacare2, apps }: Props) {
         onCategoryChange={setCategory}
       />
       {filteredApps.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No itecare2 match that search.</p>
+        <p className="text-sm text-muted-foreground">No items match that search.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredApps.map((app) => (

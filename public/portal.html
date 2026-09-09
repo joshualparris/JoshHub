@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal — The Multiverse</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cricare2on+Pro:ital,wght@0,300;0,400;1,300&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap');
   :root{--bg:#03020a;--accent:#7c5cfc;--accent2:#c084fc;--text:#e8e0ff;--dim:#7c72a8;--glow:rgba(124,92,252,0.4)}
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Cricare2on Pro',Georgia,serif;overflow:hidden}
-  .portal-wrap{position:fixed;inset:0;z-index:1;display:flex;align-itecare2:center;justify-content:center}
+  html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:'Crimson Pro',Georgia,serif;overflow:hidden}
+  .portal-wrap{position:fixed;inset:0;z-index:1;display:flex;align-items:center;justify-content:center}
   .vortex{position:relative;width:380px;height:380px}
   .ring{position:absolute;inset:0;border-radius:50%;animation:spin linear infinite}
   .ring-1{border:2px solid transparent;border-top-color:var(--accent);border-right-color:var(--accent);box-shadow:0 0 30px var(--glow),inset 0 0 30px var(--glow);animation-duration:3s}
@@ -17,16 +17,16 @@
   .ring-3{inset:40px;border:1px solid transparent;border-bottom-color:#a78bfa;border-right-color:#a78bfa;opacity:.5;animation-duration:4s}
   .ring-4{inset:60px;border:2px solid transparent;border-top-color:rgba(124,92,252,.4);animation-duration:1.8s;animation-direction:reverse}
   .portal-core{position:absolute;inset:80px;border-radius:50%;background:radial-gradient(circle at center,#1a0a3a 0%,#0d0520 40%,#03020a 100%);box-shadow:0 0 60px rgba(124,92,252,.3),0 0 120px rgba(124,92,252,.15),inset 0 0 40px rgba(124,92,252,.2);animation:pulse 3s ease-in-out infinite}
-  .portal-symbol{position:absolute;inset:80px;border-radius:50%;display:flex;align-itecare2:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:rgba(192,132,252,.6);animation:pulse 3s ease-in-out infinite;z-index:2}
+  .portal-symbol{position:absolute;inset:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:rgba(192,132,252,.6);animation:pulse 3s ease-in-out infinite;z-index:2}
   @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
   @keyframes pulse{0%,100%{opacity:.8;transform:scale(1)}50%{opacity:1;transform:scale(1.03)}}
-  .content{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-itecare2:center;justify-content:center;pointer-events:none}
+  .content{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
   .from-label{font-style:italic;font-size:.95rem;color:var(--dim);letter-spacing:.15em;margin-bottom:1rem;opacity:0;animation:fadeUp .8s ease .3s forwards}
   .flavour{font-style:italic;font-size:1.4rem;color:var(--text);text-align:center;max-width:480px;line-height:1.7;padding:0 2rem;opacity:0;animation:fadeUp 1s ease .6s forwards;margin-top:230px}
   .destination-label{margin-top:2rem;font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--accent2);letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeUp .8s ease 1s forwards}
   .progress-wrap{margin-top:2rem;width:220px;height:2px;background:rgba(124,92,252,.15);border-radius:2px;overflow:hidden;opacity:0;animation:fadeUp .5s ease 1.2s forwards}
   .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;box-shadow:0 0 8px var(--glow);transition:width .1s linear}
-  .skip-btn{margin-top:1.5rem;font-family:'Cricare2on Pro',serif;font-size:.85rem;color:var(--dim);letter-spacing:.1em;cursor:pointer;pointer-events:all;opacity:0;border:none;background:none;animation:fadeUp .5s ease 1.5s forwards;transition:color .2s}
+  .skip-btn{margin-top:1.5rem;font-family:'Crimson Pro',serif;font-size:.85rem;color:var(--dim);letter-spacing:.1em;cursor:pointer;pointer-events:all;opacity:0;border:none;background:none;animation:fadeUp .5s ease 1.5s forwards;transition:color .2s}
   .skip-btn:hover{color:var(--text)}
   .whoosh{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at center,var(--accent),var(--bg));opacity:0;pointer-events:none;transition:opacity .6s ease}
   .whoosh.active{opacity:1}
@@ -64,12 +64,12 @@ const PORTALS={
 };
 const URLS=Object.fromEntries(Object.entries(PORTALS).map(([k,v])=>[k,v.url]));
 const LABELS=Object.fromEntries(Object.entries(PORTALS).map(([k,v])=>[k,v.label]));
-const paracare2=new URLSearchParacare2(window.location.search);
-const from=paracare2.get("from")||"";
-const to=paracare2.get("to")||"";
+const params=new URLSearchParams(window.location.search);
+const from=params.get("from")||"";
+const to=params.get("to")||"";
 let flavour="Reality folds. The air shimmers. You pass through.";
 if(PORTALS[from]){const m=PORTALS[from].portals.find(p=>p.to===to);if(m)flavour=m.flavour;}
-const destUrl=URLS[to]||paracare2.get("url")||null;
+const destUrl=URLS[to]||params.get("url")||null;
 const destLabel=LABELS[to]||to.replace(/-/g," ")||"Unknown Realm";
 const fromLabel=LABELS[from]||from.replace(/-/g," ")||"";
 document.getElementById("flavourText").textContent=flavour;

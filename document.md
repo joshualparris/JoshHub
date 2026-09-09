@@ -29,7 +29,7 @@ Downgrade projects that are:
 
 | Project name | Path | Type | Professional relevance | Technical health | Git health | Portfolio value | Cleanup urgency | Score /100 | Recommended action | Next action | Risk if ignored |
 |---|---|---|---|---|---|---|---|---:|---|---|---|
-| Avance Professional Development | `C:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\02_Personal\Avance` | source repo | High - directly MSP/professional development aligned | High - active Next.js app, documented roadmap; OneDrive and archive clutter remain | Medium - Git repo with 4 modified app files | High | Medium-high | 90 | develop / stabilise | Stabilise the core MSP workflow, review modified files, then implement top TODO itecare2: shift detail pages, work logs, knowledge entries, troubleshooting playbooks | Best MSP-aligned project loses momentum; OneDrive/archive clutter may create build or sync risk |
+| Avance Professional Development | `C:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\02_Personal\Avance` | source repo | High - directly MSP/professional development aligned | High - active Next.js app, documented roadmap; OneDrive and archive clutter remain | Medium - Git repo with 4 modified app files | High | Medium-high | 90 | develop / stabilise | Stabilise the core MSP workflow, review modified files, then implement top TODO items: shift detail pages, work logs, knowledge entries, troubleshooting playbooks | Best MSP-aligned project loses momentum; OneDrive/archive clutter may create build or sync risk |
 | JoshHub | `C:\Users\joshua.parris\JoshHub` | source repo + catalog/dashboard with nested subprojects | High - central project inventory and personal OS | Medium-low - active app but mixed lockfiles, stale links, many untracked assets and nested repos | Low - `main` has many modified/deleted/untracked files; local branch ahead/behind origin | High | Very high | 79 | stabilise / consolidate | Commit or stash intentional work, run a nested repo scan, separate source repos from static assets, normalise package manager, audit `src\data\apps.ts` | Central catalog becomes unreliable; nested repos could be damaged by broad cleanup; untracked work may be lost |
 | DCSPrep / DCSPD | `C:\Users\joshua.parris\OneDrive - Dubbo Christian School\Documents\DCSPrepApp` | source repo | Medium-high - useful training/portfolio bridge, but DCS-specific | Medium-high - clean Next.js app with documented known issues | High - clean `main`, GitHub remote `DCSPD.git` | Medium-high | Medium-high | 79 | stabilise / maintain | Keep as portfolio/training project; move off OneDrive if file locking appears; archive duplicate zip files after backup | Duplicate zips and OneDrive sync issues may create stale copies or build friction |
 | Parris Compass / Waypoint | `C:\parris-compass` | source repo | Medium - wellbeing/professional habits value, less direct MSP alignment | High - clean documented Next.js source repo | High - clean `main`, GitHub remote `Waypoint.git` | Medium | Low-medium | 74 | maintain / develop selectively | Treat `parris-compass` as the source of truth for Waypoint; keep scope distinct from JoshHub | May overlap with JoshHub as another dashboard unless purpose boundaries are clear |
@@ -71,7 +71,7 @@ Score bands:
 ## Decision Rules
 
 - If professional relevance is high but technical health is low, stabilise before adding features.
-- If professional relevance is high and technical health is high, consider it for the top active workstreacare2.
+- If professional relevance is high and technical health is high, consider it for the top active workstreams.
 - If a project is duplicate and low relevance, archive after backup.
 - If a project is duplicate but high relevance, consolidate only after identifying the true source folder.
 - If a project is catalog-only but high value, recover or clone the source before making decisions.
@@ -105,7 +105,7 @@ Known updated evidence:
 - `Game-Fixer` has about 19K files and no `.git`, so treat it as static assets or source-unclear.
 - `projects` has about 3K files and no `.git`, so treat it as workspace/static/unclear.
 
-## Recommended Top 5 Workstreacare2
+## Recommended Top 5 Workstreams
 
 ### 1. Avance Professional Development
 
@@ -119,8 +119,8 @@ Evidence from audit:
 - Remote: `https://github.com/joshparri/AvanceProfessionalDevelopment.git`.
 - Has `README.md`, `TODO.md`, `VISION.md`, active source under `app/`, and `app/package.json`.
 - Stack: Next.js 16, React 19, Tailwind, Dexie.
-- Modified files: `app/src/app/learning-cockpit/page.tsx`, `app/src/app/care2p-quiz/page.tsx`, `app/src/components/Dashboard.tsx`, `app/src/contexts/dark-mode.tsx`.
-- Risk itecare2: source stored in OneDrive; `app.zip` build/archive copy at repo root.
+- Modified files: `app/src/app/learning-cockpit/page.tsx`, `app/src/app/msp-quiz/page.tsx`, `app/src/components/Dashboard.tsx`, `app/src/contexts/dark-mode.tsx`.
+- Risk items: source stored in OneDrive; `app.zip` build/archive copy at repo root.
 
 First 30-minute task:
 
@@ -147,7 +147,7 @@ JoshHub is the central project dashboard and catalog. If it stays messy, every f
 Evidence from audit:
 
 - Real Git repo at `C:\Users\joshua.parris\JoshHub`.
-- Remotes: `origin` at `https://github.com/joshualparris/JoshHub.git`; `care2pquest` backup at `https://github.com/joshuaparris-max/MSPQuest.git`.
+- Remotes: `origin` at `https://github.com/joshualparris/JoshHub.git`; `mspquest` backup at `https://github.com/joshuaparris-max/MSPQuest.git`.
 - Active Next.js 16 / React 19 / Tailwind 4 / Dexie app.
 - Current worktree has many modified files, deleted files, and untracked folders.
 - Mixed package managers: `package-lock.json` and `pnpm-lock.yaml`.
@@ -283,7 +283,7 @@ Output:
 
 - Completed decision matrix.
 - Initial score for each project.
-- List of unclear or risky itecare2.
+- List of unclear or risky items.
 
 ### Phase 2: Backup and Git safety
 
@@ -348,7 +348,7 @@ Goal: choose what deserves active energy.
 
 Output:
 
-- Top 5 workstreacare2.
+- Top 5 workstreams.
 - First action for each.
 - Deferred projects list.
 - Archive/consolidation queue.
@@ -388,7 +388,7 @@ Output:
 
 | Project | Branch | Remote | Status summary | Concern |
 |---|---|---|---|---|
-| JoshHub | `main` | `origin` GitHub plus `care2pquest` backup | Many modified/deleted/untracked files; local branch reported ahead and behind origin | Highest cleanup risk; do not broad-stage; nested repos must be classified first |
+| JoshHub | `main` | `origin` GitHub plus `mspquest` backup | Many modified/deleted/untracked files; local branch reported ahead and behind origin | Highest cleanup risk; do not broad-stage; nested repos must be classified first |
 | PartyAI | unknown | nested `.git` present | Nested source repo/subproject inside JoshHub with `package.json` and about 22K files | Do not touch until nested repo Git status is inspected |
 | Serenity-Keep-Flying | unknown | nested `.git` present | Nested source repo/subproject inside JoshHub with `package.json` and about 23K files | Do not touch until nested repo Git status is inspected |
 | Avance Professional Development | `main` | GitHub `AvanceProfessionalDevelopment.git` | 4 modified app files | OneDrive location and root archive/build clutter |

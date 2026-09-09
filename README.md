@@ -26,10 +26,10 @@ npm run start  # preview production build
 
 ## Editing the catalogue
 - Source of truth: `src/data/apps.ts`.
-- Add new itecare2 with `id`, `name`, `category`, `status`, `tags`, `urls[]`, `primaryUrl`, optional `notes`.
+- Add new items with `id`, `name`, `category`, `status`, `tags`, `urls[]`, `primaryUrl`, optional `notes`.
 
 ## Features
-- Home dashboard with quick launch, recent itecare2, broken list, and pinned Life areas.
+- Home dashboard with quick launch, recent items, broken list, and pinned Life areas.
 - `/apps` directory: search, category/status filters, tags; `/apps/[id]` detail with links, embed toggle, status, tags, notes.
 - `/projects`: grouped by status with next actions.
 - `/life` and `/life/[slug]`: Life areas with content, quick links, and pin-to-home.

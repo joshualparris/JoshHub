@@ -55,7 +55,7 @@ export default function WeeklyReviewPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-3">
-            <div className="flex flex-col gap-2 md:flex-row md:itecare2-center">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center">
               <label className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">Week of</label>
               <Input type="date" value={weekStart} onChange={(e) => setWeekStart(e.target.value)} className="md:max-w-xs" />
             </div>
@@ -80,7 +80,7 @@ export default function WeeklyReviewPage() {
         {sorted.map((rev) => (
           <Card key={rev.id} className="border-white/80 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
             <CardHeader>
-              <CardTitle className="text-base flex itecare2-center justify-between">
+              <CardTitle className="text-base flex items-center justify-between">
                 <span>Week of {rev.weekStart}</span>
                 <Timer className="h-4 w-4 text-neutral-400" />
               </CardTitle>

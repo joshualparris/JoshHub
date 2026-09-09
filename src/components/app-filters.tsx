@@ -40,7 +40,7 @@ export function AppFilters({
   const statuses = useMemo<AppStatus[]>(() => ["ok", "broken", "wip", "archived"], []);
 
   return (
-    <div className="flex flex-col gap-3 md:flex-row md:itecare2-center md:justify-between">
+    <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div className="md:w-1/2">
         <Input
           value={search}
@@ -77,7 +77,7 @@ interface SelectProps {
 
 function Select({ label, value, onChange, options }: SelectProps) {
   return (
-    <label className="flex itecare2-center gap-2 text-sm text-muted-foreground">
+    <label className="flex items-center gap-2 text-sm text-muted-foreground">
       <span className="whitespace-nowrap">{label}:</span>
       <select
         className="h-10 rounded-md border border-border bg-card px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"

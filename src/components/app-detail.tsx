@@ -37,7 +37,7 @@ export function AppDetail({ app }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-2 md:flex-row md:itecare2-center md:justify-between">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-semibold text-neutral-900">{app.name}</h1>
           <p className="text-neutral-600">{app.category}</p>
@@ -81,7 +81,7 @@ export function AppDetail({ app }: Props) {
           {app.lastTouched && (
             <p className="text-xs text-neutral-500">Last touched: {app.lastTouched}</p>
           )}
-          <div className="flex itecare2-center gap-2">
+          <div className="flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -127,7 +127,7 @@ export function AppDetail({ app }: Props) {
             </div>
             <div className="overflow-hidden rounded-lg border border-neutral-200">
               {isLoading && (
-                <div className="flex itecare2-center gap-2 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
+                <div className="flex items-center gap-2 bg-neutral-50 px-3 py-2 text-sm text-neutral-700">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Loading preview...
                 </div>

@@ -8,7 +8,7 @@ import type { PlatformMoveOp } from "@/features/platform";
 import { platformActions, usePlatformMoveOps } from "@/features/platform";
 
 export default function MoveOpsList() {
-    const itecare2 = usePlatformMoveOps();
+    const items = usePlatformMoveOps();
     const [title, setTitle] = useState("");
 
     async function handleAdd() {
@@ -38,9 +38,9 @@ export default function MoveOpsList() {
             </Card>
 
             <div className="grid gap-3">
-                {itecare2.map((it) => (
+                {items.map((it) => (
                     <div key={it.id} className="rounded-md border bg-white p-3 dark:bg-slate-900/70">
-                        <div className="flex itecare2-center justify-between">
+                        <div className="flex items-center justify-between">
                             <div>
                                 <div className="font-medium">{it.title}</div>
                                 {it.dueDate && <div className="text-xs text-muted-foreground">Due {it.dueDate}</div>}

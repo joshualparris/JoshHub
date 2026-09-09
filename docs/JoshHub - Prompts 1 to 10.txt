@@ -333,7 +333,7 @@ D) DATA MODEL CHANGES
    - category: "Dubbo / DCS" | "Games" | (allow future strings)
    - nextAction?: string
    - lastTouched?: string (ISO date)
-2) Ensure existing seed itecare2 compile.
+2) Ensure existing seed items compile.
 
 
 E) UX / UI
@@ -400,7 +400,7 @@ C) CAPTURE MODULE (fast brain-dump)
      - quick add task
      - quick add note
      - quick add bookmark (URL + optional title + tags)
-   - show a small feed of the last 10 captured itecare2
+   - show a small feed of the last 10 captured items
 2) Add “Capture” button in the header/nav that goes to /capture.
 
 
@@ -431,7 +431,7 @@ F) ROUTINES (lightweight)
    - /routines (list)
    - /routines/[id] (run screen)
 2) Routine model:
-   - name, itecare2[] { label, type: "check"|"timer", seconds? }, tags[], createdAt
+   - name, items[] { label, type: "check"|"timer", seconds? }, tags[], createdAt
 3) Routine run:
    - checklist + timers
    - when finished, store a run log {routineId, startedAt, finishedAt, completedCount}
@@ -520,10 +520,10 @@ C) HEALTH / SLEEP (MANUAL LOGGING, LOCAL-FIRST)
 2) Models:
    - SleepLog: date, bedtimeIso?, wakeIso?, durationMinutes (computed), quality(1-5), notes?, tags[]
    - MovementLog: date, type("walk"|"ride"|"strength"|"mobility"|"other"), minutes, intensity("low"|"med"|"high"), notes?
-   - NutritionLog: date, summary text, proteinGracare2?, vegServes?, satFatGracare2? (optional), notes?
+   - NutritionLog: date, summary text, proteinGrams?, vegServes?, satFatGrams? (optional), notes?
    - MetricLog: dateTimeIso, metricType("weight"|"hrv"|"restingHR"|"bp"|"other"), value, unit, notes?
 3) UI:
-   - Quick-add forcare2 + list views.
+   - Quick-add forms + list views.
    - Simple charts using Recharts (line chart for sleep duration, HRV, weight etc.). Keep it minimal.
 4) Dashboard:
    - Show last 7 days sleep duration avg + last HRV entry if present.
@@ -623,7 +623,7 @@ A) Data model + TOC
 
 
 - Create: src/features/everything-map/tree.ts
-  - buildTree(itecare2: TocItem[]): TocNode[]
+  - buildTree(items: TocItem[]): TocNode[]
     - Convert flat ids like "7.2" into a nested tree under "7"
     - Sort numerically by id parts (so 7.10 comes after 7.2)
   - findNode(tree: TocNode[], id: string): TocNode | null
@@ -722,12 +722,12 @@ export const EVERYTHING_MAP_TOC = [
   { id: "6.1", title: "Income, salaries, mortgage, superannuation", page: 111 },
   { id: "6.2", title: "Budgeting, savings, investments, wills", page: 114 },
   { id: "6.3", title: "Insurance, benefits, tax", page: 116 },
-  { id: "6.4", title: "Dreacare2 (paying off house, second property, granny flat)", page: 118 },
+  { id: "6.4", title: "Dreams (paying off house, second property, granny flat)", page: 118 },
 
 
   { id: "7", title: "Daily Life & Routines", page: 119 },
   { id: "7.1", title: "Morning & evening routines (wind-down, health stack, family rhythm)", page: 119 },
-  { id: "7.2", title: "Parenting rhythcare2 (Sylvie’s sleep, Elias’s feeding, bath time struggles)", page: 121 },
+  { id: "7.2", title: "Parenting rhythms (Sylvie’s sleep, Elias’s feeding, bath time struggles)", page: 121 },
   { id: "7.3", title: "Meals & cooking", page: 124 },
   { id: "7.4", title: "Time management (screen use, productivity zones, rest vs. self-care guilt)", page: 126 },
 
@@ -758,16 +758,16 @@ export const EVERYTHING_MAP_TOC = [
   { id: "11.2", title: "Planned trips (Crete, Fiji, Tasmania, Australia travel)", page: 154 },
 
 
-  { id: "12", title: "Legacy & Dreacare2", page: 156 },
+  { id: "12", title: "Legacy & Dreams", page: 156 },
   { id: "12.1", title: "Memoirs & storytelling for descendants", page: 156 },
   { id: "12.2", title: "Digital legacy plan (accounts, assets, who gets access)", page: 158 },
   { id: "12.3", title: "Generational vision: faith, family, stability", page: 160 },
 
 
   { id: "13", title: "Home, Places & Stuff", page: 162 },
-  { id: "13.1", title: "Current home layout and storage systecare2", page: 162 },
+  { id: "13.1", title: "Current home layout and storage systems", page: 162 },
   { id: "13.2", title: "Organisation projects (shed/garage inventory)", page: 165 },
-  { id: "13.3", title: "Future home dreacare2 and renovations", page: 168 },
+  { id: "13.3", title: "Future home dreams and renovations", page: 168 },
 
 
   { id: "14", title: "Learning, Books & Influences", page: 170 },
@@ -776,7 +776,7 @@ export const EVERYTHING_MAP_TOC = [
   { id: "14.3", title: "Skills you’re building (tech, leadership, parenting)", page: 174 },
 
 
-  { id: "15", title: "Tools, Systecare2 & Templates", page: 176 },
+  { id: "15", title: "Tools, Systems & Templates", page: 176 },
   { id: "15.1", title: "Routines templates (morning/evening), checklists", page: 176 },
   { id: "15.2", title: "Finances templates (budget, property, moving)", page: 179 },
   { id: "15.3", title: "Project templates (apps, game dev, prompts)", page: 182 },
@@ -833,7 +833,7 @@ Tech decisions (choose and implement)
 - Backend: Supabase (Auth + Postgres + Storage) with Row Level Security (RLS)
 - Search: Postgres full-text search now; optional pgvector later (design schema so it’s easy to add)
 - Charts: Recharts
-- Forcare2: react-hook-form + zod
+- Forms: react-hook-form + zod
 - Data fetching: server actions (preferred) + minimal client fetch
 - Hosting: Vercel (frontend) + Supabase (backend)
 
@@ -1044,7 +1044,7 @@ RLS: user can CRUD their own rows only.
 RLS: owner-only.
 
 
-3) worldbuilding_itecare2
+3) worldbuilding_items
 - id uuid pk
 - user_id fk
 - campaign (text) (e.g. “Candlekeep”, “Custom”, “Sylvie Stories”)
@@ -1073,10 +1073,10 @@ RLS: owner-only.
 RLS: owner-only.
 
 
-5) nerd_itecare2
+5) nerd_items
 - id uuid pk
 - user_id fk
-- category (text: 'books' | 'quotes' | 'tech_experiments' | 'music' | 'filcare2' | 'prompts')
+- category (text: 'books' | 'quotes' | 'tech_experiments' | 'music' | 'films' | 'prompts')
 - title (text)
 - body (text)
 - tags (text[] default '{}')
@@ -1100,7 +1100,7 @@ SERVER + CLIENT ARCHITECTURE
   - CardGrid
   - EmptyState
   - TimerCard (for Sprint)
-  - “Open externally” link button for arcade itecare2
+  - “Open externally” link button for arcade items
 
 
 DELIGHT: /delight (Hub)
@@ -1143,7 +1143,7 @@ Features:
 
 3) Worldbuilding Vault
 - Tabs: Locations / NPCs / Plot Hooks / Loot / Notes
-- Create/edit itecare2 (worldbuilding_itecare2)
+- Create/edit items (worldbuilding_items)
 - Simple templates:
   - NPC template fields (name, voice, desire, secret, hook)
   - Location template fields (vibe, danger, sights, secrets)
@@ -1159,7 +1159,7 @@ Features:
   - “Play now” button (open in new tab)
   - Version selector when multiple URLs exist (Whispering Wilds v1/v2/itch, etc.)
   - Optional “Embed” button (try iframe). If blocked by X-Frame-Options, show a friendly fallback.
-  - “What I learned building this” (editable note saved as nerd_itecare2 category='tech_experiments' OR a new table if you prefer)
+  - “What I learned building this” (editable note saved as nerd_items category='tech_experiments' OR a new table if you prefer)
 - Add a “Health Check” action:
   - Button “Check links” calls a server action that HEAD/GET pings each URL and stores last_ok / last_status / checked_at.
   - Show a small badge on each card (OK / Broken / Unknown).
@@ -1180,8 +1180,8 @@ Features:
 
 NERD CORNER: /delight/nerd
 Features:
-- Tabs: Books / Quotes / Tech Experiments / Prompts / Music / Filcare2
-- Simple CRUD for nerd_itecare2
+- Tabs: Books / Quotes / Tech Experiments / Prompts / Music / Films
+- Simple CRUD for nerd_items
 - “Quotes that hit” supports:
   - quote text
   - source (book/passage)
@@ -1278,7 +1278,7 @@ Implement a new top-level route: /core
   3) Serve (Work)
   4) Steward (Health + family care load)
   5) Belong (Community + outdoors + books)
-  6) Understand (family systecare2 + psychology + skills)
+  6) Understand (family systems + psychology + skills)
 
 
 Each card opens /core/[slug] with:
@@ -1414,7 +1414,7 @@ Core UX changes (must do)
                                                                                                 * Add a Delight tile alongside the other life tiles.
 
 Data model (Supabase) — keep it simple and flexible
-Create ONE flexible table to store creative itecare2:
+Create ONE flexible table to store creative items:
 Table: captures
                                                                                                    * id uuid primary key default gen_random_uuid()
 
@@ -1487,7 +1487,7 @@ Build a “maker mode” that is fast and frictionless:
 
 Play Arcade (/delight/arcade)
 This should reuse what you already have: the Projects/Apps catalogue.
-                                                                                                                                                1. Show a beautiful “card wall” of itecare2 tagged/category = Games (or a Games category).
+                                                                                                                                                1. Show a beautiful “card wall” of items tagged/category = Games (or a Games category).
 
                                                                                                                                                 2. Each card must include:
 
@@ -1578,7 +1578,7 @@ Context
 Goal
 Implement a lightweight “Life Content” system that:
 1) Gives every Life Area real content on day 1 (seeded starter pack).
-2) Lets Josh add/edit itecare2 fast (local-first).
+2) Lets Josh add/edit items fast (local-first).
 3) Adds a new Life Area for fun/creativity (Play & Creativity).
 4) Connects to existing “Capture” flow (so daily living fills the system naturally).
 5) Looks polished with excellent empty-states, keyboard shortcuts, and quick-add.
@@ -1607,7 +1607,7 @@ Create a small data layer with an interface:
   - import(json)
   - export(): json
 - Implement LocalLifeStore using localStorage (or IndexedDB if already present).
-- Itecare2 should be namespaced per user (even if we don’t have auth): use a single “default” userId constant for now.
+- Items should be namespaced per user (even if we don’t have auth): use a single “default” userId constant for now.
 
 
 LifeItem shape (TypeScript)
@@ -1627,7 +1627,7 @@ C) Build /life/[area] page that actually renders content
 For each life area page:
 - Header: area title + short description + “Add” button + “Templates” button.
 - Layout (polished, card-based):
-  1) Focus (show pinned focus itecare2 first; allow one “Primary Focus”)
+  1) Focus (show pinned focus items first; allow one “Primary Focus”)
   2) Quick Links (grid of link chips/cards)
   3) Checklists + Rituals (accordion or cards; can “run” a checklist)
   4) Notes/Memories (feed list, newest first)
@@ -1638,13 +1638,13 @@ For each life area page:
 
 
 D) Templates Library + “Seed Starter Pack”
-Create a template system that can insert multiple LifeItecare2 at once.
+Create a template system that can insert multiple LifeItems at once.
 - Templates are stored in code as JSON in /lib/templates/lifeTemplates.ts
 - Each template has:
-  - id, title, description, targetAreas[], itecare2[]
+  - id, title, description, targetAreas[], items[]
 - Add a “Templates” modal on /life/[area]
   - shows templates relevant to that area
-  - click “Apply” inserts those itecare2
+  - click “Apply” inserts those items
 
 
 Starter pack should exist for EVERY area, including Play.
@@ -1688,7 +1688,7 @@ Finance starter pack:
 Work starter pack (La Trobe → DCS):
 - Focus: “Finish La Trobe well (Dec 24) / Prepare DCS ramp (Jan 19)”
 - Checklist: “End-of-day closeout”
-- Quick links: key work systecare2 placeholders
+- Quick links: key work systems placeholders
 - Note: “Top 3 outcomes + done list = ADHD shame shield”
 
 

@@ -14,7 +14,7 @@ export default function PlatformCard({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="flex itecare2-center justify-between">
+                <CardTitle className="flex items-center justify-between">
                     <span>{title}</span>
                     <span className="text-sm text-neutral-500">{count}</span>
                 </CardTitle>

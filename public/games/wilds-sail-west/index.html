@@ -98,7 +98,7 @@
 
     .pill {
       display: inline-flex;
-      align-itecare2: center;
+      align-items: center;
       gap: 6px;
       padding: 6px 12px;
       border-radius: 999px;
@@ -331,7 +331,7 @@ class Game:
                 "text": "The dry docks smell of tar and cedar. The master shipwright offers modest upgrades if you can pay.",
                 "choices": [
                     {"label": "Reinforce the hull (-10 gold, +12 hull)", "target": "harbor", "effects": {"gold": -10, "hull": 12, "log": ["Paid for hull reinforcement."]}, "cond": lambda s: s["gold"] >= 10},
-                    {"label": "Storm sails (-14 gold, new option in storcare2)", "target": "harbor", "effects": {"gold": -14, "flags_add": ["storm_sails"], "log": ["Installed storm sails."]}, "cond": lambda s: s["gold"] >= 14},
+                    {"label": "Storm sails (-14 gold, new option in storms)", "target": "harbor", "effects": {"gold": -14, "flags_add": ["storm_sails"], "log": ["Installed storm sails."]}, "cond": lambda s: s["gold"] >= 14},
                     {"label": "Lighten the rigging (-6 gold, +1 day speed)", "target": "harbor", "effects": {"gold": -6, "flags_add": ["swift_rigging"], "log": ["Rigging rebalanced for speed."]}, "cond": lambda s: s["gold"] >= 6},
                     {"label": "Return to the harbor", "target": "harbor"},
                 ],
@@ -389,7 +389,7 @@ class Game:
                 ],
             },
             "calm_break": {
-                "text": "The charm thrucare2. The fog thins like a curtain and you slip into clear water.",
+                "text": "The charm thrums. The fog thins like a curtain and you slip into clear water.",
                 "choices": [
                     {"label": "Log the safe passage", "target": "open_sea", "effects": {"renown": 3, "log": ["Wind charm cleared the fog bank."]}},
                 ],
@@ -409,7 +409,7 @@ class Game:
                 ],
             },
             "journal_revelation": {
-                "text": "The journal speaks of a reef that moves like a beast and guards a pearl of storcare2.",
+                "text": "The journal speaks of a reef that moves like a beast and guards a pearl of storms.",
                 "choices": [
                     {"label": "Seek the living reef", "target": "living_reef", "effects": {"discoveries_add": ["Reef of the Living"], "log": ["Learned of a living reef that guards a storm pearl."]}},
                     {"label": "Return to open sea", "target": "open_sea"},
@@ -429,7 +429,7 @@ class Game:
                 ],
             },
             "reef_dive": {
-                "text": "Divers return with the storm pearl, but one is injured. The pearl hucare2 with power.",
+                "text": "Divers return with the storm pearl, but one is injured. The pearl hums with power.",
                 "choices": [
                     {"label": "Use the pearl to calm weather", "target": "open_sea", "effects": {"flags_add": ["storm_pearl"], "morale": 4, "crew": -1, "log": ["Claimed the storm pearl at a cost."]}},
                 ],
@@ -442,7 +442,7 @@ class Game:
                 ],
             },
             "mist_gate_crossing": {
-                "text": "The ship hucare2. For a moment, stars appear beneath your feet. Then a new sea surrounds you.",
+                "text": "The ship hums. For a moment, stars appear beneath your feet. Then a new sea surrounds you.",
                 "choices": [
                     {"label": "Explore the star sea", "target": "star_sea"},
                     {"label": "Look for a way back", "target": "open_sea", "effects": {"day": 2, "morale": -3}},
@@ -456,7 +456,7 @@ class Game:
                 ],
             },
             "starlight_harvest": {
-                "text": "You collect crystals that hum in your palcare2. The crew whispers, half in awe, half afraid.",
+                "text": "You collect crystals that hum in your palms. The crew whispers, half in awe, half afraid.",
                 "choices": [
                     {"label": "Return to open sea", "target": "open_sea", "effects": {"inventory_add": ["Starlight Crystals"], "renown": 6, "log": ["Harvested starlight crystals."]}},
                 ],
@@ -567,7 +567,7 @@ class Game:
                 ],
             },
             "continent_sighting": {
-                "text": "The fog parts. A vast continent loocare2, untouched and wild. The crew holds its breath.",
+                "text": "The fog parts. A vast continent looms, untouched and wild. The crew holds its breath.",
                 "choices": [
                     {"label": "Make landfall", "target": "continent_landing"},
                     {"label": "Sail along the coast", "target": "coast_run"},
@@ -633,7 +633,7 @@ class Game:
     def apply_effects(self, effects):
         if not effects:
             return
-        for key, value in effects.itecare2():
+        for key, value in effects.items():
             if key == "log":
                 self.state["log"].extend(value)
             elif key == "inventory_add":
@@ -736,7 +736,7 @@ class Game:
         companions_el = document.getElementById("companions")
         companions_el.innerHTML = "".join(
             f"<div class='inventory-item'>{name}: {data['trait']} (rapport {data['rapport']})</div>"
-            for name, data in self.state["companions"].itecare2()
+            for name, data in self.state["companions"].items()
         )
 
         journal_el = document.getElementById("journal")

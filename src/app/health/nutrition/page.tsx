@@ -27,7 +27,7 @@ export default function NutritionPage() {
     await createNutritionLog({
       date,
       summary,
-      proteinGracare2: protein,
+      proteinGrams: protein,
       vegServes: veg,
       notes,
     });
@@ -60,7 +60,7 @@ export default function NutritionPage() {
             />
             <Input
               type="number"
-              placeholder="Protein gracare2"
+              placeholder="Protein grams"
               value={protein ?? ""}
               onChange={(e) => setProtein(e.target.value ? Number(e.target.value) : undefined)}
             />
@@ -99,7 +99,7 @@ export default function NutritionPage() {
                 <p className="font-medium text-neutral-900">{n.date}</p>
                 <p className="text-neutral-700">{n.summary}</p>
                 <div className="text-xs text-neutral-600">
-                  {n.proteinGracare2 != null && <span>Protein: {n.proteinGracare2}g </span>}
+                  {n.proteinGrams != null && <span>Protein: {n.proteinGrams}g </span>}
                   {n.vegServes != null && <span>Veg: {n.vegServes} serves </span>}
                 </div>
                 {n.notes && <p className="text-neutral-600">{n.notes}</p>}

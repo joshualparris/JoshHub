@@ -69,7 +69,7 @@ async function run() {
     const apps = extractApps(html);
     const outPath = 'src/data/apps.synced.json';
     fs.writeFileSync(outPath, JSON.stringify(apps, null, 2));
-    console.log('Wrote', outPath, 'with', apps.length, 'itecare2');
+    console.log('Wrote', outPath, 'with', apps.length, 'items');
   } catch (err) {
     console.error(err);
     process.exitCode = 1;

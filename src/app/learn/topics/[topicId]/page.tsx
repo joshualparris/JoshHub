@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import { useLearnTopic, useLearnResources, useLearnSessions } from "../../../../lib/db/hooks";
 import type { LearnResource, LearnSession } from "../../../../lib/db/schema";
-import { useRouter, useParacare2 } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { db } from "../../../../lib/db/dexie";
 import { uuid } from "../../../../lib/db/id";
 import StudyPromptButton from "../../../../components/learn/StudyPromptButton";
 
 export default function TopicPage() {
-    const paracare2 = useParacare2() as { topicId?: string } | null;
-    const topicId = paracare2?.topicId ?? "";
+    const params = useParams() as { topicId?: string } | null;
+    const topicId = params?.topicId ?? "";
     const topic = useLearnTopic(topicId);
     const resources = (useLearnResources() ?? []) as LearnResource[];
     const sessions = (useLearnSessions() ?? []) as LearnSession[];
@@ -39,7 +39,7 @@ export default function TopicPage() {
 
     return (
         <div className="p-6">
-            <div className="flex itecare2-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-bold">{topic.name}</h1>
                 <div className="flex gap-2">
                     <StudyPromptButton topicName={topic.name} />

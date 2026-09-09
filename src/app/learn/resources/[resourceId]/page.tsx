@@ -6,8 +6,8 @@ import { uuid } from "../../../../lib/db/id";
 import { useRouter } from "next/navigation";
 import type { LearnResource } from "../../../../lib/db/schema";
 
-export default function ResourcePage({ paracare2 }: { paracare2: { resourceId: string } }) {
-    const { resourceId } = paracare2;
+export default function ResourcePage({ params }: { params: { resourceId: string } }) {
+    const { resourceId } = params;
     const resources = (useLearnResources() ?? []) as LearnResource[];
     const resource = resources.find((r) => r.id === resourceId);
     const [note, setNote] = useState("");

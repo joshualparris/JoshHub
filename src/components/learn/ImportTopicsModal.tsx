@@ -48,8 +48,8 @@ export default function ImportTopicsModal({ onClose }: { onClose?: () => void })
             }
             onClose?.();
         } catch (e: unknown) {
-            const care2g = (e as Error)?.message ?? String(e);
-            setError(String(care2g));
+            const msg = (e as Error)?.message ?? String(e);
+            setError(String(msg));
         }
     }
 

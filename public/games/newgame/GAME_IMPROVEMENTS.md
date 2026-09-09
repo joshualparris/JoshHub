@@ -3,8 +3,8 @@
 ## 1. Quest System
 **Implementation:**
 - Add a quest log UI panel that tracks active quests
-- Create quest types: "Kill X enemies", "Collect Y itecare2", "Find Z NPC", "Explore area"
-- Reward players with XP, gold, and special itecare2 upon completion
+- Create quest types: "Kill X enemies", "Collect Y items", "Find Z NPC", "Explore area"
+- Reward players with XP, gold, and special items upon completion
 - Chain quests together to create storylines
 - Add quest markers on the map to guide players
 
@@ -21,7 +21,7 @@
 - Add equipment slots: Weapon, Armor, Accessories
 - Create item rarity system (Common, Rare, Epic, Legendary)
 - Equipment affects stats (attack, defense, special abilities)
-- Visual changes to player sprite based on equipped itecare2
+- Visual changes to player sprite based on equipped items
 - Equipment can be found in chests, bought from shops, or dropped by enemies
 
 **Benefits:**
@@ -86,7 +86,7 @@
 - **Achievement System**: Track milestones and reward players
 - **Difficulty Settings**: Easy, Normal, Hard modes with different enemy scaling
 - **Boss Enemies**: Special powerful enemies with unique mechanics and rewards
-- **Crafting System**: Combine itecare2 to create better equipment
+- **Crafting System**: Combine items to create better equipment
 - **Day/Night Cycle**: Different enemy spawns and events based on time
 - **Multiplayer**: Co-op mode where players can team up
 

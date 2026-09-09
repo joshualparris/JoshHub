@@ -217,7 +217,7 @@ export async function seedRoutines() {
         name: "Morning start",
         tags: ["routine"],
         createdAt: now,
-        itecare2: [
+        items: [
           { id: uuid(), label: "Water + light", type: "check" },
           { id: uuid(), label: "Plan the day", type: "check" },
           { id: uuid(), label: "Movement 10m", type: "timer", seconds: 600 },
@@ -228,7 +228,7 @@ export async function seedRoutines() {
         name: "Evening wind-down",
         tags: ["routine"],
         createdAt: now,
-        itecare2: [
+        items: [
           { id: uuid(), label: "Screens off", type: "check" },
           { id: uuid(), label: "Tidy reset", type: "check" },
           { id: uuid(), label: "Stretch", type: "timer", seconds: 300 },
@@ -252,7 +252,7 @@ export async function seedLearnData() {
     // Marriage & Family
     { id: uuid(), name: "Strengthening connection with Kristy", category: "Marriage & Family", tags: ["marriage"], status: "curious", summary: "", createdAt: now, updatedAt: now },
     { id: uuid(), name: "Parenting neurodiverse kids", category: "Marriage & Family", tags: ["parenting", "neurodiversity"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Building family rhythcare2", category: "Marriage & Family", tags: ["family"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    { id: uuid(), name: "Building family rhythms", category: "Marriage & Family", tags: ["family"], status: "curious", summary: "", createdAt: now, updatedAt: now },
     // Health & Longevity
     { id: uuid(), name: "HRV optimisation", category: "Health & Longevity", tags: ["health"], status: "curious", summary: "", createdAt: now, updatedAt: now },
     { id: uuid(), name: "Sleep optimisation", category: "Health & Longevity", tags: ["health", "sleep"], status: "curious", summary: "", createdAt: now, updatedAt: now },

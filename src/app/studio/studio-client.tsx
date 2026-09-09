@@ -12,12 +12,12 @@ import { apps } from "@/data/apps";
 
 const dndHooks = [
   "A village forgets its own name every dawn.",
-  "A relic hucare2 louder when lies are spoken nearby.",
+  "A relic hums louder when lies are spoken nearby.",
   "A river runs uphill one night each month.",
 ];
 const dndNPCs = [
   "A penitent knight who refuses to touch metal.",
-  "A cartographer who maps dreacare2.",
+  "A cartographer who maps dreams.",
   "A child who speaks with an absent twin.",
 ];
 const dndLocations = [
@@ -68,7 +68,7 @@ export function StudioClient() {
       <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="flex itecare2-center gap-2">
+            <CardTitle className="flex items-center gap-2">
               <Lightbulb className="h-5 w-5 text-amber-500" />
               Game-dev Board
             </CardTitle>
@@ -103,7 +103,7 @@ export function StudioClient() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex itecare2-center gap-2">
+            <CardTitle className="flex items-center gap-2">
               <Music2 className="h-5 w-5 text-emerald-500" />
               Joy Library
             </CardTitle>
@@ -139,7 +139,7 @@ export function StudioClient() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex itecare2-center gap-2">
+          <CardTitle className="flex items-center gap-2">
             <ListRestart className="h-5 w-5 text-sky-500" />
             Quick launches
           </CardTitle>
@@ -186,7 +186,7 @@ function DndGenerator() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex itecare2-center gap-2">
+        <CardTitle className="flex items-center gap-2">
           <Wand2 className="h-5 w-5 text-purple-500" />
           D&D Idea Generator
         </CardTitle>
@@ -227,7 +227,7 @@ function StorySeeds() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex itecare2-center gap-2">
+        <CardTitle className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-pink-500" />
           Story Seeds
         </CardTitle>

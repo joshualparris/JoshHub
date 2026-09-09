@@ -87,7 +87,7 @@ export function GlobalSearch() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex itecare2-center gap-2 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-600 shadow-sm hover:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+        className="flex items-center gap-2 rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-600 shadow-sm hover:border-neutral-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
         aria-label="Search (Ctrl+K)"
       >
         <Search className="h-4 w-4" />
@@ -95,7 +95,7 @@ export function GlobalSearch() {
         <span className="text-xs text-neutral-400">Ctrl+K</span>
       </button>
       {open && (
-        <div className="fixed inset-0 z-50 flex itecare2-start justify-center bg-black/40 px-4 py-12">
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 px-4 py-12">
           <div className="w-full max-w-2xl overflow-hidden rounded-lg bg-white shadow-2xl">
             <Command
               label="Global search"
@@ -104,7 +104,7 @@ export function GlobalSearch() {
                 if (e.key === "Escape") setOpen(false);
               }}
             >
-              <div className="flex itecare2-center gap-2 border-b px-4 py-3">
+              <div className="flex items-center gap-2 border-b px-4 py-3">
                 <Search className="h-4 w-4 text-neutral-500" />
                 <CommandInput
                   value={query}
@@ -123,7 +123,7 @@ export function GlobalSearch() {
                     .filter((r): r is Extract<Result, { type: "route" }> => r.type === "route")
                     .map((r) => (
                       <CommandItem key={r.href} onSelect={() => setOpen(false)} asChild>
-                        <Link href={r.href} className="flex itecare2-center gap-2 px-4 py-2">
+                        <Link href={r.href} className="flex items-center gap-2 px-4 py-2">
                           <Home className="h-4 w-4 text-neutral-500" />
                           <span>{r.label}</span>
                         </Link>
@@ -137,7 +137,7 @@ export function GlobalSearch() {
                       <CommandItem key={r.item.id} onSelect={() => setOpen(false)} asChild>
                         <Link
                           href={`/apps/${r.item.id}`}
-                          className="flex itecare2-center gap-2 px-4 py-2"
+                          className="flex items-center gap-2 px-4 py-2"
                         >
                           <AppWindow className="h-4 w-4 text-neutral-500" />
                           <span>{r.item.name}</span>
@@ -151,10 +151,10 @@ export function GlobalSearch() {
                     .filter((r): r is Extract<Result, { type: "life" }> => r.type === "life")
                     .map((r) => (
                       <CommandItem key={r.item.slug} onSelect={() => setOpen(false)} className="px-0">
-                        <div className="flex w-full itecare2-center gap-2 px-4 py-2">
+                        <div className="flex w-full items-center gap-2 px-4 py-2">
                           <Link
                             href={`/life/${r.item.slug}`}
-                            className="flex flex-1 itecare2-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
+                            className="flex flex-1 items-center gap-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 rounded-sm"
                           >
                             <Layers className="h-4 w-4 text-neutral-500" />
                             <span>{r.item.title}</span>
@@ -191,7 +191,7 @@ export function GlobalSearch() {
                           await r.run();
                           setOpen(false);
                         }}
-                        className="flex itecare2-center gap-2 px-4 py-2"
+                        className="flex items-center gap-2 px-4 py-2"
                       >
                         <Plus className="h-4 w-4 text-neutral-500" />
                         <span>{r.label}</span>

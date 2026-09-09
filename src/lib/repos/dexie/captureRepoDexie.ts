@@ -4,8 +4,8 @@ import type { CaptureItem } from "../../models/capture";
 import type { Bookmark, Note, Task, TaskPriority } from "../../db/schema";
 import { noteToCapture, taskToCapture, bookmarkToCapture } from "../../logic/mappers/dbToCapture";
 
-function mergeAndSort(itecare2: CaptureItem[]) {
-  return itecare2.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : b.updatedAt < a.updatedAt ? -1 : 0));
+function mergeAndSort(items: CaptureItem[]) {
+  return items.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : b.updatedAt < a.updatedAt ? -1 : 0));
 }
 
 function makeId(prefix?: string) {

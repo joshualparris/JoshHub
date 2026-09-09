@@ -6,11 +6,11 @@
 import { createPlayer, gainXP, levelUp } from './player.js';
 import { generateTiles, isWalkable, createDoor, createChest, createNPC } from './world.js';
 import { spawnEnemies, updateAllEnemies } from './enemies.js';
-import { spawnItecare2, collectItem } from './itecare2.js';
+import { spawnItems, collectItem } from './items.js';
 import { InputHandler } from './input.js';
 
 // Import UI and rendering modules (to be created)
-// import { renderWorld, renderPlayer, renderEnemies, renderItecare2 } from './render.js';
+// import { renderWorld, renderPlayer, renderEnemies, renderItems } from './render.js';
 // import { initUI, updateUI } from './ui.js';
 
 export class Game {
@@ -29,7 +29,7 @@ export class Game {
             npcs: []
         };
         this.enemies = [];
-        this.itecare2 = [];
+        this.items = [];
         this.camera = { x: 0, y: 0 };
         this.lastFrameTime = performance.now();
         
@@ -76,7 +76,7 @@ export class Game {
         
         this.world.tiles = generateTiles(this.world.width, this.world.height);
         this.enemies = spawnEnemies(this.world.tiles, this.world.width, this.world.height, 10, 1);
-        this.itecare2 = spawnItecare2(this.world.tiles, this.world.width, this.world.height, 15);
+        this.items = spawnItems(this.world.tiles, this.world.width, this.world.height, 15);
         
         this.gameState = 'playing';
         this.gameLoop();
@@ -130,12 +130,12 @@ export class Game {
         if (isWalkable(this.world.tiles, this.world.width, newX, newY)) {
             this.player.gridX = newX;
             this.player.gridY = newY;
-            this.player.moveCooldown = 200; // 200care2 cooldown
+            this.player.moveCooldown = 200; // 200ms cooldown
         }
     }
     
     checkItemCollection() {
-        this.itecare2.forEach(item => {
+        this.items.forEach(item => {
             if (!item.collected) {
                 const dx = this.player.gridX * 32 - item.x;
                 const dy = this.player.gridY * 32 - item.y;
@@ -160,7 +160,7 @@ export class Game {
         this.ctx.fillStyle = '#1a1a1a';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // Render world, player, enemies, itecare2
+        // Render world, player, enemies, items
         // This would call render functions from render.js
         // For now, just a placeholder
         this.ctx.fillStyle = '#4a4a4a';

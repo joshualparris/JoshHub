@@ -42,7 +42,7 @@ export default function ProjectsPage() {
     () =>
       statusOrder.map((status) => ({
         status,
-        itecare2: sorted.filter((app) => app.status === status),
+        items: sorted.filter((app) => app.status === status),
       })),
     [sorted]
   );
@@ -59,7 +59,7 @@ export default function ProjectsPage() {
       />
 
       <div className="flex flex-wrap gap-3">
-        <label className="flex itecare2-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
           <span className={labelText}>Category:</span>
           <select
             value={categoryFilter}
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
           </select>
         </label>
 
-        <label className="flex itecare2-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
           <span className={labelText}>Tag:</span>
           <input
             value={tagFilter}
@@ -85,7 +85,7 @@ export default function ProjectsPage() {
           />
         </label>
 
-        <label className="flex itecare2-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
+        <label className="flex items-center gap-2 text-sm text-neutral-700 dark:text-slate-200">
           <span className={labelText}>Sort:</span>
           <select
             value={sortBy}
@@ -105,16 +105,16 @@ export default function ProjectsPage() {
         {grouped.map((group) => (
           <Card key={group.status} className="bg-neutral-50 dark:bg-slate-900/70">
             <CardHeader>
-              <CardTitle className="flex itecare2-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <StatusChip status={group.status} />
                 <span className="capitalize">{group.status}</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {group.itecare2.length === 0 ? (
-                <p className={`${mutedText}`}>No itecare2.</p>
+              {group.items.length === 0 ? (
+                <p className={`${mutedText}`}>No items.</p>
               ) : (
-                group.itecare2.map((item) => (
+                group.items.map((item) => (
                   <a
                     key={item.id}
                     href={item.primaryUrl}
@@ -122,7 +122,7 @@ export default function ProjectsPage() {
                     rel="noreferrer"
                     className="block rounded-md border border-neutral-200 bg-white p-3 text-slate-950 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-700/60 dark:bg-slate-900/70 dark:text-slate-100"
                   >
-                    <div className="flex itecare2-center justify-between gap-2">
+                    <div className="flex items-center justify-between gap-2">
                       <span className="font-medium hover:underline">{item.name}</span>
                       <span className={`${metaText} dark:text-slate-200`}>Open</span>
                     </div>

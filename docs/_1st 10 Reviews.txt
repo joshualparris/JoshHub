@@ -26,14 +26,14 @@ App/Game (mapped from screenshot)Live URLRepo/DocsAA Game Adventurehttps://j
 AA Game Adventure
 * First impression: Displays a blank grey grid with letters representing the player (@) and other entities. There is no header, instructions or obvious goal. Looks like a simple ASCII roguelike prototype.
 * UI/UX (scores 0–10): Visual polish 4 (plain grey background). Readability 6 (coloured letters are distinct but small). Layout/responsiveness 5 (static grid on desktop; unknown on mobile). Perceived quality 5. Theming cohesion 5.
-* Functionality: Main loop works (arrow keys move the @), but there is no on?screen indication of controls. No obvious method to interact with itecare2. There are no visible errors but the game state resets on page refresh. Score 6.
+* Functionality: Main loop works (arrow keys move the @), but there is no on?screen indication of controls. No obvious method to interact with items. There are no visible errors but the game state resets on page refresh. Score 6.
 * Fun/Engagement: Lacks context; exploring a blank grid with random letters feels purposeless. Score 5. Some may enjoy exploring but there is no win condition or feedback.
 * Effort to improve: Easy (30–60 min). The project is a static Vite build; improvements mostly involve HTML/CSS/JS.
 * Quick wins:
 * Add a header with game title and short instructions (controls, objective).
 * Place the grid in a container with a contrasting background and padding.
 * Add a “Back to JoshHub” button.
-* Colour?code itecare2 and display a legend.
+* Colour?code items and display a legend.
 * Implement a simple scoring mechanism or goal (e.g. collect letters to form words).
 * Medium tasks:
 * Add local storage or query?string save so progress persists across reloads.
@@ -76,7 +76,7 @@ D&D RPG Dungeon
 * Acceptance criteria: Players see instructions; cannot start without entering a name; there’s a visible progress bar; audio plays on key actions; layout is responsive.
 * Risks: Audio may not work on all devices; ensure PyScript compatibility.
 Forbidden Lands Lite
-* First impression: Top navigation bar with tabs (Characters, Exploration, Combat, Itecare2, Stronghold). Centre message invites you to create a new campaign. Looks like a dark?themed web app.
+* First impression: Top navigation bar with tabs (Characters, Exploration, Combat, Items, Stronghold). Centre message invites you to create a new campaign. Looks like a dark?themed web app.
 * UI/UX: Visual polish 6 (dark purple and black theme, but heavy). Readability 6 (purple text on dark background can be low contrast). Layout 7 (two columns). Perceived quality 6. Theming 7.
 * Functionality: Campaign creation input is present but disabled (purple “+ Create Campaign” button suggests it is unavailable). Nothing else is interactive. Unknown if other tabs work; likely incomplete. Score 5.
 * Fun/Engagement: Little to do. Without a starting scenario the user cannot progress. Score 4.
@@ -87,11 +87,11 @@ Forbidden Lands Lite
 * Add explanatory text for each tab (“Exploration: Discover the world”, etc.).
 * Insert a back link to JoshHub.
 * Medium tasks:
-* Implement client?side views for Exploration, Combat and Itecare2 using dummy data.
+* Implement client?side views for Exploration, Combat and Items using dummy data.
 * Add modals or sidebars for editing characters.
 * Improve colour contrast (text vs. backgrounds).
 * Big bets:
-* Build out the back?end API for campaigns, characters, itecare2 and combat.
+* Build out the back?end API for campaigns, characters, items and combat.
 * Integrate with a database for persistent worlds.
 * Codex task pack:
 * Goal: Provide a usable prototype of Forbidden Lands Lite with local campaign management.
@@ -111,9 +111,9 @@ ORGSCAPE: The Infinite Office
 * Centre the interface and limit its width for readability.
 * Implement a back button.
 * Medium tasks:
-* Add mini?animations when moving between roocare2.
+* Add mini?animations when moving between rooms.
 * Implement save/load functionality.
-* Improve map styling (dynamically update visited roocare2).
+* Improve map styling (dynamically update visited rooms).
 * Big bets:
 * Add multiplayer or leaderboard features.
 * Expand with narrative events and quests.
@@ -121,7 +121,7 @@ ORGSCAPE: The Infinite Office
 * Goal: Make ORGSCAPE friendlier and more polished without altering core mechanics.
 * Files: public/games/infinite-office/index.html, JS modules.
 * Steps: Insert header and help overlay; wrap main container with max?width; add a back button; refactor map drawing to highlight visited tiles; implement simple localStorage save and load.
-* Acceptance criteria: Users see the title and controls; they can open help; map shows visited roocare2; there is a back link; layout remains readable on mobile.
+* Acceptance criteria: Users see the title and controls; they can open help; map shows visited rooms; there is a back link; layout remains readable on mobile.
 * Risks: Changing layout may break keyboard focus; ensure command input remains responsive.
 Max Games – Starhaven
 * First impression: Dark, minimal text interface with Max Games header and tabs (“Play Starhaven”, “Play Guess the Number”). The Starhaven tab shows a description of a place (Grand Atrium) and commands like help/go/talk.
@@ -227,7 +227,7 @@ Null – Rope & Silence (GH)
 * Implement keyboard navigation for action buttons.
 * Add optional hints or help.
 * Big bets:
-* Expand content with more routes, itecare2 and puzzles.
+* Expand content with more routes, items and puzzles.
 * Add audio and ambient sound effects.
 * Codex task pack:
 * Goal: Enhance accessibility and navigation for Null (GH).
@@ -303,7 +303,7 @@ Highest ROI quick wins (impact ÷ effort)
 5. Codex Sprint Plan
 Sprint 0 – Stabilise JoshHub (1–2 hrs) - Implement a consistent “Back to JoshHub” link on all game pages (AA Game, Max Games, New Game, ORGSCAPE, etc.). Test that it returns to /apps. - Fix obvious 404s by checking each game’s index path and ensuring it exists in public/games/<slug>/index.html. - Run a link audit to ensure Play/Docs/Repo buttons point to valid destinations.
 Sprint 1 – UI polish & onboarding (1 day) - For AA Game Adventure and Max Games, add headers, instructions, legends and styling (padding, containers, fonts). Make the input fields visible and enlarge them. - For D&D RPG Dungeon, New Game and ORGSCAPE, add tooltips and introductory text. Ensure Start buttons are disabled until required fields are filled. - Adjust colour contrast across Forbidden Lands Lite and Null to meet accessibility guidelines. - Add responsive CSS to all pages so they scale on mobile.
-Sprint 2 – Gameplay & usefulness improvements (2–3 days) - Extend AA Game with scoring/collectible itecare2 and a simple win condition. - Add localStorage save/load to D&D RPG Dungeon, ORGSCAPE and New Game. - For Forbidden Lands Lite, implement local campaign creation and placeholder content for other tabs. - For Max Games, introduce difficulty levels and a simple narrative or quest tracker. - For Null and Mysterious Depths, add hint systecare2 and optional accessibility settings. Rebuild the Twine/ink source to include these features.
+Sprint 2 – Gameplay & usefulness improvements (2–3 days) - Extend AA Game with scoring/collectible items and a simple win condition. - Add localStorage save/load to D&D RPG Dungeon, ORGSCAPE and New Game. - For Forbidden Lands Lite, implement local campaign creation and placeholder content for other tabs. - For Max Games, introduce difficulty levels and a simple narrative or quest tracker. - For Null and Mysterious Depths, add hint systems and optional accessibility settings. Rebuild the Twine/ink source to include these features.
 6. Appendices
 Notable console errors or missing assets: - None observed in the provided screenshots. Full testing should include opening DevTools and checking for 404s and JS errors for each app.
 If you only have two hours, do this: 1. Add a header, instructions and back link to AA Game Adventure and Max Games (both variants). These are easy fixes that dramatically improve usability. 2. Ensure D&D RPG Dungeon has a help tooltip and disables the Start button until the name is filled. 3. Run a link audit to patch any missing pages (especially Forbidden Lands Lite). Provide at least one dummy campaign to explore.

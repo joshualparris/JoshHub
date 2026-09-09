@@ -8,7 +8,7 @@ import type { PlatformDecisionCard } from "@/features/platform";
 import { platformActions, usePlatformDecisionCards } from "@/features/platform";
 
 export default function DecisionsList() {
-    const itecare2 = usePlatformDecisionCards();
+    const items = usePlatformDecisionCards();
     const [question, setQuestion] = useState("");
 
     async function handleAdd() {
@@ -37,9 +37,9 @@ export default function DecisionsList() {
             </Card>
 
             <div className="grid gap-3">
-                {itecare2.map((it) => (
+                {items.map((it) => (
                     <div key={it.id} className="rounded-md border bg-white p-3 dark:bg-slate-900/70">
-                        <div className="flex itecare2-center justify-between">
+                        <div className="flex items-center justify-between">
                             <div>
                                 <div className="font-medium">{it.question}</div>
                                 <div className="text-xs text-muted-foreground">{it.status}</div>

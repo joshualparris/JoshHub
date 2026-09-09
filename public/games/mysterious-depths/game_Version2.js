@@ -294,7 +294,7 @@ const storyNodes = [
     ]
 },
 {
-    text: "As you follow the curve, the air seecare2 lighter. Suddenly, you see both a ceiling of stone _and_ a glimpse of swirling galaxies above.\nYou realize: this place is both deep below and far beyond. Reality shivers.",
+    text: "As you follow the curve, the air seems lighter. Suddenly, you see both a ceiling of stone _and_ a glimpse of swirling galaxies above.\nYou realize: this place is both deep below and far beyond. Reality shivers.",
     choices: [
         { text: "Reach for the galaxies", nextStep: 10, clue: "galaxies" },
         { text: "Collapse, overwhelmed", nextStep: 11 }
@@ -337,7 +337,7 @@ const storyNodes = [
 
 // --- Additional nodes & features added: requires/effect support, more branches ---
 storyNodes.push({
-    text: "You manage to pry a stubborn panel further open. Inside a faint console hucare2 — a place to fit that fragment.",
+    text: "You manage to pry a stubborn panel further open. Inside a faint console hums — a place to fit that fragment.",
     choices: [
         { text: "Insert the fragment into the console", nextStep: 10, requires: ['fragment'], effect: { giveClue: 'interface' } },
         { text: "Take a sample of the crystal and move on", nextStep: 8, effect: { giveClue: 'crystal-sample' } },

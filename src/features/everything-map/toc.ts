@@ -41,11 +41,11 @@ export const EVERYTHING_MAP_TOC: TocItem[] = [
   { id: "6.1", title: "Income, salaries, mortgage, superannuation", page: 111 },
   { id: "6.2", title: "Budgeting, savings, investments, wills", page: 114 },
   { id: "6.3", title: "Insurance, benefits, tax", page: 116 },
-  { id: "6.4", title: "Dreacare2 (paying off house, second property, granny flat)", page: 118 },
+  { id: "6.4", title: "Dreams (paying off house, second property, granny flat)", page: 118 },
 
   { id: "7", title: "Daily Life & Routines", page: 119 },
   { id: "7.1", title: "Morning & evening routines (wind-down, health stack, family rhythm)", page: 119 },
-  { id: "7.2", title: "Parenting rhythcare2 (Sylvie's sleep, Elias's feeding, bath time struggles)", page: 121 },
+  { id: "7.2", title: "Parenting rhythms (Sylvie's sleep, Elias's feeding, bath time struggles)", page: 121 },
   { id: "7.3", title: "Meals & cooking", page: 124 },
   { id: "7.4", title: "Time management (screen use, productivity zones, rest vs. self-care guilt)", page: 126 },
 
@@ -71,22 +71,22 @@ export const EVERYTHING_MAP_TOC: TocItem[] = [
   { id: "11.1", title: "Past trips (Philippines, Thailand)", page: 153 },
   { id: "11.2", title: "Planned trips (Crete, Fiji, Tasmania, Australia travel)", page: 154 },
 
-  { id: "12", title: "Legacy & Dreacare2", page: 156 },
+  { id: "12", title: "Legacy & Dreams", page: 156 },
   { id: "12.1", title: "Memoirs & storytelling for descendants", page: 156 },
   { id: "12.2", title: "Digital legacy plan (accounts, assets, who gets access)", page: 158 },
   { id: "12.3", title: "Generational vision: faith, family, stability", page: 160 },
 
   { id: "13", title: "Home, Places & Stuff", page: 162 },
-  { id: "13.1", title: "Current home layout and storage systecare2", page: 162 },
+  { id: "13.1", title: "Current home layout and storage systems", page: 162 },
   { id: "13.2", title: "Organisation projects (shed/garage inventory)", page: 165 },
-  { id: "13.3", title: "Future home dreacare2 and renovations", page: 168 },
+  { id: "13.3", title: "Future home dreams and renovations", page: 168 },
 
   { id: "14", title: "Learning, Books & Influences", page: 170 },
   { id: "14.1", title: "Favourite authors, podcasts, key ideas", page: 170 },
   { id: "14.2", title: "Books that shaped you (Dobson, MacDonald, Lewis, etc.)", page: 172 },
   { id: "14.3", title: "Skills you're building (tech, leadership, parenting)", page: 174 },
 
-  { id: "15", title: "Tools, Systecare2 & Templates", page: 176 },
+  { id: "15", title: "Tools, Systems & Templates", page: 176 },
   { id: "15.1", title: "Routines templates (morning/evening), checklists", page: 176 },
   { id: "15.2", title: "Finances templates (budget, property, moving)", page: 179 },
   { id: "15.3", title: "Project templates (apps, game dev, prompts)", page: 182 },

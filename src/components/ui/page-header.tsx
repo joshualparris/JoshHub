@@ -15,7 +15,7 @@ export function PageHeader({ kicker, title, subtitle, rightSlot, tone = "default
   const subtitleClass = isOnDark ? "text-slate-200/80" : "text-foreground/70";
 
   return (
-    <div className="flex flex-wrap itecare2-start justify-between gap-3">
+    <div className="flex flex-wrap items-start justify-between gap-3">
       <div className="space-y-1">
         {kicker ? (
           <p className={`text-xs font-medium uppercase tracking-[0.2em] ${kickerClass}`}>

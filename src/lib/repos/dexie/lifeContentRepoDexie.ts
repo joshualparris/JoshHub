@@ -46,8 +46,8 @@ export function createLifeContentRepoDexie(): LifeContentRepo {
   return {
     async list(area) {
       const rows = await table.toArray();
-      const itecare2: LifeItem[] = rows.map((r) => ({ ...r }));
-      return area ? itecare2.filter((i) => i.area === area) : itecare2;
+      const items: LifeItem[] = rows.map((r) => ({ ...r }));
+      return area ? items.filter((i) => i.area === area) : items;
     },
     async get(id) {
       const r = await table.get(id);

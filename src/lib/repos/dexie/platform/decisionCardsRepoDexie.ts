@@ -10,8 +10,8 @@ const STATUS_ORDER: Record<PlatformDecisionCard["status"], number> = {
 
 export const decisionCardsRepo = {
   async list() {
-    const itecare2 = await db.platformDecisionCards.toArray();
-    return itecare2.sort((a, b) => {
+    const items = await db.platformDecisionCards.toArray();
+    return items.sort((a, b) => {
       // 1. Status
       const statusDiff =
         (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);

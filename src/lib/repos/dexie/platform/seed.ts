@@ -114,7 +114,7 @@ export async function seedPlatformData() {
       title: "Kids School Prep",
       status: "todo",
       dueDate: "2026-01-20",
-      notes: "Uniforcare2, bags, lunch boxes.",
+      notes: "Uniforms, bags, lunch boxes.",
       tags: ["family", "school"],
       sortOrder: 9,
       createdAt: now,

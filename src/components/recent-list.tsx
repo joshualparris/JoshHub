@@ -9,18 +9,18 @@ import type { RecentItem } from "@/lib/recent";
 import { loadRecent } from "@/lib/recent";
 
 export function RecentList() {
-  const [itecare2] = useState<RecentItem[]>(() => loadRecent());
+  const [items] = useState<RecentItem[]>(() => loadRecent());
 
-  if (!itecare2.length) {
-    return <p className="text-sm text-neutral-600">No recently opened itecare2 yet.</p>;
+  if (!items.length) {
+    return <p className="text-sm text-neutral-600">No recently opened items yet.</p>;
   }
 
   return (
     <div className="grid gap-3">
-      {itecare2.map((item) => (
+      {items.map((item) => (
         <div
           key={item.id}
-          className="flex itecare2-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
+          className="flex items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2"
         >
           <div className="space-y-1">
             <a
@@ -31,11 +31,11 @@ export function RecentList() {
             >
               {item.name}
             </a>
-            <div className="flex itecare2-center gap-2 text-sm text-neutral-600">
+            <div className="flex items-center gap-2 text-sm text-neutral-600">
               <StatusChip status={item.status as AppStatus} />
               <span>{item.category}</span>
             </div>
-            <div className="flex itecare2-center gap-2 text-xs text-neutral-500">
+            <div className="flex items-center gap-2 text-xs text-neutral-500">
               <Clock className="h-4 w-4" />
               <span>{new Date(item.lastOpened).toLocaleString()}</span>
             </div>

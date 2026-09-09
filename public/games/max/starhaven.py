@@ -37,7 +37,7 @@ class Room:
     desc: str
     x: int
     y: int
-    itecare2: List[str] = field(default_factory=list)
+    items: List[str] = field(default_factory=list)
     npcs: List[str] = field(default_factory=list)
     passable: bool = True
 
@@ -57,8 +57,8 @@ class Game:
     def __init__(self, seed: Optional[int] = None):
         self.rng = random.Random(seed)
         self.time = 60  # minutes until stellar impact
-        self.roocare2: Dict[str, Room] = {}
-        self.itecare2: Dict[str, Item] = {}
+        self.rooms: Dict[str, Room] = {}
+        self.items: Dict[str, Item] = {}
         self.npcs: Dict[str, NPC] = {}
         self.player_room = "atrium"
         self.inv: List[str] = []
@@ -70,11 +70,11 @@ class Game:
         self._seed_case()
 
     # ----- World Setup -----
-    def _add_room(self, id, name, desc, x, y, itecare2=None, npcs=None):
-        self.roocare2[id] = Room(id, name, desc, x, y, itecare2 or [], npcs or [])
+    def _add_room(self, id, name, desc, x, y, items=None, npcs=None):
+        self.rooms[id] = Room(id, name, desc, x, y, items or [], npcs or [])
 
     def _add_item(self, id, name, desc, portable=True):
-        self.itecare2[id] = Item(id, name, desc, portable)
+        self.items[id] = Item(id, name, desc, portable)
 
     def _add_npc(self, id, name, title, room, alibi, truth, lie):
         self.npcs[id] = NPC(id, name, title, room, alibi, truth, lie)
@@ -83,35 +83,35 @@ class Game:
         # Map (5x3): y=0..2, x=0..4
         self._add_room("atrium", "Grand Atrium",
             "A vaulted hub of glass and brass. Guests murmur beneath a holographic sun.",
-            2, 1, itecare2=["cuffs"])
+            2, 1, items=["cuffs"])
         self._add_room("gala", "Gala Dome",
             "A crystal hemisphere with a view of the star. Tables abandoned mid-toast.", 2, 0,
-            itecare2=["cufflink", "manifest"])
+            items=["cufflink", "manifest"])
         self._add_room("labs", "Bio-Labs",
             "Sterile corridors and nutrient fog. Security panels blink amber.", 1, 0,
-            itecare2=["stimulant", "overwritten_log"])
+            items=["stimulant", "overwritten_log"])
         self._add_room("hangar", "Shuttle Hangar",
             "Docked skiffs hum softly. The escape shuttle is locked behind red bars.", 4, 1,
-            itecare2=["forged_card"])
+            items=["forged_card"])
         self._add_room("command", "Command Deck",
             "Tiered consoles and a captain’s chair. The Master Console awaits.", 3, 0,
-            itecare2=["thruster_invoice"])
+            items=["thruster_invoice"])
         self._add_room("brig", "Security Brig",
-            "Energy bars and cold benches. An arrest field projector hucare2.", 0, 1)
+            "Energy bars and cold benches. An arrest field projector hums.", 0, 1)
         self._add_room("gardens", "Starlight Gardens",
             "Bioluminescent vines wind around art installations.", 1, 2,
-            itecare2=["dna_fiber"])
+            items=["dna_fiber"])
         self._add_room("suites", "VIP Suites",
             "Private doors, hush-fields, and the perfume of old money.", 3, 2,
-            itecare2=["weapon_garrote"])
+            items=["weapon_garrote"])
         self._add_room("service", "Service Ducts",
             "Tight passages. The station’s veins and secrets.", 4, 2,
-            itecare2=["maintenance_key"])
+            items=["maintenance_key"])
         self._add_room("observ", "Observatory",
             "A darkened lens toward eternity. One pane bears a smeared print.", 0, 0,
-            itecare2=["smeared_print"])
+            items=["smeared_print"])
 
-        # Itecare2
+        # Items
         self._add_item("cuffs", "Restraint Cuffs", "Security-issue restraints. Required to arrest.")
         self._add_item("weapon_garrote", "Monofilament Garrote", "A deadly, almost invisible wire.")
         self._add_item("forged_card", "Forged Access Card", "Fake credentials to restricted areas.")
@@ -166,22 +166,22 @@ class Game:
         }
         self.killer_evidence = {sus: self.rng.sample(evidence_pool[sus], 3) for sus in suspects}
 
-        # Scatter itecare2 somewhat plausibly
-        movable = [iid for iid, it in self.itecare2.itecare2() if it.portable and iid != "codes_token"]
-        drop_roocare2 = [rid for rid in self.roocare2 if rid not in (self.brigrm, self.cmdrm)]
+        # Scatter items somewhat plausibly
+        movable = [iid for iid, it in self.items.items() if it.portable and iid != "codes_token"]
+        drop_rooms = [rid for rid in self.rooms if rid not in (self.brigrm, self.cmdrm)]
         for iid in movable:
-            placed = any(iid in r.itecare2 for r in self.roocare2.values())
+            placed = any(iid in r.items for r in self.rooms.values())
             if not placed:
-                self.roocare2[self.rng.choice(drop_roocare2)].itecare2.append(iid)
+                self.rooms[self.rng.choice(drop_rooms)].items.append(iid)
 
     # ----- Core Loop Helpers -----
     def room_at_xy(self, x, y) -> Optional[Room]:
-        for r in self.roocare2.values():
+        for r in self.rooms.values():
             if r.x == x and r.y == y and r.passable:
                 return r
         return None
 
-    def current_room(self) -> Room: return self.roocare2[self.player_room]
+    def current_room(self) -> Room: return self.rooms[self.player_room]
 
     def spend(self, minutes: int = 1):
         self.time = max(0, self.time - minutes)
@@ -193,22 +193,22 @@ class Game:
     def look(self):
         r = self.current_room()
         say(f"\n{r.name}\n{r.desc}")
-        if r.itecare2:
-            say("Itecare2 here: " + ", ".join(self.itecare2[i].name for i in r.itecare2))
+        if r.items:
+            say("Items here: " + ", ".join(self.items[i].name for i in r.items))
         if r.npcs:
             say("You see: " + ", ".join(self.npcs[n].name for n in r.npcs))
         exits = []
-        for d, (dx, dy) in DIRS.itecare2():
+        for d, (dx, dy) in DIRS.items():
             if self.room_at_xy(self.current_room().x + dx, self.current_room().y + dy):
                 exits.append(d)
         say("Exits: " + ", ".join(exits) if exits else "No exits.")
         self.spend(0)
 
     def show_map(self):
-        xs = [r.x for r in self.roocare2.values()]; ys = [r.y for r in self.roocare2.values()]
+        xs = [r.x for r in self.rooms.values()]; ys = [r.y for r in self.rooms.values()]
         W, H = max(xs) + 1, max(ys) + 1
         grid = [["   "] * W for _ in range(H)]
-        for r in self.roocare2.values():
+        for r in self.rooms.values():
             label = r.name.split()[0][:3].upper()
             grid[r.y][r.x] = label
         px, py = self.current_room().x, self.current_room().y
@@ -224,7 +224,7 @@ class Game:
 
     def inv_show(self):
         if self.inv:
-            say("You carry: " + ", ".join(self.itecare2[i].name for i in self.inv))
+            say("You carry: " + ", ".join(self.items[i].name for i in self.inv))
         else:
             say("You carry nothing.")
         self.spend(0)
@@ -247,8 +247,8 @@ class Game:
         self.spend(2)
 
     def _sync_npcs_in_room(self):
-        for rid in self.roocare2:
-            self.roocare2[rid].npcs = [nid for nid, n in self.npcs.itecare2() if n.room == rid and not n.arrested]
+        for rid in self.rooms:
+            self.rooms[rid].npcs = [nid for nid, n in self.npcs.items() if n.room == rid and not n.arrested]
 
     def take(self, *args):
         if not args:
@@ -257,17 +257,17 @@ class Game:
         name = " ".join(args).lower()
         r = self.current_room()
         iid = None
-        for i in r.itecare2:
-            if self.itecare2[i].name.lower() == name or i == name:
+        for i in r.items:
+            if self.items[i].name.lower() == name or i == name:
                 iid = i; break
         if not iid:
             say("Not here.")
             return
-        it = self.itecare2[iid]
+        it = self.items[iid]
         if not it.portable:
             say("It’s fixed in place.")
             return
-        r.itecare2.remove(iid)
+        r.items.remove(iid)
         self.inv.append(iid)
         say(f"You take the {it.name}.")
         self.spend(1)
@@ -279,14 +279,14 @@ class Game:
         name = " ".join(args).lower()
         iid = None
         for i in self.inv:
-            if self.itecare2[i].name.lower() == name or i == name:
+            if self.items[i].name.lower() == name or i == name:
                 iid = i; break
         if not iid:
             say("You don’t have that.")
             return
         self.inv.remove(iid)
-        self.current_room().itecare2.append(iid)
-        say(f"You drop the {self.itecare2[iid].name}.")
+        self.current_room().items.append(iid)
+        say(f"You drop the {self.items[iid].name}.")
         self.spend(1)
 
     def inspect(self, *args):
@@ -294,9 +294,9 @@ class Game:
             say("Inspect what?")
             return
         name = " ".join(args).lower()
-        pool = list(self.inv) + list(self.current_room().itecare2)
+        pool = list(self.inv) + list(self.current_room().items)
         for i in pool:
-            it = self.itecare2[i]
+            it = self.items[i]
             if it.name.lower() == name or i == name:
                 detail = it.desc
                 if i in self.killer_evidence[self.killer_id]:
@@ -339,7 +339,7 @@ class Game:
             return
         who = " ".join(args).lower()
         if who not in [nid for nid in self.npcs]:
-            matches = [nid for nid, n in self.npcs.itecare2() if n.name.lower() == who]
+            matches = [nid for nid, n in self.npcs.items() if n.name.lower() == who]
             if not matches:
                 say("Not a listed guest.")
                 return
@@ -349,7 +349,7 @@ class Game:
         say(f"You lay out your case against {self.npcs[who].name}.")
         if guilty:
             say("They blanch. A vein ticks. The room chills.")
-            say(f"Key tells: {', '.join(self.itecare2[e].name for e in tips)}.")
+            say(f"Key tells: {', '.join(self.items[e].name for e in tips)}.")
         else:
             say("They sneer. Those 'clues' don’t hold up. Doubt creeps in.")
         self.spend(3)
@@ -376,8 +376,8 @@ class Game:
         n.arrested = True
         n.room = self.brigrm
         self._sync_npcs_in_room()
-        if target_id == self.killer_id and "codes_token" not in self.roocare2[self.brigrm].itecare2:
-            self.roocare2[self.brigrm].itecare2.append("codes_token")
+        if target_id == self.killer_id and "codes_token" not in self.rooms[self.brigrm].items:
+            self.rooms[self.brigrm].items.append("codes_token")
         say(f"You restrain {n.name}. Security drones escort them to the Brig.")
         self.spend(3)
 
@@ -387,7 +387,7 @@ class Game:
             return
         killer = self.killer_id
         kname = self.npcs[killer].name
-        codes_here = "codes_token" in self.roocare2[self.brigrm].itecare2
+        codes_here = "codes_token" in self.rooms[self.brigrm].items
         if codes_here:
             say("You splice in the Master Codes Token from the Brig. The lockout shudders…")
             say("Trajectory control restored. Starhaven veers away from the sun.")
@@ -407,8 +407,8 @@ class Game:
             time=self.time,
             player_room=self.player_room,
             inv=self.inv,
-            roocare2={rid: dict(itecare2=r.itecare2, npcs=r.npcs) for rid, r in self.roocare2.itecare2()},
-            npcs={nid: dict(room=n.room, arrested=n.arrested, coop=n.cooperative) for nid, n in self.npcs.itecare2()},
+            rooms={rid: dict(items=r.items, npcs=r.npcs) for rid, r in self.rooms.items()},
+            npcs={nid: dict(room=n.room, arrested=n.arrested, coop=n.cooperative) for nid, n in self.npcs.items()},
             killer=self.killer_id,
             killer_evidence=self.killer_evidence,
         )
@@ -423,9 +423,9 @@ class Game:
         with open(fn) as f:
             data = json.load(f)
         self.time = data["time"]; self.player_room = data["player_room"]; self.inv = data["inv"]
-        for rid, stuff in data["roocare2"].itecare2():
-            self.roocare2[rid].itecare2 = stuff["itecare2"]; self.roocare2[rid].npcs = stuff["npcs"]
-        for nid, stuff in data["npcs"].itecare2():
+        for rid, stuff in data["rooms"].items():
+            self.rooms[rid].items = stuff["items"]; self.rooms[rid].npcs = stuff["npcs"]
+        for nid, stuff in data["npcs"].items():
             self.npcs[nid].room = stuff["room"]; self.npcs[nid].arrested = stuff["arrested"]; self.npcs[nid].cooperative = stuff["coop"]
         self.killer_id = data["killer"]; self.killer_evidence = data["killer_evidence"]
         say("Loaded.")
@@ -482,7 +482,7 @@ class Game:
             else:
                 say("Unrecognized. Try 'help'.")
             if self.time <= 15 and self.time > 0:
-                say(f"(Alarcare2 intensify: {self.time} minutes left.)")
+                say(f"(Alarms intensify: {self.time} minutes left.)")
 
 # ----- Run -----
 if __name__ == "__main__":

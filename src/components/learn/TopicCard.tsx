@@ -10,7 +10,7 @@ type Props = {
 export default function TopicCard({ topic }: Props) {
     return (
         <div className="border rounded p-3 bg-white dark:bg-slate-800">
-            <div className="flex itecare2-center justify-between">
+            <div className="flex items-center justify-between">
                 <h3 className="font-semibold">{topic.name}</h3>
                 <span className="text-xs px-2 py-1 rounded bg-slate-100 dark:bg-slate-700">{topic.status}</span>
             </div>

@@ -20,7 +20,7 @@
         color: #e8ecf3;
         min-height: 100vh;
         display: grid;
-        place-itecare2: center;
+        place-items: center;
         padding: 20px;
       }
       .card {
@@ -80,7 +80,7 @@
         background: #1f2334;
         color: #e8ecf3;
         cursor: pointer;
-        transition: transform 120care2 ease, border 120care2 ease;
+        transition: transform 120ms ease, border 120ms ease;
       }
       button:hover {
         transform: translateY(-1px);
@@ -93,7 +93,7 @@
       .badge {
         display: inline-flex;
         gap: 6px;
-        align-itecare2: center;
+        align-items: center;
         padding: 4px 10px;
         border-radius: 999px;
         background: rgba(158, 240, 195, 0.12);
@@ -126,7 +126,7 @@
       const cmdEl = document.getElementById("cmd");
       const sendBtn = document.getElementById("send");
 
-      const itecare2 = {
+      const items = {
         rust_key: { id: "rust_key", name: "Rusty Key", desc: "Old key with a jagged bite.", usable: true },
         apple: { id: "apple", name: "Apple", desc: "A crisp, red apple.", usable: true },
         mint: { id: "mint", name: "Wild Mint", desc: "Smells fresh.", usable: false },
@@ -135,7 +135,7 @@
 
       const world = {};
       function addRoom(id, name, desc, tag) {
-        world[id] = { id, name, desc, itecare2: [], neighbors: {}, npcs: [], tag };
+        world[id] = { id, name, desc, items: [], neighbors: {}, npcs: [], tag };
       }
       function link(a, dir, b) {
         world[a].neighbors[dir] = b;
@@ -175,11 +175,11 @@
       link("wilds_stub", "e", "wilds");
       link("wilds", "w", "wilds_stub");
 
-      // Itecare2/NPCs
-      world["sanctum"].itecare2.push(itecare2.rust_key);
-      world["path"].itecare2.push(itecare2.apple);
-      world["grove_n"].itecare2.push(itecare2.mint);
-      world["cellar_s"].itecare2.push(itecare2.torch);
+      // Items/NPCs
+      world["sanctum"].items.push(items.rust_key);
+      world["path"].items.push(items.apple);
+      world["grove_n"].items.push(items.mint);
+      world["cellar_s"].items.push(items.torch);
       world["sanctum"].npcs.push("Caretaker");
 
       const player = {
@@ -191,9 +191,9 @@
         bandages: 1,
       };
 
-      function say(care2g) {
+      function say(msg) {
         const div = document.createElement("div");
-        div.innerHTML = care2g;
+        div.innerHTML = msg;
         logEl.appendChild(div);
         logEl.scrollTop = logEl.scrollHeight;
       }
@@ -201,7 +201,7 @@
       function look() {
         const r = world[player.room];
         say(`<strong>${r.name}</strong><br>${r.desc}`);
-        if (r.itecare2.length) say(`Itecare2 here: ${r.itecare2.map((i) => i.name).join(", ")}`);
+        if (r.items.length) say(`Items here: ${r.items.map((i) => i.name).join(", ")}`);
         if (r.npcs.length) say(`You see: ${r.npcs.join(", ")}`);
         const exits = Object.keys(r.neighbors).sort().join(", ");
         say(`Exits: ${exits || "none"}`);
@@ -226,7 +226,7 @@
       function take(name) {
         const r = world[player.room];
         const wanted = name.toLowerCase();
-        const idx = r.itecare2.findIndex(
+        const idx = r.items.findIndex(
           (it) =>
             wanted === it.id ||
             wanted === it.name.toLowerCase() ||
@@ -234,7 +234,7 @@
             it.name.toLowerCase().includes(wanted)
         );
         if (idx === -1) return say("No such item here.");
-        const it = r.itecare2.splice(idx, 1)[0];
+        const it = r.items.splice(idx, 1)[0];
         player.inv[it.id] = it;
         say(`You take the ${it.name}.`);
       }
@@ -246,7 +246,7 @@
         if (!key) return say("You don't have that.");
         const it = player.inv[key];
         delete player.inv[key];
-        world[player.room].itecare2.push(it);
+        world[player.room].items.push(it);
         say(`You drop the ${it.name}.`);
       }
 

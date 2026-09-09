@@ -5,7 +5,7 @@ import { MapClient } from "@/features/everything-map/map-client";
 import { buildTree, findNode } from "@/features/everything-map/tree";
 
 interface Props {
-  paracare2: { id: string };
+  params: { id: string };
 }
 
 export const metadata = {
@@ -13,13 +13,13 @@ export const metadata = {
   description: "Navigate your life map and attach notes locally.",
 };
 
-export function generateStaticParacare2() {
+export function generateStaticParams() {
   return EVERYTHING_MAP_TOC.map((item) => ({ id: item.id }));
 }
 
-export default function MapDetailPage({ paracare2 }: Props) {
+export default function MapDetailPage({ params }: Props) {
   const tree = buildTree(EVERYTHING_MAP_TOC);
-  const exists = findNode(tree, paracare2.id);
+  const exists = findNode(tree, params.id);
   if (!exists) return notFound();
-  return <MapClient initialId={paracare2.id} />;
+  return <MapClient initialId={params.id} />;
 }

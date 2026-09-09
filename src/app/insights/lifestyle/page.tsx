@@ -61,7 +61,7 @@ export default function LifestyleReportPage() {
               key={item.key}
               variant={active ? "default" : "outline"}
               onClick={() => setTab(item.key as TabKey)}
-              className="flex itecare2-center gap-2"
+              className="flex items-center gap-2"
             >
               <Icon className="h-4 w-4" />
               {item.label}
@@ -96,7 +96,7 @@ export default function LifestyleReportPage() {
             <div className="text-sm text-neutral-600 dark:text-slate-300">
               <p className="font-medium text-neutral-900 dark:text-white">Recent imports</p>
               {(imports ?? []).slice(0, 3).map((imp) => (
-                <div key={imp.id} className="flex itecare2-center justify-between text-xs text-neutral-600 dark:text-slate-300">
+                <div key={imp.id} className="flex items-center justify-between text-xs text-neutral-600 dark:text-slate-300">
                   <span>{imp.fileName}</span>
                   <span className={imp.status === "success" ? "text-emerald-600 dark:text-emerald-200" : "text-red-600"}>
                     {imp.status}
@@ -145,7 +145,7 @@ export default function LifestyleReportPage() {
                 <p>Flow-state correlation will use timestamps from runs; add coding session logs later for tighter links.</p>
               </Section>
               <Section title="Hardware / Environment">
-                <p>Telemetry stored locally; supports Sacare2ung/Garmin TCX without cloud calls.</p>
+                <p>Telemetry stored locally; supports Samsung/Garmin TCX without cloud calls.</p>
               </Section>
               <Section title="Digital-Physical Correlation">
                 <p>
@@ -156,7 +156,7 @@ export default function LifestyleReportPage() {
           </Card>
 
           <Card className="border-amber-100 bg-amber-50/70 shadow-sm dark:border-amber-800/60 dark:bg-amber-900/30">
-            <CardHeader className="flex flex-row itecare2-center gap-3">
+            <CardHeader className="flex flex-row items-center gap-3">
               <AlertTriangle className="h-5 w-5 text-amber-700 dark:text-amber-200" />
               <div>
                 <CardTitle>Blind spots</CardTitle>
@@ -222,7 +222,7 @@ export default function LifestyleReportPage() {
               {(dailyMetrics ?? []).slice(0, 10).map((d) => (
                 <div
                   key={d.date}
-                  className="flex itecare2-center justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{d.date}</p>

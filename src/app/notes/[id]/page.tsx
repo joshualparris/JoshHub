@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { notFound, useParacare2, useRouter } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,8 +12,8 @@ import { deleteNote, updateNote } from "@/lib/db/actions";
 import { useNote } from "@/lib/db/hooks";
 
 export default function NoteDetailPage() {
-  const paracare2 = useParacare2<{ id: string }>();
-  const noteId = paracare2?.id;
+  const params = useParams<{ id: string }>();
+  const noteId = params?.id;
   const note = useNote(noteId);
   const router = useRouter();
 
@@ -45,7 +45,7 @@ export default function NoteDetailPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex itecare2-center justify-between">
+      <div className="flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Note</p>
           <h1 className="text-3xl font-semibold text-neutral-900">Edit note</h1>

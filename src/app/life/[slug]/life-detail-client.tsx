@@ -39,7 +39,7 @@ export function LifeDetailClient({ area }: Props) {
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2 space-y-6">
-        <div className="flex flex-col gap-2 md:flex-row md:itecare2-start md:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <PageHeader kicker="Life area" title={area.title} subtitle={area.intro} tone="onDark" />
           <Button
             variant="outline"
@@ -85,7 +85,7 @@ export function LifeDetailClient({ area }: Props) {
               quickApps.map((app) => (
                 <div
                   key={app.id}
-                  className="flex itecare2-center justify-between rounded-md border border-neutral-200 px-3 py-2 dark:border-slate-800 dark:bg-slate-950/40"
+                  className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2 dark:border-slate-800 dark:bg-slate-950/40"
                 >
                   <div className="space-y-1">
                     <a
@@ -96,7 +96,7 @@ export function LifeDetailClient({ area }: Props) {
                     >
                       {app.name}
                     </a>
-                    <div className="flex itecare2-center gap-2 text-xs text-neutral-500 dark:text-slate-300">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-slate-300">
                       <StatusChip status={app.status} />
                       <span>{app.category}</span>
                     </div>

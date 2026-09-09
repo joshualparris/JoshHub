@@ -34,11 +34,11 @@ export default function FamilyPage() {
       .split(",")
       .map((r) => r.trim())
       .filter(Boolean);
-    const sylvieItecare2 = sylvie
+    const sylvieItems = sylvie
       .split(",")
       .map((r) => r.trim())
       .filter(Boolean);
-    const eliasItecare2 = elias
+    const eliasItems = elias
       .split(",")
       .map((r) => r.trim())
       .filter(Boolean);
@@ -46,8 +46,8 @@ export default function FamilyPage() {
       bedtime,
       dinner,
       responsibilities: resp,
-      sylvieChecklist: sylvieItecare2,
-      eliasChecklist: eliasItecare2,
+      sylvieChecklist: sylvieItems,
+      eliasChecklist: eliasItems,
     });
     setMessage("Saved.");
     setTimeout(() => setMessage(""), 2000);
@@ -92,7 +92,7 @@ export default function FamilyPage() {
               onChange={(e) => setElias(e.target.value)}
               placeholder="Elias bedtime checklist (comma separated)"
             />
-            <div className="flex itecare2-center gap-3">
+            <div className="flex items-center gap-3">
               <Button type="submit">Save</Button>
               {message && <span className="text-sm text-neutral-600">{message}</span>}
             </div>

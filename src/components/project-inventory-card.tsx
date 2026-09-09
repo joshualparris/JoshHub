@@ -34,9 +34,9 @@ export function ProjectInventoryCard({ project }: Props) {
   return (
     <Card className="bg-card text-foreground">
       <CardHeader>
-        <div className="flex itecare2-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div className="space-y-1">
-            <div className="flex itecare2-center gap-2">
+            <div className="flex items-center gap-2">
               <CardTitle className="text-xl font-bold">{project.name}</CardTitle>
               <StatusChip status={project.status} />
               {project.sourceOfTruth && (
@@ -64,7 +64,7 @@ export function ProjectInventoryCard({ project }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div className="space-y-2">
             {project.repoUrl && (
-              <div className="flex itecare2-center gap-2">
+              <div className="flex items-center gap-2">
                 <GitBranch className="h-4 w-4 text-muted-foreground" />
                 <span className="font-semibold w-24 shrink-0">Repository:</span>
                 <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
@@ -73,7 +73,7 @@ export function ProjectInventoryCard({ project }: Props) {
               </div>
             )}
             {project.liveUrl && (
-              <div className="flex itecare2-center gap-2">
+              <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <span className="font-semibold w-24 shrink-0">Live URL:</span>
                 <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
@@ -82,7 +82,7 @@ export function ProjectInventoryCard({ project }: Props) {
               </div>
             )}
             {project.localPath && (
-              <div className="flex itecare2-center gap-2">
+              <div className="flex items-center gap-2">
                 <Folder className="h-4 w-4 text-muted-foreground" />
                 <span className="font-semibold w-24 shrink-0">Local Path:</span>
                 <span className="truncate text-muted-foreground font-mono bg-muted/50 px-1 rounded">
@@ -97,7 +97,7 @@ export function ProjectInventoryCard({ project }: Props) {
 
           <div className="space-y-2">
             {project.nextAction && (
-              <div className="flex itecare2-start gap-2">
+              <div className="flex items-start gap-2">
                 <Check className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold block">Next Action:</span>
@@ -106,7 +106,7 @@ export function ProjectInventoryCard({ project }: Props) {
               </div>
             )}
             {project.cleanupRecommendation && (
-              <div className="flex itecare2-start gap-2">
+              <div className="flex items-start gap-2">
                 <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold block">Recommendation:</span>
@@ -115,7 +115,7 @@ export function ProjectInventoryCard({ project }: Props) {
               </div>
             )}
             {project.duplicateOf && (
-              <div className="flex itecare2-start gap-2">
+              <div className="flex items-start gap-2">
                 <Info className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-semibold block">Duplicate of:</span>

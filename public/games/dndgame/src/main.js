@@ -1,7 +1,7 @@
 ﻿import { RACES } from "./data/races.js";
 import { CLASSES, BACKGROUNDS } from "./data/classes.js";
 import { SPELLS } from "./data/spells.js";
-import { ITEMS, SHOP_STOCK } from "./data/itecare2.js";
+import { ITEMS, SHOP_STOCK } from "./data/items.js";
 import { RECIPES } from "./data/recipes.js";
 import { NPCS } from "./data/npcs.js";
 import { LOCATIONS, ENCOUNTERS, FINAL_BOSS } from "./data/locations.js";
@@ -15,7 +15,7 @@ import {
   createInitialState,
   addItem,
   removeItem,
-  hasItecare2,
+  hasItems,
   gainXp,
   findInventoryItem
 } from "./core/state.js";
@@ -724,7 +724,7 @@ function buildShopActions() {
 
 function buildCraftActions() {
   const craftButtons = RECIPES.map((recipe) => {
-    const canCraft = hasItecare2(state, recipe.requires);
+    const canCraft = hasItems(state, recipe.requires);
     return {
       id: `craft:make:${recipe.id}`,
       label: `${canCraft ? "Craft" : "Need Materials"}: ${recipe.name}`,
@@ -900,7 +900,7 @@ function handleCraftAction(actionId) {
     return;
   }
 
-  if (!hasItecare2(state, recipe.requires)) {
+  if (!hasItems(state, recipe.requires)) {
     gameMessage("Missing ingredients.", "failure", true);
     return;
   }
@@ -912,7 +912,7 @@ function handleCraftAction(actionId) {
   addItem(state, recipe.resultItemId, recipe.resultQty);
   if (recipe.resultItemId === "warded_key") {
     state.world.flags.forgedWardedKey = true;
-    gameMessage("The Warded Key hucare2 with layered sigil magic.", "success", true);
+    gameMessage("The Warded Key hums with layered sigil magic.", "success", true);
   } else {
     gameMessage(`Crafted ${ITEMS[recipe.resultItemId].name}.`, "success", true);
   }
@@ -1074,7 +1074,7 @@ function startCombat(enemyTemplate, meta) {
     meta
   };
 
-  gameMessage(`${meta.title}: ${meta.description}`, "combat-care2g", true);
+  gameMessage(`${meta.title}: ${meta.description}`, "combat-msg", true);
 }
 
 function handleCombatAction(actionId) {
@@ -1261,7 +1261,7 @@ function enemyTurn() {
   } else {
     const damage = rollExpr(enemy.damage).total;
     applyDamageToPlayer(damage);
-    gameMessage(`${enemy.name} hits for ${damage} damage.`, "combat-care2g", true);
+    gameMessage(`${enemy.name} hits for ${damage} damage.`, "combat-msg", true);
   }
 
   if (state.player.status.acBoostTurns > 0) {

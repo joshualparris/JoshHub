@@ -15,7 +15,7 @@ export default function ProjectImportPage() {
       />
 
       <div className="rounded-lg border p-4 bg-muted/20">
-        <div className="flex itecare2-center gap-2 mb-2">
+        <div className="flex items-center gap-2 mb-2">
           <InfoIcon className="h-4 w-4" />
           <h4 className="font-semibold">Read-Only Preview</h4>
         </div>

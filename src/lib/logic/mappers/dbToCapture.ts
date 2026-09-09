@@ -1,10 +1,10 @@
 import type { Note, Task, Bookmark } from "../../db/schema";
 import type { CaptureItem } from "../../models/capture";
 
-function toIso(care2OrIso: number | string | undefined | null): string {
-  if (!care2OrIso) return new Date().toISOString();
-  if (typeof care2OrIso === "number") return new Date(care2OrIso).toISOString();
-  return care2OrIso;
+function toIso(msOrIso: number | string | undefined | null): string {
+  if (!msOrIso) return new Date().toISOString();
+  if (typeof msOrIso === "number") return new Date(msOrIso).toISOString();
+  return msOrIso;
 }
 
 export function noteToCapture(n: Note): CaptureItem {

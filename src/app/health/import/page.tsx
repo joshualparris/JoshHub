@@ -137,9 +137,9 @@ export default function HealthImportPage() {
           });
         }
       } catch (err) {
-        const care2g = err instanceof Error ? err.message : "Unexpected error";
-        await addHealthImport({ fileName: file.name, status: "error", message: care2g, rawPreview: null, sizeBytes: file.size });
-        outcomes.push({ fileName: file.name, status: "error", message: care2g });
+        const msg = err instanceof Error ? err.message : "Unexpected error";
+        await addHealthImport({ fileName: file.name, status: "error", message: msg, rawPreview: null, sizeBytes: file.size });
+        outcomes.push({ fileName: file.name, status: "error", message: msg });
       }
     }
 
@@ -179,7 +179,7 @@ export default function HealthImportPage() {
 
       <Card className="border-dashed border-sky-200 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
         <CardHeader className="flex flex-col gap-2 text-center">
-          <div className="mx-auto flex h-12 w-12 itecare2-center justify-center rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/40 dark:text-sky-200">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/40 dark:text-sky-200">
             <CloudUpload className="h-6 w-6" />
           </div>
           <CardTitle>Drag & drop TCX files</CardTitle>
@@ -187,7 +187,7 @@ export default function HealthImportPage() {
         </CardHeader>
         <CardContent>
           <div
-            className="flex flex-col itecare2-center justify-center gap-3 rounded-2xl border border-dashed border-sky-200 bg-white/70 px-4 py-10 text-center transition hover:border-sky-400 dark:border-slate-700 dark:bg-slate-900/60"
+            className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-sky-200 bg-white/70 px-4 py-10 text-center transition hover:border-sky-400 dark:border-slate-700 dark:bg-slate-900/60"
             onDragOver={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -197,7 +197,7 @@ export default function HealthImportPage() {
             <p className="text-sm text-neutral-700 dark:text-slate-200">
               Drop files here or choose from your computer.
             </p>
-            <div className="flex flex-wrap itecare2-center justify-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <Button onClick={handleChoose} disabled={importing}>
                 <Upload className="mr-2 h-4 w-4" />
                 Choose files
@@ -221,7 +221,7 @@ export default function HealthImportPage() {
 
       {lastSummary && (
         <Card className="border-emerald-100 bg-emerald-50/70 dark:border-emerald-800/50 dark:bg-emerald-900/30">
-          <CardHeader className="flex flex-row itecare2-center justify-between">
+          <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle>Import summary</CardTitle>
               <CardDescription>{lastSummary}</CardDescription>
@@ -241,7 +241,7 @@ export default function HealthImportPage() {
             {results.map((res) => (
               <div
                 key={res.fileName + res.status + res.message}
-                className="flex itecare2-start justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
+                className="flex items-start justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
               >
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-neutral-900 dark:text-white">{res.fileName}</p>
@@ -269,7 +269,7 @@ export default function HealthImportPage() {
           {(imports ?? []).slice(0, 10).map((imp) => (
             <div
               key={imp.id}
-              className="flex itecare2-start justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
+              className="flex items-start justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
             >
               <div>
                 <p className="text-sm font-medium text-neutral-900 dark:text-white">{imp.fileName}</p>

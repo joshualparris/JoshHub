@@ -1,4 +1,4 @@
-// player.js - Handles player stats, leveling, and attributes for Dark Realcare2
+// player.js - Handles player stats, leveling, and attributes for Dark Realms
 
 export class Player {
   constructor(name = "Hero") {

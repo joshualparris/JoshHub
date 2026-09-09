@@ -8,7 +8,7 @@ import type { PlatformOpportunity } from "@/features/platform";
 import { platformActions, usePlatformOpportunities } from "@/features/platform";
 
 export default function OpportunitiesList() {
-    const itecare2 = usePlatformOpportunities();
+    const items = usePlatformOpportunities();
     const [name, setName] = useState("");
 
     async function handleAdd() {
@@ -37,9 +37,9 @@ export default function OpportunitiesList() {
             </Card>
 
             <div className="grid gap-3">
-                {itecare2.map((it) => (
+                {items.map((it) => (
                     <div key={it.id} className="rounded-md border bg-white p-3 dark:bg-slate-900/70">
-                        <div className="flex itecare2-center justify-between">
+                        <div className="flex items-center justify-between">
                             <div>
                                 <div className="font-medium">{it.name}</div>
                                 <div className="text-xs text-muted-foreground">{it.stage}</div>
