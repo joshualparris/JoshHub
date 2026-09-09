@@ -157,20 +157,20 @@ export function readBackupFile(raw: unknown): BackupFile {
       ? (candidate.data as Record<string, unknown>)
       : candidate;
 
-  const data: BackupData = {};
+  const tableRows: BackupData = {};
   for (const [key, value] of Object.entries(source)) {
     // Ignore anything that is not a table we know about (metadata fields, and
     // tables from a future version of the app we cannot meaningfully restore).
     if (!isBackupTableName(key)) continue;
     if (!Array.isArray(value)) continue;
-    data[key] = value;
+    tableRows[key] = value;
   }
 
-  if (Object.keys(data).length === 0) {
+  if (Object.keys(tableRows).length === 0) {
     throw new Error("This backup does not contain any recognisable JoshHub data.");
   }
 
-  return { version, exportedAt, data };
+  return { version, exportedAt, data: tableRows };
 }
 
 /** Table names the file actually carries, in the canonical registry order. */
@@ -197,6 +197,27 @@ export function countRowsInBackup(file: BackupFile): number {
   return tablesInBackup(file).reduce((total, name) => total + (file.data[name]?.length ?? 0), 0);
 }
 
+/** What is currently stored, ready to display. */
+export interface StoredDataSummary {
+  totalRows: number;
+  /** Tables holding at least one row, in registry order. */
+  populatedTables: BackupTableName[];
+}
+
+/**
+ * Summarise row counts for display.
+ *
+ * This lives here rather than in the backups screen so the arithmetic can be
+ * tested, and so there is one answer to "how many rows are stored" — the screen
+ * previously counted them a second time in its own helper.
+ */
+export function summariseStoredData(counts: Record<BackupTableName, number>): StoredDataSummary {
+  return {
+    totalRows: BACKUP_TABLES.reduce((total, name) => total + (counts[name] ?? 0), 0),
+    populatedTables: BACKUP_TABLES.filter((name) => (counts[name] ?? 0) > 0),
+  };
+}
+
 /** Filename used when a backup is downloaded. */
 export function buildBackupFilename(exportedAt: string): string {
   // Colons are legal in ISO timestamps but awkward in filenames on some systems.
@@ -219,18 +240,18 @@ function tableByName(name: BackupTableName) {
 
 /** Read every registered table into a backup file. */
 export async function exportUserData(): Promise<BackupFile> {
-  const data: BackupData = {};
+  const tableRows: BackupData = {};
 
   await Promise.all(
     BACKUP_TABLES.map(async (name) => {
-      data[name] = await tableByName(name).toArray();
+      tableRows[name] = await tableByName(name).toArray();
     })
   );
 
   return {
     version: BACKUP_FORMAT_VERSION,
     exportedAt: new Date().toISOString(),
-    data,
+    data: tableRows,
   };
 }
 

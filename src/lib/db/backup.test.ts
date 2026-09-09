@@ -22,10 +22,13 @@ import {
   countUserData,
   exportUserData,
   readBackupFile,
+  isBackupTableName,
   restoreUserData,
+  summariseStoredData,
   tablesInBackup,
   tablesPreservedByRestore,
   type BackupFile,
+  type BackupTableName,
 } from "./backup";
 import { db } from "./dexie";
 
@@ -107,8 +110,8 @@ describe("tablesPreservedByRestore", () => {
   });
 
   it("protects nothing when the backup covers every table", () => {
-    const data = Object.fromEntries(BACKUP_TABLES.map((name) => [name, []]));
-    const full = readBackupFile({ version: "3", exportedAt: "", data });
+    const everyTableEmpty = Object.fromEntries(BACKUP_TABLES.map((name) => [name, []]));
+    const full = readBackupFile({ version: "3", exportedAt: "", data: everyTableEmpty });
 
     expect(tablesPreservedByRestore(full)).toEqual([]);
   });
@@ -123,6 +126,49 @@ describe("countRowsInBackup", () => {
     };
 
     expect(countRowsInBackup(file)).toBe(3);
+  });
+});
+
+describe("isBackupTableName", () => {
+  it("accepts registered tables and rejects anything else", () => {
+    expect(isBackupTableName("notes")).toBe(true);
+    expect(isBackupTableName("learnSettings")).toBe(true);
+    expect(isBackupTableName("lifeContent")).toBe(false); // a table that does not exist
+    expect(isBackupTableName("")).toBe(false);
+  });
+});
+
+describe("summariseStoredData", () => {
+  /** Zero for every table, so a test only has to state what it cares about. */
+  function emptyCounts(): Record<BackupTableName, number> {
+    return Object.fromEntries(BACKUP_TABLES.map((name) => [name, 0])) as Record<
+      BackupTableName,
+      number
+    >;
+  }
+
+  it("totals rows and lists only the populated tables", () => {
+    const counts = { ...emptyCounts(), notes: 3, sleep: 2 };
+
+    expect(summariseStoredData(counts)).toEqual({
+      totalRows: 5,
+      populatedTables: ["notes", "sleep"],
+    });
+  });
+
+  it("returns an empty summary when nothing is stored", () => {
+    expect(summariseStoredData(emptyCounts())).toEqual({
+      totalRows: 0,
+      populatedTables: [],
+    });
+  });
+
+  it("lists populated tables in registry order, not insertion order", () => {
+    // `sleep` is declared after `notes` in BACKUP_TABLES, so it must come second
+    // however the counts object happens to be built.
+    const counts = { ...emptyCounts(), sleep: 1, notes: 1 };
+
+    expect(summariseStoredData(counts).populatedTables).toEqual(["notes", "sleep"]);
   });
 });
 

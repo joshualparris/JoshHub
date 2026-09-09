@@ -18,17 +18,25 @@ import {
   BACKUP_TABLES,
   buildBackupFilename,
   clearUserData,
+  countRowsInBackup,
   countUserData,
   exportUserData,
   readBackupFile,
   restoreUserData,
+  summariseStoredData,
   type BackupTableName,
 } from "@/lib/db/backup";
 
 type StoredCounts = Record<BackupTableName, number>;
 
-export default function BackupsPage() {
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+/**
+ * The three backup operations plus the stored-row counts they affect.
+ *
+ * Separated from the component so the page below is only composition: it says
+ * what appears on screen, not what happens when you click. All of the actual
+ * rules live one layer further down, in `@/lib/db/backup`.
+ */
+function useBackupActions() {
   const [status, setStatus] = useState<string>("");
   const [counts, setCounts] = useState<StoredCounts | null>(null);
 
@@ -43,7 +51,7 @@ export default function BackupsPage() {
   async function handleExport() {
     const file = await exportUserData();
     downloadJson(file, buildBackupFilename(file.exportedAt));
-    setStatus(`Exported ${describeTotal(file.data)} across ${BACKUP_TABLES.length} tables.`);
+    setStatus(`Exported ${countRowsInBackup(file)} row(s) across ${BACKUP_TABLES.length} tables.`);
   }
 
   async function handleImport(selected: File | null) {
@@ -65,9 +73,6 @@ export default function BackupsPage() {
       );
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not read that backup file.");
-    } finally {
-      // Allow the same file to be picked again after a failed attempt.
-      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
 
@@ -77,6 +82,12 @@ export default function BackupsPage() {
     await refreshCounts();
     setStatus("All local data deleted.");
   }
+
+  return { status, counts, handleExport, handleImport, handleReset };
+}
+
+export default function BackupsPage() {
+  const { status, counts, handleExport, handleImport, handleReset } = useBackupActions();
 
   return (
     <div className="space-y-6">
@@ -89,36 +100,12 @@ export default function BackupsPage() {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Backup controls</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex flex-wrap gap-3">
-            <Button onClick={handleExport}>Export JSON</Button>
-            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
-              Import JSON
-            </Button>
-            <input
-              type="file"
-              accept="application/json"
-              ref={fileInputRef}
-              className="hidden"
-              onChange={(event) => handleImport(event.target.files?.[0] ?? null)}
-            />
-            <Button variant="outline" onClick={handleReset}>
-              Delete all data
-            </Button>
-          </div>
-
-          {status && <p className="text-sm text-neutral-700 dark:text-slate-200">{status}</p>}
-
-          <p className="text-xs text-neutral-500 dark:text-slate-400">
-            A backup includes every table listed below: notes, tasks, bookmarks, routines, calendar
-            events, all health logs, family rhythm, Platform planning and Learn.
-          </p>
-        </CardContent>
-      </Card>
+      <BackupControlsCard
+        status={status}
+        onExport={handleExport}
+        onImport={handleImport}
+        onReset={handleReset}
+      />
 
       <StoredDataCard counts={counts} />
 
@@ -134,12 +121,68 @@ export default function BackupsPage() {
   );
 }
 
+interface BackupControlsCardProps {
+  status: string;
+  onExport: () => void | Promise<void>;
+  onImport: (file: File | null) => void | Promise<void>;
+  onReset: () => void | Promise<void>;
+}
+
+/**
+ * The three backup actions.
+ *
+ * Owns the hidden file input and its ref, because nothing outside this card
+ * needs either. Clearing the input after each attempt is what allows the same
+ * file to be selected again after a failed import.
+ */
+function BackupControlsCard({ status, onExport, onImport, onReset }: BackupControlsCardProps) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  async function handleFileChosen(event: React.ChangeEvent<HTMLInputElement>) {
+    await onImport(event.target.files?.[0] ?? null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Backup controls</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-wrap gap-3">
+          <Button onClick={onExport}>Export JSON</Button>
+          <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+            Import JSON
+          </Button>
+          <input
+            type="file"
+            accept="application/json"
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleFileChosen}
+          />
+          <Button variant="outline" onClick={onReset}>
+            Delete all data
+          </Button>
+        </div>
+
+        {status && <p className="text-sm text-neutral-700 dark:text-slate-200">{status}</p>}
+
+        <p className="text-xs text-neutral-500 dark:text-slate-400">
+          A backup includes every table listed below: notes, tasks, bookmarks, routines, calendar
+          events, all health logs, family rhythm, Platform planning and Learn.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
+
 /** Shows what is currently stored, so an export can be sanity-checked at a glance. */
 function StoredDataCard({ counts }: { counts: StoredCounts | null }) {
   if (!counts) return null;
 
-  const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
-  const populated = BACKUP_TABLES.filter((name) => counts[name] > 0);
+  // The arithmetic lives in the backup module, not here — see summariseStoredData.
+  const { totalRows, populatedTables } = summariseStoredData(counts);
 
   return (
     <Card>
@@ -148,13 +191,13 @@ function StoredDataCard({ counts }: { counts: StoredCounts | null }) {
       </CardHeader>
       <CardContent className="space-y-2">
         <p className="text-sm text-neutral-700 dark:text-slate-200">
-          {total} row(s) across {populated.length} of {BACKUP_TABLES.length} tables.
+          {totalRows} row(s) across {populatedTables.length} of {BACKUP_TABLES.length} tables.
         </p>
-        {populated.length === 0 ? (
+        {populatedTables.length === 0 ? (
           <p className="text-xs text-neutral-500 dark:text-slate-400">Nothing stored yet.</p>
         ) : (
           <ul className="grid gap-1 text-xs text-neutral-600 dark:text-slate-300 sm:grid-cols-2 md:grid-cols-3">
-            {populated.map((name) => (
+            {populatedTables.map((name) => (
               <li
                 key={name}
                 className="flex justify-between gap-2 rounded border border-neutral-200 px-2 py-1 dark:border-slate-800"
@@ -168,11 +211,6 @@ function StoredDataCard({ counts }: { counts: StoredCounts | null }) {
       </CardContent>
     </Card>
   );
-}
-
-function describeTotal(data: Partial<Record<BackupTableName, unknown[]>>): string {
-  const rows = Object.values(data).reduce((sum, list) => sum + (list?.length ?? 0), 0);
-  return `${rows} row(s)`;
 }
 
 /** Triggers a browser download for a JSON payload. */
