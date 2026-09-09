@@ -1,7 +1,7 @@
 # Triage — what to fix, in what order
 
-The audit found **93 findings** — 3 already fixed, 90 open
-(2 Critical, 19 High, 46 Medium, 23 Low) across 15 areas plus a cross-cutting
+The audit found **93 findings** — 5 now fixed, 88 open
+(1 Critical, 18 High, 46 Medium, 23 Low) across 15 areas plus a cross-cutting
 sweep. This is the order to fix them in,
 ranked by blast radius: how many other things an issue breaks, how much damage it
 does to the principles, and how much other work depends on it being right.
@@ -29,35 +29,39 @@ app-wide effects, then everything else.
 
 ## Wave 1 — Stop flying blind
 
-Nothing else is safe to change until breakage becomes visible. Do these first
-even though neither is glamorous.
+### 1. CFG-01 — Add CI · Critical · ✅ Fixed in `081a7d9`
 
-### 1. CFG-01 — Add CI · Critical
-The single highest-value change in the repository. Production deploys failed
-continuously from June until `3c0bf78` — dozens of commits — because nothing ran
-`next build`. Every other fix below is easier to keep fixed once CI exists.
-Run on push: `lint`, `vitest run`, `build`, `validate:apps`, `check-assets`.
+Baseline CI now runs on pushes to `main` and pull requests. It installs with
+`npm ci`, lints, runs terminating tests, builds production, and validates the app
+catalogue. The first run (`34337559585`) passed every step.
 
-### 2. CFG-02 — `npm test` must not hang · High
-`"test": "vitest"` starts watch mode and never exits, which blocks item 1 from
-being done properly. One-word fix; do it as part of the same commit.
+`node scripts/check-assets.js` is deliberately not a gate yet because the audit
+already records known broken catalogue/assets and CFG-06; wire it in when those
+known failures are resolved rather than making baseline CI permanently red.
 
-### 2b. Add the enforcement while you are in there · High
-Four changes that close principles *mechanically* rather than one finding at a
-time. They belong in Wave 1 because every later fix is otherwise reversible.
-See `CONFORMANCE.md` for detail; XC-07 is the finding.
+### 2. CFG-02 — `npm test` must not hang · High · ✅ Fixed in `8b741f5`
+
+`npm test` is now `vitest run`. Intentional local watch mode remains available as
+`npm run test:watch`. The new `npm test` completed successfully in the first CI
+run.
+
+### 2b. Add the remaining enforcement · High · **NEXT**
+
+These changes close principles *mechanically* rather than one finding at a time.
+See `CONFORMANCE.md` for detail.
 
 - **Prettier** + `prettier --check` in CI — retires most of P13 and part of P4
-  permanently. Highest leverage single item after CI itself.
-- **`eslint-plugin-import` `no-restricted-paths`** — enforces the layer
-  hierarchy defined in `CONFORMANCE.md` (P14). The only principle here that can
-  be *fully* mechanised.
-- **Two greps as CI steps** — the P10 in-place-mutation check and the P2
-  duplicate-basename check. Both are precise, have no false positives today, and
-  take minutes to add.
+  permanently. Highest leverage remaining item in Wave 1.
+- **`eslint-plugin-import` `no-restricted-paths`** — enforce the layer hierarchy
+  defined in `CONFORMANCE.md` (P14) **after** XC-03 removes the existing
+  `components` ↔ `features` cycle; do not add a permanently failing rule.
+- **Two precise CI checks** — the P10 in-place-mutation check and the P2
+  duplicate-basename check. Both should be deterministic gates, not hand-wavy
+  review prompts.
 - **`react-hooks/set-state-in-effect` back on as a warning**, once APP-08 lands.
 
-**After wave 1 you will find out what else is broken.** Expect surprises.
+**Wave 1 baseline is now green.** The remaining work is prevention/enforcement,
+not basic visibility.
 
 ---
 
@@ -101,7 +105,7 @@ in Melbourne time. Affects three screens.
 
 ### 8. SCR-01 / PUB-02 — Twelve catalogue links are 404s · High
 The script that detects them already exists and has never been run. Fixed
-permanently by wave 1.
+permanently by wave 1 once it is safe to make that check a required gate.
 
 ### 9. DB-07 — Re-importing an activity double-counts daily metrics · Medium
 Weekly distance and run totals drift wrong with no way to tell from the UI.
@@ -216,6 +220,10 @@ so they stay fixed.
 - **LIB-05** — `HEAD` instead of `GET` for URL existence checks
 - **DOC-01 + DOC-02 + DOC-03 + GH-01** — move transcripts to `docs/history/`, explain local-first storage in the README, index `docs/`, refresh the Copilot instructions
 
+`GH-01` is partially addressed by the 9 September agent-protocol update to
+`.github/copilot-instructions.md`; reconcile its finding/status when that report
+is next edited rather than silently assuming the rest of GH-01 is complete.
+
 ---
 
 ## Deliberately not doing
@@ -235,13 +243,14 @@ three reasons, all set out in `CONFORMANCE.md`:
 
 1. The audit is not finished — 30 route files and 6 components have never been
    read line by line, so more findings exist.
-2. Fixing a finding does not stop it recurring. Only the Wave 1 enforcement does
-   that, which is why it sits at the top rather than the bottom.
+2. Fixing a finding does not stop it recurring. Wave 1 has now added baseline CI,
+   but the remaining mechanical enforcement still matters.
 3. Several items are decisions rather than edits (SCAF-01, DATA-04), and two
    fixes will *generate* findings — COMP-01 exposes ten unstyled pages, and
    wiring up dead scaffolding exposes whatever is wrong inside it.
 
-`CONFORMANCE.md` holds the scorecard. Nothing on it is currently green.
+`CONFORMANCE.md` holds the scorecard. Baseline CI is now real, but the repository
+is still far from full conformance.
 
 ## Still to read
 
