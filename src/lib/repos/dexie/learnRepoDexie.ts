@@ -1,9 +1,16 @@
+import { z } from "zod";
+
 import { db } from "@/lib/db/dexie";
 import { uuid } from "@/lib/db/id";
-import type { LearnTopic, LearnResource, LearnNote, LearnSession } from "@/lib/db/schema";
+import type { LearnNote, LearnResource, LearnSession, LearnTopic } from "@/lib/db/schema";
 
-// Simple adapter for Learn tables using Dexie. Keeps calling code small and
-// consistent with other repo adapters in the codebase.
+const promptTemplateSchema = z.object({
+  name: z.string(),
+  template: z.string(),
+});
+const promptTemplatesSchema = z.array(promptTemplateSchema);
+
+export type PromptTemplate = z.infer<typeof promptTemplateSchema>;
 
 export function listTopics(): Promise<LearnTopic[]> {
   return db.learnTopics.orderBy("updatedAt").reverse().toArray();
@@ -15,23 +22,23 @@ export function getTopic(id: string): Promise<LearnTopic | undefined> {
 
 export async function createTopic(partial: Partial<LearnTopic> & Pick<LearnTopic, "name">) {
   const now = Date.now();
-  const t: LearnTopic = {
+  const topic: LearnTopic = {
     id: uuid(),
     name: partial.name,
     category: partial.category ?? null,
     tags: partial.tags ?? [],
-    status: (partial.status as LearnTopic["status"]) ?? "curious",
+    status: partial.status ?? "curious",
     summary: partial.summary ?? "",
     createdAt: now,
     updatedAt: now,
   };
-  await db.learnTopics.add(t);
-  return t;
+  await db.learnTopics.add(topic);
+  return topic;
 }
 
 export async function updateTopic(id: string, patch: Partial<LearnTopic>) {
-  patch.updatedAt = Date.now();
-  await db.learnTopics.update(id, patch);
+  const updates = { ...patch, updatedAt: Date.now() };
+  await db.learnTopics.update(id, updates);
   return db.learnTopics.get(id);
 }
 
@@ -40,15 +47,16 @@ export async function deleteTopic(id: string) {
 }
 
 export async function searchTopics(query: string): Promise<LearnTopic[]> {
-  const q = query.toLowerCase();
+  const normalizedQuery = query.toLowerCase();
   return db.learnTopics
     .filter(
-      (t) => t.name.toLowerCase().includes(q) || (t.summary?.toLowerCase().includes(q) ?? false)
+      (topic) =>
+        topic.name.toLowerCase().includes(normalizedQuery) ||
+        (topic.summary?.toLowerCase().includes(normalizedQuery) ?? false)
     )
     .toArray();
 }
 
-// Resources
 export function listResources(): Promise<LearnResource[]> {
   return db.learnResources.orderBy("updatedAt").reverse().toArray();
 }
@@ -57,25 +65,25 @@ export async function createResource(
   partial: Partial<LearnResource> & Pick<LearnResource, "title" | "type">
 ) {
   const now = Date.now();
-  const r: LearnResource = {
+  const resource: LearnResource = {
     id: uuid(),
     title: partial.title,
     type: partial.type,
     url: partial.url,
     author: partial.author,
-    status: (partial.status as LearnResource["status"]) ?? "queue",
+    status: partial.status ?? "queue",
     topicIds: partial.topicIds ?? [],
     notes: partial.notes ?? "",
     createdAt: now,
     updatedAt: now,
   };
-  await db.learnResources.add(r);
-  return r;
+  await db.learnResources.add(resource);
+  return resource;
 }
 
 export async function updateResource(id: string, patch: Partial<LearnResource>) {
-  patch.updatedAt = Date.now();
-  await db.learnResources.update(id, patch);
+  const updates = { ...patch, updatedAt: Date.now() };
+  await db.learnResources.update(id, updates);
   return db.learnResources.get(id);
 }
 
@@ -83,7 +91,6 @@ export async function deleteResource(id: string) {
   await db.learnResources.delete(id);
 }
 
-// Notes & Sessions
 export function listNotesForTopic(topicId: string) {
   return db.learnNotes.where("topicId").equals(topicId).reverse().toArray();
 }
@@ -92,33 +99,34 @@ export function listNotesForResource(resourceId: string) {
   return db.learnNotes.where("resourceId").equals(resourceId).reverse().toArray();
 }
 
-export async function addNote(note: Partial<LearnNote> & Pick<LearnNote, "content">) {
+export async function addNote(noteInput: Partial<LearnNote> & Pick<LearnNote, "content">) {
   const now = Date.now();
-  const n: LearnNote = {
+  const note: LearnNote = {
     id: uuid(),
-    topicId: note.topicId ?? null,
-    resourceId: note.resourceId ?? null,
-    content: note.content,
+    topicId: noteInput.topicId ?? null,
+    resourceId: noteInput.resourceId ?? null,
+    content: noteInput.content,
     createdAt: now,
     updatedAt: now,
   };
-  await db.learnNotes.add(n);
-  return n;
+  await db.learnNotes.add(note);
+  return note;
 }
 
-export async function addSession(payload: Partial<LearnSession> & Pick<LearnSession, "minutes">) {
-  const now = Date.now();
-  const s: LearnSession = {
+export async function addSession(
+  sessionInput: Partial<LearnSession> & Pick<LearnSession, "minutes">
+) {
+  const session: LearnSession = {
     id: uuid(),
-    topicId: payload.topicId ?? null,
-    resourceId: payload.resourceId ?? null,
-    minutes: payload.minutes,
-    reflection: payload.reflection,
-    nextStep: payload.nextStep,
-    createdAt: now,
+    topicId: sessionInput.topicId ?? null,
+    resourceId: sessionInput.resourceId ?? null,
+    minutes: sessionInput.minutes,
+    reflection: sessionInput.reflection,
+    nextStep: sessionInput.nextStep,
+    createdAt: Date.now(),
   };
-  await db.learnSessions.add(s);
-  return s;
+  await db.learnSessions.add(session);
+  return session;
 }
 
 export function listSessionsForTopic(topicId: string) {
@@ -129,42 +137,31 @@ export function listSessions(): Promise<LearnSession[]> {
   return db.learnSessions.orderBy("createdAt").reverse().toArray();
 }
 
-// Prompt templates stored as JSON in learnSettings.key === 'promptTemplates'
-export async function getPromptTemplates() {
+/** Stored JSON is an externalised persistence boundary, so corrupt settings must be explicit. */
+export async function getPromptTemplates(): Promise<PromptTemplate[]> {
   const row = await db.learnSettings.get("promptTemplates");
-  if (!row) return [] as { name: string; template: string }[];
+  if (!row) return [];
+
+  let parsed: unknown;
   try {
-    return JSON.parse(row.value) as { name: string; template: string }[];
-  } catch {
-    return [];
+    parsed = JSON.parse(row.value);
+  } catch (error) {
+    throw new Error("Stored prompt templates are not valid JSON.", { cause: error });
   }
+
+  const result = promptTemplatesSchema.safeParse(parsed);
+  if (!result.success) {
+    throw new Error(`Stored prompt templates are invalid: ${result.error.message}`);
+  }
+  return result.data;
 }
 
-export async function savePromptTemplates(arr: { name: string; template: string }[]) {
-  const now = Date.now();
+export async function savePromptTemplates(input: PromptTemplate[]) {
+  const templates = promptTemplatesSchema.parse(input);
   await db.learnSettings.put({
     key: "promptTemplates",
-    value: JSON.stringify(arr),
-    updatedAt: now,
+    value: JSON.stringify(templates),
+    updatedAt: Date.now(),
   });
-  return arr;
+  return templates;
 }
-
-export default {
-  listTopics,
-  getTopic,
-  createTopic,
-  updateTopic,
-  deleteTopic,
-  searchTopics,
-  listResources,
-  createResource,
-  updateResource,
-  deleteResource,
-  addNote,
-  listNotesForTopic,
-  addSession,
-  listSessionsForTopic,
-  getPromptTemplates,
-  savePromptTemplates,
-};
