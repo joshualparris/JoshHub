@@ -135,7 +135,7 @@ export async function getPromptTemplates() {
   if (!row) return [] as { name: string; template: string }[];
   try {
     return JSON.parse(row.value) as { name: string; template: string }[];
-  } catch (e) {
+  } catch {
     return [];
   }
 }

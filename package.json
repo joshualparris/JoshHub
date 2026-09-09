@@ -7,7 +7,7 @@
     "dev:turbo": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint --max-warnings=0",
     "test": "vitest run",
     "test:watch": "vitest",
     "generate-projects": "node ./scripts/generate-projects-inventory.js",

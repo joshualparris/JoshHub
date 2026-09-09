@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { db } from "@/lib/db/dexie";
-import { addDigitalEvent, addHealthImport, recordActivity } from "@/lib/db/health";
+import { addDigitalEvent, addHealthImport, recordActivity, setDailySteps } from "@/lib/db/health";
 import { useActivities, useDailyMetrics, useDigitalEvents, useHealthImports } from "@/lib/db/hooks";
 import type { ActivitySport } from "@/lib/db/schema";
 
@@ -77,22 +77,16 @@ export default function HealthImportPage() {
           }
         } else if (lower.endsWith(".json")) {
           const parsed = parseFitJson(text, file.name);
-          for (const a of parsed.activities) {
-            const activity = await recordActivity(a);
+          for (const activityInput of parsed.activities) {
+            const activity = await recordActivity(activityInput);
             if (activity.startTimeIso) updatedDays.add(activity.startTimeIso.slice(0, 10));
             activitiesAdded += 1;
           }
-          for (const d of parsed.dailyUpdates) {
-            const existing = await db.dailyMetrics.get(d.date);
-            await db.dailyMetrics.put({
-              date: d.date,
-              runsCount: existing?.runsCount ?? 0,
-              runDistanceM: existing?.runDistanceM ?? 0,
-              distanceM: (existing?.distanceM ?? 0) + (d.distanceM ?? 0),
-              steps: (existing?.steps ?? 0) + (d.steps ?? 0),
-              updatedAt: Date.now(),
-            });
-            updatedDays.add(d.date);
+          for (const dailyUpdate of parsed.dailyUpdates) {
+            if (dailyUpdate.steps != null) {
+              await setDailySteps(dailyUpdate.date, dailyUpdate.steps);
+            }
+            updatedDays.add(dailyUpdate.date);
           }
           await addHealthImport({
             fileName: file.name,

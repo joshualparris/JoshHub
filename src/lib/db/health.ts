@@ -5,11 +5,11 @@ import type {
   Activity,
   ActivitySport,
   DailyMetrics,
+  DigitalEvent,
   HealthImport,
   MetricLog,
   MovementLog,
   NutritionLog,
-  DigitalEvent,
   SleepLog,
 } from "./schema";
 
@@ -115,7 +115,7 @@ export function useMetrics() {
   return useLiveQuery(async () => db.metrics.orderBy("dateTimeIso").reverse().toArray(), []);
 }
 
-export async function recordActivity(input: {
+export type ActivityInput = {
   source: "tcx" | "fit_json";
   fileName?: string;
   sport: ActivitySport;
@@ -126,35 +126,86 @@ export async function recordActivity(input: {
   elevationGainM?: number | null;
   calories?: number | null;
   avgSpeedMps?: number | null;
-}) {
+};
+
+/**
+ * The same source record must resolve to the same JoshHub activity on every import.
+ * File name plus source timestamps are intentionally used instead of a random id;
+ * otherwise re-importing an unchanged export silently inflates weekly totals.
+ */
+export function isSameImportedActivity(activity: Activity, input: ActivityInput): boolean {
+  return (
+    activity.source === input.source &&
+    (activity.fileName ?? null) === (input.fileName ?? null) &&
+    (activity.startTimeIso ?? null) === (input.startTimeIso ?? null) &&
+    (activity.endTimeIso ?? null) === (input.endTimeIso ?? null)
+  );
+}
+
+export async function recordActivity(input: ActivityInput) {
   const now = Date.now();
+  const existing = await db.activities
+    .filter((activity) => isSameImportedActivity(activity, input))
+    .first();
   const activity: Activity = {
-    id: uuid(),
-    createdAt: now,
+    id: existing?.id ?? uuid(),
+    createdAt: existing?.createdAt ?? now,
     ...input,
   };
+
   await db.activities.put(activity);
-  await updateDailyMetricsFromActivity(activity, now);
+
+  const date = activity.startTimeIso?.slice(0, 10);
+  if (date) await rebuildDailyActivityMetrics(date, now);
+
   return activity;
 }
 
-async function updateDailyMetricsFromActivity(activity: Activity, updatedAt: number) {
-  const date = activity.startTimeIso ? activity.startTimeIso.slice(0, 10) : null;
-  if (!date) return;
+/**
+ * Activity totals are derived from stored activities rather than incremented.
+ * This makes the roll-up idempotent: correcting or re-importing one activity
+ * produces the same daily totals instead of adding another copy of its distance.
+ */
+export async function rebuildDailyActivityMetrics(date: string, updatedAt = Date.now()) {
+  const activities = await db.activities
+    .filter((activity) => activity.startTimeIso?.slice(0, 10) === date)
+    .toArray();
   const existing = await db.dailyMetrics.get(date);
-  const distance = activity.distanceM ?? 0;
-  const runsCount = (existing?.runsCount ?? 0) + (activity.sport === "run" ? 1 : 0);
-  const runDistanceM = (existing?.runDistanceM ?? 0) + (activity.sport === "run" ? distance : 0);
-  const distanceM = (existing?.distanceM ?? 0) + distance;
+
+  const totals = activities.reduce(
+    (summary, activity) => {
+      const distanceM = activity.distanceM ?? 0;
+      return {
+        runsCount: summary.runsCount + (activity.sport === "run" ? 1 : 0),
+        runDistanceM: summary.runDistanceM + (activity.sport === "run" ? distanceM : 0),
+        distanceM: summary.distanceM + distanceM,
+      };
+    },
+    { runsCount: 0, runDistanceM: 0, distanceM: 0 }
+  );
+
   const record: DailyMetrics = {
     date,
-    runsCount,
-    runDistanceM,
-    distanceM,
+    ...totals,
+    // Steps can come from a daily aggregate source rather than an activity,
+    // so rebuilding activity totals must preserve that independent measurement.
     steps: existing?.steps ?? null,
     updatedAt,
   };
   await db.dailyMetrics.put(record);
+  return record;
+}
+
+export async function setDailySteps(date: string, steps: number | null, updatedAt = Date.now()) {
+  const existing = await db.dailyMetrics.get(date);
+  await db.dailyMetrics.put({
+    date,
+    runsCount: existing?.runsCount ?? 0,
+    runDistanceM: existing?.runDistanceM ?? 0,
+    distanceM: existing?.distanceM ?? 0,
+    steps,
+    updatedAt,
+  });
 }
 
 export async function addHealthImport(input: {
