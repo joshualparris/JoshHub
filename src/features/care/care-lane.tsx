@@ -2,11 +2,7 @@ import { CalendarClock, ClipboardPlus, HeartPulse, NotebookPen, Plus, Users } fr
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  createBookmark,
-  createNote,
-  createTask,
-} from "@/lib/db/actions";
+import { createBookmark, createNote, createTask } from "@/lib/db/actions";
 import { createEvent } from "@/lib/db/events";
 import type { Bookmark, CalendarEvent, Note, Task } from "@/lib/db/schema";
 import { CareSection } from "./care-section";
@@ -91,13 +87,23 @@ export function CareLanePanel({
           icon={<CalendarClock className="h-4 w-4" />}
           label="Next appointment"
           value={nextEvent?.title ?? "None scheduled"}
-          detail={nextEvent ? new Date(nextEvent.startIso).toLocaleString() : "Add an appointment when needed."}
+          detail={
+            nextEvent
+              ? new Date(nextEvent.startIso).toLocaleString()
+              : "Add an appointment when needed."
+          }
         />
         <InfoRow
           icon={<ClipboardPlus className="h-4 w-4" />}
           label="Next action"
           value={nextTask?.title ?? "No open actions"}
-          detail={nextTask?.dueDate ? `Due ${nextTask.dueDate}` : nextTask ? "Open" : "Add a small next step."}
+          detail={
+            nextTask?.dueDate
+              ? `Due ${nextTask.dueDate}`
+              : nextTask
+                ? "Open"
+                : "Add a small next step."
+          }
         />
         <InfoRow
           icon={<Users className="h-4 w-4" />}
@@ -109,26 +115,74 @@ export function CareLanePanel({
           icon={<NotebookPen className="h-4 w-4" />}
           label="Latest note"
           value={latestNote?.title ?? "No notes yet"}
-          detail={latestNote ? new Date(latestNote.updatedAt).toLocaleString() : "Capture context quickly."}
+          detail={
+            latestNote
+              ? new Date(latestNote.updatedAt).toLocaleString()
+              : "Capture context quickly."
+          }
         />
 
         <div className="flex flex-wrap gap-2 pt-1">
-          <ActionButton label="Add Provider" icon={<Plus className="mr-2 h-4 w-4" />} onClick={addProvider} />
-          <ActionButton label="Add Appointment" icon={<CalendarClock className="mr-2 h-4 w-4" />} onClick={addAppointment} />
-          <ActionButton label="Add Goal" icon={<HeartPulse className="mr-2 h-4 w-4" />} onClick={addGoal} />
-          <ActionButton label="Add Note" icon={<NotebookPen className="mr-2 h-4 w-4" />} onClick={addNote} />
+          <ActionButton
+            label="Add Provider"
+            icon={<Plus className="mr-2 h-4 w-4" />}
+            onClick={addProvider}
+          />
+          <ActionButton
+            label="Add Appointment"
+            icon={<CalendarClock className="mr-2 h-4 w-4" />}
+            onClick={addAppointment}
+          />
+          <ActionButton
+            label="Add Goal"
+            icon={<HeartPulse className="mr-2 h-4 w-4" />}
+            onClick={addGoal}
+          />
+          <ActionButton
+            label="Add Note"
+            icon={<NotebookPen className="mr-2 h-4 w-4" />}
+            onClick={addNote}
+          />
         </div>
 
-        <CareSection title="Appointments" items={laneEvents} renderItem={(item) => <EventRow key={item.id} event={item} />} empty="No appointments yet." />
-        <CareSection title="Goals / Actions" items={laneTasks} renderItem={(item) => <TaskRow key={item.id} task={item} />} empty="No goals yet." />
-        <CareSection title="Providers" items={laneBookmarks} renderItem={(item) => <ProviderRow key={item.id} bookmark={item} />} empty="No providers saved." />
-        <CareSection title="Notes" items={laneNotes} renderItem={(item) => <NoteRow key={item.id} note={item} />} empty="No notes yet." />
+        <CareSection
+          title="Appointments"
+          items={laneEvents}
+          renderItem={(item) => <EventRow key={item.id} event={item} />}
+          empty="No appointments yet."
+        />
+        <CareSection
+          title="Goals / Actions"
+          items={laneTasks}
+          renderItem={(item) => <TaskRow key={item.id} task={item} />}
+          empty="No goals yet."
+        />
+        <CareSection
+          title="Providers"
+          items={laneBookmarks}
+          renderItem={(item) => <ProviderRow key={item.id} bookmark={item} />}
+          empty="No providers saved."
+        />
+        <CareSection
+          title="Notes"
+          items={laneNotes}
+          renderItem={(item) => <NoteRow key={item.id} note={item} />}
+          empty="No notes yet."
+        />
       </CardContent>
     </Card>
   );
 }
 
-function ActionButton({ label, icon, onClick }: { label: string; icon: React.ReactNode; onClick: () => Promise<void> }) {
+function ActionButton({
+  label,
+  icon,
+  onClick,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => Promise<void>;
+}) {
   return (
     <Button size="sm" variant="outline" onClick={() => void onClick()}>
       {icon}

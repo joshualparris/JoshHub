@@ -48,7 +48,11 @@ describe("care selectors", () => {
   it("prioritises dated care tasks, then the most recently updated undated task", () => {
     expect(
       selectNextCareTask(
-        [task("undated-new", null, 9), task("dated", "2026-09-10", 1), task("undated-old", null, 2)],
+        [
+          task("undated-new", null, 9),
+          task("dated", "2026-09-10", 1),
+          task("undated-old", null, 2),
+        ],
         ["care1"]
       )?.id
     ).toBe("dated");
