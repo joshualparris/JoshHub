@@ -1,4 +1,4 @@
-import { CareClient } from "./care-client";
+import { CareClient } from "@/features/care/care-client";
 
 export const metadata = {
   title: "JoshHub | Care",
