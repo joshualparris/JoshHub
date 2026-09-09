@@ -3,6 +3,7 @@ import "fake-indexeddb/auto";
 import { beforeEach, describe, expect, it } from "vitest";
 
 import { db } from "@/lib/db/dexie";
+import type { PromptTemplate } from "@/lib/learn/prompt-templates";
 import { getPromptTemplates, savePromptTemplates, CorruptStorageError } from "./learnRepoDexie";
 
 describe("learnRepoDexie - getPromptTemplates & savePromptTemplates", () => {
@@ -33,15 +34,15 @@ describe("learnRepoDexie - getPromptTemplates & savePromptTemplates", () => {
       updatedAt: Date.now(),
     });
 
-    await expect(getPromptTemplates()).rejects.toThrowError(CorruptStorageError);
-
     try {
       await getPromptTemplates();
-    } catch (err: unknown) {
-      expect(err).toBeInstanceOf(CorruptStorageError);
-      const corruptErr = err as CorruptStorageError;
-      expect(corruptErr.storageKey).toBe("promptTemplates");
-      expect(corruptErr.message).toMatch(/malformed/i);
+      throw new Error("Expected getPromptTemplates to reject corrupt storage");
+    } catch (error: unknown) {
+      expect(error).toBeInstanceOf(CorruptStorageError);
+      const corruptError = error as CorruptStorageError;
+      expect(corruptError.storageKey).toBe("promptTemplates");
+      expect(corruptError.message).toMatch(/not valid prompt-template JSON/i);
+      expect(corruptError.cause).toBeInstanceOf(SyntaxError);
     }
   });
 
@@ -53,15 +54,6 @@ describe("learnRepoDexie - getPromptTemplates & savePromptTemplates", () => {
     });
 
     await expect(getPromptTemplates()).rejects.toThrowError(CorruptStorageError);
-
-    try {
-      await getPromptTemplates();
-    } catch (err: unknown) {
-      expect(err).toBeInstanceOf(CorruptStorageError);
-      const corruptErr = err as CorruptStorageError;
-      expect(corruptErr.storageKey).toBe("promptTemplates");
-      expect(corruptErr.message).toMatch(/not an array/i);
-    }
   });
 
   it("fails loudly with CorruptStorageError when items lack required string fields", async () => {
@@ -72,14 +64,12 @@ describe("learnRepoDexie - getPromptTemplates & savePromptTemplates", () => {
     });
 
     await expect(getPromptTemplates()).rejects.toThrowError(CorruptStorageError);
+  });
 
-    try {
-      await getPromptTemplates();
-    } catch (err: unknown) {
-      expect(err).toBeInstanceOf(CorruptStorageError);
-      const corruptErr = err as CorruptStorageError;
-      expect(corruptErr.storageKey).toBe("promptTemplates");
-      expect(corruptErr.message).toMatch(/template/i);
-    }
+  it("rejects invalid templates before persistence rather than storing bad data", async () => {
+    const invalidTemplates = [{ name: "Broken", template: 123 }] as unknown as PromptTemplate[];
+
+    await expect(savePromptTemplates(invalidTemplates)).rejects.toThrow();
+    expect(await db.learnSettings.get("promptTemplates")).toBeUndefined();
   });
 });
