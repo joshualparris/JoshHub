@@ -1,4 +1,4 @@
-import DecisionsList from "@/components/platform/decisions-list";
+import { DecisionsList } from "@/features/platform/components/decisions-list";
 
 export const metadata = { title: "JoshHub | Platform | Decisions" };
 
