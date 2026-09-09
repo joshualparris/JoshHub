@@ -194,7 +194,10 @@ export function parseCsvRows(text: string): string[][] {
 
 export const AuditRowSchema = z
   .object({
-    name: z.string({ message: "Project name is required" }).trim().min(1, "Project name is required"),
+    name: z
+      .string({ message: "Project name is required" })
+      .trim()
+      .min(1, "Project name is required"),
     localPath: z.string().trim().optional(),
     repoUrl: z.string().trim().optional(),
     lastTouched: z.string().trim().optional(),
@@ -278,7 +281,9 @@ export function parseAuditCsv(text: string): CsvImportResult<AuditRow> {
   if (!headers.includes("name")) {
     return {
       rows: [],
-      errors: [{ line: headerRecord.startLine, message: "CSV header missing required 'name' column" }],
+      errors: [
+        { line: headerRecord.startLine, message: "CSV header missing required 'name' column" },
+      ],
       headers,
     };
   }
