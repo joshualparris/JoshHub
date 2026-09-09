@@ -1,14 +1,7 @@
 # Continuous integration for JoshHub.
 #
-# WHY THIS EXISTS
-# ---------------
-# Until this file was added there were no automated checks at all. Production
-# deploys to Vercel failed continuously from June 2026 until commit 3c0bf78 —
-# dozens of commits, months of work — because a deleted file left a broken
-# import and nothing ever ran `next build` to notice. Every check below already
-# existed in the repository; none of them was ever run.
-#
-# See docs/code-audit/CONFORMANCE.md for what each gate protects.
+# The checks below are the executable part of docs/code-audit/CONFORMANCE.md.
+# A rule is not considered durable merely because one review happened to pass it.
 
 name: CI
 
@@ -39,14 +32,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # --- Blocking gates: these pass today and must keep passing ---------
-
-      # Guards most of P13 (consistent structure) mechanically, so it never has
-      # to be argued about in review again.
       - name: Formatting
         run: npm run format:check
 
-      - name: Lint
+      - name: Lint and architecture
         run: npm run lint
 
       - name: Test
@@ -58,36 +47,16 @@ jobs:
       - name: Validate app catalogue
         run: npm run validate:apps
 
-      # Guards P10. The five in-place sorts this detects were fixed in the same
-      # change that added it, so it starts green and stays green.
       - name: No in-place mutation of query results
         run: npm run check:mutation
 
-      # An unresolved merge conflict sat committed in
-      # public/games/aa-game-adventure/index.html from 2025-12-22 until
-      # 2026-09-09 — the page began with a literal "<<<<<<< Updated upstream"
-      # line before its doctype. Nine months, and nothing noticed. (PUB-07)
       - name: No committed conflict markers
         run: npm run check:conflict-markers
 
-      # --- Advisory gates: these fail today for known, tracked reasons -----
-      #
-      # They report rather than block, so the build is not red on day one for
-      # problems that predate it. Promote each to blocking (delete its
-      # continue-on-error line) as soon as its finding is closed — an advisory
-      # gate that stays advisory forever is just noise.
-      #
-      # Running them as advisory is deliberately preferred over leaving them out
-      # entirely: the failure count is visible in every run, so progress on the
-      # underlying findings is measurable rather than invisible.
-
-      # Fails: 12 of 51 referenced local assets are missing. See PUB-02 / SCR-01.
-      - name: Referenced local assets exist (advisory until PUB-02)
+      # These were initially advisory because the audit found known failures.
+      # Both are now clean, so regressions are blocking rather than quietly reported.
+      - name: Referenced local assets exist
         run: npm run check:assets
-        continue-on-error: true
 
-      # Fails: date.ts, events.ts and life.ts each exist twice. See DATA-02,
-      # DATA-04, LIB-04. Guards P2.
-      - name: No duplicated module basenames (advisory until DATA-04)
+      - name: No duplicated module basenames
         run: npm run check:duplicate-modules
-        continue-on-error: true
