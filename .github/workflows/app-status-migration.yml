@@ -1,0 +1,47 @@
+name: One-shot app status migration
+
+on:
+  push:
+    branches: [audit/conformance-18-final-20260909]
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/conformance-18-final-20260909
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Replace duplicate status union with canonical type
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path('src/data/apps.ts')
+          source = path.read_text()
+          old = '''export type AppStatus =\n  | "ok"\n  | "broken"\n  | "wip"\n  | "archived"\n  | "active"\n  | "maintained"\n  | "paused"\n  | "complete"\n  | "archive-candidate"\n  | "duplicate-candidate"\n  | "needs-review"\n  | "unknown";\n'''
+          new = '''import type { AppStatus } from "./app-status";\n\nexport type { AppStatus } from "./app-status";\n'''
+          if source.count(old) != 1:
+              raise SystemExit(f'Expected exactly one AppStatus union, found {source.count(old)}')
+          path.write_text(source.replace(old, new, 1))
+          PY
+      - run: npm run format
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Remove one-shot workflow and commit verified migration
+        run: |
+          rm .github/workflows/app-status-migration.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/apps.ts .github/workflows/app-status-migration.yml
+          git commit -m "refactor: derive AppStatus from one canonical vocabulary"
+          git push origin HEAD:audit/conformance-18-final-20260909
