@@ -53,12 +53,8 @@ jobs:
       - name: No committed conflict markers
         run: npm run check:conflict-markers
 
-      # Advisory until PUB-02 closes (12 referenced assets missing from public/).
-      - name: Referenced local assets exist (advisory until PUB-02)
+      - name: Referenced local assets exist
         run: npm run check:assets
-        continue-on-error: true
 
-      # Blocking: all duplicate module basenames are now resolved.
       - name: No duplicated module basenames
         run: npm run check:duplicate-modules
-
