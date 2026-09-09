@@ -5,7 +5,8 @@ export function parseCommaSeparatedList(value: string): string[] {
 
   for (const rawItem of value.split(",")) {
     const item = rawItem.trim();
-    if (!item || seen.has(item)) continue;
+    if (!item) continue;
+    if (seen.has(item)) continue;
     seen.add(item);
     items.push(item);
   }
