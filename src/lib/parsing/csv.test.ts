@@ -3,12 +3,11 @@ import { describe, expect, it } from "vitest";
 import { parseCsvRows, parseAuditCsv, CsvParseError, AuditRowSchema } from "./csv";
 
 describe("parseCsvRows", () => {
-  it("returns an empty array for empty string or whitespace", () => {
+  it("returns an empty array for an empty string", () => {
     expect(parseCsvRows("")).toEqual([]);
-    expect(parseCsvRows("   \n\n  ")).toEqual([]);
   });
 
-  it("parses unquoted fields and trims trailing newline", () => {
+  it("parses unquoted fields and a trailing newline", () => {
     const csv =
       "name,localPath,repoUrl\nAppA,/path/a,https://github.com/a\nAppB,/path/b,https://github.com/b\n";
     expect(parseCsvRows(csv)).toEqual([
@@ -27,6 +26,13 @@ describe("parseCsvRows", () => {
     ]);
   });
 
+  it("handles a UTF-8 BOM", () => {
+    expect(parseCsvRows("\uFEFFname,status\nJoshHub,active")).toEqual([
+      ["name", "status"],
+      ["JoshHub", "active"],
+    ]);
+  });
+
   it("handles quoted fields containing commas", () => {
     const csv =
       'name,description\n"Project, Alpha",First project\n"Beta, Gamma, Delta",Second project';
@@ -37,15 +43,15 @@ describe("parseCsvRows", () => {
     ]);
   });
 
-  it("handles escaped quotes per RFC-4180", () => {
+  it("handles escaped quotes", () => {
     const csv = 'name,note\n"JoshHub ""Pro"" Edition",Special release';
     expect(parseCsvRows(csv)).toEqual([
       ["name", "note"],
-      ['JoshHub "Pro" Edition', "Special release"],
+      ["JoshHub \"Pro\" Edition", "Special release"],
     ]);
   });
 
-  it("handles multiline fields containing newlines inside quotes", () => {
+  it("handles multiline quoted fields", () => {
     const csv = 'name,bio\nJosh,"Line one\nLine two\nLine three"';
     expect(parseCsvRows(csv)).toEqual([
       ["name", "bio"],
@@ -57,6 +63,18 @@ describe("parseCsvRows", () => {
     const csv = 'name,status\n"Unterminated project,in-progress';
     expect(() => parseCsvRows(csv)).toThrowError(CsvParseError);
     expect(() => parseCsvRows(csv)).toThrow(/Unterminated quoted field/);
+  });
+
+  it("rejects a quote that begins in the middle of an unquoted field", () => {
+    expect(() => parseCsvRows('name,note\nPro"ject,broken')).toThrow(
+      /Quote character must begin a quoted field/
+    );
+  });
+
+  it("rejects characters after a closing quote before the delimiter", () => {
+    expect(() => parseCsvRows('name,note\n"Project"x,broken')).toThrow(
+      /Unexpected character after closing quote/
+    );
   });
 });
 
@@ -83,18 +101,30 @@ describe("AuditRowSchema", () => {
 });
 
 describe("parseAuditCsv", () => {
-  it("reports error when CSV is empty", () => {
+  it("reports an error when CSV is empty", () => {
     const result = parseAuditCsv("");
     expect(result.errors).toHaveLength(1);
     expect(result.errors[0].message).toMatch(/empty/i);
     expect(result.rows).toHaveLength(0);
   });
 
-  it("reports error when 'name' header is missing", () => {
+  it("reports an error when the name header is missing", () => {
     const result = parseAuditCsv("title,localPath\nAppA,/path/a");
     expect(result.errors).toHaveLength(1);
     expect(result.errors[0].message).toMatch(/missing required 'name' column/i);
     expect(result.rows).toHaveLength(0);
+  });
+
+  it("rejects blank headers", () => {
+    const result = parseAuditCsv("name,,status\nAppA,ignored,active");
+    expect(result.rows).toHaveLength(0);
+    expect(result.errors[0].message).toMatch(/headers must not be blank/i);
+  });
+
+  it("rejects duplicate headers rather than overwriting one value", () => {
+    const result = parseAuditCsv("name,status,status\nAppA,active,other");
+    expect(result.rows).toHaveLength(0);
+    expect(result.errors[0].message).toMatch(/headers must be unique/i);
   });
 
   it("parses valid rows with quoted commas and preserves columns", () => {
@@ -108,20 +138,36 @@ describe("parseAuditCsv", () => {
     expect(result.rows[1].name).toBe("App2");
   });
 
-  it("reports line number and error for rows missing a name", () => {
-    const csv = 'name,localPath\nApp1,/path/1\n"",/path/2\nApp3,/path/3';
+  it("reports the physical source line after an earlier multiline record", () => {
+    const csv = 'name,note\nAlpha,"line one\nline two"\n"",missing name';
     const result = parseAuditCsv(csv);
-    expect(result.rows).toHaveLength(2);
+    expect(result.rows).toHaveLength(1);
     expect(result.errors).toHaveLength(1);
-    expect(result.errors[0].line).toBe(3);
-    expect(result.errors[0].message).toMatch(/Project name is required/i);
+    expect(result.errors[0].line).toBe(4);
+    expect(result.errors[0].message).toMatch(/line 4/i);
   });
 
-  it("catches unterminated quotes and surfaces structured error", () => {
-    const csv = 'name,localPath\n"Broken unterminated';
-    const result = parseAuditCsv(csv);
+  it("rejects rows with a different column count from the header", () => {
+    const tooFew = parseAuditCsv("name,status,repoUrl\nAppA,active");
+    expect(tooFew.rows).toHaveLength(0);
+    expect(tooFew.errors[0].message).toMatch(/expected 3 columns but found 2/i);
+
+    const tooMany = parseAuditCsv("name,status\nAppA,active,unexpected");
+    expect(tooMany.rows).toHaveLength(0);
+    expect(tooMany.errors[0].message).toMatch(/expected 2 columns but found 3/i);
+  });
+
+  it("preserves whitespace in arbitrary metadata columns", () => {
+    const result = parseAuditCsv('name,custom\n AppA ,"  keep me  "');
+    expect(result.errors).toHaveLength(0);
+    expect(result.rows[0].name).toBe("AppA");
+    expect((result.rows[0] as Record<string, unknown>).custom).toBe("  keep me  ");
+  });
+
+  it("surfaces malformed quote syntax as a structured file error", () => {
+    const result = parseAuditCsv('name,localPath\n"Broken"x,/tmp');
     expect(result.rows).toHaveLength(0);
     expect(result.errors).toHaveLength(1);
-    expect(result.errors[0].message).toMatch(/Unterminated quoted field/);
+    expect(result.errors[0].message).toMatch(/Unexpected character after closing quote/);
   });
 });
