@@ -33,7 +33,7 @@ export default function TasksPage() {
   }
 
   const grouped = useMemo(() => {
-    const list = (tasks ?? []).sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""));
+    const list = [...(tasks ?? [])].sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""));
     return {
       today: list.filter((t) => isToday(t.dueDate)),
       upcoming: list.filter((t) => isUpcoming(t.dueDate)),

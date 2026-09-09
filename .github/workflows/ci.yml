@@ -1,0 +1,70 @@
+# Continuous integration for JoshHub.
+#
+# WHY THIS EXISTS
+# ---------------
+# Until this file was added there were no automated checks at all. Production
+# deploys to Vercel failed continuously from June 2026 until commit 3c0bf78 —
+# dozens of commits, months of work — because a deleted file left a broken
+# import and nothing ever ran `next build` to notice. Every check below already
+# existed in the repository; none of them was ever run.
+#
+# See docs/code-audit/CONFORMANCE.md for what each gate protects.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # --- Blocking gates: these pass today and must keep passing ---------
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate app catalogue
+        run: npm run validate:apps
+
+      # Guards P10. The five in-place sorts this detects were fixed in the same
+      # commit that added this workflow, so it starts green and stays green.
+      - name: No in-place mutation of query results
+        run: npm run check:mutation
+
+      # --- Advisory gates: these fail today for known, tracked reasons -----
+      #
+      # They report rather than block, so the build is not red on day one for
+      # problems that predate it. Promote each to blocking (delete its
+      # continue-on-error line) as soon as its finding is closed — an advisory
+      # gate that stays advisory forever is just noise.
+
+      # Fails: 12 of 51 referenced local assets are missing. See PUB-02 / SCR-01.
+      - name: Referenced local assets exist (advisory until PUB-02)
+        run: npm run check:assets
+        continue-on-error: true
+
+      # Fails: date.ts, events.ts and life.ts each exist twice. See DATA-02,
+      # DATA-04, LIB-04. Guards P2.
+      - name: No duplicated module basenames (advisory until DATA-04)
+        run: npm run check:duplicate-modules
+        continue-on-error: true

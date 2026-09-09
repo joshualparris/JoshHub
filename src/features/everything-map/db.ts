@@ -45,8 +45,9 @@ export function useNotes(nodeId: string) {
     () => db.notes.where("nodeId").equals(nodeId).reverse().sortBy("updatedAt"),
     [nodeId]
   );
+  // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
   return useMemo(
-    () => (notes ?? []).sort((a, b) => b.updatedAt - a.updatedAt),
+    () => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt),
     [notes]
   );
 }

@@ -16,8 +16,9 @@ export default function NutritionPage() {
   const [veg, setVeg] = useState<number | undefined>(undefined);
   const [notes, setNotes] = useState("");
 
+  // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
   const recent = useMemo(
-    () => (nutrition ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10),
+    () => [...(nutrition ?? [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10),
     [nutrition]
   );
 

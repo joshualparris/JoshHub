@@ -17,8 +17,9 @@ export default function MovementPage() {
   const [intensity, setIntensity] = useState<MovementLog["intensity"]>("med");
   const [notes, setNotes] = useState("");
 
+  // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
   const recent = useMemo(
-    () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10),
+    () => [...(movement ?? [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 10),
     [movement]
   );
   const chartData = useMemo(

@@ -17,8 +17,9 @@ export default function MetricsPage() {
   const [unit, setUnit] = useState("kg");
   const [notes, setNotes] = useState("");
 
+  // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
   const recent = useMemo(
-    () => (metrics ?? []).sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso)).slice(0, 10),
+    () => [...(metrics ?? [])].sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso)).slice(0, 10),
     [metrics]
   );
   const chartData = useMemo(

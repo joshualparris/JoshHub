@@ -8,9 +8,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "generate-projects": "node ./scripts/generate-projects-inventory.js",
-    "validate:apps": "tsx ./scripts/validate-apps.ts"
+    "validate:apps": "tsx ./scripts/validate-apps.ts",
+    "check:assets": "node ./scripts/check-assets.js",
+    "check:duplicate-modules": "git ls-files 'src/**/*.ts' 'src/**/*.tsx' | grep -v '\\.bak' | sed 's|.*/||' | grep -vE '^(page|layout|route|loading|error|not-found)\\.tsx?$' | sort | uniq -d | (! grep .)",
+    "check:mutation": "! git grep -nE '\\((tasks|notes|events|sleep|movement|nutrition|metrics|bookmarks|activities|dailyMetrics|items) \\?\\? \\[\\]\\)\\.(sort|reverse)' -- src"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
