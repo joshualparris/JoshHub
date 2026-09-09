@@ -24,11 +24,13 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
+import type { LucideIcon } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { apps } from "@/data/apps";
 import { lifeAreas, type LifeArea } from "@/data/life";
-import { addRecent, loadRecent } from "@/lib/recent";
+import { addRecent, loadRecent, type RecentItem } from "@/lib/recent";
 import { loadPinnedLife } from "@/lib/pins";
 import { useNotes, useTasks, useDailyMetrics } from "@/lib/db/hooks";
 import { useEvents } from "@/lib/db/events";
@@ -36,11 +38,63 @@ import { useSleep, useMovement, useNutrition, useMetrics } from "@/lib/db/health
 import { useFamilyRhythm } from "@/lib/db/family";
 import { isSameLocalDayISO, todayLocalISO } from "@/lib/date";
 
+/**
+ * Some dashboard cards describe parts of life JoshHub does not track yet, so
+ * their figures are illustrative rather than calculated from stored data.
+ *
+ * Anything illustrative sets `isExample` and is rendered with a visible badge.
+ * The rule is simple: if a number did not come out of the database, the screen
+ * has to say so. A dashboard that mixes invented dollar amounts and NDIS
+ * percentages in with real health logs is worse than one that shows nothing,
+ * because the reader has no way to tell which is which.
+ *
+ * To make one of these real: derive the value from stored data and delete the
+ * `isExample` flag.
+ */
+const EXAMPLE_DATA_NOTE = "Example figures — not from your data";
+
+interface CommandCenterCard {
+  title: string;
+  icon: LucideIcon;
+  value: string;
+  detail: string;
+  action: { label: string; href: string };
+  accent: string;
+  bg: string;
+  isExample?: boolean;
+}
+
+interface CarePanel {
+  title: string;
+  icon: LucideIcon;
+  summary: string;
+  bullets: string[];
+  href: string;
+  cta: string;
+  isExample?: boolean;
+}
+
+/** Small badge marking figures that are illustrative rather than calculated. */
+function ExampleBadge() {
+  return (
+    <span
+      title={EXAMPLE_DATA_NOTE}
+      className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:border-amber-700 dark:bg-amber-900/40 dark:text-amber-100"
+    >
+      Example
+    </span>
+  );
+}
+
 export default function DashboardPage() {
   const notes = useNotes();
   const tasks = useTasks();
   const [pinned, setPinned] = useState<string[]>([]);
-  const [recent] = useState(loadRecent());
+  // Read localStorage after mount, never during render. `loadRecent` returns []
+  // on the server and the real list in the browser, so seeding state with it
+  // directly makes the first client render disagree with the server HTML and
+  // React throws a hydration mismatch (#418) for this card.
+  const [recent, setRecent] = useState<RecentItem[]>([]);
   const events = useEvents();
   const sleep = useSleep();
   const movement = useMovement();
@@ -61,6 +115,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadPinnedLife().then(setPinned);
+    setRecent(loadRecent());
   }, []);
 
   const broken = apps.filter((a) => a.status === "broken");
@@ -69,8 +124,11 @@ export default function DashboardPage() {
     () => pinned.map((slug) => lifeAreas.find((a) => a.slug === slug)).filter(Boolean) as LifeArea[],
     [pinned]
   );
+  // Copy before sorting throughout this file: these arrays come straight from
+  // Dexie live queries, and `sort` reorders in place. Mutating them rearranges
+  // the cached query result that other components are also rendering from.
   const recentNotes = useMemo(
-    () => (notes ?? []).sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 3),
+    () => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 3),
     [notes]
   );
   const openTasks = useMemo(() => (tasks ?? []).filter((t) => t.status === "open"), [tasks]);
@@ -122,7 +180,7 @@ export default function DashboardPage() {
   }, [taskToday, nextEvents]);
 
   const sleepAvg = useMemo(() => {
-    const last = (sleep ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7);
+    const last = [...(sleep ?? [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7);
     if (last.length === 0) return null;
     const durations = last
       .map((s) => s.durationMinutes ?? durationFromTimes(s.bedtimeIso, s.wakeIso))
@@ -150,15 +208,15 @@ export default function DashboardPage() {
   }, [dailyMetrics]);
 
   const latestMove = useMemo(
-    () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
+    () => [...(movement ?? [])].sort((a, b) => b.date.localeCompare(a.date))[0],
     [movement]
   );
   const latestNutrition = useMemo(
-    () => (nutrition ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
+    () => [...(nutrition ?? [])].sort((a, b) => b.date.localeCompare(a.date))[0],
     [nutrition]
   );
   const latestMetric = useMemo(
-    () => (metrics ?? []).sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso))[0],
+    () => [...(metrics ?? [])].sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso))[0],
     [metrics]
   );
 
@@ -168,12 +226,16 @@ export default function DashboardPage() {
     "Move, hydrate, and breathe before diving into work.",
   ];
 
-  const lifeCommandCenter = [
+  const lifeCommandCenter: CommandCenterCard[] = [
     {
       title: "Finances",
       icon: DollarSign,
+      // JoshHub does not store budget or plan-spend data yet, so there is
+      // nothing to calculate these from. They are flagged as an example rather
+      // than shown as fact — see EXAMPLE_DATA_NOTE.
       value: "$19,185.23 spent",
       detail: "$12,628.67 left in plan",
+      isExample: true,
       action: { label: "Review plan spend", href: "/care" },
       accent: "text-sky-700 dark:text-sky-200",
       bg: "bg-sky-100 dark:bg-sky-900/40",
@@ -208,13 +270,17 @@ export default function DashboardPage() {
       accent: "text-amber-700 dark:text-amber-200",
       bg: "bg-amber-100 dark:bg-amber-900/40",
     },
-  ] as const;
+  ];
 
-  const familyCarePanels = [
+  const familyCarePanels: CarePanel[] = [
     {
       title: "Sylvie · NDIS",
       icon: ShieldCheck,
+      // Illustrative percentages: no NDIS plan data is stored anywhere in the
+      // app. Presenting these as real numbers on a care dashboard would be
+      // actively misleading, so they are badged as an example.
       summary: "Plan spend 60.3% with 10.3% uplift since last checkpoint.",
+      isExample: true,
       bullets: [
         "Track claim frequency by provider and flag unusual spikes.",
         "Review highest-use providers weekly and pre-book priority sessions.",
@@ -244,7 +310,7 @@ export default function DashboardPage() {
       href: "/family",
       cta: "Open family hub",
     },
-  ] as const;
+  ];
 
   return (
     <div className="space-y-8">
@@ -435,9 +501,13 @@ export default function DashboardPage() {
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
                     <p className="text-sm font-semibold text-neutral-900 dark:text-white">{item.title}</p>
+                    {item.isExample && <ExampleBadge />}
                   </div>
                   <p className="text-base font-semibold text-neutral-900 dark:text-white">{item.value}</p>
                   <p className="mt-1 text-xs text-neutral-500 dark:text-slate-400">{item.detail}</p>
+                  {item.isExample && (
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">{EXAMPLE_DATA_NOTE}</p>
+                  )}
                   <Button asChild variant="ghost" className="mt-2 h-auto px-0 py-0 text-sm">
                     <Link href={item.action.href}>{item.action.label}</Link>
                   </Button>
@@ -565,8 +635,12 @@ export default function DashboardPage() {
                   <div className="mb-2 flex items-center gap-2">
                     <Icon className="h-4 w-4 text-neutral-600 dark:text-slate-300" />
                     <p className="font-semibold text-neutral-900 dark:text-white">{panel.title}</p>
+                    {panel.isExample && <ExampleBadge />}
                   </div>
                   <p className="text-sm text-neutral-700 dark:text-slate-200">{panel.summary}</p>
+                  {panel.isExample && (
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">{EXAMPLE_DATA_NOTE}</p>
+                  )}
                   <ul className="mt-2 space-y-1 text-xs text-neutral-600 dark:text-slate-300">
                     {panel.bullets.map((line) => (
                       <li key={line}>• {line}</li>
