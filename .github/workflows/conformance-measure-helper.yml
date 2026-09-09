@@ -1,0 +1,84 @@
+name: Conformance measurement helper
+
+on:
+  push:
+    branches:
+      - audit/conformance-18-final-20260909
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/conformance-18-final-20260909
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: P4 vague identifiers
+        run: |
+          echo '=== P4 VAGUE IDENTIFIERS ==='
+          git ls-files 'src/**/*.ts' 'src/**/*.tsx' | grep -v '\.bak' | tr '\n' '\0' | xargs -0 grep -nE '\b(const|let) ([a-z]|data|val|res|tmp|temp|arr|obj|item|thing|stuff)\b' 2>/dev/null || true
+      - name: P5 top-level function sizes
+        run: |
+          echo '=== P5 FUNCTION SIZES ==='
+          python3 - <<'PY'
+          import subprocess,re
+          files=[f for f in subprocess.check_output(['git','ls-files','-z'],text=True).split('\0') if f.endswith(('.ts','.tsx')) and '.bak' not in f and f.startswith('src/')]
+          d=re.compile(r'^(export\s+)?(default\s+)?(async\s+)?function\s+(\w+)|^(export\s+)?const\s+(\w+)\s*[:=].*(=>|function)')
+          rows=[]
+          for f in files:
+              L=open(f,encoding='utf-8',errors='replace').read().split('\n')
+              s=[(i,l,d.match(l)) for i,l in enumerate(L) if d.match(l)]
+              for j,(i,l,m) in enumerate(s):
+                  e=s[j+1][0] if j+1<len(s) else len(L)
+                  rows.append((e-i,f,(m.group(4) or m.group(6))))
+          rows.sort(reverse=True)
+          over150=[r for r in rows if r[0]>150]
+          over60=[r for r in rows if r[0]>60]
+          print(f'over150={len(over150)} over60={len(over60)} total={len(rows)} ratio_over60={(len(over60)/len(rows)*100 if rows else 0):.1f}%')
+          for n,f,nm in rows[:80]: print(f'{n:5d} {f} :: {nm}')
+          PY
+      - name: P6 render-time browser storage candidates
+        run: |
+          echo '=== P6 STORAGE/RENDER CANDIDATES ==='
+          git grep -nE 'localStorage|sessionStorage|loadRecent\(' -- src || true
+      - name: P7 UI business-logic candidates
+        run: |
+          echo '=== P7 UI BUSINESS LOGIC CANDIDATES ==='
+          git grep -nE '\.reduce\(|/ 1000|\* 60|toFixed\(|sort\(\(a, b\)|\.filter\(\([A-Za-z_][A-Za-z0-9_]*\) =>.*(===|!==|>=|<=)' -- src/app src/components || true
+      - name: P9 and P17 unused-code candidates
+        run: |
+          echo '=== P9/P17 KNIP ==='
+          npx --yes knip --reporter compact || true
+      - name: P12 comment debt candidates
+        run: |
+          echo '=== P12 WHAT-ONLY COMMENTS ==='
+          git grep -nE '^\s*//\s*(Create|Update|Delete|Get|Set|Add|Remove|Filter|Sort|Map|Loop|Return|MoveOps|Decision Cards|Opportunities|Weekly Reviews)\b' -- src || true
+      - name: P16 swallowed-boundary candidates
+        run: |
+          echo '=== P16 CATCH BLOCK CANDIDATES ==='
+          git grep -nE 'catch\s*(\([^)]*\))?\s*\{' -- src || true
+          echo '=== CONSOLE ERROR/LOG IN CATCH AREAS ==='
+          git grep -nE 'console\.(log|warn|error)' -- src || true
+      - name: P18 external-boundary candidates
+        run: |
+          echo '=== P18 EXTERNAL INPUT SITES ==='
+          git grep -nE 'JSON\.parse|DOMParser|URLSearchParams|searchParams|FileReader|\.text\(\)|fetch\(|FormData|event\.target\.value|e\.target\.value' -- src || true
+      - name: Existing mechanical conformance
+        run: |
+          npm run format:check
+          npm run lint
+          npm test
+          npm run build
+          npm run validate:apps
+          npm run check:mutation
+          npm run check:conflict-markers
+          npm run check:assets
+          npm run check:duplicate-modules
