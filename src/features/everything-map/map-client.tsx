@@ -10,13 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { parseTagList } from "@/lib/logic/tagging";
-import {
-  createMapNote,
-  deleteMapNote,
-  updateMapNote,
-  useAllNotes,
-  useNotes,
-} from "./db";
+import { createMapNote, deleteMapNote, updateMapNote, useAllNotes, useNotes } from "./db";
 import { EVERYTHING_MAP_TOC } from "./toc";
 import { buildTree, filterTreeByQuery, findNode } from "./tree";
 import type { TocNode } from "./types";
@@ -215,7 +209,11 @@ function SectionCard({ node }: { node: TocNode }) {
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" />
           <p>
             Map notes use JoshHub&apos;s main backup system. Manage exports, restores, and resets
-            from <Link href="/settings/backups" className="underline">Backups</Link>.
+            from{" "}
+            <Link href="/settings/backups" className="underline">
+              Backups
+            </Link>
+            .
           </p>
         </div>
       </CardContent>
@@ -294,7 +292,10 @@ function NotesCard({
           <p className="text-sm text-muted-foreground">No notes yet. Add one above.</p>
         ) : (
           notes.map((note) => (
-            <article key={note.id} className="rounded-md border border-border bg-card p-3 shadow-xs">
+            <article
+              key={note.id}
+              className="rounded-md border border-border bg-card p-3 shadow-xs"
+            >
               <div className="flex items-start justify-between gap-2">
                 <div className="space-y-1">
                   <p className="font-medium">{note.title}</p>
