@@ -34,10 +34,7 @@ describe("groupTasksByDue", () => {
   });
 
   it("orders undated tasks by most recent update", () => {
-    const groups = groupTasksByDue(
-      [task("older", null, 2), task("newer", null, 9)],
-      "2026-09-09"
-    );
+    const groups = groupTasksByDue([task("older", null, 2), task("newer", null, 9)], "2026-09-09");
 
     expect(groups.someday.map((item) => item.id)).toEqual(["newer", "older"]);
   });

@@ -37,10 +37,7 @@ export default function TasksPage() {
     setDue("");
   }
 
-  const grouped = useMemo(
-    () => groupTasksByDue(tasks ?? [], todayLocalISO()),
-    [tasks]
-  );
+  const grouped = useMemo(() => groupTasksByDue(tasks ?? [], todayLocalISO()), [tasks]);
 
   return (
     <div className="space-y-6">

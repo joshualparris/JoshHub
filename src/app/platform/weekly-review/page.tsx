@@ -54,7 +54,9 @@ export default function WeeklyReviewPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-3">
             <div className="flex flex-col gap-2 md:flex-row md:items-center">
-              <label className="text-xs uppercase tracking-wide text-muted-foreground">Week of</label>
+              <label className="text-xs uppercase tracking-wide text-muted-foreground">
+                Week of
+              </label>
               <Input
                 type="date"
                 value={weekStart}
