@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useLiveQuery } from "dexie-react-hooks";
 
-import type { Note } from "@/lib/db/schema";
 import { db } from "@/lib/db/dexie";
 import { uuid } from "@/lib/db/id";
+import type { Note } from "@/lib/db/schema";
 
 export type MapNoteInput = {
   title: string;
@@ -29,6 +29,7 @@ export async function createMapNote(nodeId: string, input: MapNoteInput) {
 export async function updateMapNote(id: string, patch: Partial<MapNoteInput>) {
   const existing = await db.notes.get(id);
   if (!existing) return;
+
   await db.notes.update(id, {
     ...patch,
     tags: patch.tags ?? existing.tags,
@@ -45,46 +46,12 @@ export function useNotes(nodeId: string) {
     () => db.notes.where("nodeId").equals(nodeId).reverse().sortBy("updatedAt"),
     [nodeId]
   );
-  // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
+
+  // Dexie live-query arrays are shared values; copy before sorting so one view
+  // cannot reorder the cached result another subscriber is rendering.
   return useMemo(() => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt), [notes]);
 }
 
 export function useAllNotes() {
-  const notes = useLiveQuery(() => db.notes.toArray(), []);
-  return notes ?? [];
-}
-
-export async function exportNotes() {
-  const notes = await db.notes.toArray();
-  const payload = {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    notes,
-  };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {
-    type: "application/json",
-  });
-  return blob;
-}
-
-type ImportPayload = {
-  version: number;
-  exportedAt: string;
-  notes: Note[];
-};
-
-export async function importNotes(file: File) {
-  const text = await file.text();
-  const data = JSON.parse(text) as ImportPayload;
-  if (!data.notes || !Array.isArray(data.notes)) {
-    throw new Error("Invalid file shape");
-  }
-  const cleaned = data.notes.map((n) => ({
-    ...n,
-    id: n.id ?? uuid(),
-    createdAt: n.createdAt ?? Date.now(),
-    updatedAt: n.updatedAt ?? Date.now(),
-  }));
-  await db.notes.bulkPut(cleaned);
-  return cleaned.length;
+  return useLiveQuery(() => db.notes.toArray(), []) ?? [];
 }
