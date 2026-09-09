@@ -48,7 +48,7 @@ Do **not** run blind global replacements across the repository. Every changed ma
 
 ## 4. Engineering principles
 
-All changes should move JoshHub toward the 15 principles defined in `docs/code-audit/README.md`:
+All changes should move JoshHub toward the 18 principles defined in `docs/code-audit/README.md`:
 
 1. Understand before changing.
 2. One concept -> one source of truth.
@@ -58,13 +58,16 @@ All changes should move JoshHub toward the 15 principles defined in `docs/code-a
 6. Make data flow explicit.
 7. Separate UI from business logic.
 8. Never pretend static data is live data.
-9. Do not leave misleading dead architecture.
+9. Do not leave misleading dead architecture (Delete dead code).
 10. Do not mutate data unless mutation is intentional.
 11. Protect important operations with invariants.
 12. Comments explain why, constraints, or non-obvious decisions rather than restating the code.
 13. Consistent structure beats cleverness.
 14. Keep dependencies directional.
 15. Tests protect behaviour, not implementation.
+16. Fail loudly at the boundaries, degrade gracefully in the UI.
+17. YAGNI (You Aren't Gonna Need It).
+18. Zero trust for external data (Boundary Validation).
 
 The current dependency direction defined by the audit is:
 

@@ -7,7 +7,7 @@ principles" becomes a claim you can check rather than a feeling.
 ## Why this exists
 
 The audit was asked a fair question: if every finding is fixed, will the repo
-fully conform to all fifteen principles? The honest answer was no, for four
+fully conform to all eighteen principles? The honest answer was no, for four
 reasons:
 
 1. **The audit is not finished.** 30 route files and 6 components have never had
@@ -442,6 +442,55 @@ still have no tests.
 
 ---
 
+## P16 — Fail loudly at boundaries, degrade gracefully in UI
+
+**Conformant when:** system boundaries (storage, network, file parsers, database operations) fail loudly by throwing explicit errors on invalid data or constraint violations rather than silently swallowing errors or passing invalid state downstream. Meanwhile, the UI catches these errors (via error boundaries or defensive component state) to show polite, readable fallback states without crashing the entire application. No empty catch blocks or catch blocks that only `console.log(e)` while silently continuing.
+
+**Verify:**
+```bash
+git grep -nE "catch\s*\([a-zA-Z0-9_]+\)\s*\{\s*(console\.(log|error|warn)\([^)]*\);?\s*)?\}" -- src
+```
+Review each hit; verify errors at data/parsing boundaries throw or surface explicit failure results to callers.
+
+**Now:** ⚠️ Mixed. Several catch blocks swallow errors or log without rethrowing (e.g. in ICS parsing, import fallbacks, and local sync); recent forms added user-facing validation feedback, but comprehensive boundary assertions and React error boundaries are not yet standard across every route.
+
+**Enforced by:** ◐ partial linting (`no-empty`); comprehensive enforcement requires boundary tests asserting that bad input throws and UI tests asserting graceful fallback.
+
+---
+
+## P17 — YAGNI (You Aren't Gonna Need It)
+
+**Conformant when:** no speculative abstractions, unused layers, uncalled helper functions, or forward-looking models exist without an immediate, active consumer in the live app. Build exactly what is needed today. This pairs directly with P9 (Delete dead code).
+
+**Verify:**
+```bash
+npm run lint
+```
+Plus human review during feature additions and refactors: *can the author point to the immediate production caller of this abstraction?*
+
+**Now:** ⚠️ Substantially improved after removing the unused Prompt-16 scaffolded models and duplicate Platform CRUD, but unreferenced seed data and scaffolding remain (SCAF-01, SCAF-04).
+
+**Enforced by:** ◐ ESLint `no-unused-vars` and the `AGENTS.md` protocol requiring active usage for all introduced abstractions.
+
+---
+
+## P18 — Zero trust for external data (Boundary Validation)
+
+**Conformant when:** all data entering the system from the outside—imported backup JSON, ICS calendar feeds, CSV spreadsheets, URL search parameters, and form submissions—is validated against an explicit schema (e.g. Zod, Yup, or a strict validator) before domain logic or persistence touches it.
+
+**Verify:**
+```bash
+# Review import and parsing entry points
+git grep -nE "(JSON\.parse|parseICS|parseCSV|restoreUserData)" -- src
+```
+Verify every entry point asserts a schema or validates all required fields before storage.
+
+**Now:** ❌ Mixed. The app catalogue has structural validation in CI (`validate:apps`); tag parsing, comma lists, and URLs have dedicated runtime validators. However, full backup restore (`backup.ts`), CSV imports, and ICS feeds still rely on partial manual duck-typing rather than strict boundary schema validation. Open: DB-07, COMP-06.
+
+**Enforced by:** ◐ `npm run validate:apps` for the app catalogue; runtime parsers for tags and URLs. Full external input schema validation is not yet mechanically enforced across backup and file import flows.
+
+---
+
 ## Scorecard
 
 | | Principle | State | Enforced |
@@ -461,6 +510,9 @@ still have no tests.
 | P13 | Consistent structure | ❌ | ✗ |
 | P14 | Directional dependencies | ❌ | ✗ |
 | P15 | Tests protect behaviour | ❌ | ◐ |
+| P16 | Fail loudly / degrade gracefully | ⚠️ | ◐ |
+| P17 | YAGNI | ⚠️ | ◐ |
+| P18 | Zero trust for external data | ❌ | ◐ |
 
 **No principle is fully green yet.** The 9 September protocol/CI work materially
 improves enforcement for P1, P8, P11 and P15, while P6 was already partially

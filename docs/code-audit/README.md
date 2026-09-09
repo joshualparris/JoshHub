@@ -47,6 +47,9 @@ Reports cite these by number, e.g. `P2, P11`.
 | P13 | Consistent structure beats cleverness | Same conventions everywhere. |
 | P14 | Keep dependencies directional | UI → features → domain → persistence. |
 | P15 | Tests protect behaviour, not implementation | Backups, migrations, calculations, key flows. |
+| P16 | Fail loudly at boundaries, degrade gracefully in UI | Throw immediately on bad data/constraints; UI catches and renders polite fallbacks. No swallowed errors. |
+| P17 | YAGNI (You Aren't Gonna Need It) | Never build speculative abstractions or unused layers. Build exactly what is needed today. |
+| P18 | Zero trust for external data (boundary validation) | Validate external data (API, user input, backup files) against a schema before business logic touches it. |
 
 > Above all: **never optimise for making the diff before understanding the
 > system.** A clean 300-file automated edit can be far worse than an ugly

@@ -107,6 +107,18 @@ For supported backups:
 
 Destructive operations require behavioural tests. A successful build/deploy is not evidence that persistence is safe.
 
+### Fail loudly at boundaries, degrade gracefully in UI
+
+Throw explicitly at network, parsing, or database boundaries when invalid data or violated constraints are encountered; never swallow errors with empty `catch` blocks or silent `console.log` fallbacks. In the UI, catch boundary errors to show polite, readable fallback states.
+
+### YAGNI (You Aren't Gonna Need It)
+
+Do not introduce speculative abstractions, unused indirection layers, or preemptive models. Build strictly what is needed for current production requirements.
+
+### Zero trust for external data (Boundary Validation)
+
+Validate all external data (JSON backup imports, ICS calendar feeds, CSV spreadsheets, URL query params, and manual form inputs) against explicit schemas/validators before business logic or persistence processes it.
+
 ---
 
 ## 4. Work protocol from this point forward
