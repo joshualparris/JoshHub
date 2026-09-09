@@ -12,6 +12,10 @@ const promptTemplatesSchema = z.array(promptTemplateSchema);
 
 export type PromptTemplate = z.infer<typeof promptTemplateSchema>;
 
+export function parsePromptTemplates(value: unknown): PromptTemplate[] {
+  return promptTemplatesSchema.parse(value);
+}
+
 export function listTopics(): Promise<LearnTopic[]> {
   return db.learnTopics.orderBy("updatedAt").reverse().toArray();
 }
@@ -149,15 +153,15 @@ export async function getPromptTemplates(): Promise<PromptTemplate[]> {
     throw new Error("Stored prompt templates are not valid JSON.", { cause: error });
   }
 
-  const result = promptTemplatesSchema.safeParse(parsed);
-  if (!result.success) {
-    throw new Error(`Stored prompt templates are invalid: ${result.error.message}`);
+  try {
+    return parsePromptTemplates(parsed);
+  } catch (error) {
+    throw new Error("Stored prompt templates do not match the expected schema.", { cause: error });
   }
-  return result.data;
 }
 
 export async function savePromptTemplates(input: PromptTemplate[]) {
-  const templates = promptTemplatesSchema.parse(input);
+  const templates = parsePromptTemplates(input);
   await db.learnSettings.put({
     key: "promptTemplates",
     value: JSON.stringify(templates),
