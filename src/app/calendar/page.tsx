@@ -5,6 +5,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
 import { createEvent, useEvents } from "@/lib/db/events";
 
@@ -44,11 +45,11 @@ export default function CalendarPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Calendar</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Manual events</h1>
-        <p className="text-neutral-600">Add local events and see upcoming agenda.</p>
-      </div>
+      <PageHeader
+        kicker="Calendar"
+        title="Manual events"
+        subtitle="Add local events and see upcoming agenda."
+      />
 
       <Card>
         <CardHeader>
@@ -83,19 +84,19 @@ export default function CalendarPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {upcoming.length === 0 ? (
-            <p className="text-sm text-neutral-600">No upcoming events.</p>
+            <p className="text-sm text-muted-foreground">No upcoming events.</p>
           ) : (
             upcoming.map((ev) => (
               <div
                 key={ev.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">{ev.title}</p>
-                <p className="text-neutral-600">
+                <p className="font-medium">{ev.title}</p>
+                <p className="text-muted-foreground">
                   {new Date(ev.startIso).toLocaleString()} → {new Date(ev.endIso).toLocaleString()}
                 </p>
-                {ev.location && <p className="text-neutral-600">Location: {ev.location}</p>}
-                {ev.notes && <p className="text-neutral-600">{ev.notes}</p>}
+                {ev.location && <p className="text-muted-foreground">Location: {ev.location}</p>}
+                {ev.notes && <p className="text-muted-foreground">{ev.notes}</p>}
               </div>
             ))
           )}

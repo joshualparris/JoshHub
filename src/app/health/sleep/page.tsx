@@ -6,6 +6,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
 import { createSleepLog, useSleep } from "@/lib/db/health";
 
@@ -54,11 +55,7 @@ export default function SleepPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Health</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Sleep</h1>
-        <p className="text-neutral-600">Log sleep and quality.</p>
-      </div>
+      <PageHeader kicker="Health" title="Sleep" subtitle="Log sleep and quality." />
 
       <Card>
         <CardHeader>
@@ -104,7 +101,7 @@ export default function SleepPage() {
         </CardHeader>
         <CardContent className="h-64">
           {chartData.length === 0 ? (
-            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+            <p className="text-sm text-muted-foreground">No data to chart yet.</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
@@ -114,7 +111,7 @@ export default function SleepPage() {
                 <Line
                   type="monotone"
                   dataKey="duration"
-                  stroke="#0f172a"
+                  stroke="var(--foreground)"
                   strokeWidth={2}
                   dot={false}
                 />
@@ -130,19 +127,19 @@ export default function SleepPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No entries yet.</p>
+            <p className="text-sm text-muted-foreground">No entries yet.</p>
           ) : (
             recent.map((s) => (
               <div
                 key={s.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">{s.date}</p>
-                <p className="text-neutral-600">
+                <p className="font-medium">{s.date}</p>
+                <p className="text-muted-foreground">
                   Bed: {s.bedtimeIso || "-"} | Wake: {s.wakeIso || "-"}
                 </p>
-                {s.quality && <p className="text-neutral-600">Quality: {s.quality}/5</p>}
-                {s.notes && <p className="text-neutral-600">{s.notes}</p>}
+                {s.quality && <p className="text-muted-foreground">Quality: {s.quality}/5</p>}
+                {s.notes && <p className="text-muted-foreground">{s.notes}</p>}
               </div>
             ))
           )}

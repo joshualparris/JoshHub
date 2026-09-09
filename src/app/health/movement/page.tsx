@@ -6,6 +6,7 @@ import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recha
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { createMovementLog, useMovement } from "@/lib/db/health";
 import type { MovementLog } from "@/lib/db/schema";
 
@@ -47,11 +48,7 @@ export default function MovementPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Health</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Movement</h1>
-        <p className="text-neutral-600">Log sessions.</p>
-      </div>
+      <PageHeader kicker="Health" title="Movement" subtitle="Log sessions." />
 
       <Card>
         <CardHeader>
@@ -63,7 +60,7 @@ export default function MovementPage() {
             <select
               value={type}
               onChange={(e) => setType(e.target.value as MovementLog["type"])}
-              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm"
+              className="h-10 rounded-md border border-border bg-card px-3 text-sm text-card-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <option value="walk">Walk</option>
               <option value="ride">Ride</option>
@@ -80,7 +77,7 @@ export default function MovementPage() {
             <select
               value={intensity}
               onChange={(e) => setIntensity(e.target.value as MovementLog["intensity"])}
-              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm"
+              className="h-10 rounded-md border border-border bg-card px-3 text-sm text-card-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <option value="low">Low</option>
               <option value="med">Medium</option>
@@ -105,14 +102,14 @@ export default function MovementPage() {
         </CardHeader>
         <CardContent className="h-64">
           {chartData.length === 0 ? (
-            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+            <p className="text-sm text-muted-foreground">No data to chart yet.</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <XAxis dataKey="date" fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip />
-                <Bar dataKey="minutes" fill="#0f172a" />
+                <Bar dataKey="minutes" fill="var(--foreground)" />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -125,17 +122,17 @@ export default function MovementPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No entries yet.</p>
+            <p className="text-sm text-muted-foreground">No entries yet.</p>
           ) : (
             recent.map((m) => (
               <div
                 key={m.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">
+                <p className="font-medium">
                   {m.date} — {m.type} ({m.minutes}m, {m.intensity})
                 </p>
-                {m.notes && <p className="text-neutral-600">{m.notes}</p>}
+                {m.notes && <p className="text-muted-foreground">{m.notes}</p>}
               </div>
             ))
           )}

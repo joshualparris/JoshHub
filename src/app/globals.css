@@ -1,26 +1,43 @@
 @import "tailwindcss";
 
+/* The theme toggle owns this attribute; Tailwind dark variants must follow it,
+   not the operating-system preference. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 :root {
   --background: #eef2f8;
   --foreground: #0f172a;
   --card: #ffffff;
-  --muted: #475569;
+  --card-foreground: #0f172a;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
   --border: #d9e0ec;
   --accent: #0ea5e9;
+  --ring: #0ea5e9;
 }
 
 :root[data-theme="dark"] {
   --background: #0a0f1a;
   --foreground: #e6edf7;
   --card: #0f1829;
-  --muted: #9fb0c8;
+  --card-foreground: #e6edf7;
+  --muted: #1e293b;
+  --muted-foreground: #9fb0c8;
   --border: #1f2a3c;
   --accent: #22d3ee;
+  --ring: #22d3ee;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -52,26 +69,18 @@ main {
   padding: 0;
 }
 
-/* Page heading helpers (scoped to header blocks so cards remain untouched) */
+/* Page heading helpers are kept for legacy pages; new pages use PageHeader. */
 .page-heading .eyebrow {
   font-size: 0.7rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #475569;
+  color: var(--muted-foreground);
 }
 
 .page-heading .lede {
-  color: #475569;
+  color: var(--muted-foreground);
 }
 
-body.dark .page-heading .eyebrow {
-  color: #cbd5e1;
-}
-
-body.dark .page-heading h1 {
-  color: #f8fafc;
-}
-
-body.dark .page-heading .lede {
-  color: #d9e2f2;
+.page-heading h1 {
+  color: var(--foreground);
 }
