@@ -7,46 +7,45 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { metaText } from "@/components/ui/text";
+import { groupTasksByDue } from "@/features/tasks/grouping";
 import { createTask, deleteTask, toggleTaskStatus, updateTask } from "@/lib/db/actions";
 import { useTasks } from "@/lib/db/hooks";
 import type { Task, TaskPriority } from "@/lib/db/schema";
 import { todayLocalISO } from "@/lib/date";
+import { normalizeTag, parseTagList } from "@/lib/logic/tagging";
 
 export default function TasksPage() {
   const tasks = useTasks();
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState("med");
+  const [priority, setPriority] = useState<TaskPriority>("med");
   const [tag, setTag] = useState("");
   const [due, setDue] = useState("");
 
-  async function onAddTask(e: FormEvent) {
-    e.preventDefault();
-    if (!title.trim()) return;
+  async function onAddTask(event: FormEvent) {
+    event.preventDefault();
+    const taskTitle = title.trim();
+    if (!taskTitle) return;
+
     await createTask({
-      title: title.trim(),
-      priority: priority as TaskPriority,
-      tags: tag ? [tag] : [],
+      title: taskTitle,
+      priority,
+      tags: tag.trim() ? [normalizeTag(tag)] : [],
       dueDate: due || null,
     });
     setTitle("");
+    setTag("");
     setDue("");
   }
 
-  const grouped = useMemo(() => {
-    const list = [...(tasks ?? [])].sort((a, b) =>
-      (a.dueDate ?? "").localeCompare(b.dueDate ?? "")
-    );
-    return {
-      today: list.filter((t) => isToday(t.dueDate)),
-      upcoming: list.filter((t) => isUpcoming(t.dueDate)),
-      someday: list.filter((t) => !t.dueDate),
-    };
-  }, [tasks]);
+  const grouped = useMemo(
+    () => groupTasksByDue(tasks ?? [], todayLocalISO()),
+    [tasks]
+  );
 
   return (
     <div className="space-y-6">
       <PageHeader
-        kicker="TASKS"
+        kicker="Tasks"
         title="Tasks"
         subtitle="Quick add and manage tasks."
         tone="onDark"
@@ -59,15 +58,15 @@ export default function TasksPage() {
         <CardContent>
           <form className="flex flex-wrap gap-3" onSubmit={onAddTask}>
             <Input
-              className="flex-1 min-w-[200px]"
+              className="min-w-[200px] flex-1"
               placeholder="Task title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(event) => setTitle(event.target.value)}
             />
             <select
               value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+              onChange={(event) => setPriority(event.target.value as TaskPriority)}
+              className="h-10 rounded-md border border-border bg-background px-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <option value="low">Low</option>
               <option value="med">Med</option>
@@ -77,15 +76,17 @@ export default function TasksPage() {
               className="min-w-[160px]"
               placeholder="Tag (optional)"
               value={tag}
-              onChange={(e) => setTag(e.target.value)}
+              onChange={(event) => setTag(event.target.value)}
             />
             <Input
               type="date"
               className="min-w-[160px]"
               value={due}
-              onChange={(e) => setDue(e.target.value)}
+              onChange={(event) => setDue(event.target.value)}
             />
-            <Button type="submit">Add</Button>
+            <Button type="submit" disabled={!title.trim()}>
+              Add
+            </Button>
           </form>
         </CardContent>
       </Card>
@@ -107,7 +108,7 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
       </CardHeader>
       <CardContent className="space-y-2">
         {tasks.length === 0 ? (
-          <p className="text-sm text-foreground/60">Nothing here.</p>
+          <p className="text-sm text-muted-foreground">Nothing here.</p>
         ) : (
           tasks.map((task) => <TaskRow key={task.id} task={task} />)
         )}
@@ -123,30 +124,27 @@ function TaskRow({ task }: { task: Task }) {
   const [tags, setTags] = useState(task.tags.join(", "));
   const [dueDate, setDueDate] = useState(task.dueDate ?? "");
 
-  async function onSave(e: FormEvent) {
-    e.preventDefault();
+  async function onSave(event: FormEvent) {
+    event.preventDefault();
     await updateTask(task.id, {
       title: title.trim() || "Untitled",
       priority,
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
+      tags: parseTagList(tags),
       dueDate: dueDate || null,
     });
     setEditing(false);
   }
 
   return (
-    <div className="rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70">
+    <div className="rounded-md border border-border bg-card px-3 py-2 text-card-foreground">
       {editing ? (
         <form className="space-y-2" onSubmit={onSave}>
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <Input value={title} onChange={(event) => setTitle(event.target.value)} />
           <div className="flex flex-wrap gap-2">
             <select
               value={priority}
-              onChange={(e) => setPriority(e.target.value as TaskPriority)}
-              className="h-9 rounded-md border border-neutral-300 bg-white px-2 text-sm text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+              onChange={(event) => setPriority(event.target.value as TaskPriority)}
+              className="h-9 rounded-md border border-border bg-background px-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <option value="low">Low</option>
               <option value="med">Med</option>
@@ -155,27 +153,28 @@ function TaskRow({ task }: { task: Task }) {
             <Input
               type="date"
               className="min-w-[160px]"
-              value={dueDate ?? ""}
-              onChange={(e) => setDueDate(e.target.value)}
+              value={dueDate}
+              onChange={(event) => setDueDate(event.target.value)}
             />
           </div>
           <Input
             placeholder="Tags (comma separated)"
             value={tags}
-            onChange={(e) => setTags(e.target.value)}
+            onChange={(event) => setTags(event.target.value)}
           />
           <div className="flex gap-2">
             <Button type="submit" size="sm">
               Save
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => setEditing(false)}>
+            <Button type="button" size="sm" variant="ghost" onClick={() => setEditing(false)}>
               Cancel
             </Button>
             <Button
+              type="button"
               size="sm"
               variant="ghost"
-              onClick={async () => {
-                await deleteTask(task.id);
+              onClick={() => {
+                if (confirm(`Delete task “${task.title}”?`)) void deleteTask(task.id);
               }}
             >
               Delete
@@ -189,17 +188,21 @@ function TaskRow({ task }: { task: Task }) {
               <input
                 type="checkbox"
                 checked={task.status === "done"}
-                onChange={(e) => toggleTaskStatus(task.id, e.target.checked ? "done" : "open")}
+                onChange={(event) =>
+                  void toggleTaskStatus(task.id, event.target.checked ? "done" : "open")
+                }
               />
-              <span className={task.status === "done" ? "line-through text-foreground/60" : ""}>
+              <span className={task.status === "done" ? "text-muted-foreground line-through" : ""}>
                 {task.title}
               </span>
             </label>
             <div className="flex items-center gap-2">
               <select
                 value={task.priority}
-                onChange={(e) => updateTask(task.id, { priority: e.target.value as TaskPriority })}
-                className="h-8 rounded-md border border-neutral-300 bg-white px-2 text-xs text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
+                onChange={(event) =>
+                  void updateTask(task.id, { priority: event.target.value as TaskPriority })
+                }
+                className="h-8 rounded-md border border-border bg-background px-2 text-xs text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <option value="low">Low</option>
                 <option value="med">Med</option>
@@ -212,12 +215,9 @@ function TaskRow({ task }: { task: Task }) {
           </div>
           <div className={`flex flex-wrap gap-2 ${metaText}`}>
             {task.dueDate && <span>Due {task.dueDate}</span>}
-            {task.tags.map((t) => (
-              <span
-                key={t}
-                className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
-              >
-                {t}
+            {task.tags.map((item) => (
+              <span key={item} className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground">
+                {item}
               </span>
             ))}
           </div>
@@ -225,16 +225,4 @@ function TaskRow({ task }: { task: Task }) {
       )}
     </div>
   );
-}
-
-function isToday(date?: string | null) {
-  if (!date) return false;
-  const today = todayLocalISO();
-  return date === today;
-}
-
-function isUpcoming(date?: string | null) {
-  if (!date) return false;
-  const today = todayLocalISO();
-  return date > today;
 }
