@@ -32,8 +32,12 @@ export default function CapturePage() {
 
   const recent = useMemo(() => {
     const combined: { type: string; title: string; createdAt: number }[] = [];
-    (notes ?? []).forEach((n) => combined.push({ type: "Note", title: n.title, createdAt: n.createdAt }));
-    (tasks ?? []).forEach((t) => combined.push({ type: "Task", title: t.title, createdAt: t.createdAt }));
+    (notes ?? []).forEach((n) =>
+      combined.push({ type: "Note", title: n.title, createdAt: n.createdAt })
+    );
+    (tasks ?? []).forEach((t) =>
+      combined.push({ type: "Task", title: t.title, createdAt: t.createdAt })
+    );
     (bookmarks ?? []).forEach((b) =>
       combined.push({ type: "Bookmark", title: b.title || b.url, createdAt: b.createdAt })
     );
@@ -104,7 +108,12 @@ export default function CapturePage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="Capture" title="Inbox" subtitle="Fast drop for notes, tasks, and bookmarks." tone="onDark" />
+      <PageHeader
+        kicker="Capture"
+        title="Inbox"
+        subtitle="Fast drop for notes, tasks, and bookmarks."
+        tone="onDark"
+      />
       <div className="grid gap-4 lg:grid-cols-3">
         <Card>
           <CardHeader>

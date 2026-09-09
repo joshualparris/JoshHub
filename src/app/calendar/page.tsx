@@ -57,11 +57,7 @@ export default function CalendarPage() {
         <CardContent>
           <form className="grid gap-3 md:grid-cols-2" onSubmit={onAdd}>
             <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <Input
-              type="datetime-local"
-              value={start}
-              onChange={(e) => setStart(e.target.value)}
-            />
+            <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
             <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
             <Input
               placeholder="Location"
@@ -96,8 +92,7 @@ export default function CalendarPage() {
               >
                 <p className="font-medium text-neutral-900">{ev.title}</p>
                 <p className="text-neutral-600">
-                  {new Date(ev.startIso).toLocaleString()} →{" "}
-                  {new Date(ev.endIso).toLocaleString()}
+                  {new Date(ev.startIso).toLocaleString()} → {new Date(ev.endIso).toLocaleString()}
                 </p>
                 {ev.location && <p className="text-neutral-600">Location: {ev.location}</p>}
                 {ev.notes && <p className="text-neutral-600">{ev.notes}</p>}

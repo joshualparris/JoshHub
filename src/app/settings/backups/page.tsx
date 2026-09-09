@@ -60,7 +60,9 @@ export default function BackupsPage() {
         summary.untouchedTables.length > 0
           ? ` ${summary.untouchedTables.length} table(s) not included in this backup were left unchanged.`
           : "";
-      setStatus(`Restored ${summary.rowsRestored} row(s) into ${summary.restoredTables.length} table(s).${preserved}`);
+      setStatus(
+        `Restored ${summary.rowsRestored} row(s) into ${summary.restoredTables.length} table(s).${preserved}`
+      );
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Could not read that backup file.");
     } finally {
@@ -153,7 +155,10 @@ function StoredDataCard({ counts }: { counts: StoredCounts | null }) {
         ) : (
           <ul className="grid gap-1 text-xs text-neutral-600 dark:text-slate-300 sm:grid-cols-2 md:grid-cols-3">
             {populated.map((name) => (
-              <li key={name} className="flex justify-between gap-2 rounded border border-neutral-200 px-2 py-1 dark:border-slate-800">
+              <li
+                key={name}
+                className="flex justify-between gap-2 rounded border border-neutral-200 px-2 py-1 dark:border-slate-800"
+              >
                 <span>{name}</span>
                 <span className="font-medium">{counts[name]}</span>
               </li>

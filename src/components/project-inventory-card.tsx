@@ -48,7 +48,9 @@ export function ProjectInventoryCard({ project }: Props) {
             <p className="text-sm text-muted-foreground">{project.category}</p>
           </div>
           {project.metadataConfidence && (
-            <Badge className={cn("text-xs font-medium", confidenceColors[project.metadataConfidence])}>
+            <Badge
+              className={cn("text-xs font-medium", confidenceColors[project.metadataConfidence])}
+            >
               {project.metadataConfidence.replace("-", " ")}
             </Badge>
           )}
@@ -67,7 +69,12 @@ export function ProjectInventoryCard({ project }: Props) {
               <div className="flex items-center gap-2">
                 <GitBranch className="h-4 w-4 text-muted-foreground" />
                 <span className="font-semibold w-24 shrink-0">Repository:</span>
-                <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline truncate"
+                >
                   {project.repoUrl.replace(/^https?:\/\//, "")}
                 </a>
               </div>
@@ -76,7 +83,12 @@ export function ProjectInventoryCard({ project }: Props) {
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-muted-foreground" />
                 <span className="font-semibold w-24 shrink-0">Live URL:</span>
-                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
+                <a
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline truncate"
+                >
                   {project.liveUrl.replace(/^https?:\/\//, "")}
                 </a>
               </div>
@@ -88,8 +100,18 @@ export function ProjectInventoryCard({ project }: Props) {
                 <span className="truncate text-muted-foreground font-mono bg-muted/50 px-1 rounded">
                   {project.localPath}
                 </span>
-                <Button variant="ghost" size="icon" className="h-6 w-6 shrink-0" onClick={copyPath} title="Copy path">
-                  {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-6 w-6 shrink-0"
+                  onClick={copyPath}
+                  title="Copy path"
+                >
+                  {copied ? (
+                    <Check className="h-3 w-3 text-emerald-500" />
+                  ) : (
+                    <Copy className="h-3 w-3" />
+                  )}
                 </Button>
               </div>
             )}

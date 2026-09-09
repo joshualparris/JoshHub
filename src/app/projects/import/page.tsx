@@ -20,8 +20,9 @@ export default function ProjectImportPage() {
           <h4 className="font-semibold">Read-Only Preview</h4>
         </div>
         <p className="text-sm">
-          This tool runs entirely in your browser. It does not modify any files on your disk. 
-          Use the preview to identify mismatches and conflicts before manually updating your project data.
+          This tool runs entirely in your browser. It does not modify any files on your disk. Use
+          the preview to identify mismatches and conflicts before manually updating your project
+          data.
         </p>
       </div>
 
@@ -31,10 +32,19 @@ export default function ProjectImportPage() {
         <div className="space-y-4">
           <h3 className="text-lg font-bold">Matching Logic</h3>
           <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
-            <li><strong>Exact Name:</strong> Case-insensitive match on the project name.</li>
-            <li><strong>Local Path:</strong> Exact match on the absolute file path.</li>
-            <li><strong>Repository:</strong> Exact match on the git repository URL.</li>
-            <li><strong>Conflicts:</strong> Highlighted when the audit data differs from your current verified inventory.</li>
+            <li>
+              <strong>Exact Name:</strong> Case-insensitive match on the project name.
+            </li>
+            <li>
+              <strong>Local Path:</strong> Exact match on the absolute file path.
+            </li>
+            <li>
+              <strong>Repository:</strong> Exact match on the git repository URL.
+            </li>
+            <li>
+              <strong>Conflicts:</strong> Highlighted when the audit data differs from your current
+              verified inventory.
+            </li>
           </ul>
         </div>
         <div className="space-y-4">
@@ -42,7 +52,9 @@ export default function ProjectImportPage() {
           <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
             <li>Review the conflicts highlighted in red.</li>
             <li>Identify "Source of Truth" projects for duplicates found in the audit.</li>
-            <li>Export the merged result to help update <code>src/data/apps.ts</code>.</li>
+            <li>
+              Export the merged result to help update <code>src/data/apps.ts</code>.
+            </li>
             <li>Use the Cleanup Dashboard to prioritize projects for archiving.</li>
           </ul>
         </div>

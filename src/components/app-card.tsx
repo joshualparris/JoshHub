@@ -40,15 +40,16 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
 
   const openableUrlExists = Boolean(
     app.liveUrl ||
-      app.primaryUrl ||
-      app.urls.some(
-        (url) =>
-          url.type !== "repo" &&
-          !/repo/i.test(url.label) &&
-          (url.url.startsWith("/") || /^https?:\/\//i.test(url.url))
-      )
+    app.primaryUrl ||
+    app.urls.some(
+      (url) =>
+        url.type !== "repo" &&
+        !/repo/i.test(url.label) &&
+        (url.url.startsWith("/") || /^https?:\/\//i.test(url.url))
+    )
   );
-  const isLocalOnly = app.availability === "local" || (!app.liveUrl && !app.primaryUrl && app.localPath);
+  const isLocalOnly =
+    app.availability === "local" || (!app.liveUrl && !app.primaryUrl && app.localPath);
   const needsReview = app.status === "needs-review" || app.metadataConfidence === "needs-review";
 
   return (
@@ -62,19 +63,25 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
                 disabled={!app.liveUrl && !app.primaryUrl}
                 className={cn(
                   "hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm text-left font-bold",
-                  (!app.liveUrl && !app.primaryUrl) && "cursor-default hover:no-underline"
+                  !app.liveUrl && !app.primaryUrl && "cursor-default hover:no-underline"
                 )}
               >
                 {app.name}
               </button>
               <StatusChip status={app.status} />
               {isLocalOnly && (
-                <Badge variant="outline" className="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 text-[10px] uppercase tracking-wider">
+                <Badge
+                  variant="outline"
+                  className="bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 text-[10px] uppercase tracking-wider"
+                >
                   Local Only
                 </Badge>
               )}
               {needsReview && (
-                <Badge variant="outline" className="bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border-purple-100 text-[10px] uppercase tracking-wider">
+                <Badge
+                  variant="outline"
+                  className="bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300 border-purple-100 text-[10px] uppercase tracking-wider"
+                >
                   Link Needs Review
                 </Badge>
               )}
@@ -95,11 +102,15 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
           </div>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4 flex-1 flex flex-col">
         <div className="flex flex-wrap gap-1.5">
           {app.tags.map((tag) => (
-            <Badge key={tag} variant="muted" className="text-[10px] py-0 px-1.5 h-5 uppercase tracking-wider font-medium">
+            <Badge
+              key={tag}
+              variant="muted"
+              className="text-[10px] py-0 px-1.5 h-5 uppercase tracking-wider font-medium"
+            >
               {tag}
             </Badge>
           ))}
@@ -119,9 +130,14 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
                 Open App
               </Button>
             )}
-            
+
             {app.repoUrl && (
-              <Button variant="outline" size="sm" className="gap-2 h-8" onClick={() => window.open(app.repoUrl, "_blank")}>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 h-8"
+                onClick={() => window.open(app.repoUrl, "_blank")}
+              >
                 <GitBranch className="h-3.5 w-3.5" />
                 GitHub
               </Button>
@@ -129,7 +145,11 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
 
             {app.localPath && (
               <Button variant="outline" size="sm" className="gap-2 h-8" onClick={copyPath}>
-                {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+                {copied ? (
+                  <Check className="h-3.5 w-3.5 text-emerald-500" />
+                ) : (
+                  <Copy className="h-3.5 w-3.5" />
+                )}
                 Path
               </Button>
             )}

@@ -16,8 +16,7 @@ export const opportunitiesRepo = {
     const items = await db.platformOpportunities.toArray();
     return items.sort((a, b) => {
       // 1. Stage
-      const stageDiff =
-        (STAGE_ORDER[a.stage] ?? 99) - (STAGE_ORDER[b.stage] ?? 99);
+      const stageDiff = (STAGE_ORDER[a.stage] ?? 99) - (STAGE_ORDER[b.stage] ?? 99);
       if (stageDiff !== 0) return stageDiff;
 
       // 2. Expected Value (high to low)

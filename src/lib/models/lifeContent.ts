@@ -15,12 +15,14 @@ export interface LifeItem {
   archived?: boolean;
 }
 
-export function makeLifeItem(partial: Partial<LifeItem> & Pick<LifeItem, 'id' | 'area' | 'type' | 'title'>): LifeItem {
+export function makeLifeItem(
+  partial: Partial<LifeItem> & Pick<LifeItem, "id" | "area" | "type" | "title">
+): LifeItem {
   const now = new Date().toISOString();
   return {
     id: partial.id,
     createdAt: partial.createdAt ?? now,
-    updatedAt: partial.updatedAt ?? (partial.createdAt ?? now),
+    updatedAt: partial.updatedAt ?? partial.createdAt ?? now,
     area: partial.area,
     type: partial.type,
     title: partial.title,

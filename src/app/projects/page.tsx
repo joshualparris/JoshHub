@@ -8,7 +8,20 @@ import { PageHeader } from "@/components/ui/page-header";
 import { labelText, metaText, mutedText } from "@/components/ui/text";
 import { apps, type AppStatus } from "@/data/apps";
 
-const statusOrder: AppStatus[] = ["active", "maintained", "ok", "wip", "paused", "complete", "broken", "archived", "needs-review", "archive-candidate", "duplicate-candidate", "unknown"];
+const statusOrder: AppStatus[] = [
+  "active",
+  "maintained",
+  "ok",
+  "wip",
+  "paused",
+  "complete",
+  "broken",
+  "archived",
+  "needs-review",
+  "archive-candidate",
+  "duplicate-candidate",
+  "unknown",
+];
 const sortOptions = [
   { label: "Status", value: "status" },
   { label: "Last touched", value: "lastTouched" },
@@ -31,8 +44,7 @@ export default function ProjectsPage() {
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
       if (sortBy === "name") return a.name.localeCompare(b.name);
-      if (sortBy === "lastTouched")
-        return (b.lastTouched ?? "").localeCompare(a.lastTouched ?? "");
+      if (sortBy === "lastTouched") return (b.lastTouched ?? "").localeCompare(a.lastTouched ?? "");
       // default status order
       return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
     });

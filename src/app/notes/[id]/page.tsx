@@ -31,7 +31,11 @@ export default function NoteDetailPage() {
   }, [note]);
 
   const tagList = useMemo(
-    () => tags.split(",").map((t) => t.trim()).filter(Boolean),
+    () =>
+      tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
     [tags]
   );
 

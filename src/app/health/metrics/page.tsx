@@ -19,7 +19,8 @@ export default function MetricsPage() {
 
   // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
   const recent = useMemo(
-    () => [...(metrics ?? [])].sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso)).slice(0, 10),
+    () =>
+      [...(metrics ?? [])].sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso)).slice(0, 10),
     [metrics]
   );
   const chartData = useMemo(
@@ -113,7 +114,13 @@ export default function MetricsPage() {
                 <XAxis dataKey="date" tickFormatter={(v) => v.slice(5, 16)} fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip />
-                <Line type="monotone" dataKey="value" stroke="#0f172a" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#0f172a"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}

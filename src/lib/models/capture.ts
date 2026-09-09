@@ -26,11 +26,15 @@ export function makeId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-export function makeCapture(partial: Partial<CaptureItem> & Pick<CaptureItem, 'kind' | 'title'>): CaptureItem {
+export function makeCapture(
+  partial: Partial<CaptureItem> & Pick<CaptureItem, "kind" | "title">
+): CaptureItem {
   const id = partial.id ?? makeId();
   const createdAt = partial.createdAt ?? nowIso();
   const updatedAt = partial.updatedAt ?? createdAt;
-  const area = (partial.area ? normalizeLifeArea(partial.area) : normalizeLifeArea("inbox")) as LifeArea;
+  const area = (
+    partial.area ? normalizeLifeArea(partial.area) : normalizeLifeArea("inbox")
+  ) as LifeArea;
   return {
     id,
     createdAt,

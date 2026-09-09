@@ -121,7 +121,8 @@ export default function DashboardPage() {
   const broken = apps.filter((a) => a.status === "broken");
   const quickLaunch = apps.slice(0, 6);
   const pinnedAreas = useMemo<LifeArea[]>(
-    () => pinned.map((slug) => lifeAreas.find((a) => a.slug === slug)).filter(Boolean) as LifeArea[],
+    () =>
+      pinned.map((slug) => lifeAreas.find((a) => a.slug === slug)).filter(Boolean) as LifeArea[],
     [pinned]
   );
   // Copy before sorting throughout this file: these arrays come straight from
@@ -134,7 +135,9 @@ export default function DashboardPage() {
   const openTasks = useMemo(() => (tasks ?? []).filter((t) => t.status === "open"), [tasks]);
   const taskToday = useMemo(() => {
     const todayIso = todayLocalISO();
-    return (tasks ?? []).filter((t) => t.status === "open" && t.dueDate && isSameLocalDayISO(t.dueDate, todayIso));
+    return (tasks ?? []).filter(
+      (t) => t.status === "open" && t.dueDate && isSameLocalDayISO(t.dueDate, todayIso)
+    );
   }, [tasks]);
 
   const nextEvents = useMemo(
@@ -468,7 +471,9 @@ export default function DashboardPage() {
                     >
                       {item.name}
                     </a>
-                    {item.notes && <p className="text-xs text-red-700 dark:text-red-200">{item.notes}</p>}
+                    {item.notes && (
+                      <p className="text-xs text-red-700 dark:text-red-200">{item.notes}</p>
+                    )}
                   </div>
                 </div>
               ))
@@ -500,13 +505,19 @@ export default function DashboardPage() {
                     <div className={`rounded-full p-2 ${item.bg}`}>
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">{item.title}</p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">
+                      {item.title}
+                    </p>
                     {item.isExample && <ExampleBadge />}
                   </div>
-                  <p className="text-base font-semibold text-neutral-900 dark:text-white">{item.value}</p>
+                  <p className="text-base font-semibold text-neutral-900 dark:text-white">
+                    {item.value}
+                  </p>
                   <p className="mt-1 text-xs text-neutral-500 dark:text-slate-400">{item.detail}</p>
                   {item.isExample && (
-                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">{EXAMPLE_DATA_NOTE}</p>
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">
+                      {EXAMPLE_DATA_NOTE}
+                    </p>
                   )}
                   <Button asChild variant="ghost" className="mt-2 h-auto px-0 py-0 text-sm">
                     <Link href={item.action.href}>{item.action.label}</Link>
@@ -547,7 +558,9 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   {item.type === "event" && item.subtitle && (
-                    <span className="text-xs text-neutral-500 dark:text-slate-400">{item.subtitle}</span>
+                    <span className="text-xs text-neutral-500 dark:text-slate-400">
+                      {item.subtitle}
+                    </span>
                   )}
                 </div>
               ))
@@ -564,7 +577,10 @@ export default function DashboardPage() {
               {
                 label: "Sleep (7d avg)",
                 value: sleepAvg != null ? `${(sleepAvg / 60).toFixed(1)} h` : "Log sleep",
-                detail: sleepAvg != null ? `${sleepAvg} minutes across last 7 entries` : "Add a night to start trending",
+                detail:
+                  sleepAvg != null
+                    ? `${sleepAvg} minutes across last 7 entries`
+                    : "Add a night to start trending",
                 icon: HeartPulse,
               },
               {
@@ -586,13 +602,19 @@ export default function DashboardPage() {
               {
                 label: "Nutrition",
                 value: latestNutrition ? latestNutrition.summary : "Log a meal",
-                detail: latestNutrition ? latestNutrition.date : "Capture protein/veg or a simple summary",
+                detail: latestNutrition
+                  ? latestNutrition.date
+                  : "Capture protein/veg or a simple summary",
                 icon: UtensilsCrossed,
               },
               {
                 label: "Latest metric",
-                value: latestMetric ? `${latestMetric.metricType} ${latestMetric.value} ${latestMetric.unit}` : "No metrics yet",
-                detail: latestMetric ? new Date(latestMetric.dateTimeIso).toLocaleString() : "Add weight, HRV, or BP to stay aware",
+                value: latestMetric
+                  ? `${latestMetric.metricType} ${latestMetric.value} ${latestMetric.unit}`
+                  : "No metrics yet",
+                detail: latestMetric
+                  ? new Date(latestMetric.dateTimeIso).toLocaleString()
+                  : "Add weight, HRV, or BP to stay aware",
                 icon: Activity,
               },
             ].map((row) => {
@@ -639,7 +661,9 @@ export default function DashboardPage() {
                   </div>
                   <p className="text-sm text-neutral-700 dark:text-slate-200">{panel.summary}</p>
                   {panel.isExample && (
-                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">{EXAMPLE_DATA_NOTE}</p>
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">
+                      {EXAMPLE_DATA_NOTE}
+                    </p>
                   )}
                   <ul className="mt-2 space-y-1 text-xs text-neutral-600 dark:text-slate-300">
                     {panel.bullets.map((line) => (
@@ -749,11 +773,15 @@ export default function DashboardPage() {
               </p>
               {rhythm ? (
                 <div className="space-y-1 text-xs text-neutral-700 dark:text-slate-200">
-                  <p>Dinner {rhythm.dinner} · Bedtime {rhythm.bedtime}</p>
+                  <p>
+                    Dinner {rhythm.dinner} · Bedtime {rhythm.bedtime}
+                  </p>
                   <p>{rhythm.responsibilities.join(", ") || "Responsibilities tbc"}</p>
                 </div>
               ) : (
-                <p className="text-xs text-neutral-500 dark:text-slate-400">Set rhythm in Family.</p>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">
+                  Set rhythm in Family.
+                </p>
               )}
             </div>
           </CardContent>
@@ -767,7 +795,9 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             {recent.length === 0 ? (
-              <p className="text-sm text-neutral-600 dark:text-slate-300">No recently opened items.</p>
+              <p className="text-sm text-neutral-600 dark:text-slate-300">
+                No recently opened items.
+              </p>
             ) : (
               recent.map((item) => (
                 <div
@@ -801,7 +831,8 @@ export default function DashboardPage() {
               Keep the list short: ship one work thing, love one family moment, and rest one beat.
             </p>
             <p className="rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              Pinned areas: {pinnedAreas.length > 0 ? pinnedAreas.map((a) => a.title).join(", ") : "none yet"}.
+              Pinned areas:{" "}
+              {pinnedAreas.length > 0 ? pinnedAreas.map((a) => a.title).join(", ") : "none yet"}.
             </p>
             <p className="rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               Broken items stay visible above so you can clear friction fast.

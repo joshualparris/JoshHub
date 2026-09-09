@@ -36,19 +36,16 @@ export function usePlatformWeeklyReviews() {
 
 export const platformActions = {
   // MoveOps
-  addMoveOp: (
-    item: Omit<PlatformMoveOp, "id" | "createdAt" | "updatedAt">
-  ) => moveOpsRepo.add(item),
-  updateMoveOp: (id: string, patch: Partial<PlatformMoveOp>) =>
-    moveOpsRepo.update(id, patch),
+  addMoveOp: (item: Omit<PlatformMoveOp, "id" | "createdAt" | "updatedAt">) =>
+    moveOpsRepo.add(item),
+  updateMoveOp: (id: string, patch: Partial<PlatformMoveOp>) => moveOpsRepo.update(id, patch),
   deleteMoveOp: (id: string) => moveOpsRepo.delete(id),
   setMoveOpStatus: (id: string, status: PlatformMoveOp["status"]) =>
     moveOpsRepo.setStatus(id, status),
 
   // Decision Cards
-  addDecisionCard: (
-    item: Omit<PlatformDecisionCard, "id" | "createdAt" | "updatedAt">
-  ) => decisionCardsRepo.add(item),
+  addDecisionCard: (item: Omit<PlatformDecisionCard, "id" | "createdAt" | "updatedAt">) =>
+    decisionCardsRepo.add(item),
   updateDecisionCard: (id: string, patch: Partial<PlatformDecisionCard>) =>
     decisionCardsRepo.update(id, patch),
   deleteDecisionCard: (id: string) => decisionCardsRepo.delete(id),
@@ -56,9 +53,8 @@ export const platformActions = {
     decisionCardsRepo.setStatus(id, status),
 
   // Opportunities
-  addOpportunity: (
-    item: Omit<PlatformOpportunity, "id" | "createdAt" | "updatedAt">
-  ) => opportunitiesRepo.add(item),
+  addOpportunity: (item: Omit<PlatformOpportunity, "id" | "createdAt" | "updatedAt">) =>
+    opportunitiesRepo.add(item),
   updateOpportunity: (id: string, patch: Partial<PlatformOpportunity>) =>
     opportunitiesRepo.update(id, patch),
   deleteOpportunity: (id: string) => opportunitiesRepo.delete(id),
@@ -66,9 +62,8 @@ export const platformActions = {
     opportunitiesRepo.setStage(id, stage),
 
   // Weekly Reviews
-  addWeeklyReview: (
-    item: Omit<PlatformWeeklyReview, "id" | "createdAt" | "updatedAt">
-  ) => weeklyReviewsRepo.add(item),
+  addWeeklyReview: (item: Omit<PlatformWeeklyReview, "id" | "createdAt" | "updatedAt">) =>
+    weeklyReviewsRepo.add(item),
   updateWeeklyReview: (id: string, patch: Partial<PlatformWeeklyReview>) =>
     weeklyReviewsRepo.update(id, patch),
   deleteWeeklyReview: (id: string) => weeklyReviewsRepo.delete(id),

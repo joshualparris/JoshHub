@@ -14,7 +14,9 @@
     "validate:apps": "tsx ./scripts/validate-apps.ts",
     "check:assets": "node ./scripts/check-assets.js",
     "check:duplicate-modules": "git ls-files 'src/**/*.ts' 'src/**/*.tsx' | grep -v '\\.bak' | sed 's|.*/||' | grep -vE '^(page|layout|route|loading|error|not-found)\\.tsx?$' | sort | uniq -d | (! grep .)",
-    "check:mutation": "! git grep -nE '\\((tasks|notes|events|sleep|movement|nutrition|metrics|bookmarks|activities|dailyMetrics|items) \\?\\? \\[\\]\\)\\.(sort|reverse)' -- src"
+    "check:mutation": "! git grep -nE '\\((tasks|notes|events|sleep|movement|nutrition|metrics|bookmarks|activities|dailyMetrics|items) \\?\\? \\[\\]\\)\\.(sort|reverse)' -- src",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\" \"*.{ts,mjs,json}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"*.{ts,mjs,json}\""
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
@@ -41,6 +43,7 @@
     "eslint-config-next": "16.0.6",
     "eslint-plugin-import": "^2.32.0",
     "fake-indexeddb": "^6.2.5",
+    "prettier": "^3.9.6",
     "tailwindcss": "^4",
     "tsx": "^4.19.3",
     "typescript": "^5",

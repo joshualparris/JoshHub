@@ -13,8 +13,7 @@ export const decisionCardsRepo = {
     const items = await db.platformDecisionCards.toArray();
     return items.sort((a, b) => {
       // 1. Status
-      const statusDiff =
-        (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      const statusDiff = (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
       if (statusDiff !== 0) return statusDiff;
 
       // 2. Due By (nulls last)
@@ -31,9 +30,7 @@ export const decisionCardsRepo = {
       return b.createdAt.localeCompare(a.createdAt);
     });
   },
-  async add(
-    item: Omit<PlatformDecisionCard, "id" | "createdAt" | "updatedAt">
-  ) {
+  async add(item: Omit<PlatformDecisionCard, "id" | "createdAt" | "updatedAt">) {
     const id = uuid();
     const now = new Date().toISOString();
     const newItem: PlatformDecisionCard = {

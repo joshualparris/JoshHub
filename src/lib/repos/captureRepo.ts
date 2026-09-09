@@ -3,7 +3,7 @@ import { CaptureItem, makeCapture } from "../models/capture";
 export interface CaptureRepo {
   list(): Promise<CaptureItem[]>;
   get(id: string): Promise<CaptureItem | undefined>;
-  add(item: Partial<CaptureItem> & Pick<CaptureItem, 'kind' | 'title'>): Promise<CaptureItem>;
+  add(item: Partial<CaptureItem> & Pick<CaptureItem, "kind" | "title">): Promise<CaptureItem>;
   update(id: string, patch: Partial<CaptureItem>): Promise<CaptureItem | undefined>;
   remove(id: string): Promise<void>;
   search(query: string): Promise<CaptureItem[]>;
@@ -36,7 +36,11 @@ export function createInMemoryCaptureRepo(initial: CaptureItem[] = []): CaptureR
     },
     async search(query: string) {
       const q = query.trim().toLowerCase();
-      return Array.from(store.values()).filter((i) => (i.title + " " + (i.content || "") + " " + (i.tags || []).join(" ")).toLowerCase().includes(q));
+      return Array.from(store.values()).filter((i) =>
+        (i.title + " " + (i.content || "") + " " + (i.tags || []).join(" "))
+          .toLowerCase()
+          .includes(q)
+      );
     },
   };
 }

@@ -160,12 +160,12 @@ function SectionDetails({ node }: { node: TocNode }) {
 
   return (
     <div className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between gap-2">
-              <span>{node.title}</span>
-              <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={handleExport}>
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between gap-2">
+            <span>{node.title}</span>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" onClick={handleExport}>
                 <FileDown className="mr-2 h-4 w-4" />
                 Export notes
               </Button>
@@ -321,49 +321,53 @@ function SectionDetails({ node }: { node: TocNode }) {
           ) : (
             allNotes.slice(0, 15).map((note) => {
               return (
-              <div
-                key={note.id}
-                className="flex items-start justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
-              >
-                <div className="space-y-1">
-                  <p className="font-medium text-neutral-900 dark:text-slate-50">{note.title}</p>
-                  <p className="text-xs text-neutral-500 dark:text-slate-300">Section: {note.nodeId}</p>
-                  <p className="line-clamp-2 text-sm text-neutral-700 dark:text-slate-200">{note.body}</p>
-                  {note.tags.length > 0 ? (
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {note.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  ) : null}
+                <div
+                  key={note.id}
+                  className="flex items-start justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
+                >
+                  <div className="space-y-1">
+                    <p className="font-medium text-neutral-900 dark:text-slate-50">{note.title}</p>
+                    <p className="text-xs text-neutral-500 dark:text-slate-300">
+                      Section: {note.nodeId}
+                    </p>
+                    <p className="line-clamp-2 text-sm text-neutral-700 dark:text-slate-200">
+                      {note.body}
+                    </p>
+                    {note.tags.length > 0 ? (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {note.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-700 dark:bg-slate-800 dark:text-slate-200"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        startEdit(note.id);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        if (confirm("Delete this note?")) deleteMapNote(note.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => {
-                      startEdit(note.id);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      if (confirm("Delete this note?")) deleteMapNote(note.id);
-                    }}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            );
+              );
             })
           )}
         </CardContent>

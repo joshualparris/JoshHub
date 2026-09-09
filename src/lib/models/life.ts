@@ -10,7 +10,7 @@ export const LIFE_AREAS = [
   "inbox",
 ] as const;
 
-export type LifeArea = typeof LIFE_AREAS[number];
+export type LifeArea = (typeof LIFE_AREAS)[number];
 
 export function isLifeArea(s: string | undefined | null): s is LifeArea {
   if (!s) return false;

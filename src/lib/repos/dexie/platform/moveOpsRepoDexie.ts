@@ -13,8 +13,7 @@ export const moveOpsRepo = {
     const items = await db.platformMoveOps.toArray();
     return items.sort((a, b) => {
       // 1. Status
-      const statusDiff =
-        (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      const statusDiff = (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
       if (statusDiff !== 0) return statusDiff;
 
       // 2. Due Date (nulls last)

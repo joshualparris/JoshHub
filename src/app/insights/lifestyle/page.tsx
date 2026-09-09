@@ -42,7 +42,9 @@ export default function LifestyleReportPage() {
     <div className="space-y-6">
       <header className="space-y-2">
         <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">Insights</p>
-        <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white">Lifestyle & Behavioural Report</h1>
+        <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white">
+          Lifestyle & Behavioural Report
+        </h1>
         <p className="text-sm text-neutral-600 dark:text-slate-300">
           Mirrors the 2021–2025 analysis. Works fully offline with your imported TCX files.
         </p>
@@ -74,12 +76,15 @@ export default function LifestyleReportPage() {
         <Card className="border-white/80 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
           <CardHeader>
             <CardTitle>Import health telemetry</CardTitle>
-            <CardDescription>Start with TCX files. Dexie persists activities + daily metrics locally.</CardDescription>
+            <CardDescription>
+              Start with TCX files. Dexie persists activities + daily metrics locally.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-sm text-neutral-700 dark:text-slate-300">
-              Use the importer to add your Google Takeout / Garmin / Strava TCX exports. We parse distance, elevation,
-              start/end time, infer sport, and update daily metrics for runs and total distance.
+              Use the importer to add your Google Takeout / Garmin / Strava TCX exports. We parse
+              distance, elevation, start/end time, infer sport, and update daily metrics for runs
+              and total distance.
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild>
@@ -96,14 +101,25 @@ export default function LifestyleReportPage() {
             <div className="text-sm text-neutral-600 dark:text-slate-300">
               <p className="font-medium text-neutral-900 dark:text-white">Recent imports</p>
               {(imports ?? []).slice(0, 3).map((imp) => (
-                <div key={imp.id} className="flex items-center justify-between text-xs text-neutral-600 dark:text-slate-300">
+                <div
+                  key={imp.id}
+                  className="flex items-center justify-between text-xs text-neutral-600 dark:text-slate-300"
+                >
                   <span>{imp.fileName}</span>
-                  <span className={imp.status === "success" ? "text-emerald-600 dark:text-emerald-200" : "text-red-600"}>
+                  <span
+                    className={
+                      imp.status === "success"
+                        ? "text-emerald-600 dark:text-emerald-200"
+                        : "text-red-600"
+                    }
+                  >
                     {imp.status}
                   </span>
                 </div>
               ))}
-              {imports && imports.length === 0 && <p className="text-xs text-neutral-500">No imports yet.</p>}
+              {imports && imports.length === 0 && (
+                <p className="text-xs text-neutral-500">No imports yet.</p>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -117,39 +133,62 @@ export default function LifestyleReportPage() {
               <CardDescription>Local view computed from your imported activities.</CardDescription>
             </CardHeader>
             <CardContent className="grid gap-3 sm:grid-cols-2">
-              <SummaryStat label="Total activities" value={stats.totalActivities} hint={`${stats.totalDistanceKm.toFixed(1)} km`} />
-              <SummaryStat label="Runs (all time)" value={stats.runsCount} hint={`Longest ${(stats.longestRunKm || 0).toFixed(2)} km`} />
-              <SummaryStat label="Runs (7d)" value={stats.runsCountWeek} hint={`${stats.runDistanceWeekKm.toFixed(2)} km`} />
+              <SummaryStat
+                label="Total activities"
+                value={stats.totalActivities}
+                hint={`${stats.totalDistanceKm.toFixed(1)} km`}
+              />
+              <SummaryStat
+                label="Runs (all time)"
+                value={stats.runsCount}
+                hint={`Longest ${(stats.longestRunKm || 0).toFixed(2)} km`}
+              />
+              <SummaryStat
+                label="Runs (7d)"
+                value={stats.runsCountWeek}
+                hint={`${stats.runDistanceWeekKm.toFixed(2)} km`}
+              />
             </CardContent>
           </Card>
 
           <Card className="border-white/80 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/80">
             <CardHeader>
               <CardTitle>Pillars</CardTitle>
-              <CardDescription>Mirror of the 2021–2025 analysis, grounded in imported data.</CardDescription>
+              <CardDescription>
+                Mirror of the 2021–2025 analysis, grounded in imported data.
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-neutral-700 dark:text-slate-200">
               <Section title="Fitness & Movement">
                 <ul className="list-disc space-y-1 pl-5">
                   <li>
-                    Distances trending higher in recent imports: {(stats.runDistanceWeekKm || 0).toFixed(2)} km in the last
-                    7 days across {stats.runsCountWeek} run(s).
+                    Distances trending higher in recent imports:{" "}
+                    {(stats.runDistanceWeekKm || 0).toFixed(2)} km in the last 7 days across{" "}
+                    {stats.runsCountWeek} run(s).
                   </li>
                   <li>
-                    Longest imported run: {(stats.longestRunKm || 0).toFixed(2)} km. Add more TCX files to refine pacing trends.
+                    Longest imported run: {(stats.longestRunKm || 0).toFixed(2)} km. Add more TCX
+                    files to refine pacing trends.
                   </li>
-                  <li>Elevation gain tracked when present; hill sessions will surface as data accumulates.</li>
+                  <li>
+                    Elevation gain tracked when present; hill sessions will surface as data
+                    accumulates.
+                  </li>
                 </ul>
               </Section>
               <Section title="Technical & Deep Work">
-                <p>Flow-state correlation will use timestamps from runs; add coding session logs later for tighter links.</p>
+                <p>
+                  Flow-state correlation will use timestamps from runs; add coding session logs
+                  later for tighter links.
+                </p>
               </Section>
               <Section title="Hardware / Environment">
                 <p>Telemetry stored locally; supports Samsung/Garmin TCX without cloud calls.</p>
               </Section>
               <Section title="Digital-Physical Correlation">
                 <p>
-                  Keep importing runs {" > "}10km to strengthen the "primed deep work" window detection once coding events are linked.
+                  Keep importing runs {" > "}10km to strengthen the "primed deep work" window
+                  detection once coding events are linked.
                 </p>
               </Section>
             </CardContent>
@@ -201,14 +240,18 @@ export default function LifestyleReportPage() {
                     {act.fileName ?? "Activity"} · {act.sport}
                   </p>
                   <p className="text-xs text-neutral-500 dark:text-slate-400">
-                    {act.startTimeIso ? new Date(act.startTimeIso).toLocaleString() : "No start time"} •
-                    {act.distanceM ? ` ${(act.distanceM / 1000).toFixed(2)} km` : " distance n/a"}
+                    {act.startTimeIso
+                      ? new Date(act.startTimeIso).toLocaleString()
+                      : "No start time"}{" "}
+                    •{act.distanceM ? ` ${(act.distanceM / 1000).toFixed(2)} km` : " distance n/a"}
                     {act.elevationGainM ? ` • +${Math.round(act.elevationGainM)} m` : ""}
                   </p>
                 </div>
               ))}
               {activities && activities.length === 0 && (
-                <p className="text-sm text-neutral-600 dark:text-slate-300">Import a TCX file to see raw activity data.</p>
+                <p className="text-sm text-neutral-600 dark:text-slate-300">
+                  Import a TCX file to see raw activity data.
+                </p>
               )}
             </CardContent>
           </Card>
@@ -227,13 +270,16 @@ export default function LifestyleReportPage() {
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{d.date}</p>
                     <p className="text-xs text-neutral-500 dark:text-slate-400">
-                      {d.runsCount} runs • {(d.runDistanceM / 1000).toFixed(2)} km run • {(d.distanceM / 1000).toFixed(2)} km total
+                      {d.runsCount} runs • {(d.runDistanceM / 1000).toFixed(2)} km run •{" "}
+                      {(d.distanceM / 1000).toFixed(2)} km total
                     </p>
                   </div>
                 </div>
               ))}
               {dailyMetrics && dailyMetrics.length === 0 && (
-                <p className="text-sm text-neutral-600 dark:text-slate-300">No daily metrics yet. Import TCX to populate.</p>
+                <p className="text-sm text-neutral-600 dark:text-slate-300">
+                  No daily metrics yet. Import TCX to populate.
+                </p>
               )}
             </CardContent>
           </Card>
@@ -246,7 +292,9 @@ export default function LifestyleReportPage() {
 function SummaryStat({ label, value, hint }: { label: string; value: number; hint?: string }) {
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">
+        {label}
+      </p>
       <p className="text-xl font-semibold text-neutral-900 dark:text-white">{value}</p>
       {hint && <p className="text-xs text-neutral-500 dark:text-slate-400">{hint}</p>}
     </div>

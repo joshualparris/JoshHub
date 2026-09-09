@@ -45,9 +45,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900`}>
         <ThemeInitializer />
         <div className="relative min-h-screen overflow-hidden">
           <div className="pointer-events-none absolute inset-0 -z-10">

@@ -46,10 +46,7 @@ export function useNotes(nodeId: string) {
     [nodeId]
   );
   // Copy before sorting: Dexie live-query results are shared and sort reorders in place.
-  return useMemo(
-    () => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt),
-    [notes]
-  );
+  return useMemo(() => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt), [notes]);
 }
 
 export function useAllNotes() {

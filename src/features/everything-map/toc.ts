@@ -8,7 +8,11 @@ export const EVERYTHING_MAP_TOC: TocItem[] = [
 
   { id: "1", title: "Identity & Background", page: 12 },
   { id: "1.1", title: "Full name, date/place of birth", page: 12 },
-  { id: "1.2", title: "Family of origin (parents, siblings, upbringing, childhood home)", page: 13 },
+  {
+    id: "1.2",
+    title: "Family of origin (parents, siblings, upbringing, childhood home)",
+    page: 13,
+  },
   { id: "1.3", title: "Education (schooling, university, Bible college)", page: 16 },
   { id: "1.4", title: "Core values, faith, worldview", page: 19 },
 
@@ -44,10 +48,22 @@ export const EVERYTHING_MAP_TOC: TocItem[] = [
   { id: "6.4", title: "Dreams (paying off house, second property, granny flat)", page: 118 },
 
   { id: "7", title: "Daily Life & Routines", page: 119 },
-  { id: "7.1", title: "Morning & evening routines (wind-down, health stack, family rhythm)", page: 119 },
-  { id: "7.2", title: "Parenting rhythms (Sylvie's sleep, Elias's feeding, bath time struggles)", page: 121 },
+  {
+    id: "7.1",
+    title: "Morning & evening routines (wind-down, health stack, family rhythm)",
+    page: 119,
+  },
+  {
+    id: "7.2",
+    title: "Parenting rhythms (Sylvie's sleep, Elias's feeding, bath time struggles)",
+    page: 121,
+  },
   { id: "7.3", title: "Meals & cooking", page: 124 },
-  { id: "7.4", title: "Time management (screen use, productivity zones, rest vs. self-care guilt)", page: 126 },
+  {
+    id: "7.4",
+    title: "Time management (screen use, productivity zones, rest vs. self-care guilt)",
+    page: 126,
+  },
 
   { id: "8", title: "Tech & Projects", page: 129 },
   { id: "8.1", title: "Computer collection, server rack setup", page: 130 },
@@ -96,6 +112,11 @@ export const EVERYTHING_MAP_TOC: TocItem[] = [
   { id: "16.1", title: "Key faith milestones (baptism, Bible college, callings)", page: 188 },
   { id: "16.2", title: "Spiritual practices (prayer, Scripture, community)", page: 191 },
   { id: "16.3", title: "Marriage as discipleship (love, boundaries, repair)", page: 194 },
-  { id: "16.4", title: "Faith wrestles (dryness, longing for intimacy with God, unanswered prayers, discerning calling)", page: 197 },
+  {
+    id: "16.4",
+    title:
+      "Faith wrestles (dryness, longing for intimacy with God, unanswered prayers, discerning calling)",
+    page: 197,
+  },
   { id: "16.5", title: "Hope and direction: where you feel God leading", page: 200 },
 ];

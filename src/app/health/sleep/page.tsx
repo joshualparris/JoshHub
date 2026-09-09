@@ -26,8 +26,7 @@ export default function SleepPage() {
       (sleeps ?? [])
         .map((s) => ({
           date: s.date,
-          duration:
-            s.durationMinutes ?? durationFromTimes(s.bedtimeIso, s.wakeIso) ?? 0,
+          duration: s.durationMinutes ?? durationFromTimes(s.bedtimeIso, s.wakeIso) ?? 0,
         }))
         .filter((d) => d.duration > 0)
         .sort((a, b) => a.date.localeCompare(b.date))

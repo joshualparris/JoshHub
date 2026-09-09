@@ -30,7 +30,7 @@ export function AppsDirectory({ items, initialStatus = "all" }: Props) {
 
   const sorted = useMemo(
     () => [...filtered].sort((a, b) => a.name.localeCompare(b.name)),
-    [filtered],
+    [filtered]
   );
 
   return (

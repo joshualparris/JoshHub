@@ -7,9 +7,7 @@ export const weeklyReviewsRepo = {
     // Sort by weekStart descending (newest weeks first)
     return db.platformWeeklyReviews.orderBy("weekStart").reverse().toArray();
   },
-  async add(
-    item: Omit<PlatformWeeklyReview, "id" | "createdAt" | "updatedAt">
-  ) {
+  async add(item: Omit<PlatformWeeklyReview, "id" | "createdAt" | "updatedAt">) {
     const id = uuid();
     const now = new Date().toISOString();
     const newItem: PlatformWeeklyReview = {

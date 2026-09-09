@@ -1,14 +1,6 @@
 import { db } from "./dexie";
 import { uuid } from "./id";
-import type {
-  Bookmark,
-  Note,
-  Routine,
-  RoutineRun,
-  Task,
-  TaskPriority,
-  TaskStatus,
-} from "./schema";
+import type { Bookmark, Note, Routine, RoutineRun, Task, TaskPriority, TaskStatus } from "./schema";
 
 export async function createNote(partial: Partial<Note> & { title: string }) {
   const now = Date.now();
@@ -93,7 +85,11 @@ export async function deleteBookmark(id: string) {
   await db.bookmarks.delete(id);
 }
 
-export async function createRoutine(input: { name: string; items: Routine["items"]; tags?: string[] }) {
+export async function createRoutine(input: {
+  name: string;
+  items: Routine["items"];
+  tags?: string[];
+}) {
   const now = Date.now();
   const routine: Routine = {
     id: uuid(),

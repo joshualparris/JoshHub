@@ -82,11 +82,7 @@ export function AppDetail({ app }: Props) {
             <p className="text-xs text-neutral-500">Last touched: {app.lastTouched}</p>
           )}
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setEmbedEnabled((prev) => !prev)}
-            >
+            <Button variant="outline" size="sm" onClick={() => setEmbedEnabled((prev) => !prev)}>
               {embedEnabled ? (
                 <>
                   <EyeOff className="mr-2 h-4 w-4" /> Hide embed

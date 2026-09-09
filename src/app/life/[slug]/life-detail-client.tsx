@@ -65,9 +65,13 @@ export function LifeDetailClient({ area }: Props) {
               className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100"
             >
               <CardHeader>
-                <CardTitle className="text-lg text-foreground dark:text-slate-50">{section.heading}</CardTitle>
+                <CardTitle className="text-lg text-foreground dark:text-slate-50">
+                  {section.heading}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="text-card-foreground/85 dark:text-slate-200/90">{section.body}</CardContent>
+              <CardContent className="text-card-foreground/85 dark:text-slate-200/90">
+                {section.body}
+              </CardContent>
             </Card>
           ))}
         </div>
@@ -76,11 +80,15 @@ export function LifeDetailClient({ area }: Props) {
       <aside className="space-y-4">
         <Card className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100">
           <CardHeader>
-            <CardTitle className="text-lg text-foreground dark:text-slate-50">Quick Links</CardTitle>
+            <CardTitle className="text-lg text-foreground dark:text-slate-50">
+              Quick Links
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {quickApps.length === 0 ? (
-              <p className="text-sm text-card-foreground/80 dark:text-slate-300">No linked apps yet.</p>
+              <p className="text-sm text-card-foreground/80 dark:text-slate-300">
+                No linked apps yet.
+              </p>
             ) : (
               quickApps.map((app) => (
                 <div

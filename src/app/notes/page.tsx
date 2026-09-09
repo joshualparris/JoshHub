@@ -40,7 +40,12 @@ export default function NotesPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="NOTES" title="Notes" subtitle="Search, filter, and edit notes." tone="onDark" />
+      <PageHeader
+        kicker="NOTES"
+        title="Notes"
+        subtitle="Search, filter, and edit notes."
+        tone="onDark"
+      />
 
       <div className="flex flex-wrap gap-3">
         <Input
@@ -160,7 +165,9 @@ function NoteCard({ note }: { note: Note }) {
           </form>
         ) : (
           <>
-            <p className="text-sm text-foreground/80 line-clamp-3">{note.body || "No content yet."}</p>
+            <p className="text-sm text-foreground/80 line-clamp-3">
+              {note.body || "No content yet."}
+            </p>
             <div className="flex flex-wrap gap-2">
               {note.tags.map((t) => (
                 <span

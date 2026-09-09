@@ -8,7 +8,13 @@ interface PageHeaderProps {
   tone?: "default" | "onDark";
 }
 
-export function PageHeader({ kicker, title, subtitle, rightSlot, tone = "default" }: PageHeaderProps) {
+export function PageHeader({
+  kicker,
+  title,
+  subtitle,
+  rightSlot,
+  tone = "default",
+}: PageHeaderProps) {
   const isOnDark = tone === "onDark";
   const kickerClass = isOnDark ? "text-slate-300/80" : "text-foreground/70";
   const titleClass = isOnDark ? "text-slate-50" : "text-foreground";

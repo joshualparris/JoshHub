@@ -1,7 +1,16 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import { CalendarClock, ClipboardPlus, HeartPulse, NotebookPen, Pencil, Plus, Trash, Users } from "lucide-react";
+import {
+  CalendarClock,
+  ClipboardPlus,
+  HeartPulse,
+  NotebookPen,
+  Pencil,
+  Plus,
+  Trash,
+  Users,
+} from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -99,7 +108,9 @@ function CareLane({
     () =>
       tasks
         .filter((t) => t.status === "open" && intersects(t.tags, lane.tags))
-        .sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? "") || b.updatedAt - a.updatedAt)[0],
+        .sort(
+          (a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? "") || b.updatedAt - a.updatedAt
+        )[0],
     [tasks, lane.tags]
   );
 
@@ -111,7 +122,12 @@ function CareLane({
   const latestNote = useMemo(
     () =>
       notes
-        .filter((n) => intersects(n.tags, lane.tags) || n.lifeAreaSlug === "family" || n.lifeAreaSlug === "health")
+        .filter(
+          (n) =>
+            intersects(n.tags, lane.tags) ||
+            n.lifeAreaSlug === "family" ||
+            n.lifeAreaSlug === "health"
+        )
         .sort((a, b) => b.updatedAt - a.updatedAt)[0],
     [notes, lane.tags]
   );
@@ -177,7 +193,13 @@ function CareLane({
           icon={<ClipboardPlus className="h-4 w-4" />}
           label="Next action"
           value={nextTask ? nextTask.title : "No open actions"}
-          detail={nextTask?.dueDate ? `Due ${nextTask.dueDate}` : nextTask ? "Open" : "Add a small next step"}
+          detail={
+            nextTask?.dueDate
+              ? `Due ${nextTask.dueDate}`
+              : nextTask
+                ? "Open"
+                : "Add a small next step"
+          }
         />
         <InfoRow
           icon={<Users className="h-4 w-4" />}
@@ -189,7 +211,9 @@ function CareLane({
           icon={<NotebookPen className="h-4 w-4" />}
           label="Latest note"
           value={latestNote ? latestNote.title : "No notes yet"}
-          detail={latestNote ? new Date(latestNote.updatedAt).toLocaleString() : "Capture context quickly"}
+          detail={
+            latestNote ? new Date(latestNote.updatedAt).toLocaleString() : "Capture context quickly"
+          }
         />
 
         <div className="flex flex-wrap gap-2 pt-1">
@@ -211,10 +235,35 @@ function CareLane({
           </Button>
         </div>
 
-        <CareSection title="Appointments" items={events.filter((ev) => intersects(ev.tags, lane.tags))} renderItem={(item) => <EventRow key={item.id} event={item} />} empty="No appointments yet." />
-        <CareSection title="Goals / Actions" items={tasks.filter((t) => intersects(t.tags, lane.tags))} renderItem={(item) => <TaskRow key={item.id} task={item} />} empty="No goals yet." />
-        <CareSection title="Providers" items={bookmarks.filter((b) => intersects(b.tags, lane.tags))} renderItem={(item) => <ProviderRow key={item.id} bookmark={item} />} empty="No providers saved." />
-        <CareSection title="Notes" items={notes.filter((n) => intersects(n.tags, lane.tags) || n.lifeAreaSlug === "family" || n.lifeAreaSlug === "health")} renderItem={(item) => <NoteRow key={item.id} note={item} />} empty="No notes yet." />
+        <CareSection
+          title="Appointments"
+          items={events.filter((ev) => intersects(ev.tags, lane.tags))}
+          renderItem={(item) => <EventRow key={item.id} event={item} />}
+          empty="No appointments yet."
+        />
+        <CareSection
+          title="Goals / Actions"
+          items={tasks.filter((t) => intersects(t.tags, lane.tags))}
+          renderItem={(item) => <TaskRow key={item.id} task={item} />}
+          empty="No goals yet."
+        />
+        <CareSection
+          title="Providers"
+          items={bookmarks.filter((b) => intersects(b.tags, lane.tags))}
+          renderItem={(item) => <ProviderRow key={item.id} bookmark={item} />}
+          empty="No providers saved."
+        />
+        <CareSection
+          title="Notes"
+          items={notes.filter(
+            (n) =>
+              intersects(n.tags, lane.tags) ||
+              n.lifeAreaSlug === "family" ||
+              n.lifeAreaSlug === "health"
+          )}
+          renderItem={(item) => <NoteRow key={item.id} note={item} />}
+          empty="No notes yet."
+        />
       </CardContent>
     </Card>
   );
@@ -259,9 +308,15 @@ function CareSection<T>({ title, items, empty, renderItem }: CareSectionProps<T>
     <div className="space-y-2 rounded-lg border border-slate-200/70 bg-white/50 p-3 dark:border-slate-800 dark:bg-slate-900/50">
       <div className="flex items-center justify-between">
         <p className="text-sm font-semibold text-card-foreground">{title}</p>
-        <p className="text-xs text-card-foreground/60">{items.length} item{items.length === 1 ? "" : "s"}</p>
+        <p className="text-xs text-card-foreground/60">
+          {items.length} item{items.length === 1 ? "" : "s"}
+        </p>
       </div>
-      {items.length === 0 ? <p className="text-sm text-card-foreground/70">{empty}</p> : <div className="space-y-2">{items.map(renderItem)}</div>}
+      {items.length === 0 ? (
+        <p className="text-sm text-card-foreground/70">{empty}</p>
+      ) : (
+        <div className="space-y-2">{items.map(renderItem)}</div>
+      )}
     </div>
   );
 }
@@ -273,7 +328,11 @@ function ProviderRow({ bookmark }: { bookmark: Bookmark }) {
   const [tags, setTags] = useState(bookmark.tags.join(", "));
 
   async function handleSave() {
-    await updateBookmark(bookmark.id, { title: title.trim(), url: url.trim(), tags: splitTags(tags) });
+    await updateBookmark(bookmark.id, {
+      title: title.trim(),
+      url: url.trim(),
+      tags: splitTags(tags),
+    });
     setEditing(false);
   }
 
@@ -287,9 +346,17 @@ function ProviderRow({ bookmark }: { bookmark: Bookmark }) {
     <div className="rounded-md border border-slate-200/70 bg-white/70 p-3 text-card-foreground shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
       {editing ? (
         <div className="space-y-2">
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Provider name" />
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Provider name"
+          />
           <Input value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://" />
-          <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tags, comma separated" />
+          <Input
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="tags, comma separated"
+          />
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave}>
               Save
@@ -304,10 +371,17 @@ function ProviderRow({ bookmark }: { bookmark: Bookmark }) {
           <div>
             <p className="font-medium">{bookmark.title}</p>
             <p className="text-sm text-card-foreground/70">{bookmark.url}</p>
-            {bookmark.tags.length > 0 && <p className="text-xs text-card-foreground/60">Tags: {bookmark.tags.join(", ")}</p>}
+            {bookmark.tags.length > 0 && (
+              <p className="text-xs text-card-foreground/60">Tags: {bookmark.tags.join(", ")}</p>
+            )}
           </div>
           <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setEditing(true)} aria-label="Edit provider">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setEditing(true)}
+              aria-label="Edit provider"
+            >
               <Pencil className="h-4 w-4" />
             </Button>
             <Button size="icon" variant="ghost" onClick={handleDelete} aria-label="Delete provider">
@@ -351,14 +425,26 @@ function EventRow({ event }: { event: CalendarEvent }) {
     <div className="rounded-md border border-slate-200/70 bg-white/70 p-3 text-card-foreground shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
       {editing ? (
         <div className="space-y-2">
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Appointment title" />
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Appointment title"
+          />
           <div className="grid gap-2 md:grid-cols-2">
             <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
             <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
           </div>
-          <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
+          <Input
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Location"
+          />
           <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Notes" />
-          <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tags, comma separated" />
+          <Input
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="tags, comma separated"
+          />
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave}>
               Save
@@ -373,17 +459,30 @@ function EventRow({ event }: { event: CalendarEvent }) {
           <div className="space-y-1">
             <p className="font-medium">{event.title}</p>
             <p className="text-sm text-card-foreground/70">
-              {new Date(event.startIso).toLocaleString()} - {new Date(event.endIso).toLocaleString()}
+              {new Date(event.startIso).toLocaleString()} -{" "}
+              {new Date(event.endIso).toLocaleString()}
             </p>
             {event.location && <p className="text-sm text-card-foreground/70">{event.location}</p>}
-            {event.tags.length > 0 && <p className="text-xs text-card-foreground/60">Tags: {event.tags.join(", ")}</p>}
+            {event.tags.length > 0 && (
+              <p className="text-xs text-card-foreground/60">Tags: {event.tags.join(", ")}</p>
+            )}
             {event.notes && <p className="text-sm text-card-foreground/70">{event.notes}</p>}
           </div>
           <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setEditing(true)} aria-label="Edit appointment">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setEditing(true)}
+              aria-label="Edit appointment"
+            >
               <Pencil className="h-4 w-4" />
             </Button>
-            <Button size="icon" variant="ghost" onClick={handleDelete} aria-label="Delete appointment">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleDelete}
+              aria-label="Delete appointment"
+            >
               <Trash className="h-4 w-4" />
             </Button>
           </div>
@@ -433,7 +532,11 @@ function TaskRow({ task }: { task: Task }) {
             </select>
             <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
           </div>
-          <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tags, comma separated" />
+          <Input
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="tags, comma separated"
+          />
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave}>
               Save
@@ -450,10 +553,17 @@ function TaskRow({ task }: { task: Task }) {
             <p className="text-sm text-card-foreground/70">
               Priority: {task.priority.toUpperCase()} {task.dueDate ? `• Due ${task.dueDate}` : ""}
             </p>
-            {task.tags.length > 0 && <p className="text-xs text-card-foreground/60">Tags: {task.tags.join(", ")}</p>}
+            {task.tags.length > 0 && (
+              <p className="text-xs text-card-foreground/60">Tags: {task.tags.join(", ")}</p>
+            )}
           </div>
           <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setEditing(true)} aria-label="Edit goal">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setEditing(true)}
+              aria-label="Edit goal"
+            >
               <Pencil className="h-4 w-4" />
             </Button>
             <Button size="icon" variant="ghost" onClick={handleDelete} aria-label="Delete goal">
@@ -491,9 +601,17 @@ function NoteRow({ note }: { note: Note }) {
     <div className="rounded-md border border-slate-200/70 bg-white/70 p-3 text-card-foreground shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
       {editing ? (
         <div className="space-y-2">
-          <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Note title" />
+          <Input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Note title"
+          />
           <Textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="Details" />
-          <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="tags, comma separated" />
+          <Input
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+            placeholder="tags, comma separated"
+          />
           <div className="flex gap-2">
             <Button size="sm" onClick={handleSave}>
               Save
@@ -508,10 +626,17 @@ function NoteRow({ note }: { note: Note }) {
           <div className="space-y-1">
             <p className="font-medium">{note.title}</p>
             {note.body && <p className="text-sm text-card-foreground/70">{note.body}</p>}
-            {note.tags.length > 0 && <p className="text-xs text-card-foreground/60">Tags: {note.tags.join(", ")}</p>}
+            {note.tags.length > 0 && (
+              <p className="text-xs text-card-foreground/60">Tags: {note.tags.join(", ")}</p>
+            )}
           </div>
           <div className="flex gap-1">
-            <Button size="icon" variant="ghost" onClick={() => setEditing(true)} aria-label="Edit note">
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setEditing(true)}
+              aria-label="Edit note"
+            >
               <Pencil className="h-4 w-4" />
             </Button>
             <Button size="icon" variant="ghost" onClick={handleDelete} aria-label="Delete note">

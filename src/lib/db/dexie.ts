@@ -245,35 +245,186 @@ export async function seedLearnData() {
   const now = Date.now();
   const topics: LearnTopic[] = [
     // Faith
-    { id: uuid(), name: "Jesus’ life and teachings", category: "Faith", tags: ["faith"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Holy Spirit’s role in daily life", category: "Faith", tags: ["faith"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Fruits of the Spirit", category: "Faith", tags: ["faith"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Spiritual disciplines (prayer, fasting, Scripture)", category: "Faith", tags: ["faith", "spiritual disciplines"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "Jesus’ life and teachings",
+      category: "Faith",
+      tags: ["faith"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Holy Spirit’s role in daily life",
+      category: "Faith",
+      tags: ["faith"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Fruits of the Spirit",
+      category: "Faith",
+      tags: ["faith"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Spiritual disciplines (prayer, fasting, Scripture)",
+      category: "Faith",
+      tags: ["faith", "spiritual disciplines"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
     // Marriage & Family
-    { id: uuid(), name: "Strengthening connection with Kristy", category: "Marriage & Family", tags: ["marriage"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Parenting neurodiverse kids", category: "Marriage & Family", tags: ["parenting", "neurodiversity"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Building family rhythms", category: "Marriage & Family", tags: ["family"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "Strengthening connection with Kristy",
+      category: "Marriage & Family",
+      tags: ["marriage"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Parenting neurodiverse kids",
+      category: "Marriage & Family",
+      tags: ["parenting", "neurodiversity"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Building family rhythms",
+      category: "Marriage & Family",
+      tags: ["family"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
     // Health & Longevity
-    { id: uuid(), name: "HRV optimisation", category: "Health & Longevity", tags: ["health"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Sleep optimisation", category: "Health & Longevity", tags: ["health", "sleep"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Anti-inflammatory eating (dairy-free)", category: "Health & Longevity", tags: ["health", "nutrition"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "HRV optimisation",
+      category: "Health & Longevity",
+      tags: ["health"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Sleep optimisation",
+      category: "Health & Longevity",
+      tags: ["health", "sleep"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Anti-inflammatory eating (dairy-free)",
+      category: "Health & Longevity",
+      tags: ["health", "nutrition"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
     // Technology & AI
-    { id: uuid(), name: "Building a personalised AI assistant", category: "Technology & AI", tags: ["ai", "tools"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Home server rack + power setup", category: "Technology & AI", tags: ["home lab"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "Building a personalised AI assistant",
+      category: "Technology & AI",
+      tags: ["ai", "tools"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Home server rack + power setup",
+      category: "Technology & AI",
+      tags: ["home lab"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
     // Work & Career
-    { id: uuid(), name: "Customer care leadership scripts/process", category: "Work & Career", tags: ["work"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "Customer care leadership scripts/process",
+      category: "Work & Career",
+      tags: ["work"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
     // Finance & Planning
-    { id: uuid(), name: "Paying off mortgage plan", category: "Finance & Planning", tags: ["finance"], status: "curious", summary: "", createdAt: now, updatedAt: now },
-    { id: uuid(), name: "Budgeting that works for ADHD", category: "Finance & Planning", tags: ["finance", "adhd"], status: "curious", summary: "", createdAt: now, updatedAt: now },
+    {
+      id: uuid(),
+      name: "Paying off mortgage plan",
+      category: "Finance & Planning",
+      tags: ["finance"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
+    {
+      id: uuid(),
+      name: "Budgeting that works for ADHD",
+      category: "Finance & Planning",
+      tags: ["finance", "adhd"],
+      status: "curious",
+      summary: "",
+      createdAt: now,
+      updatedAt: now,
+    },
   ];
 
   await db.learnTopics.bulkAdd(topics);
 
   const templates = [
-    { name: "Explain & Apply", template: "Explain {{topic}} and provide practical steps to apply it in daily life for {{context}}." },
-    { name: "Deep Dive", template: "Deep dive into {{topic}}: key concepts, historical context, and advanced resources relevant to {{context}}." },
-    { name: "Practice Plan (7 days)", template: "Create a 7-day practice plan for {{topic}} with daily actionable tasks, focusing on {{context}}." },
+    {
+      name: "Explain & Apply",
+      template:
+        "Explain {{topic}} and provide practical steps to apply it in daily life for {{context}}.",
+    },
+    {
+      name: "Deep Dive",
+      template:
+        "Deep dive into {{topic}}: key concepts, historical context, and advanced resources relevant to {{context}}.",
+    },
+    {
+      name: "Practice Plan (7 days)",
+      template:
+        "Create a 7-day practice plan for {{topic}} with daily actionable tasks, focusing on {{context}}.",
+    },
   ];
 
-  await db.learnSettings.put({ key: "promptTemplates", value: JSON.stringify(templates), updatedAt: now });
+  await db.learnSettings.put({
+    key: "promptTemplates",
+    value: JSON.stringify(templates),
+    updatedAt: now,
+  });
 }

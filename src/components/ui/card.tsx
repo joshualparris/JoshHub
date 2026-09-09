@@ -32,9 +32,7 @@ export function CardTitle({ className, ...props }: CardProps) {
 }
 
 export function CardDescription({ className, ...props }: CardProps) {
-  return (
-    <p className={cn("text-sm text-neutral-600 dark:text-slate-200", className)} {...props} />
-  );
+  return <p className={cn("text-sm text-neutral-600 dark:text-slate-200", className)} {...props} />;
 }
 
 export function CardContent({ className, ...props }: CardProps) {

@@ -44,7 +44,13 @@ export function useEvents() {
 // Very lightweight ICS parser for VEVENT blocks; supports DTSTART/DTEND/SUMMARY/LOCATION
 export function parseIcsEvents(icsText: string) {
   const lines = icsText.split(/\r?\n/);
-  const events: { title: string; startIso: string; endIso: string; location?: string; notes?: string }[] = [];
+  const events: {
+    title: string;
+    startIso: string;
+    endIso: string;
+    location?: string;
+    notes?: string;
+  }[] = [];
   let current: Record<string, string> | null = null;
   for (const line of lines) {
     if (line.startsWith("BEGIN:VEVENT")) {

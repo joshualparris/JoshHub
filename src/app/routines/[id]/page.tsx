@@ -34,9 +34,7 @@ export default function RoutineRunPage() {
   }
 
   function updateItem(idx: number, updates: Partial<RoutineItem>) {
-    setItems((prev) =>
-      prev.map((item, i) => (i === idx ? { ...item, ...updates } : item))
-    );
+    setItems((prev) => prev.map((item, i) => (i === idx ? { ...item, ...updates } : item)));
   }
 
   async function saveItems() {
@@ -93,10 +91,7 @@ export default function RoutineRunPage() {
           <Button
             variant="outline"
             onClick={() =>
-              setItems((prev) => [
-                ...prev,
-                { id: uuid(), label: "New step", type: "check" },
-              ])
+              setItems((prev) => [...prev, { id: uuid(), label: "New step", type: "check" }])
             }
           >
             Add step

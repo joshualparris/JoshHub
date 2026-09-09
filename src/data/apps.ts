@@ -94,8 +94,14 @@ export const apps: CatalogItem[] = [
         label: "Client",
         url: "https://parris-dubbo-mover-app-main-client.vercel.app/",
       },
-      { label: "Repo (joshualparris)", url: "https://github.com/joshualparris/ParrisDubboMoverApp-Main" },
-      { label: "Repo (joshuaparris-max)", url: "https://github.com/joshuaparris-max/ParrisDubboMoverApp" },
+      {
+        label: "Repo (joshualparris)",
+        url: "https://github.com/joshualparris/ParrisDubboMoverApp-Main",
+      },
+      {
+        label: "Repo (joshuaparris-max)",
+        url: "https://github.com/joshuaparris-max/ParrisDubboMoverApp",
+      },
       { label: "Repo (pdm)", url: "https://github.com/joshuaparris-max/pdm-parris-dubbo-mover" },
     ],
     notes: "API/backend not working; client link preserved for reference.",
@@ -112,8 +118,14 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://REDACTED_USER-stack.github.io/campaign-copilot/",
     urls: [
       { label: "Live", url: "https://REDACTED_USER-stack.github.io/campaign-copilot/" },
-      { label: "Repo (joshuaparris-max)", url: "https://github.com/joshuaparris-max/campaign-copilot" },
-      { label: "Repo (parristechservices1-beep)", url: "https://github.com/parristechservices1-beep/campaign-copilot" },
+      {
+        label: "Repo (joshuaparris-max)",
+        url: "https://github.com/joshuaparris-max/campaign-copilot",
+      },
+      {
+        label: "Repo (parristechservices1-beep)",
+        url: "https://github.com/parristechservices1-beep/campaign-copilot",
+      },
     ],
     nextAction: "Review content freshness.",
   },
@@ -139,7 +151,11 @@ export const apps: CatalogItem[] = [
     tags: ["game", "wilds", "v2", "github-pages", "playable"],
     primaryUrl: "https://REDACTED_USER-stack.github.io/whispering-wilds/",
     urls: [
-      { label: "Live (GH)", url: "https://REDACTED_USER-stack.github.io/whispering-wilds/", type: "live" },
+      {
+        label: "Live (GH)",
+        url: "https://REDACTED_USER-stack.github.io/whispering-wilds/",
+        type: "live",
+      },
       { label: "Repo", url: "https://github.com/joshuaparris-max/whispering-wilds", type: "repo" },
       { label: "itch.io", url: "https://joshualparris.itch.io/whisperingwilds", type: "alternate" },
     ],
@@ -175,9 +191,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "mystery-depths", "github-pages"],
     primaryUrl: "https://REDACTED_USER-stack.github.io/MysteriousDepths/",
-    urls: [
-      { label: "Live", url: "https://REDACTED_USER-stack.github.io/MysteriousDepths/" },
-    ],
+    urls: [{ label: "Live", url: "https://REDACTED_USER-stack.github.io/MysteriousDepths/" }],
   },
   {
     id: "simple-rpg-itch",
@@ -197,9 +211,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "rpg", "github-pages", "playable"],
     primaryUrl: "https://REDACTED_USER-stack.github.io/LetsPlayDnd/",
-    urls: [
-      { label: "Live", url: "https://REDACTED_USER-stack.github.io/LetsPlayDnd/" },
-    ],
+    urls: [{ label: "Live", url: "https://REDACTED_USER-stack.github.io/LetsPlayDnd/" }],
     notes: "Text adventure build on GitHub Pages; distinct from the 3D prototype below.",
   },
   {
@@ -322,7 +334,8 @@ export const apps: CatalogItem[] = [
     tags: ["game", "wilds", "browser", "pyscript", "playable"],
     primaryUrl: "/games/wilds-sail-west/index.html",
     urls: [{ label: "Play", url: "/games/wilds-sail-west/index.html" }],
-    notes: "PyScript build hosted locally. If audio missing, add sfx assets; otherwise runs as static HTML.",
+    notes:
+      "PyScript build hosted locally. If audio missing, add sfx assets; otherwise runs as static HTML.",
     nextAction: "Mirror to itch/gh-pages and bundle sfx assets if needed.",
   },
   {
@@ -362,7 +375,8 @@ export const apps: CatalogItem[] = [
       { label: "Play", url: "/games/aa-game-adventure/index.html" },
       { label: "Docs", url: "/docs/aa-game-adventure.html" },
     ],
-    notes: "Playable Vite build hosted locally under /games/aa-game-adventure/ (tests excluded from build).",
+    notes:
+      "Playable Vite build hosted locally under /games/aa-game-adventure/ (tests excluded from build).",
     nextAction: "Optional: restore test type-safety and publish external mirror.",
   },
   {
@@ -509,7 +523,8 @@ export const apps: CatalogItem[] = [
       { label: "Repo", url: "https://github.com/joshualparris/wastes-courier-roguelike" },
     ],
     notes: "Playable build live on GitHub Pages. Docs retained for context; repo linked.",
-    nextAction: "Keep GH Pages build updated; optionally mirror a local copy under /games/wastes-courier/.",
+    nextAction:
+      "Keep GH Pages build updated; optionally mirror a local copy under /games/wastes-courier/.",
   },
   {
     id: "josh-tap-app",
@@ -520,14 +535,27 @@ export const apps: CatalogItem[] = [
     tags: ["game", "tap", "mobile", "todo-publish"],
     primaryUrl: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
     urls: [
-      { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
+      {
+        label: "Downloads (Drive)",
+        url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
+      },
       { label: "Repo (joshualparris)", url: "https://github.com/joshualparris/JoshTapApp" },
-      { label: "Repo (REDACTED_USER-stack)", url: "https://github.com/REDACTED_USER-stack/JoshTapApp" },
-      { label: "Repo (parristechservices1-beep)", url: "https://github.com/parristechservices1-beep/JoshTapApp" },
-      { label: "Repo (joshuaparris-max/JoshTap)", url: "https://github.com/joshuaparris-max/JoshTap" },
+      {
+        label: "Repo (REDACTED_USER-stack)",
+        url: "https://github.com/REDACTED_USER-stack/JoshTapApp",
+      },
+      {
+        label: "Repo (parristechservices1-beep)",
+        url: "https://github.com/parristechservices1-beep/JoshTapApp",
+      },
+      {
+        label: "Repo (joshuaparris-max/JoshTap)",
+        url: "https://github.com/joshuaparris-max/JoshTap",
+      },
     ],
     notes: "Combined Drive folder hosts current builds/APKs alongside repo mirrors.",
-    nextAction: "Document platform targets, unify build pipeline, and publish a stable APK/web build.",
+    nextAction:
+      "Document platform targets, unify build pipeline, and publish a stable APK/web build.",
   },
   {
     id: "josh-nfc-audio",
@@ -576,7 +604,8 @@ export const apps: CatalogItem[] = [
       { label: "Repo", url: "https://github.com/joshuaparris-max/ParrisBudgetApp" },
     ],
     notes: "Live deployment on Vercel. Docs link preserved for context; repo linked.",
-    nextAction: "Add public demo credentials or onboarding copy if needed; keep envs in Vercel synced with repo.",
+    nextAction:
+      "Add public demo credentials or onboarding copy if needed; keep envs in Vercel synced with repo.",
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -595,7 +624,8 @@ export const apps: CatalogItem[] = [
       { label: "Guess the Number (download)", url: "/games/max/guess_the_number.py" },
       { label: "Repo", url: "https://github.com/joshuaparris-max/Max" },
     ],
-    notes: "Starhaven text mystery + Guess the Number now playable in-browser; downloads also available.",
+    notes:
+      "Starhaven text mystery + Guess the Number now playable in-browser; downloads also available.",
     nextAction: "Polish Starhaven UI and add save/load; consider more mini-games.",
   },
   {
@@ -611,7 +641,8 @@ export const apps: CatalogItem[] = [
       { label: "Repo", url: "https://github.com/joshuaparris-max/random-play" },
     ],
     notes: "Random redirector now hosted inside JoshHub with a starter links.json.",
-    nextAction: "Replace links.json with your target URLs (music/tracks/etc.) and expand UI if needed.",
+    nextAction:
+      "Replace links.json with your target URLs (music/tracks/etc.) and expand UI if needed.",
   },
   {
     id: "midnight-line",
@@ -654,7 +685,10 @@ export const apps: CatalogItem[] = [
     tags: ["test", "repo", "archived"],
     primaryUrl: "",
     urls: [
-      { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
+      {
+        label: "Downloads (Drive)",
+        url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
+      },
     ],
     notes: "Removed from dashboard (empty/404 repos).",
     nextAction: "None.",
@@ -668,8 +702,10 @@ export const apps: CatalogItem[] = [
     tags: ["virtual-world", "client", "installer", "docs", "playable"],
     primaryUrl: "/docs/liferoom.html",
     urls: [{ label: "Docs", url: "/docs/liferoom.html" }],
-    notes: "Local client sandboxes (ClassiCube/Roblox/Second Life/Luanti/OpenSim) documented for quick access.",
-    nextAction: "Add server/world addresses and per-client READMEs; mirror installers to Drive if needed.",
+    notes:
+      "Local client sandboxes (ClassiCube/Roblox/Second Life/Luanti/OpenSim) documented for quick access.",
+    nextAction:
+      "Add server/world addresses and per-client READMEs; mirror installers to Drive if needed.",
     lastTouched: "2025-12",
   },
   {
@@ -681,10 +717,15 @@ export const apps: CatalogItem[] = [
     tags: ["tap", "audio", "mobile", "todo-publish"],
     primaryUrl: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
     urls: [
-      { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
+      {
+        label: "Downloads (Drive)",
+        url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
+      },
     ],
-    notes: "Prototype in Apps/ParrisTapApp/TapLiteMVP; combined Drive folder includes builds/APKs with JoshNFC/JoshTap.",
-    nextAction: "Document artifacts in Drive and add platform notes; optional web/Android demo later.",
+    notes:
+      "Prototype in Apps/ParrisTapApp/TapLiteMVP; combined Drive folder includes builds/APKs with JoshNFC/JoshTap.",
+    nextAction:
+      "Document artifacts in Drive and add platform notes; optional web/Android demo later.",
     lastTouched: "2025-12",
   },
   {
@@ -696,7 +737,10 @@ export const apps: CatalogItem[] = [
     tags: ["tap", "audio", "archived"],
     primaryUrl: "",
     urls: [
-      { label: "Storybook (Drive)", url: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing" },
+      {
+        label: "Storybook (Drive)",
+        url: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing",
+      },
     ],
     notes: "Archived variant in Apps/ParrisTapApp/TapLiteMVP__REMOVED__.",
     nextAction: "Keep for reference only; no publish planned.",
@@ -714,9 +758,13 @@ export const apps: CatalogItem[] = [
       { label: "Docs", url: "/docs/newnfc.html" },
       { label: "NewNFC APK", url: "/games/newnfc/NewNFC.apk" },
       { label: "NFC APK", url: "/games/newnfc/NFC.apk" },
-      { label: "Downloads (Drive)", url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU" },
+      {
+        label: "Downloads (Drive)",
+        url: "https://drive.google.com/drive/folders/1SmGSyihyshyLPoJxzglID3C2Ot4h2eEU",
+      },
     ],
-    notes: "Android APKs hosted locally plus combined Drive folder for JoshNFC/TapLite/JoshTap builds.",
+    notes:
+      "Android APKs hosted locally plus combined Drive folder for JoshNFC/TapLite/JoshTap builds.",
     nextAction: "Add source repo + README; consider web/PWA build before marking OK.",
     lastTouched: "2025-12",
   },
@@ -729,10 +777,14 @@ export const apps: CatalogItem[] = [
     tags: ["backup", "utility", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1wKB5UXcSLsNNcjtEGX-ENJknZEg8HNeX",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1wKB5UXcSLsNNcjtEGX-ENJknZEg8HNeX" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1wKB5UXcSLsNNcjtEGX-ENJknZEg8HNeX",
+      },
     ],
     notes: "Drive folder for toto-backup utility. Live materials available.",
-    nextAction: "Optional: add README/run steps locally; mirror build/script under /public if desired.",
+    nextAction:
+      "Optional: add README/run steps locally; mirror build/script under /public if desired.",
     lastTouched: "2025-12",
   },
   {
@@ -744,7 +796,10 @@ export const apps: CatalogItem[] = [
     tags: ["yoto", "downloader", "utility", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/15cFiaQQXvezWGvAKxF3KITSXSlQGgbG0",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/15cFiaQQXvezWGvAKxF3KITSXSlQGgbG0" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/15cFiaQQXvezWGvAKxF3KITSXSlQGgbG0",
+      },
     ],
     notes: "Drive folder with Yoto archival downloader materials.",
     nextAction: "Optional: add README/run steps locally and mirror build/CLI in /public if needed.",
@@ -775,7 +830,8 @@ export const apps: CatalogItem[] = [
     primaryUrl: "/docs/the-machine.html",
     urls: [{ label: "Docs", url: "/docs/the-machine.html" }],
     notes: "Workspace folder theMachine; docs page added with current state and next steps.",
-    nextAction: "Decide target (CLI/web), add README + runnable stub, then surface a Play/Run link.",
+    nextAction:
+      "Decide target (CLI/web), add README + runnable stub, then surface a Play/Run link.",
     lastTouched: "2025-12",
   },
   {
@@ -785,9 +841,13 @@ export const apps: CatalogItem[] = [
     category: "Apps",
     status: "ok",
     tags: ["audio", "location", "family", "docs", "playable"],
-    primaryUrl: "https://docs.google.com/document/d/1jXUXvh2Moh4UVViGNRtdPyYqo-ecnZEsZ24Y63gdhw4/edit",
+    primaryUrl:
+      "https://docs.google.com/document/d/1jXUXvh2Moh4UVViGNRtdPyYqo-ecnZEsZ24Y63gdhw4/edit",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/1jXUXvh2Moh4UVViGNRtdPyYqo-ecnZEsZ24Y63gdhw4/edit" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/1jXUXvh2Moh4UVViGNRtdPyYqo-ecnZEsZ24Y63gdhw4/edit",
+      },
     ],
     notes: "Live Google Doc for StoryTrail (location-based audio adventure for families).",
     nextAction: "Optional: mirror a summary locally and start a prototype build.",
@@ -805,8 +865,10 @@ export const apps: CatalogItem[] = [
       { label: "Play", url: "/games/boundary-road/index.html" },
       { label: "Plan", url: "/docs/boundary-road.html" },
     ],
-    notes: "Nine 360° panos hosted locally with a simple viewer. Docs page retains the build plan for full hotspot/floorplan app.",
-    nextAction: "Wire hotspots/floorplan in a dedicated app (Three.js + React) and publish the build.",
+    notes:
+      "Nine 360° panos hosted locally with a simple viewer. Docs page retains the build plan for full hotspot/floorplan app.",
+    nextAction:
+      "Wire hotspots/floorplan in a dedicated app (Three.js + React) and publish the build.",
     lastTouched: "2025-12",
   },
   {
@@ -818,9 +880,13 @@ export const apps: CatalogItem[] = [
     tags: ["3d", "mind-palace", "vision", "docs", "playable"],
     primaryUrl: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391",
     urls: [
-      { label: "Fables GG", url: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391" },
+      {
+        label: "Fables GG",
+        url: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391",
+      },
     ],
-    notes: "Personal 3D inner world / mind-palace concept linked to house-as-brain ideas; Fables GG world live.",
+    notes:
+      "Personal 3D inner world / mind-palace concept linked to house-as-brain ideas; Fables GG world live.",
     nextAction: "Optional: mirror concept docs locally and prototype a WebGL/Unity/Godot build.",
     lastTouched: "2025-12",
   },
@@ -831,12 +897,17 @@ export const apps: CatalogItem[] = [
     category: "Apps",
     status: "ok",
     tags: ["3d", "life-map", "goals", "docs", "playable"],
-    primaryUrl: "https://docs.google.com/document/d/1VYzvrXfpVLo1SjiND97SpBIkl4_i6WqIWqQBvgSbb3E/edit",
+    primaryUrl:
+      "https://docs.google.com/document/d/1VYzvrXfpVLo1SjiND97SpBIkl4_i6WqIWqQBvgSbb3E/edit",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/1VYzvrXfpVLo1SjiND97SpBIkl4_i6WqIWqQBvgSbb3E/edit" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/1VYzvrXfpVLo1SjiND97SpBIkl4_i6WqIWqQBvgSbb3E/edit",
+      },
     ],
     notes: "Live doc for the House-as-Mind-Map 3D concept (life areas/goals).",
-    nextAction: "Optional: add a local mirror in /public/docs and start a prototype (WebGL/Three.js/Godot).",
+    nextAction:
+      "Optional: add a local mirror in /public/docs and start a prototype (WebGL/Three.js/Godot).",
     lastTouched: "2025-12",
   },
   {
@@ -848,9 +919,13 @@ export const apps: CatalogItem[] = [
     tags: ["video", "youtube", "workflow", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1aSUYPF9LFLIrpGwd-z__ItVy0yxlNDOp",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1aSUYPF9LFLIrpGwd-z__ItVy0yxlNDOp" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1aSUYPF9LFLIrpGwd-z__ItVy0yxlNDOp",
+      },
     ],
-    notes: "Drive folder with workflow for cutting, tagging, and uploading clips from Laurie conversations.",
+    notes:
+      "Drive folder with workflow for cutting, tagging, and uploading clips from Laurie conversations.",
     nextAction: "Optional: mirror key SOPs locally and add automation scripts.",
     lastTouched: "2025-12",
   },
@@ -863,10 +938,14 @@ export const apps: CatalogItem[] = [
     tags: ["research", "math", "python", "latex", "docs", "playable"],
     primaryUrl: "https://drive.google.com/file/d/1NmfSz7VWM4So3YOTZIQqud-35z3CYMKl/view",
     urls: [
-      { label: "Drive", url: "https://drive.google.com/file/d/1NmfSz7VWM4So3YOTZIQqud-35z3CYMKl/view" },
+      {
+        label: "Drive",
+        url: "https://drive.google.com/file/d/1NmfSz7VWM4So3YOTZIQqud-35z3CYMKl/view",
+      },
     ],
     notes: "Drive link to the 3-SAT convex optimisation paper/code package.",
-    nextAction: "Keep Drive file updated; optionally add a local mirror in /public/docs/ if needed.",
+    nextAction:
+      "Keep Drive file updated; optionally add a local mirror in /public/docs/ if needed.",
     lastTouched: "2025-12",
   },
   {
@@ -878,9 +957,13 @@ export const apps: CatalogItem[] = [
     tags: ["legacy", "security", "planning", "docs", "playable"],
     primaryUrl: "https://docs.google.com/document/d/1d9EZj9PRd7DYlTr-AeDaI10PBMQhqFCP/edit",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/1d9EZj9PRd7DYlTr-AeDaI10PBMQhqFCP/edit" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/1d9EZj9PRd7DYlTr-AeDaI10PBMQhqFCP/edit",
+      },
     ],
-    notes: "Live Google Doc for Burrabadine Christian Community Campus Legacy (digital legacy plan).",
+    notes:
+      "Live Google Doc for Burrabadine Christian Community Campus Legacy (digital legacy plan).",
     nextAction: "Optional: mirror a PDF/HTML in /public/docs for offline access.",
     lastTouched: "2025-12",
   },
@@ -898,7 +981,8 @@ export const apps: CatalogItem[] = [
       { label: "Square booking/payments", url: "https://parristechservices.square.site/" },
       { label: "ABR", url: "https://abr.business.gov.au/ABN/View?id=19911769423" },
     ],
-    notes: "Online/remote troubleshooting service (Parris Tech Services) with scripts, checklists, pricing. Business plan lives in Parris Tech Services - Business Plan.docx.txt (local).",
+    notes:
+      "Online/remote troubleshooting service (Parris Tech Services) with scripts, checklists, pricing. Business plan lives in Parris Tech Services - Business Plan.docx.txt (local).",
     nextAction: "Wire SOPs/scripts into site and streamline booking flow.",
     lastTouched: "2025-12",
   },
@@ -911,7 +995,10 @@ export const apps: CatalogItem[] = [
     tags: ["service", "dnd", "rpg", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1ymYc0GwM5C7Gy8E4R3oLQJ-TGCAvJzA4",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1ymYc0GwM5C7Gy8E4R3oLQJ-TGCAvJzA4" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1ymYc0GwM5C7Gy8E4R3oLQJ-TGCAvJzA4",
+      },
     ],
     notes: "Drive folder with materials for paid D&D/RPG sessions.",
     nextAction: "Optional: add booking/pricing links on the dashboard and mirror key docs locally.",
@@ -925,9 +1012,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["ttrpg", "campaign", "kids", "web", "playable"],
     primaryUrl: "https://REDACTED_USER-stack.github.io/campaign-copilot/",
-    urls: [
-      { label: "Play", url: "https://REDACTED_USER-stack.github.io/campaign-copilot/" },
-    ],
+    urls: [{ label: "Play", url: "https://REDACTED_USER-stack.github.io/campaign-copilot/" }],
     notes: "Campaign Copilot build for Pets of the Spider Queen, live on GitHub Pages.",
     nextAction: "Keep content updated for the campaign; mirror locally if needed.",
     lastTouched: "2025-12",
@@ -953,8 +1038,11 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["ttrpg", "orgscape", "campaign", "docs", "playable"],
     primaryUrl: "https://play.fables.gg/worlds/the-infinite-office-xnu26hm454p9",
-    urls: [{ label: "Fables GG", url: "https://play.fables.gg/worlds/the-infinite-office-xnu26hm454p9" }],
-    notes: "Tabletop campaign and lore behind OrgScape/Infinite Office digital builds; live Fables GG world.",
+    urls: [
+      { label: "Fables GG", url: "https://play.fables.gg/worlds/the-infinite-office-xnu26hm454p9" },
+    ],
+    notes:
+      "Tabletop campaign and lore behind OrgScape/Infinite Office digital builds; live Fables GG world.",
     nextAction: "Optional: mirror lore locally; link to playable modules.",
     lastTouched: "2025-12",
   },
@@ -966,7 +1054,9 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["ttrpg", "sea", "abyss", "docs", "playable"],
     primaryUrl: "https://play.fables.gg/worlds/the-drowned-expanse-l2bvcyceke6o",
-    urls: [{ label: "Fables GG", url: "https://play.fables.gg/worlds/the-drowned-expanse-l2bvcyceke6o" }],
+    urls: [
+      { label: "Fables GG", url: "https://play.fables.gg/worlds/the-drowned-expanse-l2bvcyceke6o" },
+    ],
     notes: "Homebrew sea/abyss themed campaign setting; Fables GG world live.",
     nextAction: "Optional: add world guide/adventure hooks and mirror locally.",
     lastTouched: "2025-12",
@@ -979,7 +1069,12 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["ttrpg", "fantasy", "world", "docs", "playable"],
     primaryUrl: "https://play.fables.gg/worlds/019a60ce-282e-7a84-9cd3-b333f28dd69b",
-    urls: [{ label: "Fables GG", url: "https://play.fables.gg/worlds/019a60ce-282e-7a84-9cd3-b333f28dd69b" }],
+    urls: [
+      {
+        label: "Fables GG",
+        url: "https://play.fables.gg/worlds/019a60ce-282e-7a84-9cd3-b333f28dd69b",
+      },
+    ],
     notes: "World inside a living titan; Fables GG world live.",
     nextAction: "Optional: add lore/tabletop hooks; link to digital builds if any.",
     lastTouched: "2025-12",
@@ -994,7 +1089,8 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://play.fables.gg/worlds/senseless-43j7b59vfz54",
     urls: [{ label: "Fables GG", url: "https://play.fables.gg/worlds/senseless-43j7b59vfz54" }],
     notes: "Planar world where nothing makes sense; Fables GG world live.",
-    nextAction: "Optional: add travel rules, sense-stone mechanics, and adventures; mirror locally.",
+    nextAction:
+      "Optional: add travel rules, sense-stone mechanics, and adventures; mirror locally.",
     lastTouched: "2025-12",
   },
   {
@@ -1006,7 +1102,10 @@ export const apps: CatalogItem[] = [
     tags: ["ttrpg", "candlekeep", "campaign", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1SZTgZtC52ltTSoDe5wzzjQbO1vso0Ay_",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1SZTgZtC52ltTSoDe5wzzjQbO1vso0Ay_" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1SZTgZtC52ltTSoDe5wzzjQbO1vso0Ay_",
+      },
     ],
     notes: "Drive folder with customized Candlekeep Mysteries materials.",
     nextAction: "Optional: mirror key handouts/PDFs to /public/docs for offline access.",
@@ -1021,7 +1120,10 @@ export const apps: CatalogItem[] = [
     tags: ["ttrpg", "kids", "one-shots", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/11tu3Gv_uBlSQsLC60RrbfeZxbAJdN_l_",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/11tu3Gv_uBlSQsLC60RrbfeZxbAJdN_l_" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/11tu3Gv_uBlSQsLC60RrbfeZxbAJdN_l_",
+      },
     ],
     notes: "Live Drive folder with kids’ one-shot adventures/handouts.",
     nextAction: "Optional: mirror PDFs to /public/docs and add a quick index page.",
@@ -1036,31 +1138,52 @@ export const apps: CatalogItem[] = [
     tags: ["ttrpg", "worlds", "vtt", "playable"],
     primaryUrl: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391",
     urls: [
-      { label: "Inner Citadel (Fables)", url: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391" },
-      { label: "Whispering Wilds (Fables)", url: "https://play.fables.gg/worlds/019a4e19-3051-79cc-9f85-5143bfc315b7" },
-      { label: "Titanscape (Fables)", url: "https://play.fables.gg/worlds/019a60ce-282e-7a84-9cd3-b333f28dd69b" },
+      {
+        label: "Inner Citadel (Fables)",
+        url: "https://play.fables.gg/worlds/019a2f9d-b90d-7eac-ae53-88363e49a391",
+      },
+      {
+        label: "Whispering Wilds (Fables)",
+        url: "https://play.fables.gg/worlds/019a4e19-3051-79cc-9f85-5143bfc315b7",
+      },
+      {
+        label: "Titanscape (Fables)",
+        url: "https://play.fables.gg/worlds/019a60ce-282e-7a84-9cd3-b333f28dd69b",
+      },
       { label: "Null (Fables)", url: "https://play.fables.gg/worlds/null-etkh1z8zjzhi" },
-      { label: "The Drowned Expanse (Fables)", url: "https://play.fables.gg/worlds/the-drowned-expanse-l2bvcyceke6o" },
-      { label: "The Infinite Office (Fables)", url: "https://play.fables.gg/worlds/the-infinite-office-xnu26hm454p9" },
+      {
+        label: "The Drowned Expanse (Fables)",
+        url: "https://play.fables.gg/worlds/the-drowned-expanse-l2bvcyceke6o",
+      },
+      {
+        label: "The Infinite Office (Fables)",
+        url: "https://play.fables.gg/worlds/the-infinite-office-xnu26hm454p9",
+      },
       { label: "Senseless (Fables)", url: "https://play.fables.gg/worlds/senseless-43j7b59vfz54" },
     ],
-    notes: "Main Friends & Fables / VTT world collection (Null, Orgscape, Wilds, etc.) with live Fables GG links.",
+    notes:
+      "Main Friends & Fables / VTT world collection (Null, Orgscape, Wilds, etc.) with live Fables GG links.",
     nextAction: "Optional: add a local hub page mirroring these links for offline access.",
     lastTouched: "2025-12",
   },
-      {
+  {
     id: "joshuas-memoirs",
     name: "Joshua’s Memoirs",
     type: "app",
     category: "Writing & Content",
     status: "ok",
     tags: ["writing", "book", "family", "playable"],
-    primaryUrl: "https://docs.google.com/document/d/1VFCfDijVzJGsA2CLS__6QGu_YnM_HgsG/edit?usp=sharing&ouid=114015030323793746985&rtpof=true&sd=true",
+    primaryUrl:
+      "https://docs.google.com/document/d/1VFCfDijVzJGsA2CLS__6QGu_YnM_HgsG/edit?usp=sharing&ouid=114015030323793746985&rtpof=true&sd=true",
     urls: [
-      { label: "View (Google Doc)", url: "https://docs.google.com/document/d/1VFCfDijVzJGsA2CLS__6QGu_YnM_HgsG/edit?usp=sharing&ouid=114015030323793746985&rtpof=true&sd=true" },
+      {
+        label: "View (Google Doc)",
+        url: "https://docs.google.com/document/d/1VFCfDijVzJGsA2CLS__6QGu_YnM_HgsG/edit?usp=sharing&ouid=114015030323793746985&rtpof=true&sd=true",
+      },
       { label: "View (Local)", url: "/docs/memoirs-of-joshua.html" },
     ],
-    notes: "Long-term book about life, faith, family, for descendants. Google Doc is the primary copy; local HTML preserved for quick access.",
+    notes:
+      "Long-term book about life, faith, family, for descendants. Google Doc is the primary copy; local HTML preserved for quick access.",
     nextAction: "Outline chapters and choose writing workflow.",
     lastTouched: "2025-12",
   },
@@ -1071,11 +1194,16 @@ export const apps: CatalogItem[] = [
     category: "Writing & Content",
     status: "ok",
     tags: ["storybook", "kids", "family", "docs"],
-    primaryUrl: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing",
+    primaryUrl:
+      "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing",
     urls: [
-      { label: "Storybook (Drive)", url: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing" },
+      {
+        label: "Storybook (Drive)",
+        url: "https://drive.google.com/file/d/1yEP6R9ZXzY5YnbebzpYOZy-7VJ3vBXJh/view?usp=sharing",
+      },
     ],
-    notes: "Children’s storybook about moving to Dubbo (AI-illustrated/printed). Linked to Drive copy.",
+    notes:
+      "Children’s storybook about moving to Dubbo (AI-illustrated/printed). Linked to Drive copy.",
     nextAction: "Optional: add a short summary and printable PDF link.",
     lastTouched: "2025-12",
   },
@@ -1088,7 +1216,10 @@ export const apps: CatalogItem[] = [
     tags: ["move", "planning", "dubbo", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/12oy0Wj6CgbYq5S83tdwomNPrRxRCaFhG",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/12oy0Wj6CgbYq5S83tdwomNPrRxRCaFhG" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/12oy0Wj6CgbYq5S83tdwomNPrRxRCaFhG",
+      },
     ],
     notes: "Live Drive folder with Dubbo move master planner sheets/checklists.",
     nextAction: "Optional: mirror key sheets to /public/docs or build a dashboard view.",
@@ -1103,10 +1234,14 @@ export const apps: CatalogItem[] = [
     tags: ["research", "ict", "strategy", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1fvbDSCXbv75d8kZXoCqzNWBwmOwOX1q4",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1fvbDSCXbv75d8kZXoCqzNWBwmOwOX1q4" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1fvbDSCXbv75d8kZXoCqzNWBwmOwOX1q4",
+      },
     ],
     notes: "Live Drive folder with the BCE/DCS ICT strategy research and materials.",
-    nextAction: "Optional: mirror key docs to /public/docs for offline access and add an executive summary.",
+    nextAction:
+      "Optional: mirror key docs to /public/docs for offline access and add an executive summary.",
     lastTouched: "2025-12",
   },
   {
@@ -1118,25 +1253,33 @@ export const apps: CatalogItem[] = [
     tags: ["health", "hrv", "wellness", "docs", "playable"],
     primaryUrl: "https://drive.google.com/file/d/1GOaAjy5qARvSriliLbXV3XcB6ERkLUvT/view",
     urls: [
-      { label: "Drive", url: "https://drive.google.com/file/d/1GOaAjy5qARvSriliLbXV3XcB6ERkLUvT/view" },
+      {
+        label: "Drive",
+        url: "https://drive.google.com/file/d/1GOaAjy5qARvSriliLbXV3XcB6ERkLUvT/view",
+      },
     ],
     notes: "Integrative wellness & resilience plan stored as a Drive file.",
     nextAction: "Optional: mirror a PDF/HTML in /public/docs; add summary to dashboard.",
     lastTouched: "2025-12",
   },
-    {
+  {
     id: "deep-research-docs",
     name: "Deep Research Docs (1–87)",
     type: "app",
     category: "Research & Docs",
     status: "ok",
     tags: ["research", "docs", "reference", "playable"],
-    primaryUrl: "https://drive.google.com/drive/folders/1dMFRmaKBDXahdlpgJhZhufXqNGW7AZ_1?usp=sharing",
+    primaryUrl:
+      "https://drive.google.com/drive/folders/1dMFRmaKBDXahdlpgJhZhufXqNGW7AZ_1?usp=sharing",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1dMFRmaKBDXahdlpgJhZhufXqNGW7AZ_1?usp=sharing" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1dMFRmaKBDXahdlpgJhZhufXqNGW7AZ_1?usp=sharing",
+      },
       { label: "Index (Local)", url: "/docs/deep-research-index.html" },
     ],
-    notes: "Drive folder for the 87 deep research documents. Local index preserved for quick access.",
+    notes:
+      "Drive folder for the 87 deep research documents. Local index preserved for quick access.",
     nextAction: "Optionally add download/view links or move to a shared location.",
     lastTouched: "2025-12",
   },
@@ -1149,7 +1292,10 @@ export const apps: CatalogItem[] = [
     tags: ["care1", "directory", "health", "docs", "playable"],
     primaryUrl: "https://drive.google.com/drive/folders/1T8H9_D535M5EtjiNqj3lutuPudwu65ie",
     urls: [
-      { label: "Drive Folder", url: "https://drive.google.com/drive/folders/1T8H9_D535M5EtjiNqj3lutuPudwu65ie" },
+      {
+        label: "Drive Folder",
+        url: "https://drive.google.com/drive/folders/1T8H9_D535M5EtjiNqj3lutuPudwu65ie",
+      },
     ],
     notes: "Live Drive folder with Care Support 1 OT/Speech provider directory and intake details.",
     nextAction: "Optional: mirror a static view in /public/docs and add update cadence.",
@@ -1162,9 +1308,13 @@ export const apps: CatalogItem[] = [
     category: "Planning",
     status: "ok",
     tags: ["adhd", "directory", "planning", "docs", "playable"],
-    primaryUrl: "https://docs.google.com/document/d/10N4nu7g_rsg8jVv0bIA9Jea8yCO4PU5_M4ZaNq9veJ0/edit",
+    primaryUrl:
+      "https://docs.google.com/document/d/10N4nu7g_rsg8jVv0bIA9Jea8yCO4PU5_M4ZaNq9veJ0/edit",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/10N4nu7g_rsg8jVv0bIA9Jea8yCO4PU5_M4ZaNq9veJ0/edit" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/10N4nu7g_rsg8jVv0bIA9Jea8yCO4PU5_M4ZaNq9veJ0/edit",
+      },
     ],
     notes: "Live Google Doc with ADHD coach directory for NSW/Aus (distance from Dubbo).",
     nextAction: "Optionally mirror a read-only HTML/PDF in /public/docs for offline access.",
@@ -1179,7 +1329,10 @@ export const apps: CatalogItem[] = [
     tags: ["education", "neurodiverse", "planning", "docs", "playable"],
     primaryUrl: "https://drive.google.com/file/d/1KJ6cYpS--sKl38orgN4y730iMahMIbVY/view",
     urls: [
-      { label: "Drive", url: "https://drive.google.com/file/d/1KJ6cYpS--sKl38orgN4y730iMahMIbVY/view" },
+      {
+        label: "Drive",
+        url: "https://drive.google.com/file/d/1KJ6cYpS--sKl38orgN4y730iMahMIbVY/view",
+      },
     ],
     notes: "Education pathways plan for Sylvie & Elias (neurodiverse kids) hosted on Drive.",
     nextAction: "Optional: mirror a PDF in /public/docs and add any local resources/links.",
@@ -1192,12 +1345,17 @@ export const apps: CatalogItem[] = [
     category: "Family & Home",
     status: "ok",
     tags: ["nutrition", "budget", "planner", "docs", "playable"],
-    primaryUrl: "https://docs.google.com/document/d/1ASA6E7fMdrgLiUho9Vhz1FYCHeNRPefis-IFUvtcE9I/edit",
+    primaryUrl:
+      "https://docs.google.com/document/d/1ASA6E7fMdrgLiUho9Vhz1FYCHeNRPefis-IFUvtcE9I/edit",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/1ASA6E7fMdrgLiUho9Vhz1FYCHeNRPefis-IFUvtcE9I/edit" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/1ASA6E7fMdrgLiUho9Vhz1FYCHeNRPefis-IFUvtcE9I/edit",
+      },
     ],
     notes: "Longevity/Wahls/Blueprint meal planner and family budget doc (live Google Doc).",
-    nextAction: "Optional: mirror a read-only copy in /public/docs; add a published template link if desired.",
+    nextAction:
+      "Optional: mirror a read-only copy in /public/docs; add a published template link if desired.",
     lastTouched: "2025-12",
   },
   {
@@ -1207,12 +1365,17 @@ export const apps: CatalogItem[] = [
     category: "Family & Home",
     status: "ok",
     tags: ["property", "welcome-pack", "playable"],
-    primaryUrl: "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing",
+    primaryUrl:
+      "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing",
     urls: [
-      { label: "View (Drive)", url: "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing" },
+      {
+        label: "View (Drive)",
+        url: "https://drive.google.com/file/d/1E8Wi3xxhKUlVucBLxaJk1hZMZkvB9L9p/view?usp=sharing",
+      },
       { label: "View (Local)", url: "/docs/buckland-tenant-pack.html" },
     ],
-    notes: "House manual for 53 Buckland St (entry, solar, dishwasher, plants, etc.). Source: 53 Buckland Street Tenants Instructions and Tips.docx (local).",
+    notes:
+      "House manual for 53 Buckland St (entry, solar, dishwasher, plants, etc.). Source: 53 Buckland Street Tenants Instructions and Tips.docx (local).",
     nextAction: "Export/share PDF and keep appliance notes updated.",
     lastTouched: "2025-12",
   },
@@ -1259,8 +1422,10 @@ export const apps: CatalogItem[] = [
       { label: "Docs", url: "/docs/forbidden-quests.html" },
       { label: "Repo", url: "https://github.com/joshuaparris-max/ForbiddenQuests" },
     ],
-    notes: "Static client build hosted locally in JoshHub. Full project still has server side; local build runs client-only.",
-    nextAction: "If backend features needed, deploy full app with env/DB; otherwise keep static build updated.",
+    notes:
+      "Static client build hosted locally in JoshHub. Full project still has server side; local build runs client-only.",
+    nextAction:
+      "If backend features needed, deploy full app with env/DB; otherwise keep static build updated.",
     lastTouched: "2025-12",
     availability: "unknown",
     metadataConfidence: "verified",
@@ -1278,8 +1443,10 @@ export const apps: CatalogItem[] = [
       { label: "Play (Prototype)", url: "/games/max/index.html" },
       { label: "Repo", url: "https://github.com/joshuaparris-max/StarHaven" },
     ],
-    notes: "Static client build hosted locally in JoshHub. Full project on GitHub; prototype also available under Max.",
-    nextAction: "If backend features are needed, deploy full app to Vercel with env/DB and update link.",
+    notes:
+      "Static client build hosted locally in JoshHub. Full project on GitHub; prototype also available under Max.",
+    nextAction:
+      "If backend features are needed, deploy full app to Vercel with env/DB and update link.",
     lastTouched: "2025-12",
     availability: "unknown",
     metadataConfidence: "verified",
@@ -1408,8 +1575,10 @@ export const apps: CatalogItem[] = [
     tags: ["game", "neverwinter", "workspace", "local", "text-adventure", "vue"],
     primaryUrl: "/games/neverwinter-tales/index.html",
     urls: [{ label: "Open (Local)", url: "/games/neverwinter-tales/index.html" }],
-    description: "A text adventure inspired by D&D 5e. Explore Neverwinter, interact with NPCs, engage in skill checks, and uncover lore.",
-    notes: "Vue 3 text adventure with full D&D 5e mechanics. Features skill checks, dialogue trees, and location-based exploration.",
+    description:
+      "A text adventure inspired by D&D 5e. Explore Neverwinter, interact with NPCs, engage in skill checks, and uncover lore.",
+    notes:
+      "Vue 3 text adventure with full D&D 5e mechanics. Features skill checks, dialogue trees, and location-based exploration.",
     lastTouched: "2026-02",
     availability: "unknown",
     metadataConfidence: "verified",
@@ -1492,12 +1661,11 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["health", "coaching", "nextjs"],
     primaryUrl: "https://hug-coach.vercel.app/",
-    urls: [
-      { label: "Play (Hosted)", url: "https://hug-coach.vercel.app/" },
-    ],
+    urls: [{ label: "Play (Hosted)", url: "https://hug-coach.vercel.app/" }],
     notes:
       "Hosted on Vercel. To run locally: open a terminal, `cd Projects/HugCoach`, then `npm install` and `npm run dev`. To add a Play link pointing to a local export, copy it into JoshHub's `public/games/hugcoach/`.",
-    nextAction: "Verify the dashboard link and replace file:// URLs when a public link is available.",
+    nextAction:
+      "Verify the dashboard link and replace file:// URLs when a public link is available.",
     lastTouched: "2025-12",
   },
   {
@@ -1539,9 +1707,7 @@ export const apps: CatalogItem[] = [
     tags: ["nextjs", "react", "ai", "dungeon-master", "partyquest"],
     primaryUrl: "https://party-ai-mu.vercel.app/play",
     liveUrl: "https://party-ai-mu.vercel.app/play",
-    urls: [
-      { label: "Live", url: "https://party-ai-mu.vercel.app/play", type: "live" },
-    ],
+    urls: [{ label: "Live", url: "https://party-ai-mu.vercel.app/play", type: "live" }],
     localPath: "C:/Users/joshu_w0zb8cp/Projects/AIDungeonMaster",
     notes: "Next.js/React project for AI-driven dungeon mastering.",
     lastTouched: "2026-06",
@@ -1590,12 +1756,20 @@ export const apps: CatalogItem[] = [
     liveUrl: "https://appfactory-inky.vercel.app/",
     alternateLinks: [
       { label: "Gamma", url: "https://app-factory-gamma.vercel.app/", type: "alternate" },
-      { label: "GitHub Pages", url: "https://joshuaparris-max.github.io/AppFactory/", type: "alternate" }
+      {
+        label: "GitHub Pages",
+        url: "https://joshuaparris-max.github.io/AppFactory/",
+        type: "alternate",
+      },
     ],
     urls: [
       { label: "Live", url: "https://appfactory-inky.vercel.app/", type: "live" },
       { label: "Gamma", url: "https://app-factory-gamma.vercel.app/", type: "alternate" },
-      { label: "GitHub Pages", url: "https://joshuaparris-max.github.io/AppFactory/", type: "alternate" }
+      {
+        label: "GitHub Pages",
+        url: "https://joshuaparris-max.github.io/AppFactory/",
+        type: "alternate",
+      },
     ],
     localPath: "C:/AppFactory",
     notes: "Next.js application for generating or managing apps.",
@@ -1652,9 +1826,7 @@ export const apps: CatalogItem[] = [
     tags: ["vite", "react", "vercel", "upskill"],
     primaryUrl: "https://work-app-pearl.vercel.app/",
     liveUrl: "https://work-app-pearl.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://work-app-pearl.vercel.app/", type: "live" },
-    ],
+    urls: [{ label: "Live", url: "https://work-app-pearl.vercel.app/", type: "live" }],
     localPath: "C:/WorkApp2",
     notes: "Vite-based React application for upskilling, deployed on Vercel.",
     lastTouched: "2026-06",
@@ -1670,9 +1842,7 @@ export const apps: CatalogItem[] = [
     tags: ["research", "atlas", "phi"],
     primaryUrl: "https://research-atlas-phi.vercel.app/",
     liveUrl: "https://research-atlas-phi.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://research-atlas-phi.vercel.app/", type: "live" },
-    ],
+    urls: [{ label: "Live", url: "https://research-atlas-phi.vercel.app/", type: "live" }],
     notes: "Research atlas application.",
     lastTouched: "2026-06",
     metadataConfidence: "verified",
@@ -1687,9 +1857,7 @@ export const apps: CatalogItem[] = [
     tags: ["research", "gems", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/ResearchGems/",
     liveUrl: "https://joshualparris.github.io/ResearchGems/",
-    urls: [
-      { label: "Live", url: "https://joshualparris.github.io/ResearchGems/", type: "live" },
-    ],
+    urls: [{ label: "Live", url: "https://joshualparris.github.io/ResearchGems/", type: "live" }],
     notes: "Research gems management tool.",
     lastTouched: "2026-06",
     metadataConfidence: "verified",
@@ -1733,11 +1901,19 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://avance-pd.vercel.app/",
     liveUrl: "https://avance-pd.vercel.app/",
     alternateLinks: [
-      { label: "Legacy", url: "https://avance-professional-development.vercel.app/", type: "alternate" }
+      {
+        label: "Legacy",
+        url: "https://avance-professional-development.vercel.app/",
+        type: "alternate",
+      },
     ],
     urls: [
       { label: "Live", url: "https://avance-pd.vercel.app/", type: "live" },
-      { label: "Legacy", url: "https://avance-professional-development.vercel.app/", type: "alternate" }
+      {
+        label: "Legacy",
+        url: "https://avance-professional-development.vercel.app/",
+        type: "alternate",
+      },
     ],
     metadataConfidence: "verified",
     availability: "web",
@@ -1778,11 +1954,19 @@ export const apps: CatalogItem[] = [
     primaryUrl: "https://dcspd.vercel.app/",
     liveUrl: "https://dcspd.vercel.app/",
     alternateLinks: [
-      { label: "DCS Professional Development", url: "https://dcs-professional-development.vercel.app/", type: "alternate" }
+      {
+        label: "DCS Professional Development",
+        url: "https://dcs-professional-development.vercel.app/",
+        type: "alternate",
+      },
     ],
     urls: [
       { label: "Live", url: "https://dcspd.vercel.app/", type: "live" },
-      { label: "Alternate", url: "https://dcs-professional-development.vercel.app/", type: "alternate" }
+      {
+        label: "Alternate",
+        url: "https://dcs-professional-development.vercel.app/",
+        type: "alternate",
+      },
     ],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
@@ -1810,7 +1994,9 @@ export const apps: CatalogItem[] = [
     tags: ["sylvie", "phonetics", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/SylviePhonetics/",
     liveUrl: "https://joshualparris.github.io/SylviePhonetics/",
-    urls: [{ label: "Live", url: "https://joshualparris.github.io/SylviePhonetics/", type: "live" }],
+    urls: [
+      { label: "Live", url: "https://joshualparris.github.io/SylviePhonetics/", type: "live" },
+    ],
     metadataConfidence: "verified",
     availability: "web",
   },
@@ -1881,9 +2067,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "atlas", "map", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/realms-atlas/",
-    urls: [
-      { label: "Live", url: "https://joshualparris.github.io/realms-atlas/" },
-    ],
+    urls: [{ label: "Live", url: "https://joshualparris.github.io/realms-atlas/" }],
     notes: "Game that has all my links and apps in it.",
     lastTouched: "2026-06",
     metadataConfidence: "verified",
@@ -1897,9 +2081,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["faith", "hub", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/FaithHub/",
-    urls: [
-      { label: "Live", url: "https://joshualparris.github.io/FaithHub/" },
-    ],
+    urls: [{ label: "Live", url: "https://joshualparris.github.io/FaithHub/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -1912,9 +2094,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["waypoint", "azure", "vercel"],
     primaryUrl: "https://waypoint-azure.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://waypoint-azure.vercel.app/" },
-    ],
+    urls: [{ label: "Live", url: "https://waypoint-azure.vercel.app/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -1927,9 +2107,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["upskill", "learning", "vercel"],
     primaryUrl: "https://upskillapp.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://upskillapp.vercel.app/" },
-    ],
+    urls: [{ label: "Live", url: "https://upskillapp.vercel.app/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -1942,9 +2120,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["dnd", "layers", "vercel"],
     primaryUrl: "https://3layers-puce.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://3layers-puce.vercel.app/" },
-    ],
+    urls: [{ label: "Live", url: "https://3layers-puce.vercel.app/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -1957,9 +2133,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "kkc", "rothfuss", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/kkc-adventure/",
-    urls: [
-      { label: "GitHub Pages", url: "https://joshualparris.github.io/kkc-adventure/" },
-    ],
+    urls: [{ label: "GitHub Pages", url: "https://joshualparris.github.io/kkc-adventure/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -1988,9 +2162,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "ai", "dm", "party", "vercel"],
     primaryUrl: "https://party-ai-mu.vercel.app/play",
-    urls: [
-      { label: "Play", url: "https://party-ai-mu.vercel.app/play" },
-    ],
+    urls: [{ label: "Play", url: "https://party-ai-mu.vercel.app/play" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -2018,9 +2190,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "aetheria", "vercel"],
     primaryUrl: "https://skill-deploy-fs1ircxjkn.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://skill-deploy-fs1ircxjkn.vercel.app/" },
-    ],
+    urls: [{ label: "Live", url: "https://skill-deploy-fs1ircxjkn.vercel.app/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -2064,9 +2234,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "serenity", "firefly", "vercel"],
     primaryUrl: "https://skill-deploy-ubokv1ax71.vercel.app/",
-    urls: [
-      { label: "Live", url: "https://skill-deploy-ubokv1ax71.vercel.app/" },
-    ],
+    urls: [{ label: "Live", url: "https://skill-deploy-ubokv1ax71.vercel.app/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -2080,7 +2248,10 @@ export const apps: CatalogItem[] = [
     tags: ["game", "grey", "realms", "replit"],
     primaryUrl: "https://a7d7c8d4-f588-4e1a-a1eb-23f46fa50d0b-00-2qe90krr96xo5.janeway.replit.dev/",
     urls: [
-      { label: "Live", url: "https://a7d7c8d4-f588-4e1a-a1eb-23f46fa50d0b-00-2qe90krr96xo5.janeway.replit.dev/" },
+      {
+        label: "Live",
+        url: "https://a7d7c8d4-f588-4e1a-a1eb-23f46fa50d0b-00-2qe90krr96xo5.janeway.replit.dev/",
+      },
     ],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
@@ -2095,9 +2266,7 @@ export const apps: CatalogItem[] = [
     status: "ok",
     tags: ["game", "grey", "march", "github-pages"],
     primaryUrl: "https://joshualparris.github.io/Marsh/",
-    urls: [
-      { label: "Live", url: "https://joshualparris.github.io/Marsh/" },
-    ],
+    urls: [{ label: "Live", url: "https://joshualparris.github.io/Marsh/" }],
     lastTouched: "2026-06",
     metadataConfidence: "verified",
     availability: "web",
@@ -2125,9 +2294,13 @@ export const apps: CatalogItem[] = [
     category: "Research & Docs",
     status: "ok",
     tags: ["docs", "links", "google-docs"],
-    primaryUrl: "https://docs.google.com/document/d/1rYeeXqK6QBZx1upwHdtzzoXSwxNLHz7_omcooqhUKIM/edit?tab=t.0",
+    primaryUrl:
+      "https://docs.google.com/document/d/1rYeeXqK6QBZx1upwHdtzzoXSwxNLHz7_omcooqhUKIM/edit?tab=t.0",
     urls: [
-      { label: "Google Doc", url: "https://docs.google.com/document/d/1rYeeXqK6QBZx1upwHdtzzoXSwxNLHz7_omcooqhUKIM/edit?tab=t.0" },
+      {
+        label: "Google Doc",
+        url: "https://docs.google.com/document/d/1rYeeXqK6QBZx1upwHdtzzoXSwxNLHz7_omcooqhUKIM/edit?tab=t.0",
+      },
     ],
     notes: "Definitive list of app and game links.",
     lastTouched: "2026-06",
@@ -2139,6 +2312,3 @@ export const apps: CatalogItem[] = [
 export function getAppById(id: string): CatalogItem | undefined {
   return apps.find((item) => item.id === id);
 }
-
-
-

@@ -72,7 +72,8 @@ export default function ArchivePage() {
           All deep links
         </h1>
         <p className="max-w-3xl text-neutral-600 dark:text-slate-300">
-          A permanent directory for standalone games, old project pages, documentation and panoramas that exist inside JoshHub but do not need to crowd the main navigation.
+          A permanent directory for standalone games, old project pages, documentation and panoramas
+          that exist inside JoshHub but do not need to crowd the main navigation.
         </p>
       </header>
 
@@ -82,7 +83,9 @@ export default function ArchivePage() {
             key={group.title}
             className="rounded-2xl border border-neutral-200 bg-white/80 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-950/50"
           >
-            <h2 className="mb-4 text-lg font-semibold text-neutral-950 dark:text-white">{group.title}</h2>
+            <h2 className="mb-4 text-lg font-semibold text-neutral-950 dark:text-white">
+              {group.title}
+            </h2>
             <div className="flex flex-col gap-2">
               {group.items.map(([label, href]) => (
                 <Link

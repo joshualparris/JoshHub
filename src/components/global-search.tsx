@@ -54,16 +54,32 @@ export function GlobalSearch() {
       `${app.name} ${app.tags.join(" ")} ${app.notes ?? ""}`.toLowerCase().includes(q)
     );
     const lifeMatches = lifeAreas.filter((area) =>
-      `${area.title} ${area.intro} ${area.sections.map((s) => `${s.heading} ${s.body}`).join(" ")}`.toLowerCase().includes(q)
+      `${area.title} ${area.intro} ${area.sections.map((s) => `${s.heading} ${s.body}`).join(" ")}`
+        .toLowerCase()
+        .includes(q)
     );
     const routeMatches = routes.filter((r) => r.label.toLowerCase().includes(q));
     const actionMatches: Result[] = [
-      { type: "action", label: "New Note", run: async () => { await createNote({ title: "New note" }); } },
-      { type: "action", label: "New Task", run: async () => { await createTask({ title: "New task" }); } },
+      {
+        type: "action",
+        label: "New Note",
+        run: async () => {
+          await createNote({ title: "New note" });
+        },
+      },
+      {
+        type: "action",
+        label: "New Task",
+        run: async () => {
+          await createTask({ title: "New task" });
+        },
+      },
       {
         type: "action",
         label: "Add Bookmark",
-        run: async () => { await createBookmark({ title: "New link", url: "https://", tags: [] }); },
+        run: async () => {
+          await createBookmark({ title: "New link", url: "https://", tags: [] });
+        },
       },
       {
         type: "action",
@@ -150,7 +166,11 @@ export function GlobalSearch() {
                   {results
                     .filter((r): r is Extract<Result, { type: "life" }> => r.type === "life")
                     .map((r) => (
-                      <CommandItem key={r.item.slug} onSelect={() => setOpen(false)} className="px-0">
+                      <CommandItem
+                        key={r.item.slug}
+                        onSelect={() => setOpen(false)}
+                        className="px-0"
+                      >
                         <div className="flex w-full items-center gap-2 px-4 py-2">
                           <Link
                             href={`/life/${r.item.slug}`}

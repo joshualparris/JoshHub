@@ -218,7 +218,16 @@ describe("export / restore round trip", () => {
     const legacy = readBackupFile({
       version: "2",
       exportedAt: "",
-      notes: [{ id: "note-from-backup", title: "Restored", body: "", tags: [], createdAt: 1, updatedAt: 1 }],
+      notes: [
+        {
+          id: "note-from-backup",
+          title: "Restored",
+          body: "",
+          tags: [],
+          createdAt: 1,
+          updatedAt: 1,
+        },
+      ],
       tasks: [],
       bookmarks: [],
       routines: [],

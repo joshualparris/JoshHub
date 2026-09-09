@@ -9,14 +9,21 @@ function mergeAndSort(items: CaptureItem[]) {
 }
 
 function makeId(prefix?: string) {
-  const base = typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : Date.now().toString();
+  const base =
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : Date.now().toString();
   return prefix ? `${prefix}:${base}` : base;
 }
 
 export function createCaptureRepoDexie(): CaptureRepo {
   return {
     async list() {
-      const [notes, tasks, bookmarks] = await Promise.all([db.notes.toArray(), db.tasks.toArray(), db.bookmarks.toArray()]);
+      const [notes, tasks, bookmarks] = await Promise.all([
+        db.notes.toArray(),
+        db.tasks.toArray(),
+        db.bookmarks.toArray(),
+      ]);
       const mapped = [
         ...notes.map((n) => noteToCapture(n)),
         ...tasks.map((t) => taskToCapture(t)),
@@ -150,20 +157,32 @@ export function createCaptureRepoDexie(): CaptureRepo {
         return;
       }
       // fallback: try all
-      await db.notes.delete(id).catch(() => { });
-      await db.tasks.delete(id).catch(() => { });
-      await db.bookmarks.delete(id).catch(() => { });
+      await db.notes.delete(id).catch(() => {});
+      await db.tasks.delete(id).catch(() => {});
+      await db.bookmarks.delete(id).catch(() => {});
     },
     async search(query: string) {
       const q = query.trim().toLowerCase();
-      const [notes, tasks, bookmarks] = await Promise.all([db.notes.toArray(), db.tasks.toArray(), db.bookmarks.toArray()]);
+      const [notes, tasks, bookmarks] = await Promise.all([
+        db.notes.toArray(),
+        db.tasks.toArray(),
+        db.bookmarks.toArray(),
+      ]);
       const mapped = [
         ...notes.map((n) => noteToCapture(n)),
         ...tasks.map((t) => taskToCapture(t)),
         ...bookmarks.map((b) => bookmarkToCapture(b)),
       ];
       return mapped.filter((i) => {
-        const hay = (i.title + " " + (i.content ?? "") + " " + (i.url ?? "") + " " + (i.tags ?? []).join(" ")).toLowerCase();
+        const hay = (
+          i.title +
+          " " +
+          (i.content ?? "") +
+          " " +
+          (i.url ?? "") +
+          " " +
+          (i.tags ?? []).join(" ")
+        ).toLowerCase();
         return hay.includes(q);
       });
     },

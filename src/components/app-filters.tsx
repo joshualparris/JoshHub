@@ -55,13 +55,19 @@ export function AppFilters({
           label="Category"
           value={category}
           onChange={(value) => onCategoryChange(value as AppCategory | "all")}
-          options={[{ label: "All", value: "all" }, ...categories.map((c) => ({ label: c, value: c }))]}
+          options={[
+            { label: "All", value: "all" },
+            ...categories.map((c) => ({ label: c, value: c })),
+          ]}
         />
         <Select
           label="Status"
           value={status}
           onChange={(value) => onStatusChange(value as AppStatus | "all")}
-          options={[{ label: "All", value: "all" }, ...statuses.map((s) => ({ label: s.toUpperCase(), value: s }))]}
+          options={[
+            { label: "All", value: "all" },
+            ...statuses.map((s) => ({ label: s.toUpperCase(), value: s })),
+          ]}
         />
       </div>
     </div>

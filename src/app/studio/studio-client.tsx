@@ -46,10 +46,7 @@ export function StudioClient() {
     () => notes.filter((n) => n.tags.includes("gamedev") || n.tags.includes("studio")).slice(0, 5),
     [notes]
   );
-  const joyNotes = useMemo(
-    () => notes.filter((n) => n.tags.includes("joy")).slice(0, 5),
-    [notes]
-  );
+  const joyNotes = useMemo(() => notes.filter((n) => n.tags.includes("joy")).slice(0, 5), [notes]);
 
   return (
     <div className="space-y-6">
@@ -254,7 +251,9 @@ function StorySeeds() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">
+        {label}
+      </p>
       <p className="text-sm text-neutral-800 dark:text-slate-100">{value || "—"}</p>
     </div>
   );

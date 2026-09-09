@@ -33,7 +33,9 @@ export default function TasksPage() {
   }
 
   const grouped = useMemo(() => {
-    const list = [...(tasks ?? [])].sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""));
+    const list = [...(tasks ?? [])].sort((a, b) =>
+      (a.dueDate ?? "").localeCompare(b.dueDate ?? "")
+    );
     return {
       today: list.filter((t) => isToday(t.dueDate)),
       upcoming: list.filter((t) => isUpcoming(t.dueDate)),
@@ -43,7 +45,12 @@ export default function TasksPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="TASKS" title="Tasks" subtitle="Quick add and manage tasks." tone="onDark" />
+      <PageHeader
+        kicker="TASKS"
+        title="Tasks"
+        subtitle="Quick add and manage tasks."
+        tone="onDark"
+      />
 
       <Card>
         <CardHeader>
@@ -102,9 +109,7 @@ function TaskGroup({ title, tasks }: { title: string; tasks: Task[] }) {
         {tasks.length === 0 ? (
           <p className="text-sm text-foreground/60">Nothing here.</p>
         ) : (
-          tasks.map((task) => (
-            <TaskRow key={task.id} task={task} />
-          ))
+          tasks.map((task) => <TaskRow key={task.id} task={task} />)
         )}
       </CardContent>
     </Card>

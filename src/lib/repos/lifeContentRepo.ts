@@ -15,7 +15,9 @@ export function createInMemoryLifeContentRepo(initial: LifeItem[] = []): LifeCon
     async list(area) {
       const all = Array.from(store.values());
       if (!area) return all.sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1));
-      return all.filter((i) => i.area === area).sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1));
+      return all
+        .filter((i) => i.area === area)
+        .sort((a, b) => (b.updatedAt > a.updatedAt ? 1 : -1));
     },
     async get(id: string) {
       return store.get(id);
