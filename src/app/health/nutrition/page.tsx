@@ -5,6 +5,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
 import { createNutritionLog, useNutrition } from "@/lib/db/health";
 
@@ -40,11 +41,7 @@ export default function NutritionPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Health</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Nutrition</h1>
-        <p className="text-neutral-600">Log daily food notes.</p>
-      </div>
+      <PageHeader kicker="Health" title="Nutrition" subtitle="Log daily food notes." />
 
       <Card>
         <CardHeader>
@@ -89,20 +86,20 @@ export default function NutritionPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No entries yet.</p>
+            <p className="text-sm text-muted-foreground">No entries yet.</p>
           ) : (
             recent.map((n) => (
               <div
                 key={n.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">{n.date}</p>
-                <p className="text-neutral-700">{n.summary}</p>
-                <div className="text-xs text-neutral-600">
+                <p className="font-medium">{n.date}</p>
+                <p>{n.summary}</p>
+                <div className="text-xs text-muted-foreground">
                   {n.proteinGrams != null && <span>Protein: {n.proteinGrams}g </span>}
                   {n.vegServes != null && <span>Veg: {n.vegServes} serves </span>}
                 </div>
-                {n.notes && <p className="text-neutral-600">{n.notes}</p>}
+                {n.notes && <p className="text-muted-foreground">{n.notes}</p>}
               </div>
             ))
           )}

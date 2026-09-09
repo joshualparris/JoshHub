@@ -6,6 +6,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { createMetricLog, useMetrics } from "@/lib/db/health";
 import type { MetricLog } from "@/lib/db/schema";
 
@@ -51,11 +52,7 @@ export default function MetricsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Health</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Metrics</h1>
-        <p className="text-neutral-600">Log weight, HRV, and other metrics.</p>
-      </div>
+      <PageHeader kicker="Health" title="Metrics" subtitle="Log weight, HRV, and other metrics." />
 
       <Card>
         <CardHeader>
@@ -71,7 +68,7 @@ export default function MetricsPage() {
             <select
               value={metricType}
               onChange={(e) => setMetricType(e.target.value as MetricLog["metricType"])}
-              className="h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm"
+              className="h-10 rounded-md border border-border bg-card px-3 text-sm text-card-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <option value="weight">Weight</option>
               <option value="hrv">HRV</option>
@@ -105,14 +102,20 @@ export default function MetricsPage() {
         </CardHeader>
         <CardContent className="h-64">
           {chartData.length === 0 ? (
-            <p className="text-sm text-neutral-600">No data to chart yet.</p>
+            <p className="text-sm text-muted-foreground">No data to chart yet.</p>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chartData}>
                 <XAxis dataKey="date" tickFormatter={(v) => v.slice(5, 16)} fontSize={12} />
                 <YAxis fontSize={12} />
                 <Tooltip />
-                <Line type="monotone" dataKey="value" stroke="#0f172a" strokeWidth={2} dot={false} />
+                <Line
+                  type="monotone"
+                  dataKey="value"
+                  stroke="var(--foreground)"
+                  strokeWidth={2}
+                  dot={false}
+                />
               </LineChart>
             </ResponsiveContainer>
           )}
@@ -125,18 +128,18 @@ export default function MetricsPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {recent.length === 0 ? (
-            <p className="text-sm text-neutral-600">No entries yet.</p>
+            <p className="text-sm text-muted-foreground">No entries yet.</p>
           ) : (
             recent.map((m) => (
               <div
                 key={m.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">
+                <p className="font-medium">
                   {m.metricType} — {m.value} {m.unit}
                 </p>
-                <p className="text-neutral-600">{new Date(m.dateTimeIso).toLocaleString()}</p>
-                {m.notes && <p className="text-neutral-600">{m.notes}</p>}
+                <p className="text-muted-foreground">{new Date(m.dateTimeIso).toLocaleString()}</p>
+                {m.notes && <p className="text-muted-foreground">{m.notes}</p>}
               </div>
             ))
           )}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 import { createEvent, parseIcsEvents } from "@/lib/db/events";
 
 const icsSchema = z.object({
@@ -52,13 +53,11 @@ export default function CalendarSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Settings</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Calendar import</h1>
-        <p className="text-neutral-600">
-          Import an .ics export into your local calendar (stored in your browser).
-        </p>
-      </div>
+      <PageHeader
+        kicker="Settings"
+        title="Calendar import"
+        subtitle="Import an .ics export into your local calendar (stored in your browser)."
+      />
 
       <Card>
         <CardHeader>
@@ -69,9 +68,10 @@ export default function CalendarSettingsPage() {
             type="file"
             accept=".ics,text/calendar"
             onChange={(e) => handleFile(e.target.files?.[0] ?? null)}
+            className="text-sm text-card-foreground file:mr-3 file:rounded-md file:border file:border-border file:bg-card file:px-3 file:py-2 file:text-card-foreground"
           />
-          {message && <p className="text-sm text-neutral-700">{message}</p>}
-          <p className="text-xs text-neutral-500">
+          {message && <p className="text-sm text-card-foreground">{message}</p>}
+          <p className="text-xs text-muted-foreground">
             Events are added to the local calendar; no external sync or upload.
           </p>
         </CardContent>

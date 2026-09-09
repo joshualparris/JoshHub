@@ -46,11 +46,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground`}
       >
         <ThemeInitializer />
         <div className="relative min-h-screen overflow-hidden">
-          <div className="pointer-events-none absolute inset-0 -z-10">
+          <div className="pointer-events-none absolute inset-0 -z-10 dark:opacity-30">
             <div className="absolute left-[-120px] top-[-120px] h-72 w-72 rounded-full bg-sky-200/60 blur-3xl" />
             <div className="absolute right-[-80px] top-10 h-64 w-64 rounded-full bg-amber-200/60 blur-3xl" />
             <div className="absolute bottom-[-120px] left-10 h-72 w-72 rounded-full bg-emerald-200/60 blur-3xl" />
@@ -81,7 +81,7 @@ export default function RootLayout({
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
-                    className="rounded-full border border-white/70 bg-white/80 px-3 py-1.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100"
+                    className="rounded-full border border-white/70 bg-white/80 px-3 py-1.5 text-neutral-700 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100"
                     href={link.href}
                   >
                     {link.label}

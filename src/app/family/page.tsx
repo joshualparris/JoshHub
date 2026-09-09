@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { saveFamilyRhythm, useFamilyRhythm } from "@/lib/db/family";
 
 export default function FamilyPage() {
@@ -55,11 +56,11 @@ export default function FamilyPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Family</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Family rhythm</h1>
-        <p className="text-neutral-600">Bedtimes, dinner targets, and key responsibilities.</p>
-      </div>
+      <PageHeader
+        kicker="Family"
+        title="Family rhythm"
+        subtitle="Bedtimes, dinner targets, and key responsibilities."
+      />
 
       <Card>
         <CardHeader>
@@ -94,7 +95,7 @@ export default function FamilyPage() {
             />
             <div className="flex items-center gap-3">
               <Button type="submit">Save</Button>
-              {message && <span className="text-sm text-neutral-600">{message}</span>}
+              {message && <span className="text-sm text-muted-foreground">{message}</span>}
             </div>
           </form>
         </CardContent>
@@ -105,7 +106,7 @@ export default function FamilyPage() {
           <CardHeader>
             <CardTitle>Today</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 text-sm text-neutral-700">
+          <CardContent className="space-y-2 text-sm text-card-foreground">
             <p>Bedtime: {rhythm.bedtime}</p>
             <p>Dinner: {rhythm.dinner}</p>
             <div>
