@@ -21,35 +21,42 @@ Game-Fixer  PartyAI  Serenity-Keep-Flying   ← submodule gitlinks
 
 ## Findings
 
-### [ ] CFG-01 — There is no CI · Critical
+### [x] CFG-01 — There is no CI · Critical
 - **Principles:** P15, P11
-- **Where:** `.github/` contains only `copilot-instructions.md` — no workflows
-- **Problem:** Nothing runs `npm run build`, `npm run lint`, `npm test` or
-  `npm run validate:apps` automatically. Every check in this repository is
+- **Where:** `.github/workflows/ci.yml`
+- **Problem:** Nothing ran `npm run build`, `npm run lint`, `npm test` or
+  `npm run validate:apps` automatically. Every check in this repository was
   manual.
-- **Why it matters:** This is the direct cause of the longest-running failure in
+- **Why it matters:** This was the direct cause of the longest-running failure in
   the project's history. Production deploys failed continuously from a June
   commit until `3c0bf78` — dozens of commits, months of work — because a deleted
   file left a broken import and nothing ever told anyone. A single workflow
   running `npm run build` on push would have caught it the same day. Every other
   finding in this audit is easier to prevent than to find; CI is the mechanism
   that does the preventing.
-- **Fix:** Add `.github/workflows/ci.yml` running, on push and pull request:
-  `npm ci`, `npm run lint`, `npx vitest run`, `npm run build`, and
-  `npm run validate:apps`. Add `node scripts/check-assets.js` once CFG-06 is
-  resolved. This is the highest-value single change available in the repository.
-- **Status:** Open
+- **Fix:** Added `.github/workflows/ci.yml` running on push to `main` and pull
+  requests: `npm ci`, `npm run lint`, terminating tests, `npm run build`, and
+  `npm run validate:apps`. `node scripts/check-assets.js` remains intentionally
+  deferred until the known asset/catalogue failures and CFG-06 are resolved, as
+  originally specified by this finding.
+- **Verification:** GitHub Actions run `34337559585` completed install, lint,
+  tests, production build, and app-catalogue validation successfully on
+  `081a7d9`.
+- **Status:** Fixed in `081a7d9`
 
-### [ ] CFG-02 — `npm test` hangs in any automated context · High
+### [x] CFG-02 — `npm test` hangs in any automated context · High
 - **Principles:** P13, P15
-- **Where:** `package.json` → `"test": "vitest"`
-- **Problem:** Bare `vitest` starts watch mode. In CI, or any non-interactive
-  shell, it never exits.
-- **Why it matters:** It makes CFG-01 harder to fix correctly and quietly
-  discourages running tests at all. Anyone adding a CI step with `npm test` will
-  get a hung job.
-- **Fix:** `"test": "vitest run"` plus `"test:watch": "vitest"` for local use.
-- **Status:** Open
+- **Where:** `package.json` → `"test": "vitest run"`, `"test:watch": "vitest"`
+- **Problem:** Bare `vitest` started watch mode. In CI, or any non-interactive
+  shell, it never exited.
+- **Why it matters:** It made CFG-01 harder to fix correctly and quietly
+  discouraged running tests at all. Anyone adding a CI step with `npm test`
+  would have received a hung job.
+- **Fix:** Changed the default test script to `vitest run` and added
+  `test:watch` for intentional local watch mode.
+- **Verification:** `npm test` completed successfully inside GitHub Actions run
+  `34337559585`.
+- **Status:** Fixed in `8b741f5`
 
 ### [ ] CFG-03 — Submodule gitlinks with no `.gitmodules` · High
 - **Principles:** P6, P13

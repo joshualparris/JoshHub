@@ -17,8 +17,9 @@ reasons:
    what that bias hid.
 3. **No principle had a definition of done.** "Are functions small enough?" had
    no answer because "small enough" was never defined.
-4. **Fixing does not prevent recurrence.** Nothing mechanically stops any of it
-   coming back (XC-07).
+4. **Fixing does not prevent recurrence.** Enforcement has now started with the
+   9 September baseline CI and agent protocol, but most principles still have no
+   mechanical prevention (XC-07).
 
 This file addresses 3 and 4. Reports 01–16 address 1 and 2.
 
@@ -35,7 +36,8 @@ A principle is only ticked when its check passes **and** an enforcement exists.
 Passing once without enforcement is a snapshot, not conformance.
 
 > Baseline measured 2026-09-09, against 132 source files / 15,209 lines in
-> `src/` (excluding `apps.ts.bak`).
+> `src/` (excluding `apps.ts.bak`). Enforcement status updated after baseline CI
+> run `34337559585` on 2026-09-09.
 
 ---
 
@@ -52,9 +54,12 @@ author name what each class of match means?*
 substring replacement across 147 files, and this audit's own first pass, which
 edited 147 files before reading the codebase.
 
-**Enforced by:** nothing yet. Proposed: a line in
-`.github/copilot-instructions.md` stating the rule, since most changes here are
-made by AI agents.
+**Enforced by:** ◐ documented human/agent enforcement. `AGENTS.md` now makes
+"understand before changing" the overriding rule, requires an anchored starting
+SHA and atomic checkpoints, and forbids blind repository-wide replacement.
+`.github/copilot-instructions.md` points agents to that protocol and
+`docs/PROJECT_STATE.md`. This is durable process enforcement, but not a
+mechanical code gate, so review judgement is still required.
 
 ---
 
@@ -246,8 +251,10 @@ git grep -nE '\$[0-9,]+\.[0-9]{2}|[0-9]{1,3}\.[0-9]%' -- src/app src/components
 page pre-filled with personal defaults), COMP-05 (button with no handler),
 DATA-05 / SCR-01 / PUB-02 (12 catalogue links that 404), DATA-03.
 
-**Enforced by:** nothing yet. Proposed: `check-assets.js` in CI closes the
-dead-link half mechanically.
+**Enforced by:** partially through baseline CI for catalogue structural
+validation, but dead local assets are not yet a required gate. Proposed:
+`check-assets.js` in CI closes the dead-link half mechanically once the known
+failures are resolved.
 
 ---
 
@@ -307,13 +314,13 @@ its invariant written down *and tested*.
 
 **Behavioural invariants**
 
-| Operation | Invariant | Tested |
+| Operation | Invariant | Tested/enforced |
 |---|---|---|
 | Backup / restore | export → wipe → restore leaves the DB unchanged | ✅ |
 | Backup registry | `BACKUP_TABLES` matches the Dexie schema | ✅ |
 | Activity import | importing the same file twice = importing it once | ❌ DB-07 |
-| Catalogue | ids unique, URLs well-formed, statuses valid | ⚠️ validator exists, never runs |
-| Local assets | every referenced `/games` and `/docs` path exists | ⚠️ script exists, never runs |
+| Catalogue | ids unique, URLs well-formed, statuses valid | ✅ validator runs in CI |
+| Local assets | every referenced `/games` and `/docs` path exists | ⚠️ script exists, not a CI gate yet |
 | Event times | `startIso`/`endIso` are always true ISO instants | ❌ APP-01 |
 | CSV import | quoted fields containing commas parse correctly | ❌ COMP-06 |
 
@@ -329,14 +336,18 @@ its invariant written down *and tested*.
 | `LearnNote/Session.topicId`, `.resourceId` | existing rows | ❌ |
 | `Pin.id` | a life-area slug (and, after FEAT-02, an app id) | ❌ |
 
-**Verify:** `npx vitest run` plus `npm run validate:apps` plus
-`node scripts/check-assets.js`.
+**Verify:** `npm test` plus `npm run validate:apps` plus `npm run check:assets`.
+All three now run automatically in CI — the first two blocking, the third
+advisory until PUB-02 closes.
 
-**Now:** ❌ 2 of 14 invariants tested. The referential half is entirely
-unprotected — nothing stops a note pointing at a life area that no longer
-exists, which matters because DATA-04 may rename every slug.
+**Now:** ❌ **3 of 14 invariants enforced.** The backup round-trip and the
+registry-drift test are covered by the test suite; the catalogue validator now
+runs on every push. The asset check runs advisory. The entire referential half
+is unprotected — nothing stops a note pointing at a life area that no longer
+exists, which matters immediately because DATA-04 proposes renaming every slug.
 
-**Enforced by:** partially — the two tested ones. CFG-01 closes the next two.
+**Enforced by:** ◐ baseline GitHub Actions CI plus the existing backup tests.
+The remaining named invariants still need behavioural tests/gates.
 
 ---
 
@@ -355,9 +366,10 @@ Each hit is a candidate WHAT-comment. Density is a weak proxy but worth watching
 **Now:** ❌ 2% density; two-thirds of files have no comments; the ones that exist
 skew toward restating code. Open: XC-04.
 
-**Enforced by:** nothing, and it should not be — a density target would produce
-worse comments. The rule instead: **every fix in this audit leaves behind a
-comment naming the constraint that made it a bug.**
+**Enforced by:** nothing mechanical, and it should not be — a density target
+would produce worse comments. The rule instead: **every fix in this audit leaves
+behind a comment naming the constraint that made it a bug.** `AGENTS.md` now
+records that expectation for future agent work.
 
 ---
 
@@ -374,7 +386,7 @@ across 6+ files.
 
 **Enforced by:** nothing yet. Proposed: **adopt Prettier** and run
 `prettier --check` in CI. This single change retires most of P13 permanently and
-is the highest leverage item on this page.
+is the highest leverage remaining Wave 1 item.
 
 ---
 
@@ -402,9 +414,9 @@ app  →  features  →  components  →  lib  →  data
 `features → components` (6). Everything else already flows correctly. Open:
 XC-03.
 
-**Enforced by:** nothing yet. Proposed: `no-restricted-paths` — this turns P14
-into a build failure and is the only principle here that can be *fully*
-mechanised.
+**Enforced by:** nothing yet. Proposed: resolve XC-03, then add
+`no-restricted-paths`. Do not install a permanently failing architecture gate
+before fixing the known cycle.
 
 ---
 
@@ -413,14 +425,20 @@ mechanised.
 **Conformant when:** every item in the P11 invariant table is tested, and every
 pure calculation module has a test. Not a coverage percentage — a named list.
 
-**Verify:** `npx vitest run`, and check the P11 table above.
+**Verify:** `npm test`, and check the P11 table above. Baseline CI also runs lint,
+production build, and `npm run validate:apps` on pushes to `main` and pull
+requests.
 
-**Now:** ❌ **2 test files for 132 source files.** 7 of 9 critical paths
-untested: ICS parsing, daily-metrics roll-up, CSV import, catalogue invariants,
-lifestyle analytics, tag parsing, date helpers. Open: XC-05, LIB-06, DATA-08.
+**Now:** ❌ **2 test files for 132 source files.** 7 of 9 critical paths remain
+untested: ICS parsing, daily-metrics roll-up, CSV import, catalogue invariants as
+behavioural tests, lifestyle analytics, tag parsing, date helpers. Open: XC-05,
+LIB-06, DATA-08. The important improvement is that the existing tests now run
+automatically and terminate correctly.
 
-**Enforced by:** nothing yet — `npm test` currently starts watch mode and would
-hang CI (CFG-02).
+**Enforced by:** ◐ GitHub Actions CI (`081a7d9`) now runs `npm test` on every
+push to `main` and pull request; CFG-02 is fixed by `8b741f5`. CI prevents tested
+behaviour from silently regressing, but it cannot protect critical paths that
+still have no tests.
 
 ---
 
@@ -428,34 +446,36 @@ hang CI (CFG-02).
 
 | | Principle | State | Enforced |
 |---|---|---|---|
-| P1 | Understand before changing | ⚠️ | ✗ |
+| P1 | Understand before changing | ⚠️ | ◐ |
 | P2 | One source of truth | ❌ | ✗ |
 | P3 | Related things together | ⚠️ | ✗ |
 | P4 | Boring obvious names | ❌ | ✗ |
 | P5 | Small functions | ❌ | ✗ |
 | P6 | Explicit data flow | ⚠️ | ◐ |
 | P7 | UI vs business logic | ❌ | ✗ |
-| P8 | No fake-as-live | ⚠️ | ✗ |
+| P8 | No fake-as-live | ⚠️ | ◐ |
 | P9 | Delete dead code | ❌ | ✗ |
 | P10 | Don't mutate | ❌ | ✗ |
-| P11 | Invariants | ❌ 2/14 | ◐ |
+| P11 | Invariants | ❌ 3/14 | ◐ |
 | P12 | Comments explain why | ❌ | n/a |
 | P13 | Consistent structure | ❌ | ✗ |
 | P14 | Directional dependencies | ❌ | ✗ |
-| P15 | Tests protect behaviour | ❌ | ✗ |
+| P15 | Tests protect behaviour | ❌ | ◐ |
 
-**Nothing is currently green.** Two are partially enforced, both by work done
-during this audit.
+**No principle is fully green yet.** The 9 September protocol/CI work materially
+improves enforcement for P1, P8, P11 and P15, while P6 was already partially
+enforced. Full conformance still requires the checks themselves to pass and the
+remaining prevention mechanisms to land.
 
-## The four changes that move the most
+## The remaining high-leverage enforcement changes
 
-Ranked by how many principles they close mechanically rather than by hand:
-
-1. **CI** (CFG-01) — activates every check that already exists. Touches P11, P15, P8.
+1. **✅ Baseline CI (CFG-01)** — landed in `081a7d9`; first run `34337559585`
+   passed lint, terminating tests, production build, and app-catalogue validation.
 2. **Prettier** — retires most of P13 and part of P4, permanently.
-3. **`no-restricted-paths`** — fully mechanises P14, the only one that can be.
+3. **`no-restricted-paths`** — fully mechanises P14 after XC-03 removes the known
+   layer cycle.
 4. **Two greps in CI** — the P10 mutation check and the P2 duplicate-basename
-   check. Precise, no false positives today, minutes to add.
+   check. Validate them against the current tree before making them gates.
 
-Do these alongside Wave 1 and 2 of `TRIAGE.md`, not after — they are what stops
-the other 83 findings from returning.
+Do these alongside the remaining Wave 1 work in `TRIAGE.md`, not after — they
+are what stops the other findings from returning.

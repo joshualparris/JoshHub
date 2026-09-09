@@ -156,19 +156,20 @@ before being written up: it was suspected that `src/app/capture` reimplemented
 
 ## Rollup
 
-95 findings — 15 area reports plus one cross-cutting sweep.
+96 findings — 15 area reports plus one cross-cutting sweep.
 
 | Severity | Open | Fixed |
 |----------|------|-------|
-| Critical | 2 | 2 |
-| High | 19 | 1 |
-| Medium | 48 | 0 |
+| Critical | 1 | 2 |
+| High | 18 | 3 |
+| Medium | 46 | 3 |
 | Low | 23 | 0 |
-| **Total** | **92** | **3** |
+| **Total** | **88** | **8** |
 
-The two open Criticals are **CFG-01** (there is no CI, so nothing catches a
-broken build — production deploys failed for months undetected) and **COMP-01**
-(the theme toggle drives none of the 504 `dark:` styling declarations).
+The remaining open Critical is **COMP-01** (the theme toggle drives none of the
+504 `dark:` styling declarations). **CFG-01** is now fixed: baseline GitHub
+Actions CI runs lint, terminating tests, production build, and app-catalogue
+validation on pushes to `main` and pull requests.
 
 Counts are produced by counting `### [ ]` and `### [x]` headings across the
 reports — re-run after ticking anything off:

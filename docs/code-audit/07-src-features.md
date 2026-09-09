@@ -81,7 +81,7 @@ for the rest:
   actually is, or delete it in favour of the shared hook.
 - **Status:** Open
 
-### [ ] FEAT-04 — Live query results sorted in place · Medium
+### [x] FEAT-04 — Live query results sorted in place · Medium
 - **Principles:** P10
 - **Where:** `src/features/everything-map/db.ts:49`
 - **Problem:** `(notes ?? []).sort((a, b) => b.updatedAt - a.updatedAt)` mutates
@@ -91,7 +91,7 @@ for the rest:
   can change what other components render.
 - **Fix:** `[...(notes ?? [])].sort(...)`, with the same explanatory comment used
   on the dashboard.
-- **Status:** Open
+- **Status:** Fixed — guarded by `npm run check:mutation` in CI.
 
 ### [ ] FEAT-05 — `usePinnedApps` reads localStorage during render · Medium
 - **Principles:** P6

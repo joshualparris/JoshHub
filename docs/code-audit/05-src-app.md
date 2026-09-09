@@ -81,7 +81,7 @@ file-specific issues — see "Still to read" at the end.
   literals.
 - **Status:** Open
 
-### [ ] APP-04 — Live query results sorted in place, in four more pages · Medium
+### [x] APP-04 — Live query results sorted in place, in four more pages · Medium
 - **Principles:** P10
 - **Where:** *(all 50 searched)* `health/metrics`, `health/movement`,
   `health/nutrition`, `tasks`
@@ -92,7 +92,8 @@ file-specific issues — see "Still to read" at the end.
   place can reorder what another component is rendering.
 - **Fix:** `[...(x ?? [])].sort(...)`. Mechanical, and worth doing everywhere in
   one pass with the comment already used on the dashboard.
-- **Status:** Open
+- **Status:** Fixed — all four pages, plus FEAT-04, each with the explanatory
+  comment. `npm run check:mutation` now guards them as a blocking CI gate.
 
 ### [ ] APP-05 — The family page is pre-filled with hardcoded personal data · Medium
 - **Principles:** P8

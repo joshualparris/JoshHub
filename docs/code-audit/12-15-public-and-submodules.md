@@ -91,6 +91,30 @@ finding needed evidence, it was measured.
   update `apps.ts` and the archive list to match.
 - **Status:** Open
 
+### [x] PUB-07 — A merge conflict sat committed in a game page for nine months · High
+- **Principles:** P1, P15
+- **Where:** `public/games/aa-game-adventure/index.html`
+- **Problem:** The file was committed with its conflict markers unresolved. It
+  began with a literal `<<<<<<< Updated upstream` line *before* the doctype,
+  contained both versions of the document separated by `=======`, and ended with
+  `>>>>>>> Stashed changes`. Introduced by `b554cdc` "Merge origin/main" on
+  2025-12-22 and unnoticed until 2026-09-09.
+- **Why it matters:** A leading text node before `<!DOCTYPE html>` drops the
+  browser into quirks mode and renders the marker on screen; the page then
+  declares two `<html>` documents. The game was almost certainly broken for the
+  whole nine months. It is also the clearest possible illustration of CFG-01 —
+  no check of any kind ran on this repository, so a file with conflict markers in
+  it deployed to production and stayed there.
+- **How it was resolved:** the two sides referenced *different* bundles.
+  `index-z2U9pfxf.js` (the "Updated upstream" side) does not exist in `assets/`;
+  `index-GwEn_Nhp.js` (the "Stashed changes" side) does. Neither side was
+  therefore simply correct: one had the working bundle, the other had the JoshHub
+  header integration whose `css/js` assets do exist. The resolution takes the
+  working bundle from one and the integration from the other, with a comment in
+  the file recording why.
+- **Status:** Fixed — and `npm run check:conflict-markers` is now a blocking CI
+  gate, so this class of failure cannot recur silently.
+
 ### [ ] PUB-05 — `experimental/hugcoach/README.md` is empty · Low
 - **Principles:** P9, P12
 - **Where:** `experimental/hugcoach/README.md`
