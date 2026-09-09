@@ -1,10 +1,6 @@
 import { useLiveQuery } from "dexie-react-hooks";
 
-import {
-  normalizeCalendarEvent,
-  normalizeInstant,
-  sortEventsByStart,
-} from "@/lib/calendar/time";
+import { normalizeCalendarEvent, normalizeInstant, sortEventsByStart } from "@/lib/calendar/time";
 
 import { db } from "./dexie";
 import { uuid } from "./id";

@@ -54,18 +54,11 @@ export function eventStartsAtMillis(event: Pick<CalendarEvent, "startIso">) {
   return new Date(event.startIso).getTime();
 }
 
-export function isUpcomingEvent(
-  event: Pick<CalendarEvent, "endIso">,
-  nowMillis = Date.now()
-) {
+export function isUpcomingEvent(event: Pick<CalendarEvent, "endIso">, nowMillis = Date.now()) {
   const endMillis = eventEndsAtMillis(event);
   return Number.isFinite(endMillis) && endMillis >= nowMillis;
 }
 
-export function sortEventsByStart<T extends Pick<CalendarEvent, "startIso">>(
-  events: T[]
-) {
-  return [...events].sort(
-    (a, b) => eventStartsAtMillis(a) - eventStartsAtMillis(b)
-  );
+export function sortEventsByStart<T extends Pick<CalendarEvent, "startIso">>(events: T[]) {
+  return [...events].sort((a, b) => eventStartsAtMillis(a) - eventStartsAtMillis(b));
 }
