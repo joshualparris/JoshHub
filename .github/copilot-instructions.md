@@ -29,12 +29,18 @@ The overriding rule is: **understand the owning subsystem before changing it. Do
   - Intended dependency direction from the audit: `app -> features -> components -> lib -> data`.
 
 - Scripts and developer workflows (run from repo root):
-  - Install: `npm install`
+  - Install: `npm ci` for a clean verification install; `npm install` when intentionally changing dependencies.
   - Dev server: `npm run dev` (Next dev on http://localhost:3000)
   - Build production: `npm run build`
   - Preview production: `npm run start`
-  - Lint: `npm run lint` (ESLint)
-  - Until audit finding CFG-02 is fixed, prefer a terminating test invocation such as `npx vitest run` rather than relying on `npm test` watch mode.
+  - Format check: `npm run format:check`
+  - Lint: `npm run lint` (ESLint + dependency boundaries)
+  - Tests: `npm test` (terminating `vitest run`); use `npm run test:watch` only for deliberate watch mode.
+  - Catalogue: `npm run validate:apps`
+  - Assets: `npm run check:assets`
+  - Mutation guard: `npm run check:mutation`
+  - Duplicate module guard: `npm run check:duplicate-modules`
+  - Conflict markers: `npm run check:conflict-markers`
 
 - Important conventions and patterns (do not invent alternatives without documenting the decision):
   - Catalog edits: modify `src/data/apps.ts` for new apps; keep `id` short/kebab-case and `primaryUrl` accurate.
