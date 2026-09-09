@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "generate-projects": "node ./scripts/generate-projects-inventory.js",
     "validate:apps": "tsx ./scripts/validate-apps.ts"
   },
