@@ -156,15 +156,15 @@ before being written up: it was suspected that `src/app/capture` reimplemented
 
 ## Rollup
 
-93 findings — 15 area reports plus one cross-cutting sweep.
+95 findings — 15 area reports plus one cross-cutting sweep.
 
 | Severity | Open | Fixed |
 |----------|------|-------|
 | Critical | 2 | 2 |
 | High | 19 | 1 |
-| Medium | 46 | 0 |
+| Medium | 48 | 0 |
 | Low | 23 | 0 |
-| **Total** | **90** | **3** |
+| **Total** | **92** | **3** |
 
 The two open Criticals are **CFG-01** (there is no CI, so nothing catches a
 broken build — production deploys failed for months undetected) and **COMP-01**

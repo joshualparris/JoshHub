@@ -1,7 +1,7 @@
 # Triage — what to fix, in what order
 
-The audit found **93 findings** — 3 already fixed, 90 open
-(2 Critical, 19 High, 46 Medium, 23 Low) across 15 areas plus a cross-cutting
+The audit found **95 findings** — 3 already fixed, 92 open
+(2 Critical, 19 High, 48 Medium, 23 Low) across 15 areas plus a cross-cutting
 sweep. This is the order to fix them in,
 ranked by blast radius: how many other things an issue breaks, how much damage it
 does to the principles, and how much other work depends on it being right.

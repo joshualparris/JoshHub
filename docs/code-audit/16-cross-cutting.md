@@ -177,6 +177,45 @@ Every number below is reproducible; the command is given with the finding.
   `*-client.tsx`, and let the P2 fixes remove the duplicate basenames naturally.
 - **Status:** Open
 
+### [ ] XC-08 — 50 bindings named `d`, `t`, `data` or similar · Medium
+- **Principles:** P4
+- **Where:** *(all of `src/`)*
+- **Problem:** 50 variable declarations use a single letter or a placeholder
+  word: `s`(5), `q`(5), `t`(4), `r`(4), `m`(4), `data`(4), `d`(4), plus `val`,
+  `item`, `obj` and others. These are declarations, not callback parameters —
+  `arr.map(x => …)` is fine and is excluded from the count.
+- **Why it matters:** This finding only exists because the P4 definition was
+  wrong until now: it checked *filenames*, so the repo could have scored full
+  marks on "boring, obvious names" while every local variable was called `d`.
+  The cost is concentrated in the longest functions (XC-01), which is exactly
+  where a reader most needs the names to carry meaning.
+- **Fix:** Rename opportunistically when touching a function, not in a sweep — a
+  bulk rename would be a large blind diff, which is how this repo acquired the
+  `ms`→`care2` damage in the first place.
+- **Verify:** the identifier script in `CONFORMANCE.md` under P4.
+- **Status:** Open
+
+### [ ] XC-09 — No referential integrity is checked anywhere · Medium
+- **Principles:** P11, P6
+- **Where:** `src/lib/db/schema.ts` — 9 reference fields across 6 relationships
+- **Problem:** The schema has foreign-key-shaped fields — `Note.lifeAreaSlug`,
+  `Note.nodeId`, `Task.projectId`, `RoutineRun.routineId`,
+  `LearnResource.topicIds[]`, `LearnNote/Session.topicId` and `.resourceId`,
+  `Pin.id` — and nothing validates any of them. IndexedDB has no foreign keys, so
+  the guarantee has to be written by hand, and it never was.
+- **Why it matters:** Deleting a routine leaves its runs pointing at nothing;
+  deleting a Learn topic orphans its notes and sessions. More immediately,
+  DATA-04 proposes renaming the life-area vocabulary — which would silently
+  orphan every note carrying an old `lifeAreaSlug`, with no error and no way to
+  notice.
+- **Why it was missed:** the P11 invariant list was written from memory rather
+  than derived from the schema. `CONFORMANCE.md` now records the derivation
+  method so the list can be regenerated instead of recalled.
+- **Fix:** Before DATA-04 renames anything, add a test asserting every stored
+  `lifeAreaSlug` resolves. Then delete-cascade or null-out the rest — routine
+  runs when a routine goes, Learn notes when a topic goes.
+- **Status:** Open
+
 ### [ ] XC-07 — Nothing prevents any of these from recurring · High
 - **Principles:** P11, P13, P15
 - **Where:** repository-wide

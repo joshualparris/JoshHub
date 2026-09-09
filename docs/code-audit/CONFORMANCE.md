@@ -99,19 +99,37 @@ more unrelated areas is a candidate.
 
 ## P4 — Boring, obvious names
 
-**Conformant when:** one file-naming convention per kind — kebab-case modules,
-PascalCase components, `*-client.tsx` for client components — and no two modules
-share a basename.
+> **This definition was wrong until 2026-09-09.** It only covered filenames.
+> The principle is about the names a reader actually meets — identifiers. The
+> old bar could be met in full while every variable in the repo was called `d`.
+
+**Conformant when:** *(both parts)*
+1. **Identifiers** say what they hold. No single-letter bindings outside a tight
+   idiomatic scope (a `map`/`filter`/`sort` callback parameter, or a loop index),
+   and no `data` / `val` / `res` / `tmp` / `obj` / `item` as a standalone name.
+2. **Filenames** follow one convention per kind — kebab-case modules,
+   PascalCase components, `*-client.tsx` for client components — and no two
+   modules share a basename.
 
 **Verify:**
 ```bash
+# 1. identifiers
+git ls-files 'src/**/*.ts' 'src/**/*.tsx' | grep -v '\.bak' | tr '\n' '\0' | xargs -0 \
+  grep -nE "\b(const|let) ([a-z]|data|val|res|tmp|temp|arr|obj|item|thing|stuff)\b" 2>/dev/null
+
+# 2. filenames
 git ls-files 'src/**' | grep -E "client" | sed 's|.*/||' | sort -u   # expect one pattern
 ```
+The identifier check reports declarations only, not callback parameters, so a
+hit is nearly always worth renaming. Read them; do not bulk-rename.
 
-**Now:** ❌ Four conventions in use (40 lowercase, 24 kebab, 21 camel, 6
-Pascal); five spellings of "client component". Open: XC-06, FEAT-03, SCAF-08.
+**Now:** ❌ **50 vague bindings** — `s`(5), `q`(5), `t`(4), `r`(4), `m`(4),
+`data`(4), `d`(4) and more. Four filename conventions in use (40 lowercase, 24
+kebab, 21 camel, 6 Pascal); five spellings of "client component".
+Open: XC-06, XC-08, FEAT-03, SCAF-08.
 
-**Enforced by:** nothing yet. Proposed: an ESLint filename rule.
+**Enforced by:** nothing yet. Proposed: `id-length` with an allowlist for
+callback parameters — but this one mostly needs review attention, not a rule.
 
 ---
 
@@ -182,21 +200,34 @@ switched off (CFG-05). Proposed: re-enable as a warning after APP-08.
 
 ## P7 — Separate UI from business logic
 
-**Conformant when:** no component contains a calculation worth testing. Unit
-conversion, aggregation, correlation and threshold logic live in pure modules
-with tests.
+> **This check undercounted by 3× until 2026-09-09.** It searched only for
+> arithmetic, so it found 7 files. Business logic that is not arithmetic —
+> ranking comparators, eligibility predicates, state rules — passed straight
+> through. The real number is 22.
+
+**Conformant when:** no component contains a decision worth testing. That covers
+three kinds, not one:
+- **calculation** — unit conversion, aggregation, correlation, thresholds;
+- **ranking** — sort comparators that encode priority (status order, stage
+  order, due-date-then-created);
+- **eligibility** — predicates deciding what counts as upcoming, overdue,
+  broken, matched or duplicate.
+
+All three belong in pure modules with tests.
 
 **Verify:**
 ```bash
-git grep -l "useMemo" -- src/app src/components | \
-  xargs grep -lE "\.reduce\(|\/ 1000|\* 60|toFixed\(" 
+git grep -lE "\.reduce\(|\/ 1000|\* 60|toFixed\(|sort\(\(a, b\)|\.filter\(\(\w+\) =>.*(===|!==|>=|<=)" \
+  -- src/app src/components
 ```
-Expect no output; each hit is a candidate for extraction.
+Expect no output; each hit is a candidate for extraction. This is a review
+prompt, not a gate — a trivial `filter(x => x.id === id)` is fine, a predicate
+encoding a business rule is not.
 
-**Now:** ❌ 7 screens carry inline calculation. Open: XC-02, LIB-01, COMP-06.
+**Now:** ❌ **22 files** carry inline logic — 7 arithmetic, 15 more with ranking
+or eligibility rules. Open: XC-02, LIB-01, COMP-06.
 
-**Enforced by:** nothing yet — it needs judgement. The grep above is the review
-prompt, not a gate.
+**Enforced by:** nothing yet — it needs judgement.
 
 ---
 
@@ -260,8 +291,21 @@ whole list.
 
 ## P11 — Protect important operations with invariants
 
+> **This list had no method until 2026-09-09.** It was the seven invariants the
+> audit happened to trip over. Deriving them from the schema instead adds a
+> whole category that was missing entirely: **referential integrity**. Six
+> foreign-key-like fields exist and not one had an invariant.
+
 **Conformant when:** every operation that can destroy or misrepresent data has
-its invariant written down *and tested*. Current list:
+its invariant written down *and tested*.
+
+**How the list is derived** — so it can be regenerated rather than remembered:
+1. Every operation that writes or deletes across more than one table.
+2. Every field in `schema.ts` that references another table's key
+   (`grep -nE "(lifeAreaSlug|projectId|nodeId|topicId|resourceId|routineId)" src/lib/db/schema.ts`).
+3. Every pure calculation whose output a user acts on.
+
+**Behavioural invariants**
 
 | Operation | Invariant | Tested |
 |---|---|---|
@@ -273,10 +317,24 @@ its invariant written down *and tested*. Current list:
 | Event times | `startIso`/`endIso` are always true ISO instants | ❌ APP-01 |
 | CSV import | quoted fields containing commas parse correctly | ❌ COMP-06 |
 
+**Referential invariants** — none currently tested, none previously listed
+
+| Field | Must reference | Tested |
+|---|---|---|
+| `Note.lifeAreaSlug` | a slug in `data/life.ts` | ❌ |
+| `Note.nodeId` | a node in the everything-map TOC | ❌ |
+| `Task.projectId` | a project — currently misused to hold a life area (SCAF-05) | ❌ |
+| `RoutineRun.routineId` | an existing `routines` row | ❌ |
+| `LearnResource.topicIds[]` | existing `learnTopics` rows | ❌ |
+| `LearnNote/Session.topicId`, `.resourceId` | existing rows | ❌ |
+| `Pin.id` | a life-area slug (and, after FEAT-02, an app id) | ❌ |
+
 **Verify:** `npx vitest run` plus `npm run validate:apps` plus
 `node scripts/check-assets.js`.
 
-**Now:** ⚠️ 2 of 7 invariants tested; 2 more have tools that CI never runs.
+**Now:** ❌ 2 of 14 invariants tested. The referential half is entirely
+unprotected — nothing stops a note pointing at a life area that no longer
+exists, which matters because DATA-04 may rename every slug.
 
 **Enforced by:** partially — the two tested ones. CFG-01 closes the next two.
 
@@ -380,7 +438,7 @@ hang CI (CFG-02).
 | P8 | No fake-as-live | ⚠️ | ✗ |
 | P9 | Delete dead code | ❌ | ✗ |
 | P10 | Don't mutate | ❌ | ✗ |
-| P11 | Invariants | ⚠️ 2/7 | ◐ |
+| P11 | Invariants | ❌ 2/14 | ◐ |
 | P12 | Comments explain why | ❌ | n/a |
 | P13 | Consistent structure | ❌ | ✗ |
 | P14 | Directional dependencies | ❌ | ✗ |
