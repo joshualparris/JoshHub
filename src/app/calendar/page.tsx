@@ -7,11 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  isUpcomingEvent,
-  localDateTimeInputToIso,
-  sortEventsByStart,
-} from "@/lib/calendar/time";
+import { isUpcomingEvent, localDateTimeInputToIso, sortEventsByStart } from "@/lib/calendar/time";
 import { createEvent, useEvents } from "@/lib/db/events";
 
 export default function CalendarPage() {

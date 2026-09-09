@@ -39,9 +39,7 @@ function parseProperty(line: string): IcsProperty | null {
   for (const rawParam of rawParams) {
     const equals = rawParam.indexOf("=");
     if (equals > 0) {
-      params[rawParam.slice(0, equals).toUpperCase()] = rawParam.slice(
-        equals + 1
-      );
+      params[rawParam.slice(0, equals).toUpperCase()] = rawParam.slice(equals + 1);
     }
   }
 
@@ -49,9 +47,7 @@ function parseProperty(line: string): IcsProperty | null {
 }
 
 function parseParts(value: string): IcsDateParts | null {
-  const match = value.match(
-    /^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?)?(Z)?$/
-  );
+  const match = value.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?)?(Z)?$/);
   if (!match) return null;
   return {
     year: Number(match[1]),
@@ -118,14 +114,7 @@ export function icsDateToIso(value: string, timeZone?: string) {
 
   if (parts.utc) {
     return new Date(
-      Date.UTC(
-        parts.year,
-        parts.month - 1,
-        parts.day,
-        parts.hour,
-        parts.minute,
-        parts.second
-      )
+      Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second)
     ).toISOString();
   }
 

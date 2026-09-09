@@ -4,9 +4,10 @@ import { icsDateToIso, parseIcsEvents, unfoldIcsLines } from "./ics";
 
 describe("ICS parsing", () => {
   it("unfolds continuation lines before parsing", () => {
-    expect(
-      unfoldIcsLines("SUMMARY:Long event\r\n title\r\nLOCATION:Hall")
-    ).toEqual(["SUMMARY:Long eventtitle", "LOCATION:Hall"]);
+    expect(unfoldIcsLines("SUMMARY:Long event\r\n title\r\nLOCATION:Hall")).toEqual([
+      "SUMMARY:Long eventtitle",
+      "LOCATION:Hall",
+    ]);
   });
 
   it("parses UTC VEVENT fields and keeps colons inside values", () => {
@@ -36,9 +37,7 @@ describe("ICS parsing", () => {
   });
 
   it("honours TZID instead of treating zoned local time as UTC", () => {
-    expect(icsDateToIso("20260909T143000", "Australia/Sydney")).toBe(
-      "2026-09-09T04:30:00.000Z"
-    );
+    expect(icsDateToIso("20260909T143000", "Australia/Sydney")).toBe("2026-09-09T04:30:00.000Z");
   });
 
   it("handles a folded summary in a real VEVENT", () => {

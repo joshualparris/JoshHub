@@ -17,9 +17,7 @@ afterEach(() => {
 describe("calendar time invariants", () => {
   it("converts datetime-local wall time to a real instant exactly once", () => {
     process.env.TZ = "Australia/Sydney";
-    expect(localDateTimeInputToIso("2026-09-09T14:30")).toBe(
-      "2026-09-09T04:30:00.000Z"
-    );
+    expect(localDateTimeInputToIso("2026-09-09T14:30")).toBe("2026-09-09T04:30:00.000Z");
   });
 
   it("round-trips an instant through a local datetime input", () => {
@@ -30,22 +28,14 @@ describe("calendar time invariants", () => {
 
   it("normalizes legacy local strings and preserves explicit instants", () => {
     process.env.TZ = "Australia/Sydney";
-    expect(normalizeInstant("2026-09-09T14:30")).toBe(
-      "2026-09-09T04:30:00.000Z"
-    );
-    expect(normalizeInstant("2026-09-09T04:30:00Z")).toBe(
-      "2026-09-09T04:30:00.000Z"
-    );
+    expect(normalizeInstant("2026-09-09T14:30")).toBe("2026-09-09T04:30:00.000Z");
+    expect(normalizeInstant("2026-09-09T04:30:00Z")).toBe("2026-09-09T04:30:00.000Z");
   });
 
   it("checks upcoming status numerically rather than comparing mixed strings", () => {
     const now = Date.parse("2026-09-09T04:30:00.000Z");
-    expect(
-      isUpcomingEvent({ endIso: "2026-09-09T04:31:00.000Z" }, now)
-    ).toBe(true);
-    expect(
-      isUpcomingEvent({ endIso: "2026-09-09T04:29:00.000Z" }, now)
-    ).toBe(false);
+    expect(isUpcomingEvent({ endIso: "2026-09-09T04:31:00.000Z" }, now)).toBe(true);
+    expect(isUpcomingEvent({ endIso: "2026-09-09T04:29:00.000Z" }, now)).toBe(false);
   });
 
   it("sorts without mutating the source array", () => {
