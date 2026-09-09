@@ -7,6 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  isUpcomingEvent,
+  localDateTimeInputToIso,
+  sortEventsByStart,
+} from "@/lib/calendar/time";
 import { createEvent, useEvents } from "@/lib/db/events";
 
 export default function CalendarPage() {
@@ -16,31 +21,46 @@ export default function CalendarPage() {
   const [end, setEnd] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
+  const [error, setError] = useState("");
 
   const upcoming = useMemo(
-    () =>
-      (events ?? [])
-        .filter((e) => e.endIso >= new Date().toISOString())
-        .sort((a, b) => a.startIso.localeCompare(b.startIso)),
+    () => sortEventsByStart((events ?? []).filter((event) => isUpcomingEvent(event))),
     [events]
   );
 
   async function onAdd(e: FormEvent) {
     e.preventDefault();
-    if (!title || !start || !end) return;
-    await createEvent({
-      title,
-      startIso: start,
-      endIso: end,
-      location,
-      notes,
-      tags: [],
-    });
-    setTitle("");
-    setStart("");
-    setEnd("");
-    setLocation("");
-    setNotes("");
+    setError("");
+
+    if (!title.trim() || !start || !end) {
+      setError("Title, start and end are required.");
+      return;
+    }
+
+    try {
+      const startIso = localDateTimeInputToIso(start);
+      const endIso = localDateTimeInputToIso(end);
+      if (Date.parse(endIso) <= Date.parse(startIso)) {
+        setError("End time must be after start time.");
+        return;
+      }
+
+      await createEvent({
+        title: title.trim(),
+        startIso,
+        endIso,
+        location: location.trim() || undefined,
+        notes: notes.trim() || undefined,
+        tags: [],
+      });
+      setTitle("");
+      setStart("");
+      setEnd("");
+      setLocation("");
+      setNotes("");
+    } catch {
+      setError("Enter valid start and end times.");
+    }
   }
 
   return (
@@ -71,6 +91,11 @@ export default function CalendarPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
+            {error && (
+              <p className="text-sm text-red-700 dark:text-red-300 md:col-span-2" role="alert">
+                {error}
+              </p>
+            )}
             <div className="md:col-span-2">
               <Button type="submit">Add event</Button>
             </div>

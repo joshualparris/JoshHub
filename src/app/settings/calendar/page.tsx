@@ -5,7 +5,8 @@ import { z } from "zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/ui/page-header";
-import { createEvent, parseIcsEvents } from "@/lib/db/events";
+import { parseIcsEvents } from "@/lib/calendar/ics";
+import { createEvent } from "@/lib/db/events";
 
 const icsSchema = z.object({
   lines: z.array(z.string()),
