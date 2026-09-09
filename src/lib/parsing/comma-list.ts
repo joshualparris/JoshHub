@@ -3,12 +3,12 @@ export function parseCommaSeparatedList(value: string): string[] {
   const seen = new Set<string>();
   const result: string[] = [];
 
-  for (const rawItem of value.split(",")) {
-    const item = rawItem.trim();
-    if (!item) continue;
-    if (seen.has(item)) continue;
-    seen.add(item);
-    result.push(item);
+  for (const rawValue of value.split(",")) {
+    const trimmedValue = rawValue.trim();
+    if (!trimmedValue) continue;
+    if (seen.has(trimmedValue)) continue;
+    seen.add(trimmedValue);
+    result.push(trimmedValue);
   }
 
   return result;
