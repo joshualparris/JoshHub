@@ -52,12 +52,13 @@
   };
 
   const legacyState = parseStored(legacyKey);
-  const state = Object.assign({}, legacyState, parseStored(key));
+  const v2State = parseStored(key);
+  const state = Object.assign({}, legacyState, v2State);
   state.recent = Array.isArray(state.recent) ? state.recent : [];
   state.favourites = Array.isArray(state.favourites) ? state.favourites : [];
-  // The dock is deliberately opt-in. Existing v1 users also start v2 with it off
-  // until they explicitly enable it in the app's Settings UI.
-  state.enabled = typeof state.enabled === 'boolean' ? state.enabled : cfg.defaultOn === 'true';
+  // v1 episode/favourite state may migrate, but the visibility preference does not.
+  // v2 is deliberately opt-in unless this exact v2 state has already been enabled.
+  state.enabled = typeof v2State.enabled === 'boolean' ? v2State.enabled : cfg.defaultOn === 'true';
 
   const write = () => {
     try {
