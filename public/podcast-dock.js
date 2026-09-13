@@ -121,6 +121,8 @@
     #jpd-panel{display:none;margin-bottom:8px;border-radius:18px;padding:14px}
     #josh-podcast-dock[data-expanded=true] #jpd-panel{display:block}
     #josh-podcast-dock[data-hidden=true]{display:none}
+    #jpd-reopen{position:fixed;z-index:2147481999;right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));border:1px solid rgba(148,163,184,.45);border-radius:999px;padding:9px 12px;background:rgba(15,23,42,.94);color:#fff;box-shadow:0 8px 26px rgba(2,6,23,.28);backdrop-filter:blur(10px);cursor:pointer;font:700 12px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif}
+    #jpd-reopen[hidden]{display:none}
     #jpd-head{display:flex;gap:8px;align-items:center;margin-bottom:10px}
     #jpd-topic{max-width:200px;background:#0b1220;color:#fff;border:1px solid #475569;border-radius:10px;padding:8px}
     #jpd-favourite{margin-left:auto;background:transparent;color:#fff;border:1px solid #475569;border-radius:10px;padding:8px 10px;cursor:pointer}
@@ -135,8 +137,8 @@
     #jpd-app-settings .jpd-settings-title{display:block;font-weight:750;margin:0 0 2px}
     #jpd-app-settings .jpd-settings-help{display:block;opacity:.72;font-size:12px}
     #jpd-app-settings input{width:20px;height:20px;flex:0 0 auto;accent-color:currentColor}
-    #josh-podcast-dock button:focus-visible,#josh-podcast-dock a:focus-visible,#josh-podcast-dock select:focus-visible,#jpd-app-settings input:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}
-    @media(max-width:640px){#josh-podcast-dock{width:calc(100vw - 10px);bottom:max(5px,env(safe-area-inset-bottom))}}
+    #josh-podcast-dock button:focus-visible,#josh-podcast-dock a:focus-visible,#josh-podcast-dock select:focus-visible,#jpd-app-settings input:focus-visible,#jpd-reopen:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}
+    @media(max-width:640px){#josh-podcast-dock{width:calc(100vw - 10px);bottom:max(5px,env(safe-area-inset-bottom))}#jpd-reopen{right:max(6px,env(safe-area-inset-right));bottom:max(6px,env(safe-area-inset-bottom))}}
     @media(prefers-reduced-motion:reduce){#josh-podcast-dock *{transition:none!important}}
   `;
   document.head.appendChild(style);
@@ -166,6 +168,14 @@
       <button id="jpd-close" type="button" aria-label="Close podcast dock" title="Close podcast dock">×</button>
     </div>`;
   document.body.appendChild(dock);
+
+  const reopen = document.createElement('button');
+  reopen.id = 'jpd-reopen';
+  reopen.type = 'button';
+  reopen.textContent = '⚙ Podcast settings';
+  reopen.setAttribute('aria-label', 'Podcast settings. Podcasts are off; turn them on.');
+  reopen.hidden = true;
+  document.body.appendChild(reopen);
 
   const $ = (id) => dock.querySelector('#' + id);
   const main = $('jpd-main');
@@ -267,8 +277,10 @@
     const quiet = selectors.some((selector) => {
       try { return !!document.querySelector(selector); } catch (_) { return false; }
     });
-    const hidden = !state.enabled || runtimeHidden || document.body.dataset.podcastHidden === 'true';
+    const appHidden = runtimeHidden || document.body.dataset.podcastHidden === 'true';
+    const hidden = !state.enabled || appHidden;
     dock.dataset.hidden = hidden ? 'true' : 'false';
+    reopen.hidden = !!state.enabled || appHidden || quiet;
     if (quiet || hidden) setExpanded(false);
   }
 
@@ -350,6 +362,7 @@
     else setExpanded(!expanded);
   });
   close.addEventListener('click', () => setEnabled(false));
+  reopen.addEventListener('click', () => setEnabled(true));
   fav.addEventListener('click', () => {
     const ep = current();
     if (!ep) return;
