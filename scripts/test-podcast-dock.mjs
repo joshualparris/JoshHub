@@ -28,13 +28,19 @@ assert.equal(core.normaliseEpisodes(malformed).length, 1, 'Malformed entries sho
 
 const memory = new Map();
 const storage = { getItem: (key) => memory.get(key) ?? null, setItem: (key, value) => memory.set(key, value) };
-const state = {currentByTopic:{it:'abc'}, recentByTopic:{it:['abc']}, favourites:['abc'], lastTopic:'it'};
+const state = {currentByTopic:{it:'abc'}, recentByTopic:{it:['abc']}, favourites:['abc'], lastTopic:'it', enabled:true};
 assert.equal(core.writeState(storage, state), true, 'State should persist');
 assert.deepEqual(core.readState(storage), state, 'Persisted state should round-trip');
+
+memory.set('josh-podcast-dock/v1', JSON.stringify({currentByTopic:{},recentByTopic:{},favourites:[],lastTopic:'faith',enabled:false}));
+assert.equal(core.readState(storage).enabled, false, 'Disabled player preference should persist');
 
 const source = fs.readFileSync(path.join(root, 'public', 'podcast-dock.js'), 'utf8');
 assert.match(source, /@media\(max-width:640px\)/, 'Dock should include a mobile layout');
 assert.match(source, /aria-label/, 'Dock should include accessible labels');
 assert.match(source, /prefers-reduced-motion/, 'Dock should respect reduced-motion preferences');
+assert.match(source, /paddingBottom/, 'Dock should reserve document space instead of obscuring bottom content');
+assert.match(source, /Podcast settings/, 'Dock should expose a podcast settings surface');
+assert.match(source, /data-jpd-enabled-control/, 'Settings pages should be able to expose the on/off control');
 
 console.log('Josh Podcast Dock contract tests passed for 9 topics / 225 episodes.');
