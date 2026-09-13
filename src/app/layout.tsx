@@ -100,6 +100,12 @@ export default function RootLayout({
             </div>
           </main>
         </div>
+        <script
+          src="/podcast-dock.js"
+          data-topics="it,software,research,faith,relationships,career,decision,homelab,horses"
+          data-default-topic="faith"
+          defer
+        />
       </body>
     </html>
   );
