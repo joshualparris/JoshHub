@@ -20,6 +20,7 @@
   const label = cfg.label || labels[bank] || '🎧 Listen to a different podcast';
   const key = 'josh-podcast-dock/universal/v1/' + bank;
   const base = new URL('.', script.src || document.baseURI);
+  const onlyPaths = String(cfg.onlyPaths || '').split('|').map(v => v.trim()).filter(Boolean);
   let episodes = [], current = null, expanded = false, hidden = false;
   const read = () => { try { return JSON.parse(localStorage.getItem(key) || '{}') || {}; } catch (_) { return {}; } };
   const state = read(); state.recent = Array.isArray(state.recent) ? state.recent : []; state.favourites = Array.isArray(state.favourites) ? state.favourites : [];
@@ -33,6 +34,10 @@
     if (!pool.length) return null;
     return pool[Math.floor(Math.random() * pool.length)];
   };
+  const pathAllowed = () => !onlyPaths.length || onlyPaths.some(rule => {
+    if (rule.endsWith('*')) return location.pathname.startsWith(rule.slice(0, -1));
+    return location.pathname === rule;
+  });
   const style = document.createElement('style');
   style.textContent = '#josh-universal-podcast{position:fixed;z-index:2147482000;left:50%;bottom:max(8px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(620px,calc(100vw - 16px));font:14px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}#jup-bar,#jup-panel{background:rgba(15,23,42,.96);border:1px solid rgba(148,163,184,.35);box-shadow:0 12px 40px rgba(2,6,23,.35);backdrop-filter:blur(12px)}#jup-bar{display:flex;gap:8px;align-items:center;border-radius:999px;padding:8px}#jup-main{flex:1;border:0;border-radius:999px;padding:11px 14px;background:#f8fafc;color:#0f172a;font-weight:750;text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#jup-toggle{width:40px;height:40px;border:0;border-radius:50%;background:#1e293b;color:#fff;cursor:pointer}#jup-panel{display:none;margin-bottom:8px;border-radius:18px;padding:14px}#josh-universal-podcast[data-expanded=true] #jup-panel{display:block}#jup-title{font-size:16px;margin:0 0 4px}#jup-meta{color:#cbd5e1;font-size:12px;margin:0 0 10px}#jup-frame{width:100%;height:152px;border:0;border-radius:12px;background:#0b1220}#jup-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}#jup-actions button,#jup-actions a{border:1px solid #475569;border-radius:10px;padding:8px 10px;background:#1e293b;color:#fff;text-decoration:none;cursor:pointer;font:inherit}#josh-universal-podcast[data-hidden=true]{display:none}#josh-universal-podcast button:focus-visible,#josh-universal-podcast a:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}@media(max-width:640px){#josh-universal-podcast{width:calc(100vw - 10px);bottom:max(5px,env(safe-area-inset-bottom))}}@media(prefers-reduced-motion:reduce){#josh-universal-podcast *{transition:none!important}}';
   document.head.appendChild(style);
@@ -50,10 +55,17 @@
   const choose = () => { const ep=pick(); if(!ep){render(null);return;} state.current=ep.id; state.recent=[ep.id].concat(state.recent||[]).filter((id,i,a)=>a.indexOf(id)===i).slice(0,6); write(); render(ep); setExpanded(true); };
   main.addEventListener('click',choose); next.addEventListener('click',choose); toggle.addEventListener('click',()=>{ if(!current&&!expanded) choose(); else setExpanded(!expanded); });
   fav.addEventListener('click',()=>{if(!current)return; state.favourites=state.favourites.includes(current.id)?state.favourites.filter(id=>id!==current.id):state.favourites.concat(current.id); write(); render(current);});
-  const refresh = () => { const selectors=String(cfg.quietSelectors||'').split(',').map(s=>s.trim()).filter(Boolean); const quiet=selectors.some(sel=>{try{return !!document.querySelector(sel);}catch(_){return false;}}); dock.dataset.hidden=(hidden||document.body.dataset.podcastHidden==='true')?'true':'false'; if(quiet)setExpanded(false); };
+  const refresh = () => {
+    const selectors=String(cfg.quietSelectors||'').split(',').map(s=>s.trim()).filter(Boolean);
+    const quiet=selectors.some(sel=>{try{return !!document.querySelector(sel);}catch(_){return false;}});
+    const shouldHide=hidden||document.body.dataset.podcastHidden==='true'||!pathAllowed();
+    dock.dataset.hidden=shouldHide?'true':'false';
+    if(quiet||shouldHide)setExpanded(false);
+  };
   if(cfg.quietOnInput==='true'){document.addEventListener('focusin',e=>{const el=e.target;if(el&&el.matches&&el.matches('textarea,[contenteditable=true],input:not([type=button]):not([type=checkbox]):not([type=radio])'))setExpanded(false);});}
   document.addEventListener('play',e=>{if(e.target&&/^(AUDIO|VIDEO)$/.test(e.target.tagName||''))setExpanded(false);},true);
   document.addEventListener('josh-podcast:hide',()=>{hidden=true;refresh();}); document.addEventListener('josh-podcast:show',()=>{hidden=false;refresh();});
+  window.addEventListener('popstate',refresh); window.addEventListener('hashchange',refresh); document.addEventListener('click',()=>setTimeout(refresh,0),true);
   if(window.MutationObserver)new MutationObserver(refresh).observe(document.body,{attributes:true,subtree:true,attributeFilter:['data-podcast-hidden','class']});
   fetch(new URL('podcasts/'+bank+'.json',base)).then(r=>{if(!r.ok)throw new Error(String(r.status));return r.json();}).then(data=>{const seen=new Set();episodes=(Array.isArray(data)?data:[]).filter(ep=>valid(ep)&&!seen.has(ep.id)&&seen.add(ep.id)); const saved=episodes.find(ep=>ep.id===state.current); render(saved||null); refresh();}).catch(()=>render(null));
 })();
