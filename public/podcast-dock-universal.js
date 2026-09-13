@@ -105,14 +105,16 @@
     #jup-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
     #jup-actions button,#jup-actions a{border:1px solid #475569;border-radius:10px;padding:8px 10px;background:#1e293b;color:#fff;text-decoration:none;cursor:pointer;font:inherit}
     #josh-universal-podcast[data-hidden=true]{display:none}
-    #josh-universal-podcast button:focus-visible,#josh-universal-podcast a:focus-visible,#jup-settings-row input:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}
+    #jup-reopen{position:fixed;z-index:2147481999;right:max(10px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));border:1px solid rgba(148,163,184,.45);border-radius:999px;padding:9px 12px;background:rgba(15,23,42,.94);color:#fff;box-shadow:0 8px 26px rgba(2,6,23,.28);backdrop-filter:blur(10px);cursor:pointer;font:700 12px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif}
+    #jup-reopen[hidden]{display:none}
+    #josh-universal-podcast button:focus-visible,#josh-universal-podcast a:focus-visible,#jup-settings-row input:focus-visible,#jup-reopen:focus-visible{outline:3px solid #38bdf8;outline-offset:2px}
     #jup-settings-row{box-sizing:border-box;margin:16px 0;padding:14px 16px;border:1px solid rgba(148,163,184,.38);border-radius:14px;background:rgba(148,163,184,.08);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:inherit}
     #jup-settings-row .jup-settings-line{display:flex;align-items:center;justify-content:space-between;gap:16px}
     #jup-settings-row .jup-settings-copy{min-width:0}
     #jup-settings-row .jup-settings-title{display:block;font-weight:750;margin:0 0 2px}
     #jup-settings-row .jup-settings-help{display:block;opacity:.72;font-size:12px}
     #jup-settings-row input{width:20px;height:20px;flex:0 0 auto;accent-color:currentColor}
-    @media(max-width:640px){#josh-universal-podcast{width:calc(100vw - 10px);bottom:max(5px,env(safe-area-inset-bottom))}}
+    @media(max-width:640px){#josh-universal-podcast{width:calc(100vw - 10px);bottom:max(5px,env(safe-area-inset-bottom))}#jup-reopen{right:max(6px,env(safe-area-inset-right));bottom:max(6px,env(safe-area-inset-bottom))}}
     @media(prefers-reduced-motion:reduce){#josh-universal-podcast *{transition:none!important}}
   `;
   document.head.appendChild(style);
@@ -140,6 +142,14 @@
     </div>
   `;
   document.body.appendChild(dock);
+
+  const reopen = document.createElement('button');
+  reopen.id = 'jup-reopen';
+  reopen.type = 'button';
+  reopen.textContent = '⚙ Podcast settings';
+  reopen.setAttribute('aria-label', 'Podcast settings. Podcasts are off; turn them on.');
+  reopen.hidden = true;
+  document.body.appendChild(reopen);
 
   const $ = (id) => dock.querySelector('#' + id);
   const main = $('jup-main');
@@ -217,13 +227,14 @@
         return false;
       }
     });
-    const shouldHide =
-      !state.enabled ||
+    const appHidden =
       runtimeHidden ||
       document.body.dataset.podcastHidden === 'true' ||
       !pathAllowed();
+    const shouldHide = !state.enabled || appHidden;
 
     dock.dataset.hidden = shouldHide ? 'true' : 'false';
+    reopen.hidden = !!state.enabled || appHidden || quiet;
     if (quiet || shouldHide) setExpanded(false);
   };
 
@@ -269,6 +280,7 @@
     else setExpanded(!expanded);
   });
   close.addEventListener('click', () => setEnabled(false));
+  reopen.addEventListener('click', () => setEnabled(true));
   fav.addEventListener('click', () => {
     if (!current) return;
     state.favourites = state.favourites.includes(current.id)
