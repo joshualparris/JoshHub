@@ -21,3 +21,5 @@ jobs:
         run: |
           npx prettier --write src/app/joshmemory/page.tsx src/app/api/joshmemory-status/route.ts
           git diff -- src/app/joshmemory/page.tsx src/app/api/joshmemory-status/route.ts
+      - name: Confirm probe only
+        run: echo "No repository writes are performed by this workflow."
