@@ -16,11 +16,7 @@ export async function GET() {
       memory: "historical continuity/context to verify",
       rule: "live Git/API/machine evidence overrides stored handoffs when they disagree",
     },
-    sharedRecordTypes: [
-      "session handoffs",
-      "durable project facts",
-      "accountability references",
-    ],
+    sharedRecordTypes: ["session handoffs", "durable project facts", "accountability references"],
     privatePayloadsExposedHere: false,
     source: "https://github.com/joshualparris/JoshMemory",
     history:
