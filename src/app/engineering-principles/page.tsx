@@ -72,13 +72,16 @@ export default function EngineeringPrinciplesPage() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-neutral-700 dark:text-slate-200">
           <blockquote className="border-l-4 border-sky-400 pl-4 text-base font-medium text-neutral-900 dark:text-slate-50">
-            Code should make its intent obvious to the next person who reads it — including you in six months, and including an AI agent with no memory of why any of this exists.
+            Code should make its intent obvious to the next person who reads it — including you in
+            six months, and including an AI agent with no memory of why any of this exists.
           </blockquote>
           <p>
-            Good engineering is not the production of code. It is the production of a system that can be understood, changed, verified, recovered and trusted.
+            Good engineering is not the production of code. It is the production of a system that
+            can be understood, changed, verified, recovered and trusted.
           </p>
           <p>
-            The complete normative standard lives in <code>codingprinciples.md</code>. This page is a readable summary and history, not a second authority.
+            The complete normative standard lives in <code>codingprinciples.md</code>. This page is
+            a readable summary and history, not a second authority.
           </p>
           <div className="flex flex-wrap gap-2 pt-1">
             <a
@@ -138,21 +141,30 @@ export default function EngineeringPrinciplesPage() {
         </CardHeader>
         <CardContent className="grid gap-4 text-sm md:grid-cols-3">
           <div className="rounded-lg border border-border p-4">
-            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">Tier 1 — Experimental</h3>
+            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">
+              Tier 1 — Experimental
+            </h3>
             <p className="mt-2 text-neutral-600 dark:text-slate-300">
-              Throwaway prototypes and experiments. Universal safety floor; no fabricated state, false verification or leaked secrets.
+              Throwaway prototypes and experiments. Universal safety floor; no fabricated state,
+              false verification or leaked secrets.
             </p>
           </div>
           <div className="rounded-lg border border-sky-300 bg-sky-50/60 p-4 dark:border-sky-800 dark:bg-sky-950/30">
-            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">Tier 2 — Durable personal</h3>
+            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">
+              Tier 2 — Durable personal
+            </h3>
             <p className="mt-2 text-neutral-600 dark:text-slate-300">
-              Persistent personal/family software. Adds traceable data, validation, migrations, recovery, destructive-path tests and maintained docs. JoshHub belongs here.
+              Persistent personal/family software. Adds traceable data, validation, migrations,
+              recovery, destructive-path tests and maintained docs. JoshHub belongs here.
             </p>
           </div>
           <div className="rounded-lg border border-border p-4">
-            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">Tier 3 — High consequence</h3>
+            <h3 className="font-semibold text-neutral-900 dark:text-slate-50">
+              Tier 3 — High consequence
+            </h3>
             <p className="mt-2 text-neutral-600 dark:text-slate-300">
-              Health, finance, workplace/client data, authentication and other people's private data. The full standard applies.
+              Health, finance, workplace/client data, authentication and other people's private
+              data. The full standard applies.
             </p>
           </div>
         </CardContent>
@@ -175,7 +187,9 @@ export default function EngineeringPrinciplesPage() {
               <tbody>
                 {rankings.map(([version, score, reason]) => (
                   <tr key={version} className="border-b border-border/70 last:border-0">
-                    <td className="py-3 pr-4 font-medium text-neutral-900 dark:text-slate-50">{version}</td>
+                    <td className="py-3 pr-4 font-medium text-neutral-900 dark:text-slate-50">
+                      {version}
+                    </td>
                     <td className="py-3 pr-4">{score}/100</td>
                     <td className="py-3 text-neutral-600 dark:text-slate-300">{reason}</td>
                   </tr>
@@ -184,7 +198,8 @@ export default function EngineeringPrinciplesPage() {
             </table>
           </div>
           <p className="mt-4 text-sm text-neutral-600 dark:text-slate-300">
-            97/100 is deliberately an on-paper score. The remaining points are earned by observing which rules agents actually follow or route around in real repositories.
+            97/100 is deliberately an on-paper score. The remaining points are earned by observing
+            which rules agents actually follow or route around in real repositories.
           </p>
         </CardContent>
       </Card>
@@ -195,10 +210,17 @@ export default function EngineeringPrinciplesPage() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-neutral-700 dark:text-slate-200">
           <p>
-            <strong>Historical snapshot — 12 September 2026:</strong> the GitHub connection reported 114 repositories with push/write access across owned and collaborator accounts. The rollout session successfully committed a principles file to the first 34 owned repositories before the session ended; no attempted write in that completed subset was rejected.
+            <strong>Historical snapshot — 12 September 2026:</strong> the GitHub connection reported
+            114 repositories with push/write access across owned and collaborator accounts. The
+            rollout session successfully committed a principles file to the first 34 owned
+            repositories before the session ended; no attempted write in that completed subset was
+            rejected.
           </p>
           <p>
-            This is intentionally labelled historical. It is <strong>not</strong> a claim that 34/114 is the current state today, nor that every early copy is byte-for-byte v5.1. Current portfolio coverage must be re-audited from GitHub before presenting a live compliance percentage.
+            This is intentionally labelled historical. It is <strong>not</strong> a claim that
+            34/114 is the current state today, nor that every early copy is byte-for-byte v5.1.
+            Current portfolio coverage must be re-audited from GitHub before presenting a live
+            compliance percentage.
           </p>
         </CardContent>
       </Card>
@@ -208,11 +230,19 @@ export default function EngineeringPrinciplesPage() {
           <CardTitle>JoshHub authority</CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-neutral-700 dark:text-slate-200">
-          <p><strong>Canonical repository:</strong> joshualparris/JoshHub</p>
-          <p><strong>Assurance tier:</strong> Tier 2 — durable personal software with persistent IndexedDB/Dexie data.</p>
-          <p><strong>Universal standard:</strong> codingprinciples.md v5.1.</p>
           <p>
-            <strong>Existing 18-principle audit:</strong> still useful as JoshHub-specific conformance evidence, but it predates v5.1 and is not a competing universal standard.
+            <strong>Canonical repository:</strong> joshualparris/JoshHub
+          </p>
+          <p>
+            <strong>Assurance tier:</strong> Tier 2 — durable personal software with persistent
+            IndexedDB/Dexie data.
+          </p>
+          <p>
+            <strong>Universal standard:</strong> codingprinciples.md v5.1.
+          </p>
+          <p>
+            <strong>Existing 18-principle audit:</strong> still useful as JoshHub-specific
+            conformance evidence, but it predates v5.1 and is not a competing universal standard.
           </p>
         </CardContent>
       </Card>

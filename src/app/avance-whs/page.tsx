@@ -203,9 +203,7 @@ export default function AvanceWhsPage() {
         </Panel>
 
         <Panel title="Reporting">
-          <p>
-            Report work-related injury or illness promptly to Andrew Johnston or Joshua Parris.
-          </p>
+          <p>Report work-related injury or illness promptly to Andrew Johnston or Joshua Parris.</p>
           <p>
             <strong>SafeWork notifiable incidents:</strong> 13 10 50
           </p>

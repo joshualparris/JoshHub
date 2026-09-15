@@ -130,14 +130,17 @@ export default function PodcastRolloutPage() {
           Podcast dock rollout
         </h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-neutral-600 dark:text-slate-300">
-          The truthful cross-app status board. A green deployment or HTTP 200 is not enough: the actual app must render,
-          its compiled assets must load, the dock must appear only where intended, and mobile controls must remain usable.
+          The truthful cross-app status board. A green deployment or HTTP 200 is not enough: the
+          actual app must render, its compiled assets must load, the dock must appear only where
+          intended, and mobile controls must remain usable.
         </p>
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         <div className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-5 dark:border-emerald-900/70 dark:bg-emerald-950/30">
-          <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Working / repaired</div>
+          <div className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">
+            Working / repaired
+          </div>
           <div className="mt-2 text-3xl font-bold text-emerald-950 dark:text-emerald-100">
             {apps.filter((app) => app.status === "working" || app.status === "fixed").length}
           </div>
@@ -149,7 +152,9 @@ export default function PodcastRolloutPage() {
           </div>
         </div>
         <div className="rounded-2xl border border-amber-200 bg-amber-50/80 p-5 dark:border-amber-900/70 dark:bg-amber-950/30">
-          <div className="text-sm font-semibold text-amber-800 dark:text-amber-200">Not actually deployed</div>
+          <div className="text-sm font-semibold text-amber-800 dark:text-amber-200">
+            Not actually deployed
+          </div>
           <div className="mt-2 text-3xl font-bold text-amber-950 dark:text-amber-100">
             {apps.filter((app) => app.status === "not deployed").length}
           </div>
@@ -157,39 +162,64 @@ export default function PodcastRolloutPage() {
       </section>
 
       <section className="rounded-2xl border border-sky-100 bg-sky-50/70 p-5 dark:border-sky-900/60 dark:bg-sky-950/30">
-        <h2 className="text-lg font-semibold text-neutral-950 dark:text-white">The UpskillApp lesson</h2>
+        <h2 className="text-lg font-semibold text-neutral-950 dark:text-white">
+          The UpskillApp lesson
+        </h2>
         <p className="mt-2 text-sm leading-6 text-neutral-700 dark:text-slate-300">
-          The screenshot that triggered this audit showed a blank white app with only the podcast dock visible. GitHub Pages was
-          serving Vite source directly, including <code>/src/main.tsx</code>, instead of a compiled production build. That is why
-          every future test now checks meaningful rendered content rather than trusting the deployment badge alone.
+          The screenshot that triggered this audit showed a blank white app with only the podcast
+          dock visible. GitHub Pages was serving Vite source directly, including{" "}
+          <code>/src/main.tsx</code>, instead of a compiled production build. That is why every
+          future test now checks meaningful rendered content rather than trusting the deployment
+          badge alone.
         </p>
       </section>
 
       <section>
         <div className="mb-4 flex items-end justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">App-by-app audit</h2>
-            <p className="mt-1 text-sm text-neutral-600 dark:text-slate-300">Technical status captured from the related rollout chats and deployment checks.</p>
+            <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">
+              App-by-app audit
+            </h2>
+            <p className="mt-1 text-sm text-neutral-600 dark:text-slate-300">
+              Technical status captured from the related rollout chats and deployment checks.
+            </p>
           </div>
         </div>
         <div className="grid gap-3">
           {apps.map((app) => (
-            <article key={app.name} className="rounded-2xl border border-neutral-200 bg-white/80 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950/50">
+            <article
+              key={app.name}
+              className="rounded-2xl border border-neutral-200 bg-white/80 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-950/50"
+            >
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h3 className="font-semibold text-neutral-950 dark:text-white">{app.name}</h3>
-                <span className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${badgeClass(app.status)}`}>
+                <span
+                  className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${badgeClass(app.status)}`}
+                >
                   {app.status}
                 </span>
               </div>
-              <p className="mt-2 text-sm leading-6 text-neutral-600 dark:text-slate-300">{app.detail}</p>
+              <p className="mt-2 text-sm leading-6 text-neutral-600 dark:text-slate-300">
+                {app.detail}
+              </p>
               <div className="mt-3 flex flex-wrap gap-2 text-sm">
                 {app.href ? (
-                  <a className="rounded-full border border-neutral-200 px-3 py-1.5 font-medium hover:bg-neutral-50 dark:border-slate-700 dark:hover:bg-slate-900" href={app.href} target="_blank" rel="noreferrer">
+                  <a
+                    className="rounded-full border border-neutral-200 px-3 py-1.5 font-medium hover:bg-neutral-50 dark:border-slate-700 dark:hover:bg-slate-900"
+                    href={app.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Open live app ↗
                   </a>
                 ) : null}
                 {app.repo ? (
-                  <a className="rounded-full border border-neutral-200 px-3 py-1.5 font-medium hover:bg-neutral-50 dark:border-slate-700 dark:hover:bg-slate-900" href={app.repo} target="_blank" rel="noreferrer">
+                  <a
+                    className="rounded-full border border-neutral-200 px-3 py-1.5 font-medium hover:bg-neutral-50 dark:border-slate-700 dark:hover:bg-slate-900"
+                    href={app.repo}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     Open repo ↗
                   </a>
                 ) : null}
@@ -200,11 +230,22 @@ export default function PodcastRolloutPage() {
       </section>
 
       <section>
-        <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">Live test shortcuts</h2>
-        <p className="mt-1 text-sm text-neutral-600 dark:text-slate-300">Open these directly on your phone and verify the real app content as well as the podcast behaviour.</p>
+        <h2 className="text-xl font-semibold text-neutral-950 dark:text-white">
+          Live test shortcuts
+        </h2>
+        <p className="mt-1 text-sm text-neutral-600 dark:text-slate-300">
+          Open these directly on your phone and verify the real app content as well as the podcast
+          behaviour.
+        </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {liveTests.map(([name, href]) => (
-            <a key={href} href={href} target="_blank" rel="noreferrer" className="rounded-2xl border border-neutral-200 bg-white/80 p-4 font-medium text-neutral-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/50 dark:text-white">
+            <a
+              key={href}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-2xl border border-neutral-200 bg-white/80 p-4 font-medium text-neutral-900 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/50 dark:text-white"
+            >
               {name} <span aria-hidden>↗</span>
             </a>
           ))}
@@ -212,15 +253,23 @@ export default function PodcastRolloutPage() {
       </section>
 
       <section className="rounded-2xl border border-neutral-200 bg-neutral-50/80 p-5 dark:border-slate-800 dark:bg-slate-950/40">
-        <h2 className="text-lg font-semibold text-neutral-950 dark:text-white">Release checklist</h2>
+        <h2 className="text-lg font-semibold text-neutral-950 dark:text-white">
+          Release checklist
+        </h2>
         <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-6 text-neutral-700 dark:text-slate-300">
-          <li>Confirm the repo really contains the intended integration and its podcast TODO is truthful.</li>
+          <li>
+            Confirm the repo really contains the intended integration and its podcast TODO is
+            truthful.
+          </li>
           <li>Run the production build instead of serving Vite/React source directly.</li>
           <li>Confirm CI/deployment completes successfully.</li>
           <li>Open the real production URL and verify meaningful app content renders.</li>
           <li>Verify compiled JavaScript and CSS assets resolve.</li>
           <li>Check mobile layout so the dock never covers navigation or primary controls.</li>
-          <li>Confirm the dock defaults OFF, Settings enables it, × disables it, and the choice survives reload.</li>
+          <li>
+            Confirm the dock defaults OFF, Settings enables it, × disables it, and the choice
+            survives reload.
+          </li>
           <li>Check Spotify/deep links without assuming autoplay.</li>
           <li>Verify immersive/audio-heavy routes hide or collapse the dock as intended.</li>
           <li>Only then mark the deployment working.</li>
@@ -228,7 +277,8 @@ export default function PodcastRolloutPage() {
       </section>
 
       <p className="text-xs leading-5 text-neutral-500 dark:text-slate-400">
-        Full technical record: <code>docs/podcast-rollout-audit-2026-09-15.md</code>. Public repo documentation intentionally excludes private account and conversation data.
+        Full technical record: <code>docs/podcast-rollout-audit-2026-09-15.md</code>. Public repo
+        documentation intentionally excludes private account and conversation data.
       </p>
     </div>
   );
