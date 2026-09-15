@@ -2,7 +2,8 @@
 
 **Decision:** Add — highest priority / master implementation.  
 **Role:** JoshHub is the source of truth for the reusable Josh Podcast Dock and the cross-app topic catalogue.  
-**Current UX standard (13 September 2026):** the podcast dock is **OFF by default**, can be enabled from an app's **Settings** screen, and has a visible **×** that turns it back off. The choice is persisted locally per app/topic.
+**Current UX standard (13 September 2026):** the podcast dock is **OFF by default**, can be enabled from an app's **Settings** screen, and has a visible **×** that turns it back off. The choice is persisted locally per app/topic.  
+**Deployment QA standard (15 September 2026):** a green deployment or HTTP 200 does **not** count as working until the actual app renders meaningful content, compiled assets load, and the dock does not obstruct mobile controls.
 
 ## Completed core behaviour
 - [x] Shared universal podcast dock in `public/podcast-dock-universal.js`.
@@ -18,11 +19,29 @@
 - [x] Apps can provide an exact settings host with `data-settings-target` or their own checkbox/button with `data-josh-podcast-setting`.
 - [x] Public control API/events: `window.JoshPodcastDock.enable()`, `.disable()`, `.toggle()`, `.isEnabled()`, plus `josh-podcast:enable`, `josh-podcast:disable`, `josh-podcast:toggle` and `josh-podcast:enabled-change`.
 - [x] Existing `josh-podcast:hide` / `josh-podcast:show` remain temporary runtime visibility controls and do not overwrite the user's preference.
+- [x] Cross-app rollout and deployment findings are recorded in `docs/podcast-rollout-audit-2026-09-15.md` and exposed in JoshHub at `/podcast-rollout`.
 
 ## Remaining catalogue work
 - [ ] Continue expanding mature topic banks toward about 25 curated Spotify episodes each where useful.
 - [ ] Keep topic metadata fresh and remove broken/stale episode IDs when found.
 - [ ] Add repo-specific automated settings/dock regression tests to high-use apps where worthwhile.
+- [ ] Keep Nebula Dice and CanonRPG marked red until their hosting/deployment failures are resolved and verified end-to-end.
+- [ ] Do not list JoshPlatform or AppFactory as podcast-enabled until the feature is actually present in production.
+
+## Release verification contract
+Before an app is marked **working**:
+
+1. Confirm the repository contains the intended integration and its `podcasttodo.md` is truthful.
+2. Run the real production build rather than serving Vite/React source directly.
+3. Confirm CI/deployment succeeds.
+4. Open the production URL and verify meaningful app content renders, not merely the podcast dock or an empty root element.
+5. Verify compiled JS/CSS assets resolve.
+6. Check mobile layout and ensure the dock does not cover navigation, forms, game controls or primary actions.
+7. Confirm default OFF → Settings enable → × disable → reload persistence.
+8. Verify Spotify/deep links without assuming autoplay.
+9. Verify immersive/audio-heavy routes hide or collapse the dock when intended.
+
+The UpskillApp blank-screen incident is the reference failure mode for why this contract exists.
 
 ## Integration contract
 Load the shared script and choose a bank:
