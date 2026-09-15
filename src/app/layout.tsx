@@ -12,6 +12,7 @@ const navLinks = [
   { href: "/platform", label: "Platform" },
   { href: "/projects", label: "Projects" },
   { href: "/avance-whs", label: "Avance WHS" },
+  { href: "/engineering-principles", label: "Principles" },
   { href: "/archive", label: "Archive" },
   { href: "/map", label: "Everything Map" },
   { href: "/life", label: "Life" },
