@@ -3,10 +3,21 @@ JoshHub
 
 Personal browser-based dashboard for all your apps and games.
 
+**Engineering principles:** v5.1 (`codingprinciples.md`)  
+**Assurance tier:** 2 — durable personal software  
+**Canonical repository:** https://github.com/joshualparris/JoshHub  
+**Live principles page:** `/engineering-principles`
+
 ## Stack
 - Next.js (App Router) + TypeScript
 - Tailwind CSS
 - Lightweight shadcn-style UI components (Button/Card/Badge/Input)
+
+## Engineering standard
+- `codingprinciples.md` is the canonical cross-repository engineering standard.
+- `docs/ENGINEERING_PRINCIPLES_HISTORY.md` records the version rankings, rationale and historical rollout evidence.
+- `docs/code-audit/` remains the repository-specific conformance/audit system. Its 18 principles pre-date v5.1 and should be treated as a JoshHub-specific checklist rather than a competing universal standard.
+- AI agents must read `codingprinciples.md` before making changes.
 
 ## Getting started
 ```bash
@@ -32,6 +43,7 @@ npm run start  # preview production build
 - Home dashboard with quick launch, recent items, broken list, and pinned Life areas.
 - `/apps` directory: search, category/status filters, tags; `/apps/[id]` detail with links, embed toggle, status, tags, notes.
 - `/projects`: grouped by status with next actions.
+- `/engineering-principles`: readable v5.1 standard summary, version rankings, tier model and rollout evidence.
 - `/life` and `/life/[slug]`: Life areas with content, quick links, and pin-to-home.
 - Global search (Ctrl/Cmd + K) across routes, apps, and life pages.
 - Capture + local data (IndexedDB/Dexie):
