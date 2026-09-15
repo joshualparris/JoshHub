@@ -10,6 +10,8 @@ At the start of every substantial coding session, explicitly establish:
 
 - **Project:** JoshHub
 - **Repository:** `joshualparris/JoshHub`
+- **Canonical repository:** `joshualparris/JoshHub`
+- **Assurance tier:** Tier 2
 - **Branch:** normally `main`
 - **Starting commit:** record the exact SHA you began from
 - **Goal:** state the concrete task for this session
@@ -20,14 +22,17 @@ Do not mix context, assumptions, instructions, files, or decisions from other re
 
 Before rediscovering the repository, read:
 
-1. `AGENTS.md`
-2. `docs/PROJECT_STATE.md`
-3. `docs/code-audit/TRIAGE.md` when choosing stabilisation work
-4. `docs/code-audit/CONFORMANCE.md` before claiming the repository conforms to the engineering principles
-5. the relevant area report under `docs/code-audit/`
-6. `.github/copilot-instructions.md` for repository-specific conventions
+1. `codingprinciples.md` — canonical cross-repository engineering standard (v5.1)
+2. `AGENTS.md` — this repository-specific working protocol
+3. `docs/PROJECT_STATE.md`
+4. `docs/code-audit/TRIAGE.md` when choosing stabilisation work
+5. `docs/code-audit/CONFORMANCE.md` before claiming repository conformance
+6. the relevant area report under `docs/code-audit/`
+7. `.github/copilot-instructions.md` for repository-specific conventions
 
 Use git history and these documents to recover settled decisions. Do not make the user repeat decisions that are already recorded.
+
+If a repository-specific instruction conflicts with `codingprinciples.md`, follow the conflict order and blocker protocol in `codingprinciples.md`. Do not silently route around a MUST.
 
 ## 3. Understand before changing
 
@@ -48,26 +53,11 @@ Do **not** run blind global replacements across the repository. Every changed ma
 
 ## 4. Engineering principles
 
-All changes should move JoshHub toward the 18 principles defined in `docs/code-audit/README.md`:
+The normative engineering standard is **`codingprinciples.md` v5.1**. It defines MUST / SHOULD / MAY, assurance-tier applicability, the universal safety floor, canonical-repository governance, the agent blocker protocol, verification expectations, and LLM-specific safeguards.
 
-1. Understand before changing.
-2. One concept -> one source of truth.
-3. Keep related things together.
-4. Prefer boring, obvious names.
-5. Keep functions small and single-purpose.
-6. Make data flow explicit.
-7. Separate UI from business logic.
-8. Never pretend static data is live data.
-9. Do not leave misleading dead architecture (Delete dead code).
-10. Do not mutate data unless mutation is intentional.
-11. Protect important operations with invariants.
-12. Comments explain why, constraints, or non-obvious decisions rather than restating the code.
-13. Consistent structure beats cleverness.
-14. Keep dependencies directional.
-15. Tests protect behaviour, not implementation.
-16. Fail loudly at the boundaries, degrade gracefully in the UI.
-17. YAGNI (You Aren't Gonna Need It).
-18. Zero trust for external data (Boundary Validation).
+JoshHub is **Tier 2 — durable personal software** because it is actively used and stores persistent personal data in IndexedDB/Dexie.
+
+The existing 18 principles in `docs/code-audit/README.md` remain useful as a **JoshHub-specific audit/checklist** and historical conformance framework. They pre-date v5.1. Do not treat them as a newer or competing universal standard. When the two overlap, `codingprinciples.md` owns the general rule and the audit documents provide repo-specific evidence/checks.
 
 The current dependency direction defined by the audit is:
 
@@ -77,6 +67,8 @@ Do not introduce reverse dependencies or a new parallel architecture without an 
 
 ## 5. Sources of truth and known repository rules
 
+- `codingprinciples.md` is the canonical engineering standard.
+- `joshualparris/JoshHub` is the canonical repository for JoshHub.
 - `src/data/apps.ts` is the canonical apps catalogue.
 - Dexie/IndexedDB persistence lives under `src/lib/db`.
 - Database schema changes must update schema/versioning/migration behaviour coherently.
@@ -140,7 +132,7 @@ A moving branch is a reason to compare deltas, not a reason to rediscover everyt
 
 Use the repository's real verification commands and do not confuse deployment success with behavioural correctness.
 
-Current audit note: until CFG-02 is fixed, `npm test` starts Vitest watch mode and is not suitable as a terminating CI command. Use a terminating Vitest invocation such as `npx vitest run` for verification.
+`npm test` is a terminating `vitest run` command in the current repository. Use the actual current scripts rather than stale audit notes when they disagree.
 
 For each atomic change, run the smallest relevant tests first, then the broader checks needed for confidence. Before declaring a stabilisation checkpoint complete, include applicable checks such as:
 
@@ -151,7 +143,7 @@ For each atomic change, run the smallest relevant tests first, then the broader 
 - asset/link checks;
 - focused regression tests for the behaviour changed.
 
-Record what actually ran. Do not say tests passed if they were not executed.
+Record what actually ran. Do not say tests passed if they were not executed. Green CI is evidence, not proof that runtime/user behaviour is correct.
 
 ## 10. Documentation is part of the change
 
@@ -166,7 +158,7 @@ When resolving a code-audit finding:
 
 Do not let documentation describe an architecture that the code no longer follows.
 
-## 11. Session interruption protocol
+## 11. Session interruption and blocker protocol
 
 If tool availability degrades or the session may end unexpectedly:
 
@@ -176,7 +168,9 @@ If tool availability degrades or the session may end unexpectedly:
 4. commit/push completed work if authorised;
 5. update `docs/PROJECT_STATE.md` with the exact resume point.
 
-The desired failure mode is:
+If the task cannot proceed without violating a MUST, guessing at missing authority, guessing at architecture, or taking an unverified irreversible step, follow `codingprinciples.md §0.5`: stop the affected action, state the blocker, preserve safe work, and continue only independent reversible work.
+
+The desired interruption failure mode is:
 
 > Completed checkpoints are already in GitHub; only the current atomic step remains, and the next agent knows exactly where to resume.
 
@@ -193,4 +187,6 @@ A good change is boring to review:
 - removes ambiguity rather than adding another abstraction;
 - contains tests around destructive or important behaviour;
 - documents the reason when future agents could otherwise repeat the mistake;
-- lands as an atomic, verified checkpoint.
+- reports verification evidence precisely;
+- lands as an atomic, verified checkpoint;
+- conforms to the Tier 2 requirements and agent overlay in `codingprinciples.md`.
