@@ -122,7 +122,7 @@ export default function AvanceWhsPage() {
   };
 
   return (
-    <main className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="avance-whs-page mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
       <header className="print:hidden">
         <p className="text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">Avance Business Technology · Dubbo NSW</p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight text-slate-950 dark:text-white">WHS, Emergency &amp; First Aid Hub</h1>
@@ -286,10 +286,10 @@ export default function AvanceWhsPage() {
       <style jsx global>{`
         @media print {
           @page { size: A4 landscape; margin: 6mm; }
-          nav, header, footer, aside { display: none !important; }
-          html, body, main { background: white !important; }
+          nav, body > header, footer, aside { display: none !important; }
+          html, body { background: white !important; }
           body { margin: 0 !important; }
-          main > *:not(.first-aid-print) { display: none !important; }
+          .avance-whs-page > *:not(.first-aid-print) { display: none !important; }
           .first-aid-print { border: 0 !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; }
         }
       `}</style>
