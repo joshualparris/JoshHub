@@ -29,8 +29,8 @@ export default function JoshMemoryPage() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <p>
-            JoshMemory uses an existing private GitHub repository as its default shared store when
-            a development machine already has usable GitHub authentication.
+            JoshMemory uses an existing private GitHub repository as its default shared store when a
+            development machine already has usable GitHub authentication.
           </p>
           <p>
             The public JoshMemory repository contains the software. Shared handoffs, durable facts
