@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/apps", label: "Apps" },
   { href: "/platform", label: "Platform" },
   { href: "/projects", label: "Projects" },
+  { href: "/avance-whs", label: "Avance WHS" },
   { href: "/archive", label: "Archive" },
   { href: "/map", label: "Everything Map" },
   { href: "/life", label: "Life" },
