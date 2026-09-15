@@ -78,6 +78,28 @@ export default tseslint.config(
     },
   },
 
+  // These files are intentionally plain browser scripts served from /public rather than modules.
+  {
+    files: ["public/podcast-dock*.js"],
+    languageOptions: {
+      globals: {
+        window: "readonly",
+        document: "readonly",
+        location: "readonly",
+        localStorage: "readonly",
+        URL: "readonly",
+        CustomEvent: "readonly",
+        MutationObserver: "readonly",
+        setTimeout: "readonly",
+        fetch: "readonly",
+        module: "readonly",
+      },
+    },
+    rules: {
+      "no-empty": "off",
+    },
+  },
+
   {
     files: ["scripts/**/*.js"],
     languageOptions: {
@@ -93,6 +115,19 @@ export default tseslint.config(
     },
     rules: {
       "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+
+  {
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        URL: "readonly",
+        fetch: "readonly",
+      },
     },
   }
 );
