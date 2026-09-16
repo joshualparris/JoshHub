@@ -44,7 +44,7 @@ export type RoutineItem = {
 export type Routine = {
   id: string;
   name: string;
-  itecare2: RoutineItem[];
+  items: RoutineItem[];
   tags: string[];
   createdAt: number;
 };
@@ -101,9 +101,9 @@ export type NutritionLog = {
   id: string;
   date: string;
   summary: string;
-  proteinGracare2?: number | null;
+  proteinGrams?: number | null;
   vegServes?: number | null;
-  satFatGracare2?: number | null;
+  satFatGrams?: number | null;
   notes?: string;
   createdAt: number;
 };

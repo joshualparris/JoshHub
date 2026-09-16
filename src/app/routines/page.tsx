@@ -25,13 +25,18 @@ export default function RoutinesPage() {
   async function onAddRoutine(e: FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
-    await createRoutine({ name: name.trim(), itecare2: [], tags: [] });
+    await createRoutine({ name: name.trim(), items: [], tags: [] });
     setName("");
   }
 
   return (
     <div className="space-y-6">
-      <PageHeader kicker="ROUTINES" title="Routines" subtitle="Create and run routines." tone="onDark" />
+      <PageHeader
+        kicker="ROUTINES"
+        title="Routines"
+        subtitle="Create and run routines."
+        tone="onDark"
+      />
 
       <Card>
         <CardHeader>
@@ -39,7 +44,11 @@ export default function RoutinesPage() {
         </CardHeader>
         <CardContent>
           <form className="flex gap-3" onSubmit={onAddRoutine}>
-            <Input placeholder="Routine name" value={name} onChange={(e) => setName(e.target.value)} />
+            <Input
+              placeholder="Routine name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
             <Button type="submit">Add</Button>
           </form>
         </CardContent>
@@ -47,9 +56,14 @@ export default function RoutinesPage() {
 
       <div className="grid gap-3 md:grid-cols-2">
         {(routines ?? []).map((routine) => (
-          <RoutineCard key={`${routine.id}-${routine.name}-${routine.itecare2.length}`} routine={routine} />
+          <RoutineCard
+            key={`${routine.id}-${routine.name}-${routine.items.length}`}
+            routine={routine}
+          />
         ))}
-        {(routines ?? []).length === 0 && <p className="text-sm text-neutral-600">No routines yet.</p>}
+        {(routines ?? []).length === 0 && (
+          <p className="text-sm text-neutral-600">No routines yet.</p>
+        )}
       </div>
     </div>
   );
@@ -57,7 +71,7 @@ export default function RoutinesPage() {
 
 function RoutineCard({ routine }: { routine: Routine }) {
   const [name, setName] = useState(routine.name);
-  const [itecare2, setItecare2] = useState<RoutineItem[]>(routine.itecare2);
+  const [items, setItems] = useState<RoutineItem[]>(routine.items);
   const [saving, setSaving] = useState(false);
   const [running, setRunning] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -65,22 +79,25 @@ function RoutineCard({ routine }: { routine: Routine }) {
   const [remaining, setRemaining] = useState<number | null>(null);
   const [completed, setCompleted] = useState<Record<string, boolean>>({});
   const [startedAt, setStartedAt] = useState<number | null>(null);
-  const [finishedSummary, setFinishedSummary] = useState<{ completed: number; durationMs: number } | null>(null);
+  const [finishedSummary, setFinishedSummary] = useState<{
+    completed: number;
+    durationMs: number;
+  } | null>(null);
 
   const ordered = useMemo(
     () =>
-      itecare2.map((item) =>
+      items.map((item) =>
         item.type === "check" || item.type === "timer" ? item : { ...item, type: "check" as const }
       ),
-    [itecare2]
+    [items]
   );
 
   function updateItem(id: string, partial: Partial<RoutineItem>) {
-    setItecare2((prev) => prev.map((item) => (item.id === id ? { ...item, ...partial } : item)));
+    setItems((prev) => prev.map((item) => (item.id === id ? { ...item, ...partial } : item)));
   }
 
   function moveItem(id: string, dir: "up" | "down") {
-    setItecare2((prev) => {
+    setItems((prev) => {
       const index = prev.findIndex((i) => i.id === id);
       if (index < 0) return prev;
       const swapWith = dir === "up" ? index - 1 : index + 1;
@@ -93,7 +110,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
   }
 
   function removeItem(id: string) {
-    setItecare2((prev) => prev.filter((item) => item.id !== id));
+    setItems((prev) => prev.filter((item) => item.id !== id));
   }
 
   async function handleAddStep() {
@@ -103,12 +120,12 @@ function RoutineCard({ routine }: { routine: Routine }) {
       type: "check",
       seconds: undefined,
     };
-    setItecare2((prev) => [...prev, newItem]);
+    setItems((prev) => [...prev, newItem]);
   }
 
   async function handleSave() {
     setSaving(true);
-    await updateRoutine(routine.id, { name: name.trim() || "Routine", itecare2 });
+    await updateRoutine(routine.id, { name: name.trim() || "Routine", items });
     setSaving(false);
   }
 
@@ -120,7 +137,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
     setCompleted({});
     setCurrentStep(0);
     setStartedAt(Date.now());
-    setRemaining(ordered[0]?.type === "timer" ? ordered[0]?.seconds ?? null : null);
+    setRemaining(ordered[0]?.type === "timer" ? (ordered[0]?.seconds ?? null) : null);
   }
 
   function handleCompleteStep(id: string) {
@@ -139,7 +156,9 @@ function RoutineCard({ routine }: { routine: Routine }) {
       setRemaining(null);
     } else {
       setCurrentStep(nextIndex);
-      setRemaining(ordered[nextIndex]?.type === "timer" ? ordered[nextIndex]?.seconds ?? null : null);
+      setRemaining(
+        ordered[nextIndex]?.type === "timer" ? (ordered[nextIndex]?.seconds ?? null) : null
+      );
     }
   }
 
@@ -181,15 +200,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
   return (
     <Card>
       <CardHeader>
-        <div className="flex itecare2-start justify-between gap-3">
+        <div className="flex items-start justify-between gap-3">
           <div className="space-y-2">
             <Input value={name} onChange={(e) => setName(e.target.value)} />
             <div className="flex flex-wrap gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={running ? stopRun : startRun}
-              >
+              <Button size="sm" variant="outline" onClick={running ? stopRun : startRun}>
                 {running ? "Stop" : "Run"}
               </Button>
               {running ? (
@@ -231,13 +246,13 @@ function RoutineCard({ routine }: { routine: Routine }) {
               key={item.id}
               className="flex flex-col gap-2 rounded-md border border-neutral-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-slate-900/70"
             >
-              <div className="flex flex-wrap itecare2-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <select
                   value={item.type}
                   onChange={(e) =>
                     updateItem(item.id, {
                       type: e.target.value as RoutineItem["type"],
-                      seconds: e.target.value === "timer" ? item.seconds ?? 60 : undefined,
+                      seconds: e.target.value === "timer" ? (item.seconds ?? 60) : undefined,
                     })
                   }
                   className="h-9 rounded-md border border-neutral-300 bg-white px-2 text-xs text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus-visible:ring-slate-400"
@@ -258,7 +273,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
                     onChange={(e) => updateItem(item.id, { seconds: Number(e.target.value) || 0 })}
                   />
                 ) : null}
-                <div className={`flex itecare2-center gap-2 ${metaText}`}>
+                <div className={`flex items-center gap-2 ${metaText}`}>
                   <button
                     type="button"
                     onClick={() => moveItem(item.id, "up")}
@@ -285,7 +300,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
             </div>
           ))
         )}
-        <div className="flex itecare2-center gap-2">
+        <div className="flex items-center gap-2">
           <Button size="sm" variant="outline" onClick={handleAddStep}>
             Add step
           </Button>
@@ -294,7 +309,7 @@ function RoutineCard({ routine }: { routine: Routine }) {
       </CardContent>
       {running && ordered.length > 0 ? (
         <div className="border-t border-neutral-200 px-4 py-3 text-sm dark:border-slate-800">
-          <div className="mb-2 flex itecare2-center justify-between">
+          <div className="mb-2 flex items-center justify-between">
             <p className="font-medium text-slate-900 dark:text-slate-50">
               Running: {ordered[currentStep]?.label ?? "Finished"}
             </p>
@@ -308,11 +323,11 @@ function RoutineCard({ routine }: { routine: Routine }) {
             {ordered.map((step, idx) => (
               <div
                 key={step.id}
-                className={`flex itecare2-center justify-between rounded-md px-2 py-1 ${
+                className={`flex items-center justify-between rounded-md px-2 py-1 ${
                   idx === currentStep ? "bg-slate-100 dark:bg-slate-800/70" : ""
                 }`}
               >
-                <div className="flex itecare2-center gap-3 text-sm text-slate-800 dark:text-slate-100">
+                <div className="flex items-center gap-3 text-sm text-slate-800 dark:text-slate-100">
                   <StepBadge type={step.type} />
                   <input
                     type="checkbox"
@@ -323,7 +338,9 @@ function RoutineCard({ routine }: { routine: Routine }) {
                   <span>{step.label}</span>
                 </div>
                 {step.seconds ? (
-                  <span className="text-xs text-slate-600 dark:text-slate-300">{step.seconds}s</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-300">
+                    {step.seconds}s
+                  </span>
                 ) : null}
               </div>
             ))}
@@ -334,7 +351,8 @@ function RoutineCard({ routine }: { routine: Routine }) {
         <div className="border-t border-neutral-200 px-4 py-3 text-sm text-slate-800 dark:border-slate-800 dark:text-slate-100">
           <p className="font-medium">Run summary</p>
           <p className="text-sm text-muted-foreground">
-            Completed {finishedSummary.completed} steps in {(finishedSummary.durationMs / 1000).toFixed(0)}s.
+            Completed {finishedSummary.completed} steps in{" "}
+            {(finishedSummary.durationMs / 1000).toFixed(0)}s.
           </p>
         </div>
       ) : null}

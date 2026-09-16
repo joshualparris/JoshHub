@@ -29,7 +29,7 @@ body {
     background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
     display: flex;
     justify-content: center;
-    align-itecare2: flex-start;
+    align-items: flex-start;
     z-index: 9999;
     overflow-y: auto;
     overflow-x: hidden;
@@ -55,7 +55,7 @@ body {
 @media (max-width: 768px) {
     .char-creation {
         padding: 10px;
-        align-itecare2: flex-start;
+        align-items: flex-start;
     }
     
     .char-creation-panel {
@@ -217,7 +217,7 @@ body {
 
 .attr-controls {
     display: flex;
-    align-itecare2: center;
+    align-items: center;
     justify-content: center;
     gap: 15px;
     margin-bottom: 8px;
@@ -471,7 +471,7 @@ body {
 @media (max-width: 768px) {
     .stats-panel {
         flex-direction: column;
-        align-itecare2: stretch;
+        align-items: stretch;
     }
     
     .stat-card {
@@ -529,7 +529,7 @@ body {
     font-weight: bold;
 }
 
-.inventory-itecare2 {
+.inventory-items {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -597,7 +597,7 @@ body {
     background: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
-    align-itecare2: center;
+    align-items: center;
     z-index: 1000;
     transition: opacity 0.3s ease;
 }
@@ -684,7 +684,7 @@ body {
     color: #d4af37;
 }
 
-#shopItecare2 {
+#shopItems {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -698,7 +698,7 @@ body {
     border: 1px solid #8b4513;
     display: flex;
     justify-content: space-between;
-    align-itecare2: center;
+    align-items: center;
 }
 
 .shop-item-info {
@@ -745,20 +745,20 @@ body {
     cursor: not-allowed;
 }
 
-.log-content::-webkit-scrollbar, .inventory-itecare2::-webkit-scrollbar {
+.log-content::-webkit-scrollbar, .inventory-items::-webkit-scrollbar {
     width: 6px;
 }
 
-.log-content::-webkit-scrollbar-track, .inventory-itecare2::-webkit-scrollbar-track {
+.log-content::-webkit-scrollbar-track, .inventory-items::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 3px;
 }
 
-.log-content::-webkit-scrollbar-thumb, .inventory-itecare2::-webkit-scrollbar-thumb {
+.log-content::-webkit-scrollbar-thumb, .inventory-items::-webkit-scrollbar-thumb {
     background: rgba(139, 69, 19, 0.6);
     border-radius: 3px;
 }
 
-.log-content::-webkit-scrollbar-thumb:hover, .inventory-itecare2::-webkit-scrollbar-thumb:hover {
+.log-content::-webkit-scrollbar-thumb:hover, .inventory-items::-webkit-scrollbar-thumb:hover {
     background: rgba(139, 69, 19, 0.8);
 }

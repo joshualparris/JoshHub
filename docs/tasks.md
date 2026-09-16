@@ -47,8 +47,8 @@ Purpose: keep JoshHub shipping in small, safe slices. After meaningful changes, 
 
 ## Task 10 — Health logging end-to-end
 - Add Dexie tables/actions/hooks for sleepLogs, mealLogs, movementLogs, metrics.
-- Create/expand Health page with forcare2 to log each; add edit/delete with confirm.
-- Wire dashboard Health Snapshot buttons to real log forcare2; compute 7d rollups (sleep avg, movement total, last meal, latest metric).
+- Create/expand Health page with forms to log each; add edit/delete with confirm.
+- Wire dashboard Health Snapshot buttons to real log forms; compute 7d rollups (sleep avg, movement total, last meal, latest metric).
 
 ## Task 11 — Groq LLM integration (server-side only)
 - Add `/api/llm/groq` route using `GROQ_API_KEY` (server env only; never in client).
@@ -271,7 +271,7 @@ If either fails, stop and fix before moving on.
 
 ## Task 11 — Health logging end-to-end
 - Add Dexie tables + actions/hooks: sleepLogs, mealLogs, movementLogs, metrics.
-- Health page forcare2 with edit/delete + confirm.
+- Health page forms with edit/delete + confirm.
 - Dashboard snapshot wired to real data + 7d rollups.
 
 ---

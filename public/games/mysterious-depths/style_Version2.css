@@ -59,7 +59,7 @@ h1 {
     min-height: 90px;
     height: 110px;
     display: flex;
-    align-itecare2: center;
+    align-items: center;
     justify-content: center;
     margin-bottom: 0.8em;
     pointer-events: none;
@@ -71,7 +71,7 @@ h1 {
     inset: 0;
     background: rgba(0,0,0,0.5);
     display: flex;
-    align-itecare2: center;
+    align-items: center;
     justify-content: center;
     z-index: 3;
 }
@@ -89,7 +89,7 @@ h1 {
 .settings-row {
     margin: 10px 0;
     display: flex;
-    align-itecare2: center;
+    align-items: center;
     justify-content: space-between;
     gap: 10px;
 }
@@ -110,11 +110,11 @@ h1 {
 .choice-btn {
     transform-origin: left center;
     will-change: transform, box-shadow, opacity;
-    transition: transform 220care2 cubic-bezier(.2,.9,.2,1), box-shadow 180care2, background 160care2, color 140care2;
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms, background 160ms, color 140ms;
     box-shadow: 0 6px 18px rgba(0,0,0,0.32);
 }
 .choice-btn.pop-in {
-    animation: popIn 280care2 ease-out both;
+    animation: popIn 280ms ease-out both;
 }
 @keyframes popIn {
     0% { opacity: 0; transform: translateY(8px) scale(0.98); }
@@ -126,7 +126,7 @@ h1 {
     box-shadow: 0 14px 36px rgba(50,100,200,0.18), var(--focus-glow);
 }
 .choice-btn.locked:active {
-    animation: micro-shake 180care2 ease-in-out;
+    animation: micro-shake 180ms ease-in-out;
 }
 @keyframes micro-shake {
     0% { transform: translateX(0); }
@@ -148,7 +148,7 @@ h1 {
     border: 1px solid rgba(255,255,255,0.05);
     color: var(--accent);
     cursor: pointer;
-    transition: transform 140care2, box-shadow 160care2, background 160care2;
+    transition: transform 140ms, box-shadow 160ms, background 160ms;
 }
 #sfx-toggle[aria-pressed="true"] {
     background: linear-gradient(135deg, rgba(120,220,255,0.08), rgba(80,140,220,0.06));
@@ -165,7 +165,7 @@ h1 {
     background: var(--btn-bg);
     color: var(--btn-text);
     width: 28px; height: 28px; border-radius: 8px;
-    display: inline-flex; align-itecare2:center; justify-content:center;
+    display: inline-flex; align-items:center; justify-content:center;
     font-weight: 700; box-shadow: 0 6px 12px rgba(0,0,0,0.35);
 }
 .choice-btn.locked { opacity: 0.42; filter: grayscale(0.18); cursor: not-allowed; }
@@ -223,7 +223,7 @@ h1 {
     51%, 100% { opacity: 1; }
 }
 .glitch {
-    animation: glitchy 300care2 steps(2, end) 1;
+    animation: glitchy 300ms steps(2, end) 1;
 }
 @keyframes glitchy {
     0% { text-shadow: 2px 0 #0ff, -2px 0 #f0f; }

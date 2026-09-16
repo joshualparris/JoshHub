@@ -67,7 +67,7 @@
     name: "Vexira the Ashbound",
     locationId: "mount_hotenow",
     faction: "zhentarim",
-    greeting: "You crossed storcare2 and graves for this? Then burn with them.",
+    greeting: "You crossed storms and graves for this? Then burn with them.",
     boss: true
   }
 ];

@@ -27,7 +27,7 @@ Handoff guidance for Codex (what to wire next):
    - Use `autoSort(text, url?)` to suggest `kind`, `area`, `title`, and initial `tags` when capturing quick input.
 
 3) Seeding life content
-   - Use `getStarterPack()` as source-of-truth for initial life itecare2. Codex should call this from an initialization seed step into Dexie.
+   - Use `getStarterPack()` as source-of-truth for initial life items. Codex should call this from an initialization seed step into Dexie.
 
 4) UI wiring
    - Replace any ad-hoc localStorage capture stores with the `CaptureItem` model and the `CaptureRepo` API.

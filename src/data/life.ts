@@ -1,12 +1,5 @@
 export type LifeSlug =
-  | "faith"
-  | "family"
-  | "health"
-  | "finance"
-  | "work-dcs"
-  | "tech-projects"
-  | "travel"
-  | "legacy";
+  "faith" | "family" | "health" | "finance" | "work-dcs" | "tech-projects" | "travel" | "legacy";
 
 export interface LifeArea {
   slug: LifeSlug;
@@ -21,7 +14,7 @@ export const lifeAreas: LifeArea[] = [
   {
     slug: "faith",
     title: "Faith",
-    intro: "Practices, readings, and service rhythcare2.",
+    intro: "Practices, readings, and service rhythms.",
     sections: [
       { heading: "Practices", body: "Daily reflection, prayer blocks, weekly community." },
       { heading: "Focus", body: "Keep space for quiet mornings; align plans with values." },
@@ -63,9 +56,7 @@ export const lifeAreas: LifeArea[] = [
     slug: "work-dcs",
     title: "Work / DCS",
     intro: "Work in Dubbo and related tooling.",
-    sections: [
-      { heading: "Current", body: "Prep and companion apps; keep broken itecare2 visible." },
-    ],
+    sections: [{ heading: "Current", body: "Prep and companion apps; keep broken items visible." }],
     quickLinks: ["dcs-companion", "dcs-prep", "parris-dubbo-mover"],
     tags: ["dubbo", "dcs", "work"],
   },

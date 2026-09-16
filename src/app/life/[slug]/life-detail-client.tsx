@@ -39,7 +39,7 @@ export function LifeDetailClient({ area }: Props) {
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="lg:col-span-2 space-y-6">
-        <div className="flex flex-col gap-2 md:flex-row md:itecare2-start md:justify-between">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <PageHeader kicker="Life area" title={area.title} subtitle={area.intro} tone="onDark" />
           <Button
             variant="outline"
@@ -65,9 +65,13 @@ export function LifeDetailClient({ area }: Props) {
               className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100"
             >
               <CardHeader>
-                <CardTitle className="text-lg text-foreground dark:text-slate-50">{section.heading}</CardTitle>
+                <CardTitle className="text-lg text-foreground dark:text-slate-50">
+                  {section.heading}
+                </CardTitle>
               </CardHeader>
-              <CardContent className="text-card-foreground/85 dark:text-slate-200/90">{section.body}</CardContent>
+              <CardContent className="text-card-foreground/85 dark:text-slate-200/90">
+                {section.body}
+              </CardContent>
             </Card>
           ))}
         </div>
@@ -76,16 +80,20 @@ export function LifeDetailClient({ area }: Props) {
       <aside className="space-y-4">
         <Card className="dark:bg-slate-900/60 dark:border-slate-800 dark:text-slate-100">
           <CardHeader>
-            <CardTitle className="text-lg text-foreground dark:text-slate-50">Quick Links</CardTitle>
+            <CardTitle className="text-lg text-foreground dark:text-slate-50">
+              Quick Links
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {quickApps.length === 0 ? (
-              <p className="text-sm text-card-foreground/80 dark:text-slate-300">No linked apps yet.</p>
+              <p className="text-sm text-card-foreground/80 dark:text-slate-300">
+                No linked apps yet.
+              </p>
             ) : (
               quickApps.map((app) => (
                 <div
                   key={app.id}
-                  className="flex itecare2-center justify-between rounded-md border border-neutral-200 px-3 py-2 dark:border-slate-800 dark:bg-slate-950/40"
+                  className="flex items-center justify-between rounded-md border border-neutral-200 px-3 py-2 dark:border-slate-800 dark:bg-slate-950/40"
                 >
                   <div className="space-y-1">
                     <a
@@ -96,7 +104,7 @@ export function LifeDetailClient({ area }: Props) {
                     >
                       {app.name}
                     </a>
-                    <div className="flex itecare2-center gap-2 text-xs text-neutral-500 dark:text-slate-300">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-slate-300">
                       <StatusChip status={app.status} />
                       <span>{app.category}</span>
                     </div>

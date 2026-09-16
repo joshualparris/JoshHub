@@ -10,8 +10,8 @@ function compareIdParts(a: string[], b: string[]): number {
   return 0;
 }
 
-export function buildTree(itecare2: TocItem[]): TocNode[] {
-  const nodes: TocNode[] = itecare2.map((item) => ({ ...item, children: [] }));
+export function buildTree(items: TocItem[]): TocNode[] {
+  const nodes: TocNode[] = items.map((item) => ({ ...item, children: [] }));
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const roots: TocNode[] = [];
 

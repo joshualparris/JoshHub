@@ -1,5 +1,5 @@
 /**
- * Itecare2 module - Item definitions, inventory management
+ * Items module - Item definitions, inventory management
  */
 
 export const ITEM_TYPES = {
@@ -80,8 +80,8 @@ export function useItem(item, player) {
     return { message: 'Cannot use this item.', success: false };
 }
 
-export function spawnItecare2(tiles, width, height, count) {
-    const itecare2 = [];
+export function spawnItems(tiles, width, height, count) {
+    const items = [];
     
     for (let i = 0; i < count; i++) {
         const x = Math.floor(Math.random() * width) * 32;
@@ -89,15 +89,15 @@ export function spawnItecare2(tiles, width, height, count) {
         
         const rand = Math.random();
         if (rand < 0.4) {
-            itecare2.push(createGold(x, y, Math.floor(Math.random() * 10) + 5));
+            items.push(createGold(x, y, Math.floor(Math.random() * 10) + 5));
         } else if (rand < 0.7) {
-            itecare2.push(createPotion(x, y));
+            items.push(createPotion(x, y));
         } else {
-            itecare2.push(createKey(x, y, `key_${i}`));
+            items.push(createKey(x, y, `key_${i}`));
         }
     }
     
-    return itecare2;
+    return items;
 }
 
 

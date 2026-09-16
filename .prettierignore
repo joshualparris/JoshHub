@@ -1,0 +1,8 @@
+# Vendored and generated content — not ours to format.
+public/
+.next/
+node_modules/
+package-lock.json
+
+# The audit documents are hand-formatted (tables, aligned columns).
+docs/

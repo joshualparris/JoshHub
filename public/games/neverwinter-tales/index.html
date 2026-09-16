@@ -38,7 +38,7 @@
 
       <main class="grid grid-cols-1 lg:grid-cols-10 gap-6">
         <section class="lg:col-span-7 bg-slate-900/80 rounded-lg shadow-glow border border-slate-700/40">
-          <div class="px-4 py-3 border-b border-slate-700/40 flex itecare2-center justify-between">
+          <div class="px-4 py-3 border-b border-slate-700/40 flex items-center justify-between">
             <div>
               <h2 class="font-display text-xl text-amber-100">Game Log</h2>
               <div class="text-xs text-amber-200">Current location: {{ currentLocation ? currentLocation.name : 'Unknown' }}</div>
@@ -154,7 +154,7 @@
         {
           id: "hall-of-echoes",
           name: "Hall of Echoes",
-          description: "The grand hall echoes with the whispers of a thousand adventurers. Stone pillars stretch to an unseen ceiling, and the air hucare2 with magic.",
+          description: "The grand hall echoes with the whispers of a thousand adventurers. Stone pillars stretch to an unseen ceiling, and the air hums with magic.",
           ambience: "Whispers echo off ancient stone.",
           npcs: ["sage-aldric", "merchant-theron"],
         },
@@ -296,7 +296,7 @@
               ],
             },
             shop: {
-              text: "I have potions, scrolls, and rare itecare2. What catches your eye?",
+              text: "I have potions, scrolls, and rare items. What catches your eye?",
               responses: [{ text: "Perhaps later.", nextNode: null }],
             },
           },
@@ -325,7 +325,7 @@
       const LORE = {
         "hall-of-echoes": [
           { title: "The First Adventurers", text: "This hall was built to celebrate those brave souls who first challenged the darkness." },
-          { title: "Ancient Magic", text: "The stones thecare2elves seem to absorb and reflect magical energy." },
+          { title: "Ancient Magic", text: "The stones themselves seem to absorb and reflect magical energy." },
         ],
         "beached-leviathan": [
           { title: "The Great Beast", text: "Legends say this creature was drawn from the deep by a powerful ritual." },

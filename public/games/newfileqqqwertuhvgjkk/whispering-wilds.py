@@ -23,7 +23,7 @@ class Room:
         self.id = id
         self.name = name
         self.desc = desc
-        self.itecare2: List[Item] = []
+        self.items: List[Item] = []
         self.neighbors: Dict[str, str] = {}
         self.npcs: List[str] = []
         self.tag: Optional[str] = None
@@ -47,14 +47,14 @@ class Player:
 
 class World:
     def __init__(self):
-        self.roocare2: Dict[str, Room] = {}
+        self.rooms: Dict[str, Room] = {}
         self.start_room: str = ""
 
     def add_room(self, room: Room) -> None:
-        self.roocare2[room.id] = room
+        self.rooms[room.id] = room
 
     def get(self, room_id: str) -> Room:
-        return self.roocare2[room_id]
+        return self.rooms[room_id]
 
 
 # ---------- Game ----------
@@ -90,9 +90,9 @@ class Game:
         thicket_se = Room("thicket_se", "Southern Thicket",
                           "Close-set shrubs tug at your sleeves.")
 
-        # Itecare2/NPCs (optional flavour)
-        grove_n.itecare2.append(Item("mint", "Wild Mint", "Smells fresh.", usable=False))
-        cellar_s.itecare2.append(Item("torch", "Old Torch", "Might still light.", usable=False))
+        # Items/NPCs (optional flavour)
+        grove_n.items.append(Item("mint", "Wild Mint", "Smells fresh.", usable=False))
+        cellar_s.items.append(Item("torch", "Old Torch", "Might still light.", usable=False))
 
         # Add to world
         for r in (grove_n, cellar_s, court_w, brook_ne, thicket_se):
@@ -122,8 +122,8 @@ class Game:
 
         key = Item("rust_key", "Rusty Key", "Old key with a jagged bite.", usable=True)
         apple = Item("apple", "Apple", "A crisp, red apple.", usable=True)
-        sanctum.itecare2.append(key)
-        path.itecare2.append(apple)
+        sanctum.items.append(key)
+        path.items.append(apple)
 
         sanctum.npcs.append("Caretaker")
 
@@ -144,8 +144,8 @@ class Game:
                 except Exception as e:
                     print(f"[Ignoring {fname} error] {e}")
 
-    def say(self, care2g: str) -> None:
-        print(care2g)
+    def say(self, msg: str) -> None:
+        print(msg)
 
     def room(self) -> Room:
         return self.world.get(self.cur_room)
@@ -170,8 +170,8 @@ class Game:
     def look(self) -> None:
         r = self.room()
         self.say(f"{r.name}\n{r.desc}")
-        if r.itecare2:
-            self.say("Itecare2 here: " + ", ".join(i.name for i in r.itecare2))
+        if r.items:
+            self.say("Items here: " + ", ".join(i.name for i in r.items))
         if r.npcs:
             self.say("You see: " + ", ".join(r.npcs))
         exits = ", ".join(sorted(r.neighbors.keys()))
@@ -190,14 +190,14 @@ class Game:
     def take(self, name: str) -> None:
         r = self.room()
         wanted = name.strip().lower()
-        for i, it in enumerate(r.itecare2):
+        for i, it in enumerate(r.items):
             id_l = it.id.lower()
             nm_l = it.name.lower()
             # accept exact id/name OR any substring match
             if (wanted == id_l or wanted == nm_l or
                     (wanted and (wanted in id_l or wanted in nm_l))):
                 self.player.add_item(it)
-                r.itecare2.pop(i)
+                r.items.pop(i)
                 self.say(f"You take the {it.name}.")
                 return
         self.say("No such item here.")
@@ -209,7 +209,7 @@ class Game:
                 it = self.player.remove_item(k)
                 break
         if it:
-            self.room().itecare2.append(it)
+            self.room().items.append(it)
             self.say(f"You drop the {it.name}.")
         else:
             self.say("You don't have that.")
@@ -328,10 +328,10 @@ def part2_post_init(game):
         "rng": random.Random(99),
     }
     # Add wilds room if base Part 1 world present
-    if hasattr(game, "world") and "wilds_stub" in game.world.roocare2:
+    if hasattr(game, "world") and "wilds_stub" in game.world.rooms:
         wilds = Room("wilds", "Whispering Wilds", "The wild lands teem with danger and chance.")
         game.world.add_room(wilds)
-        game.world.roocare2["wilds_stub"].link("e", "wilds")
+        game.world.rooms["wilds_stub"].link("e", "wilds")
         wilds.link("w", "wilds_stub")
 
 
@@ -662,7 +662,7 @@ def _p4_load(game, code: str) -> None:
     if not game:
         print("Loaded (mock). Paste Part 1 to apply in-game.")
         return
-    if "cur_room" in data and data["cur_room"] in game.world.roocare2:
+    if "cur_room" in data and data["cur_room"] in game.world.rooms:
         game.cur_room = data["cur_room"]
     if "hp" in data and "max_hp" in data:
         game.player.max_hp = int(data["max_hp"])
@@ -1058,12 +1058,12 @@ def _p6_open_caretaker_dialog(game):
     _p6_show_dialog(game, "Caretaker", opts)
 
 def _p6_eval_requirements(game, need: dict) -> bool:
-    """Check if player has required itecare2/mats. Uses Part 3 mats if present."""
+    """Check if player has required items/mats. Uses Part 3 mats if present."""
     p3 = getattr(game, "_p3", None)
     if not p3:
         return False
     mats = p3.get("mats", {})
-    for k, v in need.itecare2():
+    for k, v in need.items():
         if mats.get(k, 0) < v:
             return False
     return True
@@ -1072,7 +1072,7 @@ def _p6_consume_requirements(game, need: dict) -> None:
     p3 = getattr(game, "_p3", None)
     if not p3:
         return
-    for k, v in need.itecare2():
+    for k, v in need.items():
         p3["mats"][k] = max(0, p3["mats"].get(k, 0) - v)
 
 def _p6_apply_reward(game, reward: dict) -> None:
@@ -1101,7 +1101,7 @@ def _p6_do_action(game, action_id: str):
         game.say("Type: accept heal_grove   (or talk caretaker again for details)")
         return
     if action_id == "ct_remind":
-        need = ", ".join(f"{v} {k}" for k, v in q["need"].itecare2())
+        need = ", ".join(f"{v} {k}" for k, v in q["need"].items())
         game.say(f'Caretaker: "Gather {need}. The grove north of here is fading."')
         return
     if action_id == "ct_turnin":
@@ -1214,7 +1214,7 @@ def _p6_cmd_quests(game) -> bool:
         game.say("No quests.")
         return True
     game.say("Quests:")
-    for key, q in qs.itecare2():
+    for key, q in qs.items():
         title = q["title"]
         state = q["state"]
         line = f"- {title}: {state}"
@@ -1222,7 +1222,7 @@ def _p6_cmd_quests(game) -> bool:
         if getattr(game, "_p3", None) is not None and "need" in q and state in ("accepted", "completed"):
             need = q["need"]
             mats = game._p3.get("mats", {})
-            prog = ", ".join(f"{k} {mats.get(k,0)}/{v}" for k, v in need.itecare2())
+            prog = ", ".join(f"{k} {mats.get(k,0)}/{v}" for k, v in need.items())
             line += f" ({prog})"
             if _p6_eval_requirements(game, q["need"]):
                 q["state"] = "completed"
@@ -1282,10 +1282,10 @@ def part7_post_init(game):
     # ---------- Map expansions ----------
     w = game.world
     add = w.add_room
-    roocare2 = w.roocare2
+    rooms = w.rooms
 
     # Create when the core Wilds exist (Part 2 adds 'wilds')
-    if "wilds" in roocare2:
+    if "wilds" in rooms:
         # Lake, Mine, Ranger Camp, Hermit's Hut, Trader Post, Old Tower
         lake = Room("wilds_lake", "Moonlit Lake",
                     "A cold, glassy lake. Ripples reveal darting shapes.")
@@ -1306,10 +1306,10 @@ def part7_post_init(game):
         post.npcs.append("Trader")
 
         # Links
-        roocare2["wilds"].link("n", "wilds_lake")
-        roocare2["wilds"].link("e", "wilds_mine")
-        roocare2["wilds"].link("s", "wilds_camp")
-        roocare2["wilds"].link("w", "wilds_tower")
+        rooms["wilds"].link("n", "wilds_lake")
+        rooms["wilds"].link("e", "wilds_mine")
+        rooms["wilds"].link("s", "wilds_camp")
+        rooms["wilds"].link("w", "wilds_tower")
         lake.link("s", "wilds")
         mine.link("w", "wilds")
         camp.link("n", "wilds")
@@ -1455,7 +1455,7 @@ def _p7_cmd_mine(game, args) -> bool:
     return True
 
 def _p7_cmd_harvest(game, args) -> bool:
-    # Glowcaps from damp places: Hut (stored), Tower base (mossy), Mine seacare2 (rare)
+    # Glowcaps from damp places: Hut (stored), Tower base (mossy), Mine seams (rare)
     if not game:
         print("You harvest nothing. (Base game not loaded)")
         return True
@@ -1464,7 +1464,7 @@ def _p7_cmd_harvest(game, args) -> bool:
     chance = 0.0
     if room in ("wilds_hut",):       # the Hermit tends them → common
         chance = 0.75
-    elif room in ("wilds_mine",):    # damp seacare2 → uncommon
+    elif room in ("wilds_mine",):    # damp seams → uncommon
         chance = 0.35
     elif room in ("wilds_tower",):   # mossy shade → uncommon
         chance = 0.45
@@ -1517,7 +1517,7 @@ def _p7_use_patch(game, name: str) -> bool:
         game.player.hp = min(game.player.max_hp, game.player.hp + 4)
         game.say(f"You eat the cooked fish. (+{game.player.hp - before} HP)")
         # remove item
-        for k, it in list(game.player.inv.itecare2()):
+        for k, it in list(game.player.inv.items()):
             if it.id == "meal" or it.name.lower() == "cooked fish":
                 game.player.inv.pop(k, None)
                 break
@@ -1567,7 +1567,7 @@ def _p7_cmd_give(game, args) -> bool:
     if npc in ("trader",):
         # Ring: trade for gold
         had_ring = None
-        for k, it in list(game.player.inv.itecare2()):
+        for k, it in list(game.player.inv.items()):
             if it.id == "lost_ring":
                 had_ring = k
                 break
@@ -1684,7 +1684,7 @@ def _p7_cmd_turnin(game, args) -> bool:
 
     # Count fish from Part 3 mats AND from inventory (if your fishing adds an item)
     mats_fish = game._p3["mats"].get("fish", 0) if getattr(game, "_p3", None) else 0
-    inv_fish_keys = [k for k, it in game.player.inv.itecare2()
+    inv_fish_keys = [k for k, it in game.player.inv.items()
                      if k == "fish" or it.name.lower() in ("fish", "fresh fish", "small fish")]
 
     total = mats_fish + len(inv_fish_keys)

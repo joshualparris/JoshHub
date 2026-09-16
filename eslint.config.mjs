@@ -1,67 +1,133 @@
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import reactHooks from 'eslint-plugin-react-hooks';
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
+import importPlugin from "eslint-plugin-import";
 
 export default tseslint.config(
-  // 0) Global ignores
   {
     ignores: [
-      '.next/**',
-      'out/**',
-      'dist/**',
-      'build/**',
-      'node_modules/**',
-      'public/games/**', // big bundled JS
-      'public/portal-adapter.js', // ignore legacy client-side JS
-      'eslint.config.mjs', // don't lint this config file
+      ".next/**",
+      "out/**",
+      "dist/**",
+      "build/**",
+      "node_modules/**",
+      "public/games/**",
+      "public/portal-adapter.js",
+      "eslint.config.mjs",
     ],
   },
 
-  // 1) Base JS rules
   js.configs.recommended,
-
-  // 2) TypeScript (non-typed) rules
   ...tseslint.configs.recommended,
 
-  // 3) Project-wide rules/plugins
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+    files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
-      'react-hooks': reactHooks,
+      "react-hooks": reactHooks,
     },
     rules: {
-      // React hooks basics
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/set-state-in-effect": "off",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+    },
+  },
 
-      // Disable this noisy rule
-      'react-hooks/set-state-in-effect': 'off',
-
-      // TS noise → warnings only
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' },
+  // P14 is a hard invariant: dependencies flow app -> features -> components -> lib -> data.
+  // Stateful Platform screens were moved into their feature before this became blocking, so
+  // a future reverse dependency now fails CI instead of becoming normalised architecture debt.
+  {
+    files: ["src/**/*.{js,jsx,ts,tsx}"],
+    plugins: { import: importPlugin },
+    settings: {
+      "import/resolver": {
+        typescript: { project: "./tsconfig.json" },
+      },
+    },
+    rules: {
+      "import/no-restricted-paths": [
+        "error",
+        {
+          basePath: "src",
+          zones: [
+            {
+              target: "./components",
+              from: "./features",
+              message:
+                "components is presentation-only and must not import from features; stateful feature UI belongs in the feature (P14).",
+            },
+            {
+              target: "./lib",
+              from: "./components",
+              message: "lib must not import UI (P14).",
+            },
+            {
+              target: "./lib",
+              from: "./app",
+              message: "lib must not import UI (P14).",
+            },
+            {
+              target: "./data",
+              from: "./lib",
+              message: "data is static and must import nothing (P14).",
+            },
+          ],
+        },
       ],
     },
   },
 
-  // 4) Node scripts
+  // These files are intentionally plain browser scripts served from /public rather than modules.
   {
-    files: ['scripts/**/*.js'],
+    files: ["public/podcast-dock*.js"],
     languageOptions: {
-      sourceType: 'commonjs',
       globals: {
-        console: 'readonly',
-        process: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
+        window: "readonly",
+        document: "readonly",
+        location: "readonly",
+        localStorage: "readonly",
+        URL: "readonly",
+        CustomEvent: "readonly",
+        MutationObserver: "readonly",
+        setTimeout: "readonly",
+        fetch: "readonly",
+        module: "readonly",
       },
     },
     rules: {
-      '@typescript-eslint/no-require-imports': 'off',
+      "no-empty": "off",
     },
   },
+
+  {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      sourceType: "commonjs",
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        require: "readonly",
+        module: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+
+  {
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      sourceType: "module",
+      globals: {
+        console: "readonly",
+        process: "readonly",
+        URL: "readonly",
+        fetch: "readonly",
+      },
+    },
+  }
 );

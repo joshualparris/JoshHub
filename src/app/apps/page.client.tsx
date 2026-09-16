@@ -12,12 +12,12 @@ type AppsStatusFilter = AppStatus | "all";
 type AppsCategoryFilter = AppCategory | "all";
 
 interface Props {
-  searchParacare2?: { status?: string };
+  searchParams?: { status?: string };
   apps: CatalogItem[];
 }
 
-export default function AppsPageClient({ searchParacare2, apps }: Props) {
-  const statusParam = searchParacare2?.status;
+export default function AppsPageClient({ searchParams, apps }: Props) {
+  const statusParam = searchParams?.status;
   const allowedStatus: AppStatus[] = ["ok", "broken", "wip", "archived"];
   const initialStatus: AppsStatusFilter = allowedStatus.includes(statusParam as AppStatus)
     ? (statusParam as AppStatus)
@@ -30,19 +30,19 @@ export default function AppsPageClient({ searchParacare2, apps }: Props) {
 
   const filteredApps = useMemo(() => {
     const term = search.trim().toLowerCase();
-    const statusOrder: Record<string, number> = { 
+    const statusOrder: Record<string, number> = {
       active: 0,
       maintained: 1,
-      ok: 2, 
-      wip: 3, 
+      ok: 2,
+      wip: 3,
       paused: 4,
       complete: 5,
-      broken: 6, 
+      broken: 6,
       archived: 7,
       "needs-review": 8,
       "archive-candidate": 9,
       "duplicate-candidate": 10,
-      unknown: 11
+      unknown: 11,
     };
 
     return apps
@@ -90,7 +90,7 @@ export default function AppsPageClient({ searchParacare2, apps }: Props) {
         onCategoryChange={setCategory}
       />
       {filteredApps.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No itecare2 match that search.</p>
+        <p className="text-sm text-muted-foreground">No items match that search.</p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filteredApps.map((app) => (

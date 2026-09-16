@@ -1,0 +1,60 @@
+# Continuous integration for JoshHub.
+#
+# The checks below are the executable part of docs/code-audit/CONFORMANCE.md.
+# A rule is not considered durable merely because one review happened to pass it.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Formatting
+        run: npm run format:check
+
+      - name: Lint and architecture
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate app catalogue
+        run: npm run validate:apps
+
+      - name: No in-place mutation of query results
+        run: npm run check:mutation
+
+      - name: No committed conflict markers
+        run: npm run check:conflict-markers
+
+      - name: Referenced local assets exist
+        run: npm run check:assets
+
+      - name: No duplicated module basenames
+        run: npm run check:duplicate-modules

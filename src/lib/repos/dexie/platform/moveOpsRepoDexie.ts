@@ -10,11 +10,10 @@ const STATUS_ORDER: Record<PlatformMoveOp["status"], number> = {
 
 export const moveOpsRepo = {
   async list() {
-    const itecare2 = await db.platformMoveOps.toArray();
-    return itecare2.sort((a, b) => {
+    const items = await db.platformMoveOps.toArray();
+    return items.sort((a, b) => {
       // 1. Status
-      const statusDiff =
-        (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
+      const statusDiff = (STATUS_ORDER[a.status] ?? 99) - (STATUS_ORDER[b.status] ?? 99);
       if (statusDiff !== 0) return statusDiff;
 
       // 2. Due Date (nulls last)

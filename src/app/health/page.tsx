@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 
 const tabs = [
   { label: "Sleep", href: "/health/sleep" },
@@ -14,11 +15,11 @@ const tabs = [
 export default function HealthPage() {
   return (
     <div className="space-y-4">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Health</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Health logs</h1>
-        <p className="text-neutral-600">Track sleep, movement, nutrition, and metrics locally.</p>
-      </div>
+      <PageHeader
+        kicker="Health"
+        title="Health logs"
+        subtitle="Track sleep, movement, nutrition, and metrics locally."
+      />
       <Card>
         <CardHeader>
           <CardTitle>Areas</CardTitle>
@@ -28,7 +29,7 @@ export default function HealthPage() {
             <Link
               key={tab.href}
               href={tab.href}
-              className="rounded-md border border-neutral-200 px-3 py-2 text-sm hover:bg-neutral-50"
+              className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground transition hover:bg-muted"
             >
               {tab.label}
             </Link>

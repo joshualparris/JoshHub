@@ -24,7 +24,7 @@ OrgScape – The Infinite Office (local & GitHub)
 Screenshots 11 & 12 - First impression: A blue banner with “ORGSCAPE: The Infinite Office” sits above a plain white terminal area. A tiny minimap and legend appear on the left. Text instructs you to type help for commands. No back button or instructions beyond this. The local and GitHub versions are visually identical. - UI/UX (scores 0–10): Visual polish 5 (functional but plain). Readability 6 (black text on white is clear; map legend is tiny). Layout 5 (large empty white space; important elements are small). Perceived quality 5. Theming 5. - Functionality: Typing commands appears to work (tested help); the game responds with available commands. No broken controls. Score 7. - Fun/Engagement: Minimal; players must guess commands and there is no narrative hook. Score 5. - Effort to improve: Medium (2–4 hrs). Enhancements involve adding UI elements and instructions; core game logic remains intact. - Suggested improvements:
 Quick Wins – (1) Add a header bar with a brief description of the game and a back?to?JoshHub link. (2) Increase minimap size and spacing for readability. (3) Display a list of core commands on screen (e.g. help, go north). (4) Provide a “Get Started” paragraph explaining the goal (seek the Missing Directive). (5) Use a max?width container to centre content.
 Medium Tasks – (1) Implement responsive design so the interface scales on mobile. (2) Add audio feedback on commands or map exploration. (3) Save game progress to localStorage.
-Big Bets – (1) Expand the narrative with quests, itecare2 and NPC interactions. (2) Add a simple tutorial mode.
+Big Bets – (1) Expand the narrative with quests, items and NPC interactions. (2) Add a simple tutorial mode.
 - Codex task pack:
 - Goal: Improve onboarding and layout for OrgScape while maintaining core text adventure mechanics.
 - Files: public/games/orgscape/index.html, associated JS/CSS.
@@ -47,7 +47,7 @@ Screenshots 14 & 16 - First impression: Both versions show a dark background wit
 - Suggested improvements:
 Quick Wins – (1) Disable “Begin Adventure” until a name is entered. (2) Provide tooltip on the health bar and explain AC and Gold values. (3) Add a back link to JoshHub. (4) Centre the panel on all screen sizes; ensure itch frame doesn’t cut off content.
 Medium Tasks – (1) Add initial tutorial or hints for the first dungeon room. (2) Save character data in localStorage so returning players can continue. (3) Expand inventory and combat interactions.
-Big Bets – (1) Develop a full dungeon crawler with multiple roocare2, enemies, loot and skill progression. (2) Add audio and animations.
+Big Bets – (1) Develop a full dungeon crawler with multiple rooms, enemies, loot and skill progression. (2) Add audio and animations.
 - Codex task pack:
 - Goal: Polish the Simple RPG’s onboarding and lay groundwork for expansion.
 - Files: public/games/simple-rpg-gh/index.html and itch export; JS scripts.
@@ -72,7 +72,7 @@ Big Bets – (1) Expand the story with multiple endings, clues and NPCs. (2) Add a
 - Acceptance criteria: Start button begins the game; the in?game interface matches the landing page style; a timer is visible; there is a back link; no console errors.
 - Risks: Styling changes may interfere with command parser; ensure readability.
 Max Games (Starhaven & Guess the Number)
-Screenshot 18 - First impression: Dark interface with header “Max Games”. Two tabs: “Play Starhaven” and “Play Guess the Number.” The Starhaven tab displays a location description (Grand Atrium), itecare2 and exits. There is a large text area and a small input for commands. This appears to be the same game as the earlier Max Games but still lacking instructions. - UI/UX: Visual polish 5. Readability 6. Layout 5. Perceived quality 5. Theming 5. - Functionality: The command parser works; players can move around. There is still no context within the UI. Score 6. - Fun/Engagement: Without narrative context, the game feels bland. Score 5. - Effort to improve: Easy (30–60 min) for UI, Medium (2–4 hrs) to add features. - Suggested improvements:
+Screenshot 18 - First impression: Dark interface with header “Max Games”. Two tabs: “Play Starhaven” and “Play Guess the Number.” The Starhaven tab displays a location description (Grand Atrium), items and exits. There is a large text area and a small input for commands. This appears to be the same game as the earlier Max Games but still lacking instructions. - UI/UX: Visual polish 5. Readability 6. Layout 5. Perceived quality 5. Theming 5. - Functionality: The command parser works; players can move around. There is still no context within the UI. Score 6. - Fun/Engagement: Without narrative context, the game feels bland. Score 5. - Effort to improve: Easy (30–60 min) for UI, Medium (2–4 hrs) to add features. - Suggested improvements:
 Quick Wins – (1) Move the narrative and objectives from the new Starhaven landing page into this tab: display story summary and win/lose conditions. (2) Add an always?visible command list. (3) Place the input box above the log and enlarge it. (4) Add a back link.
 Medium Tasks – (1) Implement a timer to add urgency. (2) Provide a clue log or journal section. (3) Tidy up spacing and fonts.
 Big Bets – (1) Convert the entire Max Games interface into a modern interactive fiction UI (similar to Starhaven landing page).
@@ -96,7 +96,7 @@ Big Bets – (1) Build a full tile?based puzzle game with multiple levels and incr
 Wastes Courier Roguelike
 Screenshot 20 - First impression: A dark screen with the heading “OVERWORLD” followed by instructions: “Click anywhere or press: [1] Start Run (Starship stub) [2] Go to Museum (stub)”. A small green square at top right might represent a player or object. The page is simple but clear about available options. - UI/UX: Visual polish 6 (retro style but legible). Readability 7 (white text on dark background). Layout 6 (some wasted space). Perceived quality 6. Theming 6. - Functionality: Buttons 1 and 2 presumably trigger stubs but were not tested. There is no navigation or instructions beyond this. Score 6. - Fun/Engagement: Low; only stub entries exist, but the concept hints at future content. Score 5. - Effort to improve: Medium (2–4 hrs) to flesh out stubs; Hard (1+ week) for a full roguelike. - Suggested improvements:
 Quick Wins – (1) Replace “Click anywhere” with actual clickable buttons. (2) Describe the goal of the game (e.g. deliver packages across a wasteland). (3) Add a back link. (4) Provide placeholder content for “Museum” screen.
-Medium Tasks – (1) Implement the “Starship run” mini?game: basic roguelike movement on a grid with obstacles. (2) Add simple enemy encounters and itecare2. (3) Introduce a scoring system and progression.
+Medium Tasks – (1) Implement the “Starship run” mini?game: basic roguelike movement on a grid with obstacles. (2) Add simple enemy encounters and items. (3) Introduce a scoring system and progression.
 Big Bets – (1) Build a full top?down roguelike with procedurally generated maps, missions and persistent progression. (2) Add art, sound and a narrative.
 - Codex task pack:
 - Goal: Transform Wastes Courier Roguelike from stub into a minimal playable prototype.
@@ -138,7 +138,7 @@ Easiest to improve ? hardest to improve
 6. Wastes Courier Roguelike – Requires designing a playable mini?game but still simpler than a full roguelike.
 7. Starhaven – Standalone – Connecting to the game and aligning UI is moderate; building full narrative depth is more complex.
 Highest ROI quick wins
-1. Tile Game – Fixing broken assets and adding a basic grid transforcare2 it from non?functional to playable with minimal effort.
+1. Tile Game – Fixing broken assets and adding a basic grid transforms it from non?functional to playable with minimal effort.
 2. Classic D&D Text – Adding a title, instructions and visible map will drastically improve clarity with little work.
 3. OrgScape – Enlarging the minimap, adding a header and command list make the game far more accessible quickly.
 4. Max Games – Bringing narrative context from Starhaven’s intro page into the interface makes the game engaging with little code.
@@ -156,11 +156,11 @@ Sprint 1 – UI Polish & Onboarding (1 day) - OrgScape: Add header, description, e
 - Max Games: Integrate narrative context and command list; resize input box; unify colours and fonts.
 - Wastes Courier Roguelike: Replace text instructions with buttons; add narrative; create placeholder museum screen.
 Sprint 2 – Gameplay Enhancements (2–3 days) - Tile Game: Implement a simple tile?based puzzle or platformer with collision detection and a scoring mechanism; add levels.
-- OrgScape: Add save/load functionality; highlight visited roocare2; refine map interactivity.
+- OrgScape: Add save/load functionality; highlight visited rooms; refine map interactivity.
 - Classic D&D Text: Build out exploration and combat; implement inventory and character stats.
-- Simple RPG / Let’s Play DnD: Expand the dungeon with multiple roocare2 and enemy encounters; implement inventory and loot.
+- Simple RPG / Let’s Play DnD: Expand the dungeon with multiple rooms and enemy encounters; implement inventory and loot.
 - Starhaven: Add branching dialogue, multiple suspects and clues; implement evidence tracking and time pressure.
-- Wastes Courier Roguelike: Develop basic roguelike mechanics (grid movement, obstacles, itecare2); add music and sound effects.
+- Wastes Courier Roguelike: Develop basic roguelike mechanics (grid movement, obstacles, items); add music and sound effects.
 6. Appendices
 Notable console errors or missing assets: - Tile Game: Start button does nothing; likely missing JS file or canvas element. - OrgScape: No errors observed, but the minimap is tiny and could be due to CSS constraints. - Other games: No console errors were visible from screenshots; full testing should open DevTools.
 If you only have two hours, do this: 1. Fix Tile Game’s asset paths so the grid appears; add minimal instructions.

@@ -12,7 +12,7 @@ js/
 ├── combat.js      # Combat system, damage calculation
 ├── world.js       # Map generation, tile management
 ├── enemies.js     # Enemy AI, spawning, behavior
-├── itecare2.js       # Item definitions, inventory
+├── items.js       # Item definitions, inventory
 ├── input.js       # Input handling, controls
 └── main.js        # Game loop, initialization (entry point)
 ```
@@ -47,14 +47,14 @@ js/
 - `updateEnemyAI()` - Update single enemy AI
 - `updateAllEnemies()` - Update all enemies
 
-### itecare2.js
+### items.js
 - `createItem()` - Create generic item
 - `createPotion()` - Create health potion
 - `createGold()` - Create gold item
 - `createKey()` - Create key item
 - `collectItem()` - Handle item collection
 - `useItem()` - Use item from inventory
-- `spawnItecare2()` - Spawn itecare2 on map
+- `spawnItems()` - Spawn items on map
 
 ### input.js
 - `InputHandler` class - Handles all keyboard input

@@ -1,16 +1,28 @@
-<<<<<<< Updated upstream
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AA Game Adventure</title>
 
-  <script type="module" crossorigin src="./assets/index-z2U9pfxf.js"></script>
+  <!--
+    Resolved from a merge conflict that sat committed in this file from
+    2025-12-22 (b554cdc) until 2026-09-09. Both sides were kept in the file
+    with their markers intact, so the page began with a literal
+    "<<<<<<< Updated upstream" line before the doctype.
+
+    The two sides referenced different bundles. index-z2U9pfxf.js does not
+    exist in assets/ and never did; index-GwEn_Nhp.js does. So the working
+    bundle is taken from one side and the JoshHub header integration - whose
+    css/js assets do exist - from the other.
+  -->
+  <script type="module" crossorigin src="./assets/index-GwEn_Nhp.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DNtx8YB6.css">
   <link rel="stylesheet" href="/css/joshhub-header.css">
   <script src="/js/joshhub-header.js" defer></script>
 </head>
+
 <body>
   <div style="max-width:980px;margin:16px auto;padding:12px;">
     <h1 style="margin:0 0 8px;color:#7cd2ff;font-family:Inter,system-ui,Segoe UI;">AA Game Adventure</h1>
@@ -20,36 +32,16 @@
   <div id="error-overlay" class="error-overlay hidden"></div>
 
   <script>
-    if(window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
+    if (window.JoshHubHeader && window.JoshHubHeader.ensure) window.JoshHubHeader.ensure();
     // Small UX flag the game can set once initialized to avoid showing the generic error
     window.gameInitialized = false;
-    document.addEventListener('DOMContentLoaded', ()=>{
+    document.addEventListener('DOMContentLoaded', () => {
       // focus handling if the game exposes an init hook
       const c = document.getElementById('game-canvas');
-      if(c) c.setAttribute('tabindex', '0');
+      if (c) c.setAttribute('tabindex', '0');
     });
   </script>
 
 </body>
-</html>
-=======
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AA Game Adventure</title>
-
-  <script type="module" crossorigin src="./assets/index-GwEn_Nhp.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DNtx8YB6.css">
-</head>
-
-<body>
-  <canvas id="game-canvas"></canvas>
-  <div id="error-overlay" class="error-overlay hidden"></div>
-
-</body>
 
 </html>
->>>>>>> Stashed changes

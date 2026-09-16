@@ -1,4 +1,5 @@
 import { useLiveQuery } from "dexie-react-hooks";
+
 import { db } from "./dexie";
 import type { FamilyRhythm } from "./schema";
 
@@ -23,5 +24,7 @@ export async function saveFamilyRhythm(input: {
 }
 
 export function useFamilyRhythm() {
-  return useLiveQuery(async () => db.family.get("rhythm"), []);
+  // `null` is the loading sentinel; `undefined` after the query resolves means
+  // the user genuinely has no saved family rhythm yet.
+  return useLiveQuery(async () => db.family.get("rhythm"), [], null);
 }

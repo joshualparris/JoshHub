@@ -7,9 +7,9 @@ export const metadata = {
 };
 
 interface Props {
-  searchParacare2?: { status?: string };
+  searchParams?: { status?: string };
 }
 
-export default function AppsPage({ searchParacare2 }: Props) {
-  return <AppsPageClient searchParacare2={searchParacare2} apps={apps} />;
+export default function AppsPage({ searchParams }: Props) {
+  return <AppsPageClient searchParams={searchParams} apps={apps} />;
 }

@@ -50,7 +50,7 @@
   {
     id: "mount_hotenow",
     name: "Mount Hotenow Rift",
-    description: "Heat fissures and ash storcare2 surround Vexira's ritual ground.",
+    description: "Heat fissures and ash storms surround Vexira's ritual ground.",
     travel: ["blacklake"]
   }
 ];

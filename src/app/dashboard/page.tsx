@@ -24,11 +24,13 @@ import {
   UtensilsCrossed,
 } from "lucide-react";
 
+import type { LucideIcon } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { apps } from "@/data/apps";
 import { lifeAreas, type LifeArea } from "@/data/life";
-import { addRecent, loadRecent } from "@/lib/recent";
+import { addRecent, loadRecent, type RecentItem } from "@/lib/recent";
 import { loadPinnedLife } from "@/lib/pins";
 import { useNotes, useTasks, useDailyMetrics } from "@/lib/db/hooks";
 import { useEvents } from "@/lib/db/events";
@@ -36,11 +38,63 @@ import { useSleep, useMovement, useNutrition, useMetrics } from "@/lib/db/health
 import { useFamilyRhythm } from "@/lib/db/family";
 import { isSameLocalDayISO, todayLocalISO } from "@/lib/date";
 
+/**
+ * Some dashboard cards describe parts of life JoshHub does not track yet, so
+ * their figures are illustrative rather than calculated from stored data.
+ *
+ * Anything illustrative sets `isExample` and is rendered with a visible badge.
+ * The rule is simple: if a number did not come out of the database, the screen
+ * has to say so. A dashboard that mixes invented dollar amounts and NDIS
+ * percentages in with real health logs is worse than one that shows nothing,
+ * because the reader has no way to tell which is which.
+ *
+ * To make one of these real: derive the value from stored data and delete the
+ * `isExample` flag.
+ */
+const EXAMPLE_DATA_NOTE = "Example figures — not from your data";
+
+interface CommandCenterCard {
+  title: string;
+  icon: LucideIcon;
+  value: string;
+  detail: string;
+  action: { label: string; href: string };
+  accent: string;
+  bg: string;
+  isExample?: boolean;
+}
+
+interface CarePanel {
+  title: string;
+  icon: LucideIcon;
+  summary: string;
+  bullets: string[];
+  href: string;
+  cta: string;
+  isExample?: boolean;
+}
+
+/** Small badge marking figures that are illustrative rather than calculated. */
+function ExampleBadge() {
+  return (
+    <span
+      title={EXAMPLE_DATA_NOTE}
+      className="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:border-amber-700 dark:bg-amber-900/40 dark:text-amber-100"
+    >
+      Example
+    </span>
+  );
+}
+
 export default function DashboardPage() {
   const notes = useNotes();
   const tasks = useTasks();
   const [pinned, setPinned] = useState<string[]>([]);
-  const [recent] = useState(loadRecent());
+  // Read localStorage after mount, never during render. `loadRecent` returns []
+  // on the server and the real list in the browser, so seeding state with it
+  // directly makes the first client render disagree with the server HTML and
+  // React throws a hydration mismatch (#418) for this card.
+  const [recent, setRecent] = useState<RecentItem[]>([]);
   const events = useEvents();
   const sleep = useSleep();
   const movement = useMovement();
@@ -61,22 +115,29 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadPinnedLife().then(setPinned);
+    setRecent(loadRecent());
   }, []);
 
   const broken = apps.filter((a) => a.status === "broken");
   const quickLaunch = apps.slice(0, 6);
   const pinnedAreas = useMemo<LifeArea[]>(
-    () => pinned.map((slug) => lifeAreas.find((a) => a.slug === slug)).filter(Boolean) as LifeArea[],
+    () =>
+      pinned.map((slug) => lifeAreas.find((a) => a.slug === slug)).filter(Boolean) as LifeArea[],
     [pinned]
   );
+  // Copy before sorting throughout this file: these arrays come straight from
+  // Dexie live queries, and `sort` reorders in place. Mutating them rearranges
+  // the cached query result that other components are also rendering from.
   const recentNotes = useMemo(
-    () => (notes ?? []).sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 3),
+    () => [...(notes ?? [])].sort((a, b) => b.updatedAt - a.updatedAt).slice(0, 3),
     [notes]
   );
   const openTasks = useMemo(() => (tasks ?? []).filter((t) => t.status === "open"), [tasks]);
   const taskToday = useMemo(() => {
     const todayIso = todayLocalISO();
-    return (tasks ?? []).filter((t) => t.status === "open" && t.dueDate && isSameLocalDayISO(t.dueDate, todayIso));
+    return (tasks ?? []).filter(
+      (t) => t.status === "open" && t.dueDate && isSameLocalDayISO(t.dueDate, todayIso)
+    );
   }, [tasks]);
 
   const nextEvents = useMemo(
@@ -89,7 +150,7 @@ export default function DashboardPage() {
   );
 
   const nextTimeline = useMemo(() => {
-    const itecare2: {
+    const items: {
       id: string;
       type: "task" | "event";
       title: string;
@@ -99,7 +160,7 @@ export default function DashboardPage() {
 
     taskToday.forEach((t) => {
       const date = t.dueDate ? new Date(`${t.dueDate}T12:00:00`) : new Date();
-      itecare2.push({
+      items.push({
         id: `task-${t.id}`,
         type: "task",
         title: t.title,
@@ -109,7 +170,7 @@ export default function DashboardPage() {
     });
 
     nextEvents.forEach((ev) => {
-      itecare2.push({
+      items.push({
         id: `event-${ev.id}`,
         type: "event",
         title: ev.title,
@@ -118,11 +179,11 @@ export default function DashboardPage() {
       });
     });
 
-    return itecare2.sort((a, b) => a.time - b.time).slice(0, 5);
+    return items.sort((a, b) => a.time - b.time).slice(0, 5);
   }, [taskToday, nextEvents]);
 
   const sleepAvg = useMemo(() => {
-    const last = (sleep ?? []).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7);
+    const last = [...(sleep ?? [])].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 7);
     if (last.length === 0) return null;
     const durations = last
       .map((s) => s.durationMinutes ?? durationFromTimes(s.bedtimeIso, s.wakeIso))
@@ -150,15 +211,15 @@ export default function DashboardPage() {
   }, [dailyMetrics]);
 
   const latestMove = useMemo(
-    () => (movement ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
+    () => [...(movement ?? [])].sort((a, b) => b.date.localeCompare(a.date))[0],
     [movement]
   );
   const latestNutrition = useMemo(
-    () => (nutrition ?? []).sort((a, b) => b.date.localeCompare(a.date))[0],
+    () => [...(nutrition ?? [])].sort((a, b) => b.date.localeCompare(a.date))[0],
     [nutrition]
   );
   const latestMetric = useMemo(
-    () => (metrics ?? []).sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso))[0],
+    () => [...(metrics ?? [])].sort((a, b) => b.dateTimeIso.localeCompare(a.dateTimeIso))[0],
     [metrics]
   );
 
@@ -168,12 +229,16 @@ export default function DashboardPage() {
     "Move, hydrate, and breathe before diving into work.",
   ];
 
-  const lifeCommandCenter = [
+  const lifeCommandCenter: CommandCenterCard[] = [
     {
       title: "Finances",
       icon: DollarSign,
+      // JoshHub does not store budget or plan-spend data yet, so there is
+      // nothing to calculate these from. They are flagged as an example rather
+      // than shown as fact — see EXAMPLE_DATA_NOTE.
       value: "$19,185.23 spent",
       detail: "$12,628.67 left in plan",
+      isExample: true,
       action: { label: "Review plan spend", href: "/care" },
       accent: "text-sky-700 dark:text-sky-200",
       bg: "bg-sky-100 dark:bg-sky-900/40",
@@ -208,13 +273,17 @@ export default function DashboardPage() {
       accent: "text-amber-700 dark:text-amber-200",
       bg: "bg-amber-100 dark:bg-amber-900/40",
     },
-  ] as const;
+  ];
 
-  const familyCarePanels = [
+  const familyCarePanels: CarePanel[] = [
     {
       title: "Sylvie · NDIS",
       icon: ShieldCheck,
+      // Illustrative percentages: no NDIS plan data is stored anywhere in the
+      // app. Presenting these as real numbers on a care dashboard would be
+      // actively misleading, so they are badged as an example.
       summary: "Plan spend 60.3% with 10.3% uplift since last checkpoint.",
+      isExample: true,
       bullets: [
         "Track claim frequency by provider and flag unusual spikes.",
         "Review highest-use providers weekly and pre-book priority sessions.",
@@ -225,7 +294,7 @@ export default function DashboardPage() {
     {
       title: "Kristy · MS support",
       icon: Stethoscope,
-      summary: "Keep meds, symptocare2, appointments, and energy windows in one place.",
+      summary: "Keep meds, symptoms, appointments, and energy windows in one place.",
       bullets: [
         "Capture symptom notes in under 60 seconds when they happen.",
         "Bundle care tasks into calm daily routines to reduce decision load.",
@@ -236,7 +305,7 @@ export default function DashboardPage() {
     {
       title: "Family ops",
       icon: Heart,
-      summary: "School logistics, routines, and weekly rhythcare2 visible at a glance.",
+      summary: "School logistics, routines, and weekly rhythms visible at a glance.",
       bullets: [
         "Lock in classroom reminders, pickups, and weekly touchpoints.",
         "Use short checklists so everyone knows today’s top 1–2 priorities.",
@@ -244,12 +313,12 @@ export default function DashboardPage() {
       href: "/family",
       cta: "Open family hub",
     },
-  ] as const;
+  ];
 
   return (
     <div className="space-y-8">
       <section className="overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-r from-white via-sky-50 to-emerald-50 p-6 shadow-md dark:border-slate-800 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
-        <div className="flex flex-col gap-6 md:flex-row md:itecare2-center md:justify-between">
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-[0.2em] text-neutral-600 dark:text-slate-300">
               Today · {todayLabel}
@@ -303,7 +372,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={stat.label}
-                  className="flex itecare2-center gap-3 rounded-2xl border border-white/70 bg-white/90 px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
+                  className="flex items-center gap-3 rounded-2xl border border-white/70 bg-white/90 px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
                 >
                   <div className="rounded-full bg-sky-100 p-2 text-sky-600 shadow-sm dark:bg-sky-900/40 dark:text-sky-200">
                     <Icon className="h-4 w-4" />
@@ -329,7 +398,7 @@ export default function DashboardPage() {
           {focusAnchors.map((anchor) => (
             <div
               key={anchor}
-              className="flex itecare2-start gap-3 rounded-2xl border border-white/60 bg-white/90 p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
+              className="flex items-start gap-3 rounded-2xl border border-white/60 bg-white/90 p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900/80"
             >
               <div className="rounded-full bg-amber-100 p-2 text-amber-700 shadow-sm dark:bg-amber-900/40 dark:text-amber-200">
                 <Sparkles className="h-4 w-4" />
@@ -342,7 +411,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
-          <CardHeader className="flex flex-row itecare2-center justify-between pb-0">
+          <CardHeader className="flex flex-row items-center justify-between pb-0">
             <CardTitle>Quick launch</CardTitle>
             <span className="text-xs text-neutral-500 dark:text-slate-400">
               First six from the catalogue
@@ -358,7 +427,7 @@ export default function DashboardPage() {
                 onClick={() => addRecent(item)}
                 className="group flex flex-col gap-2 rounded-2xl border border-neutral-200/80 bg-gradient-to-r from-white to-sky-50 px-3 py-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:from-slate-900 dark:to-slate-800"
               >
-                <div className="flex itecare2-center justify-between gap-2">
+                <div className="flex items-center justify-between gap-2">
                   <div>
                     <p className="font-semibold text-neutral-900 dark:text-white">{item.name}</p>
                     <p className="text-xs text-neutral-500 dark:text-slate-400">{item.category}</p>
@@ -391,7 +460,7 @@ export default function DashboardPage() {
               broken.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-start justify-between rounded-xl border border-red-200 bg-white/90 px-3 py-3 dark:border-red-800/60 dark:bg-red-950/40"
+                  className="flex items-start justify-between rounded-xl border border-red-200 bg-white/90 px-3 py-3 dark:border-red-800/60 dark:bg-red-950/40"
                 >
                   <div className="space-y-1">
                     <a
@@ -402,7 +471,9 @@ export default function DashboardPage() {
                     >
                       {item.name}
                     </a>
-                    {item.notes && <p className="text-xs text-red-700 dark:text-red-200">{item.notes}</p>}
+                    {item.notes && (
+                      <p className="text-xs text-red-700 dark:text-red-200">{item.notes}</p>
+                    )}
                   </div>
                 </div>
               ))
@@ -413,7 +484,7 @@ export default function DashboardPage() {
 
       <section className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-3 border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
-          <CardHeader className="flex flex-row itecare2-center justify-between gap-3">
+          <CardHeader className="flex flex-row items-center justify-between gap-3">
             <div>
               <CardTitle>Life command center</CardTitle>
               <p className="text-sm text-neutral-600 dark:text-slate-300">
@@ -430,14 +501,24 @@ export default function DashboardPage() {
                   key={item.title}
                   className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="mb-2 flex itecare2-center gap-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <div className={`rounded-full p-2 ${item.bg}`}>
                       <Icon className={`h-4 w-4 ${item.accent}`} />
                     </div>
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">{item.title}</p>
+                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">
+                      {item.title}
+                    </p>
+                    {item.isExample && <ExampleBadge />}
                   </div>
-                  <p className="text-base font-semibold text-neutral-900 dark:text-white">{item.value}</p>
+                  <p className="text-base font-semibold text-neutral-900 dark:text-white">
+                    {item.value}
+                  </p>
                   <p className="mt-1 text-xs text-neutral-500 dark:text-slate-400">{item.detail}</p>
+                  {item.isExample && (
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">
+                      {EXAMPLE_DATA_NOTE}
+                    </p>
+                  )}
                   <Button asChild variant="ghost" className="mt-2 h-auto px-0 py-0 text-sm">
                     <Link href={item.action.href}>{item.action.label}</Link>
                   </Button>
@@ -458,9 +539,9 @@ export default function DashboardPage() {
               nextTimeline.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-start justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-start justify-between gap-3 rounded-2xl border border-neutral-200 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="flex itecare2-start gap-3">
+                  <div className="flex items-start gap-3">
                     <div className="rounded-full bg-sky-100 p-2 text-sky-600 shadow-sm dark:bg-sky-900/40 dark:text-sky-200">
                       {item.type === "task" ? (
                         <ClipboardCheck className="h-4 w-4" />
@@ -477,7 +558,9 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   {item.type === "event" && item.subtitle && (
-                    <span className="text-xs text-neutral-500 dark:text-slate-400">{item.subtitle}</span>
+                    <span className="text-xs text-neutral-500 dark:text-slate-400">
+                      {item.subtitle}
+                    </span>
                   )}
                 </div>
               ))
@@ -494,7 +577,10 @@ export default function DashboardPage() {
               {
                 label: "Sleep (7d avg)",
                 value: sleepAvg != null ? `${(sleepAvg / 60).toFixed(1)} h` : "Log sleep",
-                detail: sleepAvg != null ? `${sleepAvg} minutes across last 7 entries` : "Add a night to start trending",
+                detail:
+                  sleepAvg != null
+                    ? `${sleepAvg} minutes across last 7 entries`
+                    : "Add a night to start trending",
                 icon: HeartPulse,
               },
               {
@@ -516,13 +602,19 @@ export default function DashboardPage() {
               {
                 label: "Nutrition",
                 value: latestNutrition ? latestNutrition.summary : "Log a meal",
-                detail: latestNutrition ? latestNutrition.date : "Capture protein/veg or a simple summary",
+                detail: latestNutrition
+                  ? latestNutrition.date
+                  : "Capture protein/veg or a simple summary",
                 icon: UtensilsCrossed,
               },
               {
                 label: "Latest metric",
-                value: latestMetric ? `${latestMetric.metricType} ${latestMetric.value} ${latestMetric.unit}` : "No metrics yet",
-                detail: latestMetric ? new Date(latestMetric.dateTimeIso).toLocaleString() : "Add weight, HRV, or BP to stay aware",
+                value: latestMetric
+                  ? `${latestMetric.metricType} ${latestMetric.value} ${latestMetric.unit}`
+                  : "No metrics yet",
+                detail: latestMetric
+                  ? new Date(latestMetric.dateTimeIso).toLocaleString()
+                  : "Add weight, HRV, or BP to stay aware",
                 icon: Activity,
               },
             ].map((row) => {
@@ -530,7 +622,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={row.label}
-                  className="flex itecare2-start gap-3 rounded-2xl border border-neutral-200/70 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-start gap-3 rounded-2xl border border-neutral-200/70 bg-white px-3 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div className="rounded-full bg-emerald-100 p-2 text-emerald-700 shadow-sm dark:bg-emerald-900/40 dark:text-emerald-200">
                     <Icon className="h-4 w-4" />
@@ -562,11 +654,17 @@ export default function DashboardPage() {
                   key={panel.title}
                   className="rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
-                  <div className="mb-2 flex itecare2-center gap-2">
+                  <div className="mb-2 flex items-center gap-2">
                     <Icon className="h-4 w-4 text-neutral-600 dark:text-slate-300" />
                     <p className="font-semibold text-neutral-900 dark:text-white">{panel.title}</p>
+                    {panel.isExample && <ExampleBadge />}
                   </div>
                   <p className="text-sm text-neutral-700 dark:text-slate-200">{panel.summary}</p>
+                  {panel.isExample && (
+                    <p className="mt-1 text-[11px] text-amber-700 dark:text-amber-200">
+                      {EXAMPLE_DATA_NOTE}
+                    </p>
+                  )}
                   <ul className="mt-2 space-y-1 text-xs text-neutral-600 dark:text-slate-300">
                     {panel.bullets.map((line) => (
                       <li key={line}>• {line}</li>
@@ -623,7 +721,7 @@ export default function DashboardPage() {
                 <Link
                   key={area.slug}
                   href={`/life/${area.slug}`}
-                  className="flex itecare2-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-center justify-between gap-2 rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{area.title}</p>
@@ -648,7 +746,7 @@ export default function DashboardPage() {
 
         <Card className="border-white/70 bg-white/90 shadow-md dark:border-slate-800 dark:bg-slate-900/80">
           <CardHeader>
-            <CardTitle>Systecare2 & shortcuts</CardTitle>
+            <CardTitle>Systems & shortcuts</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-neutral-700 dark:text-slate-300">
             <Button asChild className="w-full">
@@ -675,11 +773,15 @@ export default function DashboardPage() {
               </p>
               {rhythm ? (
                 <div className="space-y-1 text-xs text-neutral-700 dark:text-slate-200">
-                  <p>Dinner {rhythm.dinner} · Bedtime {rhythm.bedtime}</p>
+                  <p>
+                    Dinner {rhythm.dinner} · Bedtime {rhythm.bedtime}
+                  </p>
                   <p>{rhythm.responsibilities.join(", ") || "Responsibilities tbc"}</p>
                 </div>
               ) : (
-                <p className="text-xs text-neutral-500 dark:text-slate-400">Set rhythm in Family.</p>
+                <p className="text-xs text-neutral-500 dark:text-slate-400">
+                  Set rhythm in Family.
+                </p>
               )}
             </div>
           </CardContent>
@@ -693,12 +795,14 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-2">
             {recent.length === 0 ? (
-              <p className="text-sm text-neutral-600 dark:text-slate-300">No recently opened itecare2.</p>
+              <p className="text-sm text-neutral-600 dark:text-slate-300">
+                No recently opened items.
+              </p>
             ) : (
               recent.map((item) => (
                 <div
                   key={item.id}
-                  className="flex itecare2-center justify-between rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="flex items-center justify-between rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900"
                 >
                   <div>
                     <p className="font-medium text-neutral-900 dark:text-white">{item.name}</p>
@@ -727,10 +831,11 @@ export default function DashboardPage() {
               Keep the list short: ship one work thing, love one family moment, and rest one beat.
             </p>
             <p className="rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              Pinned areas: {pinnedAreas.length > 0 ? pinnedAreas.map((a) => a.title).join(", ") : "none yet"}.
+              Pinned areas:{" "}
+              {pinnedAreas.length > 0 ? pinnedAreas.map((a) => a.title).join(", ") : "none yet"}.
             </p>
             <p className="rounded-2xl border border-neutral-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              Broken itecare2 stay visible above so you can clear friction fast.
+              Broken items stay visible above so you can clear friction fast.
             </p>
           </CardContent>
         </Card>

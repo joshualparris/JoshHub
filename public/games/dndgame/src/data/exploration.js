@@ -27,7 +27,7 @@ export const SCENE_ART = {
   rift: {
     image: "./assets/scenes/hotenow-rift.svg",
     title: "Ashlight Over the Rift",
-    caption: "Heat shimmer, molten seacare2, and a sky that looks ready to split."
+    caption: "Heat shimmer, molten seams, and a sky that looks ready to split."
   }
 };
 
@@ -167,7 +167,7 @@ export const LOCATION_AMBIENCE = {
         id: "sample_street_broth",
         label: "Sample Street Broth",
         daily: true,
-        use: () => "A paper cup of pepper broth warcare2 your chest and takes the edge off the road.",
+        use: () => "A paper cup of pepper broth warms your chest and takes the edge off the road.",
         repeat: () => "You are still carrying the comfort of that broth and do not need another cup right now."
       }
     ]

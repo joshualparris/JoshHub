@@ -21,7 +21,9 @@ export function computeLifestyleMetrics(
   const runs = activities.filter((a) => a.sport === "run");
   const longestRun = runs.reduce((max, a) => Math.max(max, a.distanceM ?? 0), 0);
 
-  const weekMetrics = dailyMetrics.filter((d) => new Date(`${d.date}T00:00:00`).getTime() >= sevenDaysAgo);
+  const weekMetrics = dailyMetrics.filter(
+    (d) => new Date(`${d.date}T00:00:00`).getTime() >= sevenDaysAgo
+  );
   const runDistanceWeek = weekMetrics.reduce((acc, d) => acc + (d.runDistanceM ?? 0), 0);
   const runsCountWeek = weekMetrics.reduce((acc, d) => acc + d.runsCount, 0);
 
@@ -69,7 +71,9 @@ export function buildReportMarkdown(metrics: LifestyleMetrics) {
   }
   lines.push("");
   lines.push("## Flow-State Windows");
-  metrics.flowStateWindows.slice(0, 5).forEach((w) => lines.push(`- ${w.date}: ${w.events} digital events post-run`));
+  metrics.flowStateWindows
+    .slice(0, 5)
+    .forEach((w) => lines.push(`- ${w.date}: ${w.events} digital events post-run`));
   lines.push("");
   lines.push("## Monthly Steps");
   Object.entries(metrics.monthlySteps)
@@ -124,7 +128,9 @@ function computeBlindSpots(dailyMetrics: DailyMetrics[], digitalEvents: DigitalE
   Object.entries(stepsByDay).forEach(([date, steps]) => {
     const eventsThatDay = digitalEvents.filter((ev) => ev.timestampIso?.startsWith(date));
     if (steps < 2000 && eventsThatDay.length >= 20) {
-      blindSpots.push(`Sedentary trap on ${date}: ${steps} steps with ${eventsThatDay.length} digital events`);
+      blindSpots.push(
+        `Sedentary trap on ${date}: ${steps} steps with ${eventsThatDay.length} digital events`
+      );
     }
   });
 

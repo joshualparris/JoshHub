@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
+import { migrateLegacyPinnedApps, togglePinnedApp, usePinnedAppIds } from "@/lib/pins";
 
 type UsePinnedAppsResult = {
   pinnedIds: string[];
@@ -8,35 +10,43 @@ type UsePinnedAppsResult = {
   togglePinned: (id: string) => void;
 };
 
-const STORAGE_KEY = "joshhub.pinnedApps.v1";
+const LEGACY_STORAGE_KEY = "joshhub.pinnedApps.v1";
+
+function readLegacyPinnedIds(): string[] {
+  try {
+    const raw = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 export function usePinnedApps(): UsePinnedAppsResult {
-  const [pinnedIds, setPinnedIds] = useState<string[]>(() => {
-    if (typeof window === "undefined") return [];
-    try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
-      if (!raw) return [];
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? (parsed as string[]) : [];
-    } catch {
-      return [];
-    }
-  });
+  const pinnedIds = usePinnedAppIds();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(pinnedIds));
-    } catch {
-      // ignore quota / private mode errors
-    }
-  }, [pinnedIds]);
+    // Pinned apps used to live only in localStorage, so they were excluded from
+    // backups. Migrate once into the canonical Dexie pins table, then remove the
+    // legacy copy only after the database write succeeds.
+    const legacyIds = readLegacyPinnedIds();
+    if (legacyIds.length === 0) return;
 
-  const isPinned = (id: string) => pinnedIds.includes(id);
+    void migrateLegacyPinnedApps(legacyIds).then(() => {
+      try {
+        window.localStorage.removeItem(LEGACY_STORAGE_KEY);
+      } catch {
+        // A storage failure must not undo the successful database migration.
+      }
+    });
+  }, []);
 
-  const togglePinned = (id: string) => {
-    setPinnedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+  return {
+    pinnedIds,
+    isPinned: (id) => pinnedIds.includes(id),
+    togglePinned: (id) => {
+      void togglePinnedApp(id);
+    },
   };
-
-  return { pinnedIds, isPinned, togglePinned };
 }

@@ -5,7 +5,9 @@ import { FormEvent, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { Textarea } from "@/components/ui/textarea";
+import { isUpcomingEvent, localDateTimeInputToIso, sortEventsByStart } from "@/lib/calendar/time";
 import { createEvent, useEvents } from "@/lib/db/events";
 
 export default function CalendarPage() {
@@ -15,40 +17,55 @@ export default function CalendarPage() {
   const [end, setEnd] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
+  const [error, setError] = useState("");
 
   const upcoming = useMemo(
-    () =>
-      (events ?? [])
-        .filter((e) => e.endIso >= new Date().toISOString())
-        .sort((a, b) => a.startIso.localeCompare(b.startIso)),
+    () => sortEventsByStart((events ?? []).filter((event) => isUpcomingEvent(event))),
     [events]
   );
 
   async function onAdd(e: FormEvent) {
     e.preventDefault();
-    if (!title || !start || !end) return;
-    await createEvent({
-      title,
-      startIso: start,
-      endIso: end,
-      location,
-      notes,
-      tags: [],
-    });
-    setTitle("");
-    setStart("");
-    setEnd("");
-    setLocation("");
-    setNotes("");
+    setError("");
+
+    if (!title.trim() || !start || !end) {
+      setError("Title, start and end are required.");
+      return;
+    }
+
+    try {
+      const startIso = localDateTimeInputToIso(start);
+      const endIso = localDateTimeInputToIso(end);
+      if (Date.parse(endIso) <= Date.parse(startIso)) {
+        setError("End time must be after start time.");
+        return;
+      }
+
+      await createEvent({
+        title: title.trim(),
+        startIso,
+        endIso,
+        location: location.trim() || undefined,
+        notes: notes.trim() || undefined,
+        tags: [],
+      });
+      setTitle("");
+      setStart("");
+      setEnd("");
+      setLocation("");
+      setNotes("");
+    } catch {
+      setError("Enter valid start and end times.");
+    }
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">Calendar</p>
-        <h1 className="text-3xl font-semibold text-neutral-900">Manual events</h1>
-        <p className="text-neutral-600">Add local events and see upcoming agenda.</p>
-      </div>
+      <PageHeader
+        kicker="Calendar"
+        title="Manual events"
+        subtitle="Add local events and see upcoming agenda."
+      />
 
       <Card>
         <CardHeader>
@@ -57,11 +74,7 @@ export default function CalendarPage() {
         <CardContent>
           <form className="grid gap-3 md:grid-cols-2" onSubmit={onAdd}>
             <Input placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-            <Input
-              type="datetime-local"
-              value={start}
-              onChange={(e) => setStart(e.target.value)}
-            />
+            <Input type="datetime-local" value={start} onChange={(e) => setStart(e.target.value)} />
             <Input type="datetime-local" value={end} onChange={(e) => setEnd(e.target.value)} />
             <Input
               placeholder="Location"
@@ -74,6 +87,11 @@ export default function CalendarPage() {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
             />
+            {error && (
+              <p className="text-sm text-red-700 dark:text-red-300 md:col-span-2" role="alert">
+                {error}
+              </p>
+            )}
             <div className="md:col-span-2">
               <Button type="submit">Add event</Button>
             </div>
@@ -87,20 +105,19 @@ export default function CalendarPage() {
         </CardHeader>
         <CardContent className="space-y-2">
           {upcoming.length === 0 ? (
-            <p className="text-sm text-neutral-600">No upcoming events.</p>
+            <p className="text-sm text-muted-foreground">No upcoming events.</p>
           ) : (
             upcoming.map((ev) => (
               <div
                 key={ev.id}
-                className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+                className="rounded-md border border-border bg-card px-3 py-2 text-sm text-card-foreground"
               >
-                <p className="font-medium text-neutral-900">{ev.title}</p>
-                <p className="text-neutral-600">
-                  {new Date(ev.startIso).toLocaleString()} →{" "}
-                  {new Date(ev.endIso).toLocaleString()}
+                <p className="font-medium">{ev.title}</p>
+                <p className="text-muted-foreground">
+                  {new Date(ev.startIso).toLocaleString()} → {new Date(ev.endIso).toLocaleString()}
                 </p>
-                {ev.location && <p className="text-neutral-600">Location: {ev.location}</p>}
-                {ev.notes && <p className="text-neutral-600">{ev.notes}</p>}
+                {ev.location && <p className="text-muted-foreground">Location: {ev.location}</p>}
+                {ev.notes && <p className="text-muted-foreground">{ev.notes}</p>}
               </div>
             ))
           )}

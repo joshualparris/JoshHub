@@ -29,7 +29,7 @@
         color: var(--text);
         font-family: "Inter", system-ui, -apple-system, sans-serif;
         display: grid;
-        place-itecare2: center;
+        place-items: center;
         padding: 24px;
       }
       .card {
@@ -46,7 +46,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         background: linear-gradient(90deg, rgba(142, 243, 197, 0.12), transparent);
         display: flex;
-        align-itecare2: center;
+        align-items: center;
         gap: 12px;
       }
       header h1 {
@@ -100,7 +100,7 @@
         padding: 12px 10px;
         cursor: pointer;
         font-size: 14px;
-        transition: transform 120care2 ease, background 120care2 ease, border 120care2 ease;
+        transition: transform 120ms ease, background 120ms ease, border 120ms ease;
       }
       button:hover {
         transform: translateY(-1px);
@@ -162,7 +162,7 @@
       }
       .badge {
         display: inline-flex;
-        align-itecare2: center;
+        align-items: center;
         gap: 6px;
         padding: 4px 10px;
         border-radius: 20px;
@@ -213,7 +213,7 @@
             <button id="random-btn">Randomize</button>
           </div>
           <div class="muted" style="margin-top:10px;">
-            Explore roocare2, fight enemies, heal, and push to Level 5 to win. Progress auto-saves in this tab.
+            Explore rooms, fight enemies, heal, and push to Level 5 to win. Progress auto-saves in this tab.
           </div>
         </div>
 
@@ -266,7 +266,7 @@
         hero: null,
         enemy: null,
         level: 1,
-        roocare2Cleared: 0,
+        roomsCleared: 0,
         potions: 2,
         gold: 0,
         victory: false,
@@ -303,9 +303,9 @@
         return arr[Math.floor(Math.random() * arr.length)];
       }
 
-      function addLog(care2g, kind = "info") {
+      function addLog(msg, kind = "info") {
         const div = document.createElement("div");
-        div.innerHTML = care2g;
+        div.innerHTML = msg;
         if (kind === "danger") div.style.color = "var(--danger)";
         if (kind === "success") div.style.color = "var(--accent)";
         logEl.appendChild(div);
@@ -369,7 +369,7 @@
         };
         state.hero = hero;
         state.level = 1;
-        state.roocare2Cleared = 0;
+        state.roomsCleared = 0;
         state.potions = 2;
         state.gold = 0;
         state.victory = false;
@@ -382,7 +382,7 @@
       }
 
       function spawnEnemy() {
-        const tier = Math.min(5, 1 + Math.floor(state.roocare2Cleared / 3));
+        const tier = Math.min(5, 1 + Math.floor(state.roomsCleared / 3));
         const pool = enemies.filter((e) => e.tier <= tier + 1);
         const proto = randomChoice(pool);
         const scale = 1 + (state.level - 1) * 0.15;
@@ -463,14 +463,14 @@
       }
 
       function reward() {
-        state.roocare2Cleared += 1;
+        state.roomsCleared += 1;
         const goldGain = 6 + Math.floor(Math.random() * 8);
         state.gold += goldGain;
         if (Math.random() < 0.3) {
           state.potions += 1;
           addLog("Found a potion in the room.");
         }
-        if (state.roocare2Cleared % 2 === 0) {
+        if (state.roomsCleared % 2 === 0) {
           state.level += 1;
           state.hero.maxHp += 4;
           state.hero.atk += 2;
@@ -515,7 +515,7 @@
           state.enemy = null;
           state.inCombat = false;
           state.level = 1;
-          state.roocare2Cleared = 0;
+          state.roomsCleared = 0;
           state.gold = 0;
           state.potions = 2;
           state.victory = false;
@@ -526,7 +526,7 @@
           h.hp = h.maxHp;
           state.enemy = null;
           state.inCombat = false;
-          state.roocare2Cleared = 0;
+          state.roomsCleared = 0;
           state.level = 1;
           state.gold = 0;
           state.potions = 2;

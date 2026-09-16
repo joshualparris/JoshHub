@@ -36,7 +36,7 @@ function abilityCell(key, score) {
 
 function inventoryRows(inventory, itemLookup) {
   if (!inventory.length) {
-    return "<div class=\"system\">No itecare2 in pack.</div>";
+    return "<div class=\"system\">No items in pack.</div>";
   }
 
   return inventory

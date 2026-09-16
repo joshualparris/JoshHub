@@ -55,7 +55,11 @@ export default function HealthImportPage() {
               sizeBytes: file.size,
               rawPreview: previewText(text),
             });
-            outcomes.push({ fileName: file.name, status: "success", message: parsed.message ?? "Imported" });
+            outcomes.push({
+              fileName: file.name,
+              status: "success",
+              message: parsed.message ?? "Imported",
+            });
           } else {
             await addHealthImport({
               fileName: file.name,
@@ -137,9 +141,15 @@ export default function HealthImportPage() {
           });
         }
       } catch (err) {
-        const care2g = err instanceof Error ? err.message : "Unexpected error";
-        await addHealthImport({ fileName: file.name, status: "error", message: care2g, rawPreview: null, sizeBytes: file.size });
-        outcomes.push({ fileName: file.name, status: "error", message: care2g });
+        const msg = err instanceof Error ? err.message : "Unexpected error";
+        await addHealthImport({
+          fileName: file.name,
+          status: "error",
+          message: msg,
+          rawPreview: null,
+          sizeBytes: file.size,
+        });
+        outcomes.push({ fileName: file.name, status: "error", message: msg });
       }
     }
 
@@ -170,16 +180,18 @@ export default function HealthImportPage() {
     <div className="space-y-6">
       <header className="space-y-2">
         <p className="text-xs uppercase tracking-[0.18em] text-neutral-500">Health · Import</p>
-        <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white">Import activity files</h1>
+        <h1 className="text-3xl font-semibold text-neutral-900 dark:text-white">
+          Import activity files
+        </h1>
         <p className="text-sm text-neutral-600 dark:text-slate-300">
-          Local-only parsing. Drop TCX files from Google Takeout / Garmin / Strava to populate activities and daily
-          metrics.
+          Local-only parsing. Drop TCX files from Google Takeout / Garmin / Strava to populate
+          activities and daily metrics.
         </p>
       </header>
 
       <Card className="border-dashed border-sky-200 bg-white/80 shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
         <CardHeader className="flex flex-col gap-2 text-center">
-          <div className="mx-auto flex h-12 w-12 itecare2-center justify-center rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/40 dark:text-sky-200">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-sky-100 text-sky-600 dark:bg-sky-900/40 dark:text-sky-200">
             <CloudUpload className="h-6 w-6" />
           </div>
           <CardTitle>Drag & drop TCX files</CardTitle>
@@ -187,7 +199,7 @@ export default function HealthImportPage() {
         </CardHeader>
         <CardContent>
           <div
-            className="flex flex-col itecare2-center justify-center gap-3 rounded-2xl border border-dashed border-sky-200 bg-white/70 px-4 py-10 text-center transition hover:border-sky-400 dark:border-slate-700 dark:bg-slate-900/60"
+            className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-sky-200 bg-white/70 px-4 py-10 text-center transition hover:border-sky-400 dark:border-slate-700 dark:bg-slate-900/60"
             onDragOver={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -197,7 +209,7 @@ export default function HealthImportPage() {
             <p className="text-sm text-neutral-700 dark:text-slate-200">
               Drop files here or choose from your computer.
             </p>
-            <div className="flex flex-wrap itecare2-center justify-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-3">
               <Button onClick={handleChoose} disabled={importing}>
                 <Upload className="mr-2 h-4 w-4" />
                 Choose files
@@ -210,7 +222,9 @@ export default function HealthImportPage() {
                 className="hidden"
                 onChange={(e) => handleFiles(e.target.files)}
               />
-              {importing && <span className="text-xs text-sky-600 dark:text-sky-200">Importing…</span>}
+              {importing && (
+                <span className="text-xs text-sky-600 dark:text-sky-200">Importing…</span>
+              )}
             </div>
             <p className="text-xs text-neutral-500 dark:text-slate-400">
               Supported: TCX. We store a health import row even if parsing fails.
@@ -221,7 +235,7 @@ export default function HealthImportPage() {
 
       {lastSummary && (
         <Card className="border-emerald-100 bg-emerald-50/70 dark:border-emerald-800/50 dark:bg-emerald-900/30">
-          <CardHeader className="flex flex-row itecare2-center justify-between">
+          <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle>Import summary</CardTitle>
               <CardDescription>{lastSummary}</CardDescription>
@@ -241,15 +255,19 @@ export default function HealthImportPage() {
             {results.map((res) => (
               <div
                 key={res.fileName + res.status + res.message}
-                className="flex itecare2-start justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
+                className="flex items-start justify-between gap-3 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
               >
                 <div className="space-y-1">
-                  <p className="text-sm font-medium text-neutral-900 dark:text-white">{res.fileName}</p>
+                  <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                    {res.fileName}
+                  </p>
                   <p className="text-xs text-neutral-500 dark:text-slate-400">{res.message}</p>
                 </div>
                 <span
                   className={`text-xs ${
-                    res.status === "success" ? "text-emerald-600 dark:text-emerald-200" : "text-red-600 dark:text-red-200"
+                    res.status === "success"
+                      ? "text-emerald-600 dark:text-emerald-200"
+                      : "text-red-600 dark:text-red-200"
                   }`}
                 >
                   {res.status}
@@ -269,17 +287,21 @@ export default function HealthImportPage() {
           {(imports ?? []).slice(0, 10).map((imp) => (
             <div
               key={imp.id}
-              className="flex itecare2-start justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
+              className="flex items-start justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 text-left dark:border-slate-800 dark:bg-slate-900"
             >
               <div>
-                <p className="text-sm font-medium text-neutral-900 dark:text-white">{imp.fileName}</p>
+                <p className="text-sm font-medium text-neutral-900 dark:text-white">
+                  {imp.fileName}
+                </p>
                 <p className="text-xs text-neutral-500 dark:text-slate-400">
                   {imp.message ?? "No message"} · {new Date(imp.createdAt).toLocaleString()}
                 </p>
               </div>
               <span
                 className={`text-xs ${
-                  imp.status === "success" ? "text-emerald-600 dark:text-emerald-200" : "text-red-600 dark:text-red-200"
+                  imp.status === "success"
+                    ? "text-emerald-600 dark:text-emerald-200"
+                    : "text-red-600 dark:text-red-200"
                 }`}
               >
                 {imp.status}
@@ -322,7 +344,11 @@ export default function HealthImportPage() {
       <Separator />
 
       <div className="grid gap-3 sm:grid-cols-2">
-        <StatBox label="Runs (7d)" value={`${stats7d.runsCount}`} detail={`${(stats7d.runDistanceM / 1000).toFixed(2)} km`} />
+        <StatBox
+          label="Runs (7d)"
+          value={`${stats7d.runsCount}`}
+          detail={`${(stats7d.runDistanceM / 1000).toFixed(2)} km`}
+        />
         <StatBox
           label="Movement (7d)"
           value={`${(stats7d.distanceM / 1000).toFixed(2)} km`}
@@ -336,14 +362,18 @@ export default function HealthImportPage() {
 function StatBox({ label, value, detail }: { label: string; value: string; detail: string }) {
   return (
     <div className="rounded-2xl border border-neutral-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">{label}</p>
+      <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-slate-400">
+        {label}
+      </p>
       <p className="text-xl font-semibold text-neutral-900 dark:text-white">{value}</p>
       <p className="text-xs text-neutral-500 dark:text-slate-400">{detail}</p>
     </div>
   );
 }
 
-function compute7dStats(dailyMetrics: Array<{ date: string; runsCount: number; runDistanceM: number; distanceM: number }>) {
+function compute7dStats(
+  dailyMetrics: Array<{ date: string; runsCount: number; runDistanceM: number; distanceM: number }>
+) {
   const now = Date.now();
   const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
   return dailyMetrics
@@ -401,7 +431,9 @@ function parseTcx(text: string, fileName: string) {
 
     const distanceM = distanceFromTcx ?? distanceFromCoords ?? null;
     const durationSec =
-      startTimeIso && endTimeIso ? Math.max(0, (new Date(endTimeIso).getTime() - new Date(startTimeIso).getTime()) / 1000) : null;
+      startTimeIso && endTimeIso
+        ? Math.max(0, (new Date(endTimeIso).getTime() - new Date(startTimeIso).getTime()) / 1000)
+        : null;
     const avgSpeedMps = durationSec && distanceM ? distanceM / durationSec : null;
     const inferredSport = sport ?? inferSport(avgSpeedMps);
 
@@ -506,14 +538,19 @@ function parseFitJson(text: string, fileName: string) {
       elevationGainM?: number | null;
       avgSpeedMps?: number | null;
     }> = [];
-    const dailyUpdates: Array<{ date: string; steps?: number | null; distanceM?: number | null }> = [];
+    const dailyUpdates: Array<{ date: string; steps?: number | null; distanceM?: number | null }> =
+      [];
 
     // Handle common Google Fit aggregate shape: buckets -> dataset -> point
     const buckets = Array.isArray(json?.bucket) ? json.bucket : null;
     if (buckets) {
       for (const bucket of buckets) {
-        const startTime = bucket.startTimeMillis ? Number(bucket.startTimeMillis) : Number(bucket.startTime) || null;
-        const endTime = bucket.endTimeMillis ? Number(bucket.endTimeMillis) : Number(bucket.endTime) || null;
+        const startTime = bucket.startTimeMillis
+          ? Number(bucket.startTimeMillis)
+          : Number(bucket.startTime) || null;
+        const endTime = bucket.endTimeMillis
+          ? Number(bucket.endTimeMillis)
+          : Number(bucket.endTime) || null;
         const date = startTime ? new Date(startTime).toISOString().slice(0, 10) : null;
         let steps = 0;
         let distanceM = 0;
@@ -546,7 +583,12 @@ function parseFitJson(text: string, fileName: string) {
       }
     }
 
-    return { activities, dailyUpdates, message: activities.length === 0 && dailyUpdates.length === 0 ? "Unrecognised JSON format" : null };
+    return {
+      activities,
+      dailyUpdates,
+      message:
+        activities.length === 0 && dailyUpdates.length === 0 ? "Unrecognised JSON format" : null,
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to parse JSON";
     return { activities: [], dailyUpdates: [], message };

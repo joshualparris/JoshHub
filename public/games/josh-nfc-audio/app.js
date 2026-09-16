@@ -108,7 +108,7 @@
   // Deep-link handling: if app opened with #card=<id> or ?card=<id>, load and attempt playback
   async function handleDeepLinkIfPresent(){
     // Prefer query param ?card= for cross-platform URL-on-tag behavior, fall back to #card=
-    const qp = new URLSearchParacare2(location.search);
+    const qp = new URLSearchParams(location.search);
     let id = null;
     if(qp.has('card')) id = qp.get('card');
     if(!id){ const hash = location.hash || ''; if(hash.startsWith('#card=')) id = decodeURIComponent(hash.slice(6)); }
@@ -348,9 +348,9 @@
       ndef.onreadingerror = () => console.log('NFC read error');
       ndef.onreading = async (ev)=>{
         // read NDEF message
-        const care2gs = ev.message.records;
+        const msgs = ev.message.records;
         let foundAny = false;
-        for(const r of care2gs){
+        for(const r of msgs){
           try{
             let text='';
             if(r.recordType==='text'){
@@ -390,9 +390,9 @@
     else if(t.startsWith('http://') || t.startsWith('https://')){
       try{
         const u = new URL(t);
-        const qp = new URLSearchParacare2(u.search);
+        const qp = new URLSearchParams(u.search);
         if(qp.has('card')) id = qp.get('card');
-        else if(u.hash && u.hash.includes('card=')){ const hp = new URLSearchParacare2(u.hash.replace(/^#/,'')); if(hp.has('card')) id = hp.get('card'); }
+        else if(u.hash && u.hash.includes('card=')){ const hp = new URLSearchParams(u.hash.replace(/^#/,'')); if(hp.has('card')) id = hp.get('card'); }
         else {
           const parts = u.pathname.split('/').filter(Boolean);
           if(parts.length) id = parts[parts.length-1];

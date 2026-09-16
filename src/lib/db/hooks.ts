@@ -94,5 +94,8 @@ export function useTelemetry(type?: string) {
 }
 
 export function useDigitalEvents(limit = 50) {
-  return useLiveQuery(async () => db.digitalEvents.orderBy("timestampIso").reverse().limit(limit).toArray(), [limit]);
+  return useLiveQuery(
+    async () => db.digitalEvents.orderBy("timestampIso").reverse().limit(limit).toArray(),
+    [limit]
+  );
 }

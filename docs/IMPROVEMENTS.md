@@ -126,7 +126,7 @@ Below is a **merged, deduplicated view** of all apps with **one “big lever” 
    → Persistent characters (localStorage saves)
    *(Very high ROI, low effort)*
 
-8. **NewGame / Dark Realcare2**
+8. **NewGame / Dark Realms**
    → Modular refactor of monolithic JS
    *(Foundation work, high effort, unblocker for everything else)*
 
@@ -207,11 +207,11 @@ Below is a **merged, deduplicated view** of all apps with **one “big lever” 
 
 ### 🟡 **Medium Effort, High Impact**
 
-* Save/load systecare2 (AAA, LetsPlayDnD)
+* Save/load systems (AAA, LetsPlayDnD)
 * Enemy AI (Tile Game)
 * Procedural events (Orgscape)
 * Branching narrative (Mysterious Depths)
-* Skill systecare2 (AModuleDnd)
+* Skill systems (AModuleDnd)
 * Version unification (Whispering Wilds)
 
 ---
@@ -220,8 +220,8 @@ Below is a **merged, deduplicated view** of all apps with **one “big lever” 
 
 * Multiplayer / shared world (Whispering Wilds)
 * Procedural dungeon generation (AAGameAdventure)
-* Major refactors (Dark Realcare2)
-* Modding ecosystecare2 (Lexicon)
+* Major refactors (Dark Realms)
+* Modding ecosystems (Lexicon)
 
 ---
 
@@ -343,7 +343,7 @@ If you do:
 
 JoshHub becomes:
 
-> **“This person ships systecare2, not just experiments.”**
+> **“This person ships systems, not just experiments.”**
 
 If you want, next we can:
 

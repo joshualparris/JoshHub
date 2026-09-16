@@ -45,7 +45,7 @@ const game = {
     player: new Player(),
     keys: {},
     enemies: [],
-    itecare2: [],
+    items: [],
     doors: [],  // Array of door objects
     npcs: [],   // Array of NPC objects
     tiles: [],
@@ -63,7 +63,7 @@ const game = {
             { id: 'welcome', completed: false, message: 'Welcome, young adventurer! I am Master Aldric, the village wizard.' },
             { id: 'movement', completed: false, message: 'Use WASD or Arrow Keys to move around. Try moving now!' },
             { id: 'combat', completed: false, message: 'You will encounter enemies. They will chase you, so be ready to fight!' },
-            { id: 'itecare2', completed: false, message: 'Collect itecare2 you find on the ground. They can heal you or give you gold.' },
+            { id: 'items', completed: false, message: 'Collect items you find on the ground. They can heal you or give you gold.' },
             { id: 'chest', completed: false, message: 'Open that chest over there to find useful supplies.' },
             { id: 'ready', completed: false, message: 'You are ready! I will open the gate to the outside world. Good luck!' }
         ]
@@ -482,7 +482,7 @@ function startGame() {
     } else {
         initWorld();
         spawnEnemies();
-        spawnItecare2();
+        spawnItems();
     }
     
     updateCamera();
@@ -517,7 +517,7 @@ function initTutorialVillage() {
     game.doors = [];
     game.npcs = [];
     game.enemies = [];
-    game.itecare2 = [];
+    game.items = [];
     const villageSize = 20;
     
     // Create a small village area
@@ -545,7 +545,7 @@ function initTutorialVillage() {
     game.tiles[8][10] = TILE_TYPES.CHEST;
     
     // Add a healing item for tutorial
-    game.itecare2.push({
+    game.items.push({
         gridX: 12,
         gridY: 8,
         width: 18,
@@ -733,9 +733,9 @@ function spawnEnemies() {
     }
 }
 
-// Spawn itecare2
-function spawnItecare2() {
-    game.itecare2 = [];
+// Spawn items
+function spawnItems() {
+    game.items = [];
     const itemTypes = [
         { name: 'Healing Salve', effect: 'heal', value: 25, color: '#8b0000' },
         { name: 'Gold', effect: 'gold', value: 10, color: '#8b6914' },
@@ -751,7 +751,7 @@ function spawnItecare2() {
             gridY = Math.floor(Math.random() * (game.tiles.length - 2)) + 1;
         } while (game.tiles[gridY][gridX] !== TILE_TYPES.FLOOR);
         
-        game.itecare2.push({
+        game.items.push({
             gridX: gridX,
             gridY: gridY,
             width: 18,
@@ -1112,8 +1112,8 @@ function drawEnemies() {
     });
 }
 
-function drawItecare2() {
-    game.itecare2.forEach(item => {
+function drawItems() {
+    game.items.forEach(item => {
         const screenX = item.gridX * game.tileSize - game.camera.x;
         const screenY = item.gridY * game.tileSize - game.camera.y;
         
@@ -1131,7 +1131,7 @@ function drawItecare2() {
             ctx.arc(centerX - 2, centerY - 1, 3, 0, Math.PI * 2);
             ctx.fill();
         } else {
-            // Draw other itecare2 as circles
+            // Draw other items as circles
             ctx.fillStyle = item.type.color;
             ctx.beginPath();
             ctx.arc(centerX, centerY, 8, 0, Math.PI * 2);
@@ -1360,8 +1360,8 @@ function checkTileInteractions(x, y) {
         }
     }
     
-    // Check for itecare2 on this tile
-    game.itecare2.forEach((item, index) => {
+    // Check for items on this tile
+    game.items.forEach((item, index) => {
         if (item.gridX === x && item.gridY === y) {
             collectItem(item, index);
         }
@@ -1467,17 +1467,17 @@ function checkTutorialProgress() {
     } else if (currentStep.id === 'combat' && game.player.xp > 0) {
         // Player defeated an enemy
         advanceTutorialStep();
-        addLog('Excellent! You defeated the training dummy. Now try collecting itecare2...');
+        addLog('Excellent! You defeated the training dummy. Now try collecting items...');
         setTimeout(() => {
             const wizard = game.npcs.find(n => n.isWizard);
             if (wizard) handleWizardDialogue(wizard);
         }, 2000);
-    } else if (currentStep.id === 'itecare2') {
+    } else if (currentStep.id === 'items') {
         // Check if item count decreased (player collected it)
-        if (game.itecare2.length < tutorialItemCount) {
-            tutorialItemCount = game.itecare2.length;
+        if (game.items.length < tutorialItemCount) {
+            tutorialItemCount = game.items.length;
             advanceTutorialStep();
-            addLog('Well done! Itecare2 can be very useful. Now try opening that chest...');
+            addLog('Well done! Items can be very useful. Now try opening that chest...');
             setTimeout(() => {
                 const wizard = game.npcs.find(n => n.isWizard);
                 if (wizard) handleWizardDialogue(wizard);
@@ -1584,9 +1584,9 @@ function transitionToMainWorld() {
         game.player.gridY = startY;
     }
     
-    // Spawn enemies and itecare2
+    // Spawn enemies and items
     spawnEnemies();
-    spawnItecare2();
+    spawnItems();
     
     // Update camera smoothly
     updateCamera();
@@ -1619,17 +1619,17 @@ function openShop() {
 }
 
 function renderShop() {
-    const shopItecare2 = [
+    const shopItems = [
         { name: 'Healing Salve', desc: 'Restores 40 HP', price: 30, effect: 'heal', value: 40 },
         { name: 'Iron Blade', desc: '+3 Attack', price: 120, effect: 'attack', value: 3 },
         { name: 'Leather Armor', desc: '+3 Defense', price: 100, effect: 'defense', value: 3 },
         { name: 'Experience Tome', desc: '+80 XP', price: 60, effect: 'xp', value: 80 }
     ];
     
-    const shopDiv = document.getElementById('shopItecare2');
+    const shopDiv = document.getElementById('shopItems');
     shopDiv.innerHTML = '';
     
-    shopItecare2.forEach(item => {
+    shopItems.forEach(item => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'shop-item';
         itemDiv.innerHTML = `
@@ -1684,7 +1684,7 @@ function collectItem(item, index) {
         game.player.keys += item.type.value;
     }
     
-    game.itecare2.splice(index, 1);
+    game.items.splice(index, 1);
     updateUI();
 }
 
@@ -1964,7 +1964,7 @@ document.getElementById('closeDialogue').addEventListener('click', () => {
 
 // Game loop with delta-time
 function gameLoop(now = performance.now()) {
-    const dt = Math.min(50, now - lastFrameTime); // Clamp to max 50care2 to prevent large jumps
+    const dt = Math.min(50, now - lastFrameTime); // Clamp to max 50ms to prevent large jumps
     lastFrameTime = now;
     
     // Update hit timers
@@ -2005,7 +2005,7 @@ function gameLoop(now = performance.now()) {
         
         drawWorld();
         drawDoors();
-        drawItecare2();
+        drawItems();
         drawNPCs();
         drawEnemies();
         drawPlayer();
