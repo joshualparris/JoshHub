@@ -416,7 +416,7 @@ function checkStartButton() {
     const isValid = charCreation.name && 
                    charCreation.race && 
                    charCreation.class && 
-                   charCreation.pointsRemaining === 0;
+                   charCreation.pointsRemaining >= 0;
     
     console.log('Checking start button:', {
         name: charCreation.name,

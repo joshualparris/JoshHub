@@ -333,6 +333,9 @@ export function createStarhaven(write, setStatus, onEnd) {
         if (!args.length) { this.say("Go where? n/e/s/w"); return; }
         return this.move(args[0]);
       }
+      if (["n", "s", "e", "w", "north", "south", "east", "west"].includes(cmd)) {
+        return this.move(cmd[0]); // move takes first letter typically, let's check: move() expects 'north','south','west','east' or 'n','s','e','w'? Wait! DIRS keys are 'n','s','e','w'. So cmd[0] works.
+      }
       if (cmd === "take") return this.take(...args);
       if (cmd === "drop") return this.drop(...args);
       if (cmd === "inv" || cmd === "inventory") return this.inv_show();
