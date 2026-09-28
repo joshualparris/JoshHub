@@ -1,12 +1,7 @@
 name: Deploy Buckland Resume Hotfix
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/deploy-buckland-hotfix.yml"
-      - "public/games/buckland-blocks/**"
+  workflow_dispatch:
 
 permissions:
   contents: read
