@@ -1,0 +1,45 @@
+name: Deploy Buckland Resume Hotfix
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/deploy-buckland-hotfix.yml"
+      - "public/games/buckland-blocks/**"
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VERCEL_ORG_ID: team_jhrKVI18IfbwO9ChetbSH01p
+      VERCEL_PROJECT_ID: prj_4dF21nt8YrcxB3MLsJuZrlzxrUqD
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify Vercel credentials are configured
+        shell: bash
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "VERCEL_TOKEN secret is not configured for this repository."
+            exit 1
+          fi
+
+      - name: Pull production settings
+        run: npx --yes vercel@latest pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build production artifact
+        run: npx --yes vercel@latest build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy production artifact
+        run: npx --yes vercel@latest deploy --prebuilt --prod --token="$VERCEL_TOKEN"
