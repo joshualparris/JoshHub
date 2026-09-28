@@ -1,1 +1,1 @@
-Claude item textures published 2026-09-28
+Utility block textures published and renderer mapping fixed 2026-09-28
