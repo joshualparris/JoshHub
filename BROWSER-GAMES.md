@@ -68,3 +68,24 @@ These are Josh's own projects or projects connected to JoshHub. They are listed 
 Live JoshHub games page: https://josh-hub-two.vercel.app/games
 
 Note: the live Vercel page can lag behind the repository if its deployment source has not updated yet.
+
+## All-time top 10 free browser games
+
+This is a **consensus-style all-time list**, not a claim that one universal rating database ranks these in this exact order. The ranking balances critical reputation, longevity, popularity, influence, replayability, and whether the game is still meaningfully playable free in a modern browser.
+
+1. [Cookie Clicker](https://www.cookieclicker.com/) — The defining idle/clicker browser game; hugely influential, endlessly replayable, and still actively playable.
+2. [Agar.io](https://agar.io/) — One of the biggest browser-game phenomena of the 2010s and a defining .io multiplayer game.
+3. [Wordle](https://www.nytimes.com/games/wordle/index.html) — A simple daily word game that became a worldwide browser-game phenomenon.
+4. [Fallen London](https://www.fallenlondon.com/) — Long-running narrative RPG with exceptional writing, deep worldbuilding, and years of continuing content.
+5. [A Dark Room](https://adarkroom.doublespeakgames.com/) — Minimalist text/strategy adventure that starts simply and unfolds into a surprisingly deep game.
+6. [Friday Night Funkin'](https://ninja-muffin24.itch.io/funkin) — Hugely popular browser rhythm game with strong replayability and a massive fan/modding culture.
+7. [Townscaper Web](https://oskarstalberg.com/Townscaper/) — Beautiful, relaxing browser city-building toy with near-instant accessibility.
+8. [Slither.io](https://slither.io/) — Massively popular multiplayer evolution of Snake and one of the most recognisable browser games ever made.
+9. [2048](https://play2048.co/) — Extremely influential number-merging puzzle that became a global browser-game staple.
+10. [Lichess](https://lichess.org/) — Fully free, open-source browser chess with matchmaking, puzzles, studies, tournaments and analysis.
+
+### Why these 10?
+
+Current browser-game roundups still prominently recommend enduring titles such as **Agar.io, Cookie Clicker, Fallen London, A Dark Room, Wordle, Friday Night Funkin' and Townscaper**, while long-running community retrospectives consistently mention **Slither.io** alongside Agar.io as a browser classic. This list also gives weight to 2048's enormous influence and Lichess's unusually complete, genuinely free browser experience.
+
+> Checked and updated: 29 September 2026.
