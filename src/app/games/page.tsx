@@ -94,6 +94,28 @@ const games = [
   },
 ];
 
+const browserGames = [
+  { name: "Krunker", genre: "FPS", description: "Fast-paced low-poly multiplayer FPS with instant browser matchmaking.", playUrl: "https://krunker.io/" },
+  { name: "Venge.io", genre: "FPS", description: "Objective-based hero shooter with abilities, weapons and community maps.", playUrl: "https://live.venge.io/" },
+  { name: "REPULS.io", genre: "FPS", description: "Sci-fi multiplayer arena shooter with fast movement and custom loadouts.", playUrl: "https://repuls.io/" },
+  { name: "Bullet Force", genre: "FPS", description: "Military-style multiplayer FPS with several match modes and custom games.", playUrl: "https://www.crazygames.com/game/bullet-force-multiplayer" },
+  { name: "Shell Shockers", genre: "FPS", description: "Multiplayer arena shooter where armed eggs battle across browser maps.", playUrl: "https://shellshock.io/" },
+  { name: "TETR.IO", genre: "Puzzle", description: "Fast modern falling-block puzzle game with solo and multiplayer modes.", playUrl: "https://tetr.io/" },
+  { name: "2048", genre: "Puzzle", description: "Classic number-merging puzzle: combine matching tiles and reach 2048.", playUrl: "https://play2048.co/" },
+  { name: "Little Alchemy", genre: "Puzzle", description: "Combine basic elements to discover hundreds of new objects.", playUrl: "https://littlealchemy.com/" },
+  { name: "Lichess", genre: "Strategy", description: "Free and open-source chess with online play, bots, puzzles and analysis.", playUrl: "https://lichess.org/" },
+  { name: "Agar.io", genre: "Arcade", description: "Grow your cell by absorbing smaller cells while avoiding larger opponents.", playUrl: "https://agar.io/" },
+  { name: "Slither.io", genre: "Arcade", description: "Multiplayer snake-style arcade game built around growing and trapping rivals.", playUrl: "https://slither.io/" },
+  { name: "Gartic Phone", genre: "Party", description: "Telephone meets drawing and guessing in hilarious multiplayer rooms.", playUrl: "https://garticphone.com/" },
+  { name: "skribbl.io", genre: "Party", description: "Multiplayer Pictionary-style drawing and guessing game.", playUrl: "https://skribbl.io/" },
+  { name: "GeoGuessr Free", genre: "Geography", description: "Geography deduction using real-world imagery, including free play options.", playUrl: "https://www.geoguessr.com/free" },
+  { name: "Cookie Clicker", genre: "Idle", description: "The classic idle game about building an enormous cookie-producing empire.", playUrl: "https://www.cookieclicker.com/" },
+  { name: "Infinite Craft", genre: "Sandbox", description: "Combine Earth, Wind, Fire and Water into a huge range of AI-assisted discoveries.", playUrl: "https://neal.fun/infinite-craft/" },
+  { name: "Townscaper Web", genre: "Sandbox", description: "Relaxing, goal-free city-building toy for creating colourful seaside towns.", playUrl: "https://oskarstalberg.com/Townscaper/" },
+  { name: "Slow Roads", genre: "Driving", description: "Endless relaxing driving through procedurally generated scenery.", playUrl: "https://slowroads.io/" },
+  { name: "Die in the Dungeon Classic", genre: "Strategy", description: "Turn-based dice-building roguelite with tactical combat and clever combinations.", playUrl: "https://alarts.itch.io/die-in-the-dungeon" },
+];
+
 export const metadata = {
   title: "Josh's Games | JoshHub",
   description: "A showcase of Josh Parris's best playable browser games and game projects.",
@@ -190,6 +212,29 @@ export default function GamesPage() {
                     Source
                   </a>
                 </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <div className="mb-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Free browser games</p>
+          <h2 className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">More games you can play instantly</h2>
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">External games open directly in a new tab. No install needed.</p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {browserGames.map((game) => (
+            <article key={game.name} className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-cyan-700 dark:text-cyan-300">{game.genre}</p>
+              <h3 className="mt-1 text-lg font-bold text-slate-950 dark:text-white">{game.name}</h3>
+              <p className="mt-2 flex-1 text-sm leading-6 text-slate-600 dark:text-slate-300">{game.description}</p>
+              <div className="mt-4">
+                <a href={game.playUrl} target="_blank" rel="noreferrer" className="inline-flex rounded-full bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200">
+                  Play now ↗
+                </a>
               </div>
             </article>
           ))}
