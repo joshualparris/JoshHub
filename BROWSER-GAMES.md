@@ -4,6 +4,18 @@ A click-to-play list of JoshHub games and free browser games.
 
 This page now separates games with **current, verifiable high ratings** from games included because they are **popular, well-known, or long-running browser games**. Those are not the same thing.
 
+## Perfect 5.0 browser games
+
+These currently show **5.0/5** on itch.io and can be played in a browser. Rating counts are included so the score has context.
+
+- [Dating Killmulator 2](https://coolom-games.itch.io/dating-killmulator-2) — Comedy/dark-humour dating visual novel with minigames. **5.0/5 from 1,200+ ratings**. [Rating source](https://coolom-games.itch.io/dating-killmulator-2)
+- [Kaaarot](https://lambdahumans.itch.io/kaaarot) — Fast 2–4 player party/action game about grabbing the Kaaarot and eating your friends. **5.0/5 from 90 ratings**. [Rating source](https://lambdahumans.itch.io/kaaarot)
+- [Serve? Strike? Mike-A-Like!!!](https://madocactus.itch.io/tennagame) — Deltarune-inspired browser visual novel/minigame. **5.0/5 from about 95 ratings**. [Rating source](https://itch.io/games/top-rated/free/genre-visual-novel/tag-browser)
+- [Kirby ~ Soft & Wet](https://strimps-kitchen.itch.io/kirby-soft-and-wet) — Cute Kirby-themed fishing/casual game. **5.0/5 from 68 ratings**. [Rating source](https://strimps-kitchen.itch.io/kirby-soft-and-wet)
+- [Sudoku](https://sergesgames.itch.io/sudoku) — Fast browser Sudoku with placing and note modes. **5.0/5 from 22 ratings**. [Rating source](https://sergesgames.itch.io/sudoku)
+
+> A perfect 5.0 with fewer ratings is not necessarily stronger evidence of quality than a 4.9 with thousands of ratings. Scores and counts can also change over time.
+
 ## Even higher-rated browser games
 
 These are free browser-playable games with especially strong current itch.io ratings and thousands of ratings.
