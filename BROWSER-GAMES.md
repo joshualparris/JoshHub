@@ -4,6 +4,18 @@ A click-to-play list of JoshHub games and free browser games.
 
 This page now separates games with **current, verifiable high ratings** from games included because they are **popular, well-known, or long-running browser games**. Those are not the same thing.
 
+## Even higher-rated browser games
+
+These are free browser-playable games with especially strong current itch.io ratings and thousands of ratings.
+
+- [Adventures With Anxiety!](https://ncase.itch.io/anxiety) — Interactive story about anxiety. **4.9/5 from 7.4K+ itch.io ratings**. [Rating source](https://ncase.itch.io/anxiety)
+- [Serenitrove](https://alfredncy.itch.io/serenitrove) — Cozy browser digging and exploration game. **4.9/5 from 3.7K+ itch.io ratings**. [Rating source](https://alfredncy.itch.io/serenitrove)
+- [We Become What We Behold](https://ncase.itch.io/wbwwb) — Short experimental game about news cycles and social behaviour. **4.8/5 from 8.8K+ itch.io ratings**. [Rating source](https://ncase.itch.io/wbwwb)
+- [Six Cats Under](https://teambeanloop.itch.io/six-cats-under) — Short point-and-click puzzle about rescuing cats as a ghost. **4.8/5 from 7.5K+ itch.io ratings**. [Rating source](https://teambeanloop.itch.io/six-cats-under)
+- [goodbye, doggy](https://picogram.itch.io/goodbye-doggy) — Short puzzle game about helping a family as their ghostly dog. **4.8/5 from 5.2K+ itch.io ratings**. [Rating source](https://picogram.itch.io/goodbye-doggy)
+
+> Ratings were checked on 29 September 2026 and can change over time.
+
 ## Verified highly rated
 
 These games have a current public rating source that can be checked.
