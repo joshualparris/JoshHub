@@ -101,3 +101,24 @@ This is a **consensus-style all-time list**, not a claim that one universal rati
 Current browser-game roundups still prominently recommend enduring titles such as **Agar.io, Cookie Clicker, Fallen London, A Dark Room, Wordle, Friday Night Funkin' and Townscaper**, while long-running community retrospectives consistently mention **Slither.io** alongside Agar.io as a browser classic. This list also gives weight to 2048's enormous influence and Lichess's unusually complete, genuinely free browser experience.
 
 > Checked and updated: 29 September 2026.
+
+## 10 more: higher-rated free browser games
+
+These are based on **current itch.io user ratings for free Web/HTML5 games**, rather than general fame or historical influence. I prioritised games with very high scores **and** meaningful numbers of ratings, so a 5.0 from five people does not outrank a 4.9 from several thousand.
+
+1. [Dating Killmulator 2](https://coolom-games.itch.io/dating-killmulator-2) — **5.0/5 from 1,200+ ratings**. Comedy/dark-humour visual novel with minigames. Plays in browser.
+2. [Adventures With Anxiety!](https://ncase.itch.io/anxiety) — **4.9/5 from 7,400+ ratings**. Interactive story where you play as anxiety itself.
+3. [Serenitrove](https://alfredncy.itch.io/serenitrove) — **4.9/5 from 3,700+ ratings**. Cozy pixel-art digging, upgrading and exploration RPG.
+4. [A Tale of Crowns](https://qeresi.itch.io/a-tale-of-crowns) — **4.9/5 from 2,900+ ratings**. Large fantasy interactive-fiction RPG/romance made in Twine.
+5. [Lookouts](https://paranoidhawk.itch.io/lookouts) — **4.9/5 with thousands of ratings**. Story-rich western visual novel about two outlaws meeting in the desert.
+6. [Dragonsweeper](https://danielben.itch.io/dragonsweeper) — **4.9/5 from 2,100+ ratings**. Clever roguelike reworking of Minesweeper.
+7. [purrgatory](https://nivrad00.itch.io/purrgatory) — **4.9/5 from 1,600+ ratings**. Hand-drawn point-and-click story adventure set in cat-filled purgatory.
+8. [Moss Moss](https://noelcody.itch.io/moss-moss) — **4.9/5 from 1,400+ ratings**. Short PICO-8 exploration/platform game about covering the world in moss.
+9. [The Archives of Trevosa](https://jamwitch.itch.io/trevosa) — **4.9/5 from 1,200+ ratings**. Deep language-and-family-tree deduction mystery.
+10. [Type Help](https://william-rous.itch.io/type-help) — **4.9/5 from 1,200+ ratings**. Long-form computer-file mystery inspired by Return of the Obra Dinn and Her Story.
+
+### Rating basis
+
+itch.io's current **Top Rated Free Games for Web** list places games such as Adventures With Anxiety!, Serenitrove, A Tale of Crowns, Lookouts and Dragonsweeper among its highest-rated substantial browser releases. Individual game pages confirm that these titles run as HTML5/browser games and show their current ratings.
+
+> Ratings are snapshots and can change. Checked 29 September 2026.
