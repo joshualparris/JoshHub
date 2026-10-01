@@ -1,0 +1,287 @@
+:root {
+  --dbo1-bg: #071014;
+  --dbo1-panel: #0c171d;
+  --dbo1-panel-2: #111f26;
+  --dbo1-line: rgba(124, 241, 191, 0.18);
+  --dbo1-text: #e7f5ef;
+  --dbo1-muted: #8ba69b;
+  --dbo1-accent: #7cf1bf;
+  --dbo1-warn: #f6c86b;
+  --dbo1-danger: #ff7a7a;
+}
+
+.dbo1-sim-root {
+  color: var(--dbo1-text);
+  background:
+    radial-gradient(circle at 15% 15%, rgba(124, 241, 191, 0.08), transparent 28rem),
+    linear-gradient(135deg, #071014, #09151a 55%, #050b0e);
+  border: 1px solid var(--dbo1-line);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.dbo1-shell { min-height: 720px; }
+
+.dbo1-hud {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(420px, 2fr);
+  gap: 24px;
+  align-items: center;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--dbo1-line);
+  background: rgba(5, 12, 15, .88);
+  backdrop-filter: blur(14px);
+}
+
+.dbo1-brand { display: grid; gap: 2px; }
+.dbo1-brand strong { font-size: 1.18rem; letter-spacing: .05em; }
+.dbo1-kicker { color: var(--dbo1-accent); font-size: .72rem; letter-spacing: .14em; font-weight: 800; }
+.dbo1-sub { color: var(--dbo1-muted); font-size: .82rem; }
+
+.dbo1-meters {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(140px, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.dbo1-meter-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: .76rem;
+  color: var(--dbo1-muted);
+  margin-bottom: 6px;
+}
+
+.dbo1-meter-head b { color: var(--dbo1-text); }
+.dbo1-track { height: 7px; background: rgba(255,255,255,.07); border-radius: 20px; overflow: hidden; }
+.dbo1-fill { display: block; height: 100%; background: linear-gradient(90deg, var(--dbo1-accent), var(--dbo1-warn)); transition: width .25s ease; }
+.dbo1-score { color: var(--dbo1-muted); font-size: .82rem; white-space: nowrap; }
+.dbo1-score b { display: block; color: var(--dbo1-text); font-size: 1.08rem; }
+
+.dbo1-index {
+  appearance: none;
+  border: 1px solid rgba(255, 122, 122, .5);
+  background: rgba(255, 122, 122, .08);
+  color: #ffdada;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.dbo1-index:hover { background: rgba(255, 122, 122, .16); }
+
+.dbo1-main {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr) 250px;
+  min-height: 610px;
+}
+
+.dbo1-team,
+.dbo1-log {
+  padding: 22px 18px;
+  background: rgba(7, 16, 20, .58);
+}
+
+.dbo1-team { border-right: 1px solid var(--dbo1-line); }
+.dbo1-log { border-left: 1px solid var(--dbo1-line); }
+
+.dbo1-team h3,
+.dbo1-log h3,
+.dbo1-scope h4 {
+  margin: 0 0 14px;
+  font-size: .76rem;
+  color: var(--dbo1-muted);
+  text-transform: uppercase;
+  letter-spacing: .11em;
+}
+
+.dbo1-operator {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dbo1-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  border: 1px solid var(--dbo1-line);
+  color: var(--dbo1-accent);
+  font: 700 .68rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.dbo1-operator strong,
+.dbo1-operator small { display: block; }
+.dbo1-operator strong { font-size: .82rem; }
+.dbo1-operator small { color: var(--dbo1-muted); font-size: .72rem; margin-top: 2px; }
+
+.dbo1-scope {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--dbo1-line);
+}
+
+.dbo1-scope code {
+  display: block;
+  margin: 7px 0;
+  color: var(--dbo1-muted);
+  font-size: .68rem;
+  white-space: normal;
+}
+
+.dbo1-scope code.dbo1-danger { color: #e9a2a2; }
+
+.dbo1-stage {
+  display: grid;
+  min-width: 0;
+  padding: 34px;
+}
+
+.dbo1-screen { align-self: center; max-width: 880px; width: 100%; margin: auto; }
+.dbo1-screen h1 { margin: 7px 0 12px; font-size: clamp(2rem, 4vw, 3.6rem); line-height: 1; letter-spacing: -.045em; }
+.dbo1-screen > p { color: #b8cbc3; font-size: 1rem; line-height: 1.65; max-width: 760px; }
+
+.dbo1-primary {
+  margin-top: 24px;
+  border: 0;
+  background: var(--dbo1-accent);
+  color: #032116;
+  padding: 13px 18px;
+  border-radius: 9px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.dbo1-brief-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dbo1-brief-grid article {
+  background: var(--dbo1-panel);
+  border: 1px solid var(--dbo1-line);
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.dbo1-brief-grid b,
+.dbo1-brief-grid span { display: block; }
+.dbo1-brief-grid span { margin-top: 8px; color: var(--dbo1-muted); font-size: .82rem; line-height: 1.5; }
+
+.dbo1-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dbo1-card {
+  text-align: left;
+  padding: 18px;
+  border: 1px solid var(--dbo1-line);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(17,31,38,.95), rgba(9,20,25,.95));
+  color: var(--dbo1-text);
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+}
+
+.dbo1-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(124, 241, 191, .5);
+  background: linear-gradient(180deg, rgba(21,40,48,.98), rgba(9,20,25,.98));
+}
+
+.dbo1-card strong,
+.dbo1-card span,
+.dbo1-card small { display: block; }
+.dbo1-card strong { color: var(--dbo1-accent); font-size: .95rem; }
+.dbo1-card span { margin-top: 8px; color: #c2d5cd; line-height: 1.45; }
+.dbo1-card small { margin-top: 14px; color: var(--dbo1-muted); font-size: .72rem; }
+
+.dbo1-objectives { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.dbo1-objectives span { border: 1px solid var(--dbo1-line); color: var(--dbo1-muted); padding: 7px 10px; border-radius: 99px; font-size: .75rem; }
+.dbo1-objectives span.done { color: #08291d; background: var(--dbo1-accent); border-color: var(--dbo1-accent); }
+
+.dbo1-log-puzzle {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid var(--dbo1-line);
+  border-radius: 14px;
+  background: var(--dbo1-panel);
+}
+
+.dbo1-log-puzzle code { display: block; padding: 9px 0; color: var(--dbo1-accent); }
+.dbo1-puzzle-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.dbo1-puzzle-options button {
+  border: 1px solid var(--dbo1-line);
+  background: var(--dbo1-panel-2);
+  color: var(--dbo1-text);
+  padding: 10px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dbo1-log-row {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+
+.dbo1-log-row time,
+.dbo1-log-row span { display: block; }
+.dbo1-log-row time { color: var(--dbo1-muted); font: .66rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+.dbo1-log-row span { margin-top: 4px; font-size: .75rem; line-height: 1.45; color: #c1d2cb; }
+.dbo1-log-row.good span { color: #9fe8c7; }
+.dbo1-log-row.bad span { color: #efaaaa; }
+
+.dbo1-learning {
+  margin-top: 24px !important;
+  border-left: 3px solid var(--dbo1-accent);
+  padding-left: 14px;
+}
+
+.dbo1-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--dbo1-line);
+  color: var(--dbo1-muted);
+  font-size: .68rem;
+}
+
+.dbo1-sim-access {
+  padding: 30px;
+  border: 1px solid #d5dbe0;
+  border-radius: 12px;
+  background: #f6f8f9;
+  color: #182126;
+}
+
+@media (max-width: 1050px) {
+  .dbo1-hud { grid-template-columns: 1fr; }
+  .dbo1-main { grid-template-columns: 180px minmax(0, 1fr); }
+  .dbo1-log { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--dbo1-line); }
+}
+
+@media (max-width: 760px) {
+  .dbo1-shell { min-height: 0; }
+  .dbo1-meters { grid-template-columns: 1fr 1fr; }
+  .dbo1-main { display: block; }
+  .dbo1-team { border-right: 0; border-bottom: 1px solid var(--dbo1-line); }
+  .dbo1-team .dbo1-operator { display: inline-flex; margin-right: 14px; }
+  .dbo1-scope { display: none; }
+  .dbo1-stage { padding: 26px 18px; }
+  .dbo1-actions,
+  .dbo1-brief-grid { grid-template-columns: 1fr; }
+  .dbo1-footer { display: grid; }
+}
