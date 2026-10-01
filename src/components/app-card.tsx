@@ -19,29 +19,30 @@ interface Props {
 }
 
 export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) {
+  const hasOpenTarget = Boolean(app.primaryUrl || app.urls.some((link) => link.url));
+
   return (
     <Card className="bg-card text-foreground">
       <CardHeader>
         <div className="flex items-start justify-between gap-3">
           <div>
             <CardTitle className="flex items-center gap-2">
-              <button
-                onClick={async () => {
-                  const url = await resolveAppUrl(app);
-                  if (url) {
-                    window.open(url, "_blank");
-                    onOpen?.(app);
-                  } else {
-                    // fallback: open first repo or show alert
-                    const repo = app.urls.find((u) => /github.com/i.test(u.url));
-                    if (repo) window.open(repo.url, "_blank");
-                    else alert("No available link found for this app.");
-                  }
-                }}
-                className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm text-left"
-              >
-                {app.name}
-              </button>
+              {hasOpenTarget ? (
+                <button
+                  onClick={async () => {
+                    const url = await resolveAppUrl(app);
+                    if (url) {
+                      window.open(url, "_blank");
+                      onOpen?.(app);
+                    }
+                  }}
+                  className="hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm text-left"
+                >
+                  {app.name}
+                </button>
+              ) : (
+                <span>{app.name}</span>
+              )}
               <StatusChip status={app.status} />
             </CardTitle>
             <p className="mt-1 text-sm text-muted-foreground">{app.category}</p>
@@ -57,22 +58,20 @@ export function AppCard({ app, onOpen, pinned = false, onTogglePinned }: Props) 
             >
               <Star className={cn("h-4 w-4", pinned && "fill-current")} />
             </Button>
-            <button
-              onClick={async () => {
-                const url = await resolveAppUrl(app);
-                if (url) {
-                  window.open(url, "_blank");
-                  onOpen?.(app);
-                } else {
-                  const repo = app.urls.find((u) => /github.com/i.test(u.url));
-                  if (repo) window.open(repo.url, "_blank");
-                  else alert("No available link found for this app.");
-                }
-              }}
-              className="rounded-md px-2 py-1 text-sm text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            >
-              Open
-            </button>
+            {hasOpenTarget ? (
+              <button
+                onClick={async () => {
+                  const url = await resolveAppUrl(app);
+                  if (url) {
+                    window.open(url, "_blank");
+                    onOpen?.(app);
+                  }
+                }}
+                className="rounded-md px-2 py-1 text-sm text-foreground hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                Open
+              </button>
+            ) : null}
           </div>
 
         </div>
