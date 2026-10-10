@@ -1,4 +1,5 @@
 import business from "../../data/dubbo-business-field-guide.json";
+import outreach from "../../data/outreach-quiz.json";
 import tiers from "../../data/field-guide-adaptive-challenges.json";
 import { z } from "zod";
 
@@ -11,26 +12,7 @@ export const gradingRequest = z.object({
 }).strict();
 export type GradingRequest = z.infer<typeof gradingRequest>;
 type Question = {question:string;options:string[];answer:number;explanation:string};
-const appliedOutreach:Record<string,Question>={
- locate: {
-  question:"Two potential sources reply: a computer repair shop has six uncollected client laptops; an employer has three owned PCs with approved release records but no stated erasure method. Which lead should you advance first?",
-  options:["Arrange collection of the six laptops after the shop's manager agrees verbally.","Collect only the laptops without chargers because they have little resale value.","Explore a strictly conditional pilot with the employer, verifying data sanitisation/custody before any collection.","Contact both organisations with the same agreement and adjust the forms after the first collection."],
-  answer:2,
-  explanation:"The employer has a clearer potential ownership path, but data responsibility is unresolved. No stock should move before authorisation and safe handoff."
- },
- authority:{
-  question:"A business manager offers five retired laptops. Two are leased, one has a swollen battery, and the remaining two have unidentified drives. Which pilot scope is most justified?",
-  options:["Accept the two non-leased units straightaway because unidentified storage can be wiped later.","Include all five after receiving one generic donation form signed by the manager.","Remove drives from the five units at collection, treating the battery risk as separate from the device donation.","Exclude leased units pending title confirmation and isolate the damaged battery device; consider the two others only after release, sanitisation and downstream responsibilities are settled."],
-  answer:3,
-  explanation:"A transfer form does not cancel lease obligations or battery hazards, and data-bearing equipment needs an authorised plan."
- },
- capacity:{
-  question:"You have three hours of project time this fortnight, two uncontacted independent shops, an unanswered existing email and no space for more than five devices. Which plan best balances learning, relationships and capacity?",
-  options:["Send the same collection offer to both shops and the local schools, then prioritise whoever replies first.","Follow up once with the existing contact when reasonable, approach one genuinely uncontacted shop with a process question, and reserve time to prepare a five-unit acceptance checklist.","Use the full three hours building a stock-tracking database so outreach can begin once the software is complete.","Spend the three hours researching every local employer in case one has a large fleet."],
-  answer:1,
-  explanation:"A narrow, consent-aware enquiry and verified acceptance workflow fit a small pilot better than volume or premature tooling."
- }
-};
+const appliedOutreach:Record<string,Question>=Object.fromEntries(outreach.map(x=>[x.id,x]));
 const variations=tiers.variants as Record<string,{guided:Question;expert:Question}>;
 export function resolveAssessment(input:Pick<GradingRequest,"course"|"lessonId"|"level">): Question|null {
   const key=(input.course==="business"?"business-":"outreach-")+input.lessonId;
