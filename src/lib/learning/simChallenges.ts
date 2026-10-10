@@ -1,5 +1,5 @@
 import type { Challenge } from "./adaptive";
-/** Fictional applied cases with credible distractors; reasoning is now independently graded. */
+/** Applied simulated decisions; never infer competence from length or selection alone. */
 export const simChallenges = {
   "laptop": [
     {
@@ -7,7 +7,7 @@ export const simChallenges = {
       "level": 1,
       "question": "The vendor logo appears and a boot-device error follows. What does that establish, and what remains unknown?",
       "options": [
-        "Firmware has displayed a boot-device error, but neither drive recognition nor the OS path is established.",
+        "Firmware shows a boot-device error; drive recognition and boot handoff remain unresolved.",
         "A successful power-on test; follow up with a Windows repair environment to confirm filesystem health.",
         "A partial POST; the next action is to treat the OS as corrupt until a drive is visible."
       ],
@@ -56,7 +56,7 @@ export const simChallenges = {
       "question": "The laptop shuts down under sustained load but operates cold at idle. Both power and CPU temperature were uncontrolled. What should you investigate next?",
       "options": [
         "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
-        "Control adapter, battery and temperature variables before attributing shutdown to heat or supply.",
+        "Control thermal and supply conditions before attributing the shutdown to a specific cause.",
         "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
       ],
       "answer": 1,
@@ -105,7 +105,7 @@ export const simChallenges = {
       "options": [
         "Approve reuse with a restricted local account if network enrolment can be disabled.",
         "Issue it after replacing the SSD; the old MDM registration can be addressed after delivery.",
-        "Hold this device pending both confirmed MDM de-enrolment and formally verified data sanitisation."
+        "Hold for approved MDM removal and verified authorised storage sanitisation before reuse."
       ],
       "answer": 2,
       "explanation": "Ownership and management controls must be legitimately removed, and data processing documented, before a device is released."
@@ -128,7 +128,7 @@ export const simChallenges = {
       "question": "Five laptops show four successful cold starts and two successful warm starts with mixed chargers and batteries. What can you responsibly report?",
       "options": [
         "An established temperature-sensitive motherboard failure, provided test dates are documented.",
-        "Warm boot reliability is lower in this sample, but confounding power/thermal variables need controlled replication.",
+        "Report inconsistent warm boots; mixed batteries and adapters require controlled retests.",
         "A 40% chance of warm boot failure across this laptop family, based on ten attempts."
       ],
       "answer": 1,
@@ -166,7 +166,7 @@ export const simChallenges = {
       "question": "Jules listed Saturday availability but hasn't accepted the offered bike station. What should the event desk record?",
       "options": [
         "Accepted if the volunteer's prior attendance demonstrates reliable participation.",
-        "Record availability but leave the shift open until this volunteer explicitly accepts the offered role.",
+        "Record the person as available, but not confirmed until a specific shift is accepted.",
         "Provisional shift assigned and counted towards safe coverage, with confirmation due on Friday."
       ],
       "answer": 1,
@@ -189,7 +189,7 @@ export const simChallenges = {
       "level": 2,
       "question": "A visitor brings a toaster that trips power, and no competent mains-electricity repair station is authorised. What should intake do?",
       "options": [
-        "Decline this mains repair for today and refer to competent electrical support rather than retaining it.",
+        "Decline mains testing today and refer the visitor for qualified electrical repair.",
         "Place the appliance in a secure hold for a later event where an electrician might attend.",
         "Offer a non-invasive visual assessment and explain likely faults without energising."
       ],
@@ -202,7 +202,7 @@ export const simChallenges = {
       "question": "You need a reliable roster that can handle tentative availability, explicit acceptance and cancellation. Which record model is best?",
       "options": [
         "Assign shifts optimistically and treat lack of cancellation as acceptance.",
-        "Capture separate availability, offers, confirmations and cancellations with timestamps and roles.",
+        "Keep separate availability, offers, confirmations, role changes and cancellation records.",
         "Store one availability calendar and derive confirmed shifts from the latest edits."
       ],
       "answer": 1,
