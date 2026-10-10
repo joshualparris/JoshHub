@@ -31,6 +31,13 @@ describe("Learning Lab assessment rigour",()=>{
   expect(new Set(repairPositions).size).toBe(3);
   expect(new Set(cafe.questions.map(q=>q.answer)).size).toBe(3);
  });
+ it("avoids answer-length shortcuts across the knowledge checks",()=>{
+  const lengths=all.map(q=>({best:q.options[q.answer].length,choices:q.options.map(o=>o.length)}));
+  const longest=lengths.filter(q=>q.best===Math.max(...q.choices)).length;
+  const shortest=lengths.filter(q=>q.best===Math.min(...q.choices)).length;
+  expect(longest).toBeLessThanOrEqual(Math.ceil(all.length*0.35));
+  expect(shortest).toBeLessThanOrEqual(Math.ceil(all.length*0.35));
+ });
  it("keeps unique best-supported outcomes for all seven contextual incidents",()=>{
   expect(cafe.incidents).toHaveLength(7);
   for(const e of cafe.incidents) {
