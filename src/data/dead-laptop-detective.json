@@ -21,23 +21,23 @@
       "activity": {
         "prompt": "A donated laptop arrives with a mildly raised touchpad, an unlabelled power pack, and a note saying its SSD was removed. What is the most defensible intake disposition?",
         "options": [
+          "Remove the bottom cover to confirm storage removal before making an acceptance decision.",
           "Accept it for software diagnostics while awaiting proof the SSD was removed.",
           "Quarantine it from active repair pending battery risk handling and documented transfer authority, while recording what is unknown.",
-          "Ask for a battery photo and begin with adapter testing if the photo looks normal.",
-          "Remove the bottom cover to confirm storage removal before making an acceptance decision."
+          "Ask for a battery photo and begin with adapter testing if the photo looks normal."
         ],
-        "answer": 1,
+        "answer": 2,
         "why": "An unusual chassis shape can signal a damaged lithium pack. Establish safe custody and ownership before any further diagnostic activity."
       },
       "check": {
         "question": "A school offers six old laptops. Their technician says the school purchased them and has erased the disks, but the equipment is still recorded on an internal asset register. What evidence is the most useful next step?",
         "options": [
-          "A serial-number list and informal technician confirmation that Windows no longer starts.",
           "Evidence of an authorised asset disposal/release decision, with agreed data-handling responsibility and documented custody.",
           "A successful installation of a clean operating system on a sample laptop.",
-          "Written permission to borrow the laptops for testing and make a decision about ownership later."
+          "Written permission to borrow the laptops for testing and make a decision about ownership later.",
+          "A serial-number list and informal technician confirmation that Windows no longer starts."
         ],
-        "answer": 1,
+        "answer": 0,
         "explanation": "A technically cleaned disk and a staff member's involvement do not themselves establish transfer authority or a lawful disposal decision."
       },
       "sourceIds": [
@@ -61,12 +61,12 @@
       "activity": {
         "prompt": "The power LED remains on, the keyboard responds, and the external monitor is blank. The owner says they sometimes hear a Windows notification, but no controlled test has been done. Which classification best directs the next step?",
         "options": [
-          "Classify immediately as no-video and request a replacement panel.",
-          "Treat it as no-POST until the internal RAM has been reseated.",
           "Record an unresolved display/startup symptom and seek independent evidence of successful POST or OS activity before categorising.",
-          "Treat it as no-boot because a blank display commonly hides a failed SSD."
+          "Treat it as no-boot because a blank display commonly hides a failed SSD.",
+          "Classify immediately as no-video and request a replacement panel.",
+          "Treat it as no-POST until the internal RAM has been reseated."
         ],
-        "answer": 2,
+        "answer": 0,
         "why": "Notifications are a useful but unverified clue; don't confuse a provisional working hypothesis with an established startup stage."
       },
       "check": {
@@ -101,23 +101,23 @@
       "activity": {
         "prompt": "A donor HP laptop's retail model matches a downloadable board schematic, but the board silk-screen shows a different suffix. Both drawings list the same CPU. What should you do?",
         "options": [
-          "Use the diagram provisionally for all power rails, because the CPU determines regulator topology.",
           "Confirm the exact PCB/platform ID and revision against a trusted source before using board-level component references.",
           "Use it for voltage readings but not component locations, since the chipsets may differ.",
-          "Cross-check the date on the PDF and accept it if newer than the laptop."
+          "Cross-check the date on the PDF and accept it if newer than the laptop.",
+          "Use the diagram provisionally for all power rails, because the CPU determines regulator topology."
         ],
-        "answer": 1,
+        "answer": 0,
         "why": "Board revisions may relocate or redesign circuits despite shared marketing and CPU labels."
       },
       "check": {
         "question": "You need to find which assembly contains an SSD connector and which resistor sits beside its power rail. What research combination is best?",
         "options": [
+          "Retail service parts catalogue for all three, provided the motherboard brand matches.",
           "Service manual for mechanical access; correctly matched BoardView for placement; schematic for electrical circuit relationships.",
           "Service manual for electrical nets; motherboard photos for exact resistor values; BIOS menu for mechanical screws.",
-          "Service manual plus a generic teardown video; BoardView is only useful when identifying battery connectors.",
-          "Retail service parts catalogue for all three, provided the motherboard brand matches."
+          "Service manual plus a generic teardown video; BoardView is only useful when identifying battery connectors."
         ],
-        "answer": 0,
+        "answer": 1,
         "explanation": "Each resource answers a different question. Exact motherboard identification is a prerequisite for schematic or BoardView use."
       },
       "sourceIds": [
@@ -153,12 +153,12 @@
       "check": {
         "question": "A fictional board-level resistance test displays a low reading on an isolated power rail. You do not know the rail's normal impedance or board revision. What is the most warranted conclusion?",
         "options": [
-          "The CPU is shorted and requires replacement.",
-          "It suggests a potentially low-impedance path but is not a fault diagnosis without the rail specification, circuit and comparative evidence.",
           "The low reading proves the adapter has failed.",
-          "The reading confirms a safe operating condition as long as the meter beeps."
+          "The reading confirms a safe operating condition as long as the meter beeps.",
+          "The CPU is shorted and requires replacement.",
+          "It suggests a potentially low-impedance path but is not a fault diagnosis without the rail specification, circuit and comparative evidence."
         ],
-        "answer": 1,
+        "answer": 3,
         "explanation": "Low resistance may be normal on some rails; context, correct isolation and an exact board reference are essential. This remains a simulated reading."
       },
       "sourceIds": [
@@ -182,23 +182,23 @@
       "activity": {
         "prompt": "A laptop has no LEDs. The charger is USB-C, the cable is third-party, and another device charges from the wall outlet. Which first test reduces uncertainty most?",
         "options": [
+          "Measure an internal regulator with a live meter before trying a different cable.",
           "Replace the internal battery to eliminate an unstable cell.",
           "Use a verified compatible adapter/cable with adequate power delivery, inspect the port and record whether any signs of life change.",
-          "Run a recovery USB to separate firmware and hardware faults.",
-          "Measure an internal regulator with a live meter before trying a different cable."
+          "Run a recovery USB to separate firmware and hardware faults."
         ],
-        "answer": 1,
+        "answer": 2,
         "why": "USB-C power negotiation and cable capability can matter; reversible compatible substitution provides useful evidence without opening hardware."
       },
       "check": {
         "question": "The laptop boots consistently with a compatible known-good adapter but fails intermittently on its original USB-C charger. The original adapter powers a low-wattage phone. What is the strongest conclusion?",
         "options": [
-          "The laptop motherboard is proven healthy under all loads.",
           "The original charger/cable or negotiated power-delivery path is the leading suspect; phone charging doesn't demonstrate sufficient laptop power.",
           "The laptop BIOS has corrupted ACPI tables because only one charger is accepted.",
-          "The internal SSD is unstable because the symptom appears only during charging."
+          "The internal SSD is unstable because the symptom appears only during charging.",
+          "The laptop motherboard is proven healthy under all loads."
         ],
-        "answer": 1,
+        "answer": 0,
         "explanation": "A phone may draw substantially less power. State the supported external power-path hypothesis without overclaiming every internal component."
       },
       "sourceIds": [
@@ -222,12 +222,12 @@
       "activity": {
         "prompt": "The laptop displays normally through HDMI. Its internal screen remains black, but there is no faint image under a flashlight. Which component should you order?",
         "options": [
-          "A replacement LCD panel, because external HDMI rules out the GPU.",
-          "The internal eDP cable, because absence of a faint image proves a data failure.",
           "None yet: confirm panel detection, display settings, cable path and model-specific checks before choosing a part.",
-          "A replacement SSD, because firmware can still output HDMI without storage."
+          "A replacement SSD, because firmware can still output HDMI without storage.",
+          "A replacement LCD panel, because external HDMI rules out the GPU.",
+          "The internal eDP cable, because absence of a faint image proves a data failure."
         ],
-        "answer": 2,
+        "answer": 0,
         "why": "External HDMI narrows the fault but does not uniquely isolate the panel, cable, backlight or firmware routing."
       },
       "check": {
@@ -263,23 +263,23 @@
       "activity": {
         "prompt": "Firmware lists a 256 GB drive, and an approved read-only recovery USB boots. The installed OS fails with 'INACCESSIBLE_BOOT_DEVICE'. What is the next evidence-preserving action?",
         "options": [
-          "Reformat the internal SSD to test whether Windows can reinstall cleanly.",
           "Record firmware storage mode and recovery-environment drive status, assess backup/recovery needs and only then plan non-destructive tests.",
           "Swap the CPU because a recovery USB boot is not a full stress test.",
-          "Update firmware immediately before recording its current settings."
+          "Update firmware immediately before recording its current settings.",
+          "Reformat the internal SSD to test whether Windows can reinstall cleanly."
         ],
-        "answer": 1,
+        "answer": 0,
         "why": "Detection alone doesn't establish filesystem or driver health. Protect data and document configuration before modifying anything."
       },
       "check": {
         "question": "The firmware storage list is empty, yet a compatible known-good SSD is recognised in the same slot. The original SSD contains irreplaceable files. Which conclusion is justified?",
         "options": [
+          "The original SSD is definitely electrically shorted, so test it live with an ohmmeter.",
           "The original drive/device path is strongly implicated, and the original should be protected for authorised professional data-recovery evaluation.",
           "The OS is corrupt; a clean install of Windows on the original SSD should confirm.",
-          "The motherboard storage interface is conclusively broken, so replace the board.",
-          "The original SSD is definitely electrically shorted, so test it live with an ohmmeter."
+          "The motherboard storage interface is conclusively broken, so replace the board."
         ],
-        "answer": 0,
+        "answer": 1,
         "explanation": "A controlled spare-drive comparison narrows the likely fault family but does not prove a specific internal failure or authorise data-destructive tests."
       },
       "sourceIds": [
@@ -314,12 +314,12 @@
       "check": {
         "question": "A learner identifies the right fault family after two decisive virtual tests but cannot explain why the main competing hypothesis is weaker. What best reflects mastery?",
         "options": [
-          "Passing, because selecting the correct answer is sufficient when the observation count is met.",
-          "Partial competence: require an evidence-based comparison to the closest plausible alternative before awarding stronger mastery.",
           "Automatic failure: diagnosis cannot be learned through a simulation.",
-          "Passing if they also viewed the supporting teardown video."
+          "Passing if they also viewed the supporting teardown video.",
+          "Passing, because selecting the correct answer is sufficient when the observation count is met.",
+          "Partial competence: require an evidence-based comparison to the closest plausible alternative before awarding stronger mastery."
         ],
-        "answer": 1,
+        "answer": 3,
         "explanation": "Professional reasoning includes choosing among credible hypotheses and stating what is not yet known."
       },
       "sourceIds": [
