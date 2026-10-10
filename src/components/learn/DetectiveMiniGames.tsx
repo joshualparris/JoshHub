@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CheckCircle2, RotateCcw, ShieldCheck, BrainCircuit } from "lucide-react";
+import {initialAdaptiveRecord,nextAdaptiveRecord,pickAdaptive,labelDifficulty,type Difficulty} from "@/lib/learning/adaptive-difficulty";
 
 type Challenge={scenario:string;choices:string[];answer:number;why:string};
 const safety:Challenge[]=[
@@ -141,24 +142,27 @@ const symptoms:Challenge[]=[
 ];
 
 export default function DetectiveMiniGames({mode}:{mode:"safety"|"symptoms"}) {
-  const challenges=mode==="safety"?safety:symptoms;
-  const [position,setPosition]=useState(0);
-  const [attempts,setAttempts]=useState<Record<number,number>>({});
+  const bank=mode==="safety"?safety:symptoms;
+  const challenges=bank.map((q,i)=>({...q,id:mode+"-"+i,level:(i<2?1:i<4?2:3) as Difficulty}));
+  const [adaptive,setAdaptive]=useState(initialAdaptiveRecord);
+  const [seen,setSeen]=useState<string[]>([]);
+  const [attempts,setAttempts]=useState<Record<string,number>>({});
   const [revealed,setRevealed]=useState(false);
   const [finished,setFinished]=useState(false);
-  const question=challenges[position];
-  const selected=attempts[position];
+  const [correctCount,setCorrectCount]=useState(0);
+  const question=pickAdaptive(challenges,adaptive.level,seen)??challenges[0];
+  const selected=attempts[question.id];
   const correct=selected===question.answer;
-  const score=challenges.filter((q,i)=>attempts[i]===q.answer).length;
-  function pick(i:number){setAttempts(old=>({...old,[position]:i}));setRevealed(true);}
-  function next(){if(position===challenges.length-1)setFinished(true);else{setPosition(p=>p+1);setRevealed(false);}}
-  function again(){setPosition(0);setAttempts({});setRevealed(false);setFinished(false);}
-  return <section aria-label={mode==="safety"?"Safety judgement game":"Symptom sorter game"} className="rounded-2xl border border-violet-300/30 bg-[#1d1b36] p-5">
-    <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-violet-200">{mode==="safety"?<ShieldCheck size={17}/>:<BrainCircuit size={17}/>} {mode==="safety"?"Mini game · Safe or stop?":"Mini game · Symptom sorter"}</p>
-    <p className="mt-2 text-sm text-slate-200">{mode==="safety"?"Decide what a responsible technician does next.":"Match each observation to the correct *stage of failure*."} Six fast scenarios, immediate explanations and unlimited retries.</p>
-    {finished?<div className="mt-5 rounded-xl border border-violet-300/40 p-5"><CheckCircle2 className="text-emerald-300"/><h3 className="mt-2 text-2xl font-bold">{score}/6 on this run</h3><p className="mt-2 text-sm">{score===6?"Excellent classification and judgement.":"Read the explanations and repeat to strengthen the skill."}</p><button type="button" onClick={again} className="mt-4 rounded-lg bg-violet-200 px-4 py-2 font-bold text-slate-900"><RotateCcw size={15} className="mr-1 inline"/> Try again</button></div>:
-    <div className="mt-5"><p className="text-xs font-semibold text-violet-200">QUESTION {position+1} OF {challenges.length}</p><div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-800"><div className="h-full rounded-full bg-violet-300" style={{width:((position+1)/challenges.length*100)+"%"}}/></div><h3 className="mt-4 text-lg font-bold">{question.scenario}</h3><div className="mt-4 grid gap-2 sm:grid-cols-2">{question.choices.map((choice,i)=><button type="button" key={choice} disabled={revealed} onClick={()=>pick(i)} className={"rounded-lg border p-3 text-left text-sm transition disabled:cursor-not-allowed "+(selected===i?(correct?"border-emerald-300 bg-emerald-500/20":"border-amber-300 bg-amber-500/20"):"border-slate-600 hover:border-violet-300")}>{choice}</button>)}</div>
-      {revealed?<div role="status" className="mt-4 rounded-lg border border-violet-400/30 bg-violet-500/10 p-3 text-sm"><strong>{correct?"That's right.":"A useful mistake."}</strong> {question.why}<button type="button" onClick={next} className="mt-3 block rounded-lg bg-violet-200 px-4 py-2 font-bold text-slate-950">{position===challenges.length-1?"See results":"Next scenario →"}</button></div>:null}
+  function pick(i:number){if(revealed)return;setAttempts(prev=>({...prev,[question.id]:i}));setRevealed(true);}
+  function next(){const level=nextAdaptiveRecord(adaptive,correct);setAdaptive(level);setCorrectCount(v=>v+(correct?1:0));setSeen(prev=>[...prev,question.id]);setRevealed(false);if(seen.length+1===challenges.length)setFinished(true);}
+  function restart(){setAdaptive(initialAdaptiveRecord());setSeen([]);setAttempts({});setRevealed(false);setFinished(false);setCorrectCount(0);}
+  return <section aria-label={mode==="safety"?"Adaptive safety judgement practice":"Adaptive symptom reasoning practice"} className="rounded-2xl border border-violet-300/30 bg-[#1d1b36] p-5">
+    <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-violet-200">{mode==="safety"?<ShieldCheck size={17}/>:<BrainCircuit size={17}/>} {mode==="safety"?"Safety judgement":"Fault-stage reasoning"}</p>
+    <p className="mt-2 text-sm text-slate-200">Choose the <em>best-supported</em> response, not merely a technically possible one. Two consecutive correct answers increase complexity; two misses shift towards guided reasoning. First-attempt accuracy is tracked, not only final retries.</p>
+    {finished?<div className="mt-5 rounded-xl border border-violet-300/40 p-5"><CheckCircle2 className="text-emerald-300"/><h3 className="mt-2 text-xl font-bold">{correctCount}/{challenges.length} first-attempt decisions</h3><p className="mt-2 text-sm">Finishing challenge tier: {labelDifficulty(adaptive.level)}. This measures practice in a simulator, not a professional qualification.</p><button type="button" onClick={restart} className="mt-4 rounded-lg bg-violet-200 px-4 py-2 font-bold text-slate-900"><RotateCcw size={15} className="mr-1 inline"/> Practise again</button></div>:
+    <div className="mt-5"><p className="flex flex-wrap justify-between gap-2 text-xs font-semibold text-violet-200"><span>CASE {seen.length+1} OF {challenges.length}</span><span>{labelDifficulty(question.level)}</span></p><div className="mt-2 h-1 overflow-hidden rounded-full bg-slate-800"><div className="h-full bg-violet-300" style={{width:((seen.length+1)/challenges.length*100)+"%"}}/></div><h3 className="mt-4 text-lg font-bold">{question.scenario}</h3>
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">{question.choices.map((option,i)=><button type="button" key={option} disabled={revealed} onClick={()=>pick(i)} className={"min-h-20 rounded-lg border p-3 text-left text-sm transition disabled:cursor-default "+(selected===i?(correct?"border-emerald-300 bg-emerald-500/20":"border-amber-300 bg-amber-500/20"):"border-slate-600 hover:border-violet-300")}>{option}</button>)}</div>
+      {revealed?<div role="status" className="mt-4 rounded-lg border border-violet-400/30 p-4 text-sm"><strong>{correct?"Best-supported decision.":"Not the most defensible decision."}</strong><p className="mt-2">{question.why}</p><button type="button" onClick={next} className="mt-3 rounded-lg bg-violet-200 px-4 py-2 font-bold text-slate-900">{seen.length+1===challenges.length?"Review results":"Next case →"}</button></div>:null}
     </div>}
   </section>;
 }
