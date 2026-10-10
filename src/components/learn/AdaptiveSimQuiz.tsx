@@ -9,6 +9,7 @@ export default function AdaptiveSimQuiz({simulator,dark=false}:{simulator:"lapto
   const [ready,setReady]=useState(false);
   const [selected,setSelected]=useState<number|null>(null);
   const [reason,setReason]=useState("");
+  const [offset,setOffset]=useState(0);
   const [feedback,setFeedback]=useState<{item:Challenge;correct:boolean;level:number;summary:string;improvement:string;dimensions?:Record<string,number>}|null>(null);
   const [grading,setGrading]=useState(false);
   const [gradingError,setGradingError]=useState("");
@@ -20,7 +21,8 @@ export default function AdaptiveSimQuiz({simulator,dark=false}:{simulator:"lapto
   },[key]);
   const challenge=pickChallenge(simChallenges[simulator],state);
   const item=feedback?.item??challenge;
-  const offset=item?[...item.id].reduce((n,c)=>n+c.charCodeAt(0),0)%3:0;
+  const visibleId=item?.id;
+  useEffect(()=>{setOffset(Math.floor(Math.random()*3));},[visibleId]);
   const choices=item?[0,1,2].map(i=>(i+offset)%3):[];
   async function check(){
     if(!item || selected===null || feedback || grading || !reason.trim())return;

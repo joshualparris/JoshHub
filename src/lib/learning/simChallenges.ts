@@ -20,7 +20,7 @@ export const simChallenges = {
       "question": "A manufacturer-specific light pattern repeats on startup, but your generic code chart is for another model. How should it affect diagnosis?",
       "options": [
         "Document the sequence as a possible hardware clue and compare to similar models before ordering parts.",
-        "Record the pattern, but verify its meaning from the exact platform documentation.",
+        "Record the exact blink pattern, then verify its meaning against the model-specific service manual.",
         "Use the code to prioritise replacing a likely faulty component, confirming later with firmware diagnostics."
       ],
       "answer": 1,
@@ -33,7 +33,7 @@ export const simChallenges = {
       "options": [
         "Reseat the original SSD before documenting settings; intermittent detection is commonly mechanical.",
         "Run OS recovery from USB against the original volume before substituting hardware.",
-        "Inspect firmware mode and connector, then test a compatible spare drive while preserving the original medium."
+        "Inspect firmware mode and connector, then test a spare without altering the original drive."
       ],
       "answer": 2,
       "explanation": "A working USB does not verify SSD or connector health. Data preservation and documented, reversible isolation have priority."
@@ -57,7 +57,7 @@ export const simChallenges = {
       "options": [
         "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
         "Control thermal and supply conditions before attributing the shutdown to a specific cause.",
-        "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
+        "Prioritise battery-cycle tests, since unstable packs can cause shutdowns under load."
       ],
       "answer": 1,
       "explanation": "Correlation with load alone cannot differentiate heat from power limits. Control competing variables first."
@@ -92,8 +92,8 @@ export const simChallenges = {
       "question": "The internal LCD flickers when the hinge moves. External HDMI is stable; the spare panel is not compatible. What is the safest informative plan?",
       "options": [
         "Compare the incompatible panel briefly under low brightness to isolate the fault family.",
-        "Document movement dependence and use exact-model service guidance for isolated cable/connector checks before compatible substitution.",
-        "Swap the motherboard display connector first, leaving the panel untested until a part arrives."
+        "Record hinge dependence and inspect the eDP cable path safely before compatible substitution.",
+        "Swap the board's display connector first, leaving the panel untested until parts arrive."
       ],
       "answer": 1,
       "explanation": "Model-matched, isolated cable and hinge-path checks are safer and more interpretable than incompatible substitutions."
@@ -153,7 +153,7 @@ export const simChallenges = {
       "level": 1,
       "question": "A hall host says the group could probably use the space and offers a provisional Saturday hold. What is the defensible publicity decision?",
       "options": [
-        "Secure a written date and scope agreement before advertising the event as confirmed.",
+        "Secure the date and approved activity scope in writing before advertising the event as confirmed.",
         "Publish the event with a venue-to-be-confirmed notice, since an expression of interest is enough for planning.",
         "Publish a tentative date with no venue name and seek a written activity-specific booking before final publicity."
       ],
