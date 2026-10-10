@@ -1,7 +1,7 @@
 {
   "id": "dubbo-business-field-guide",
   "title": "Inside Dubbo’s technology and repair businesses",
-  "version": "2026-10-10.1",
+  "version": "2026-10-11.2",
   "reviewed": "10 October 2026",
   "summary": "A public-source learning module covering 15 locations across 14 businesses: operating models, people, workplace evidence and practical reuse partnerships.",
   "businesses": [
@@ -1214,14 +1214,15 @@
       ],
       "practice": "Choose one retailer and one MSP. Draw their likely handoffs, then mark every unverified stage with a question mark.",
       "check": {
-        "question": "A provider replaces a client laptop. What can you conclude?",
+        "question": "A regional IT provider advertises laptop procurement, repairs and managed services. You want to understand where retired customer devices go. Which first question best distinguishes its business model from its ownership rights?",
         "options": [
-          "The provider can donate it",
-          "Ownership and release authority still need checking",
-          "It must be recycled"
+          "How many managed endpoints does your helpdesk typically support across NSW?",
+          "When devices are replaced, which party usually controls title and final disposition, and does this differ by lease, resale or customer ownership?",
+          "Do you have a dedicated recycling bin or any preferred e-waste brands?",
+          "Which device manufacturer accounts for most of your customers' refresh expenditure?"
         ],
         "answer": 1,
-        "explanation": "Replacement work shows a possible contact point, not title to the outgoing asset."
+        "explanation": "Revenue from supporting a device is not proof of title. Contractual disposal authority may vary across fleet models."
       }
     },
     {
@@ -1236,14 +1237,15 @@
       ],
       "practice": "For three businesses, record one evidenced role, one unknown reporting relationship, and one question that would identify the decision owner.",
       "check": {
-        "question": "A website lists a service manager and two technicians. Is their reporting line verified?",
+        "question": "A public site names a local service manager and two senior technicians. A regional LinkedIn profile names a procurement director. You want to request an authorised small equipment pilot. Which outreach plan is most defensible?",
         "options": [
-          "Yes, website order establishes hierarchy",
-          "Only if job titles sound senior",
-          "No, the reporting relationship needs evidence"
+          "Address the procurement director as the confirmed supervisor of the local technicians.",
+          "Ask the local service manager how device retirement authority is delegated, then seek the documented asset owner or contract approver.",
+          "Ask a senior technician to sign off on equipment release based on their technical expertise.",
+          "Treat the organisation chart as established because titles distinguish operational and financial responsibilities."
         ],
-        "answer": 2,
-        "explanation": "A role map can show published roles without drawing unsupported manager-to-employee arrows."
+        "answer": 1,
+        "explanation": "An evidence-backed functional contact is reasonable, but professional titles do not establish decision rights or reporting lines."
       }
     },
     {
@@ -1259,14 +1261,15 @@
       ],
       "practice": "Prepare six interview questions and an evidence sheet with columns for claim, example, source/date and what still needs checking.",
       "check": {
-        "question": "Two old interstate employee reviews are best treated as…",
+        "question": "Three public employee reviews criticise a national provider's weekend workloads; two reviews are several years old and none identify Dubbo. The Dubbo role advertisement mentions regional travel and occasional after-hours work. Which conclusion is best supported?",
         "options": [
-          "Proof of the current Dubbo culture",
-          "Limited prompts for questions, with date and location stated",
-          "Evidence of every team member’s experience"
+          "The Dubbo roster probably involves frequent unplanned weekend work because national teams share policies.",
+          "Insufficient evidence to judge local culture; the advertised travel and occasional after-hours requirement merits specific interview questions.",
+          "The local team has better balance than the national average because no Dubbo complaints were found.",
+          "The national reviews verify a pattern of management problems even without a current local sample."
         ],
         "answer": 1,
-        "explanation": "Review samples are self-selected; age and local relevance matter."
+        "explanation": "Separate a verifiable job requirement from uncertain anonymous accounts; don't make a culture verdict without local evidence."
       }
     },
     {
@@ -1282,14 +1285,15 @@
       ],
       "practice": "Write a one-page handoff for up to five owner-released laptops. Include the point at which you would decline or pause acceptance.",
       "check": {
-        "question": "An existing recycling arrangement means…",
+        "question": "A print/MPS provider says retired devices go to a contracted downstream partner. A client separately asks whether a community pilot could reuse old PCs. What's the best next step?",
         "options": [
-          "All devices are available for free",
-          "The business cannot discuss reuse",
-          "You should understand existing obligations and gaps first"
+          "Contact the recycler directly for surplus PCs before the provider has assessed its contracts.",
+          "Map device ownership, data sanitisation and existing return agreements before testing whether an authorised reuse exception exists.",
+          "Suggest a one-month informal trial with only non-working PCs, since faulty devices have no resale value.",
+          "Ask the client to remove drives and place PCs in a separate pallet, then seek paperwork after collection."
         ],
-        "answer": 2,
-        "explanation": "A useful partnership complements the actual service and custody arrangements."
+        "answer": 1,
+        "explanation": "Contracts and owner approvals can constrain reuse even if hardware appears unwanted. Sanitisation and custody must be scoped before transfer."
       }
     },
     {
@@ -1305,14 +1309,15 @@
       ],
       "practice": "Select two businesses and two different project goals. Write a specific 15-minute conversation agenda for each.",
       "check": {
-        "question": "What is the strongest initial project outcome?",
+        "question": "A small shop seems willing to discuss five faulty laptops, but your project has limited space and no proven sanitisation procedure. Which partnership proposal creates the best mutual value?",
         "options": [
-          "A verified decision owner and a scoped next step",
-          "A large stock-volume estimate based on store size",
-          "One pitch sent to every business"
+          "Offer monthly collections with a cap of five until a recycler can be arranged.",
+          "Propose a short discovery conversation and only a tightly defined pilot after owner release, data responsibility, safe storage and downstream arrangements are documented.",
+          "Accept units without storage as long as all serials are photographed on collection.",
+          "Pitch AssetFlow software before discussing the shop's existing workflow so you can control the disposal records."
         ],
-        "answer": 0,
-        "explanation": "Resolving a concrete uncertainty is more useful than premature scale assumptions."
+        "answer": 1,
+        "explanation": "A verifiable small pilot is better than assuming capacity or using unproven data handling as part of an offer."
       }
     },
     {
@@ -1328,14 +1333,15 @@
       ],
       "practice": "Complete a plan with two priorities, one decision owner to verify, one measurable outcome and one stop condition.",
       "check": {
-        "question": "Which finding should cause the source record to be updated?",
+        "question": "An old directory shows a shop's manager; the current company page lists a different title, and a staff member in a phone conversation says a regional team now makes equipment decisions. How should this affect your research register?",
         "options": [
-          "A direct confirmation that a listed manager has left",
-          "An assumption based on the size of the shop",
-          "A customer star rating without workplace evidence"
+          "Overwrite the manager's name immediately and remove earlier references to avoid confusion.",
+          "Record the sources and dates separately, mark the old directory as superseded only where confirmed, and verify the delegation with an authorised current contact.",
+          "Retain the directory entry as the sole published fact because a telephone conversation is less permanent.",
+          "Infer the new manager's reporting line from the company hierarchy and label it confirmed."
         ],
-        "answer": 0,
-        "explanation": "Dated, attributable corrections improve the research and prevent stale role maps."
+        "answer": 1,
+        "explanation": "Preserve provenance, dates and uncertainties; private conversations and public records have different evidentiary limits."
       }
     }
   ],
