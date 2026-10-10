@@ -4,20 +4,140 @@ import { CheckCircle2, RotateCcw, ShieldCheck, BrainCircuit } from "lucide-react
 
 type Challenge={scenario:string;choices:string[];answer:number;why:string};
 const safety:Challenge[]=[
-{scenario:"A laptop battery is swollen and the touchpad is lifting.",choices:["Stop, isolate safely and seek a suitable specialist pathway","Press the battery flat and continue"],answer:0,why:"Swollen lithium-ion packs are not routine repair items. Do not press, puncture, heat or charge them."},
-{scenario:"You need to find out whether a RAM module is present.",choices:["Open the computer while connected to AC","Read the exact service manual and isolate power before opening"],answer:1,why:"Disassembly is model-specific and internal batteries can remain energised even after removing AC."},
-{scenario:"A technician sets a multimeter to Ω and touches a powered board.",choices:["Safe because Ω uses a tiny current","Unsafe: isolate appropriate circuits before resistance or continuity measurements"],answer:1,why:"An ohmmeter is not for live measurements. The main course provides only virtual readings."},
-{scenario:"A donor says a customer never collected their SSD.",choices:["Treat it as free","Check documented ownership, consent and data obligations"],answer:1,why:"Custody does not establish transfer authority. Original owner data must be protected."},
-{scenario:"You find a detailed schematic labelled with your laptop's retail model.",choices:["Confirm the motherboard silkscreen and revision before using it","Assume it fits all units with the same model name"],answer:0,why:"Manufacturers can use multiple board platforms and revisions under one retail family."},
-{scenario:"You finish a simulated diagnosis without opening real equipment.",choices:["Explain the tested evidence and remaining uncertainty","Claim certified motherboard-level repair competence"],answer:0,why:"The simulation teaches reasoning, not certification or a guarantee of real-world competence."}
+  {
+    "scenario": "A donated laptop's touchpad is raised, the internal pack may be swollen, and the owner says it still boots. What is the safest intake decision?",
+    "choices": [
+      "Record the suspected battery fault and test only after removing the SSD.",
+      "Stop active diagnostics pending appropriate battery-hazard handling and authorised custody.",
+      "Use a compatible low-power charger to establish whether the pack is functional.",
+      "Inspect the charging history before choosing whether to isolate the device."
+    ],
+    "answer": 1,
+    "why": "A visibly altered chassis may indicate a compromised pack. Diagnostic convenience never overrides a lithium battery hazard."
+  },
+  {
+    "scenario": "A ThinkPad RAM replacement is authorised, but you only have the retail model name and a generic teardown. What is the strongest preparation?",
+    "choices": [
+      "Use the generic guide for screws, then disconnect AC and proceed.",
+      "Check a matching service manual and required battery isolation and ESD procedures before disassembly.",
+      "Find a motherboard photograph with the same RAM configuration first.",
+      "Ask the customer whether the laptop can boot and document a safe power state from that."
+    ],
+    "answer": 1,
+    "why": "The exact service instructions and isolation conditions govern internal work; the off state is not always electrically isolated."
+  },
+  {
+    "scenario": "In the simulator, a rail returns a low resistance reading with no matching board reference. Which is the most justified assessment?",
+    "choices": [
+      "A regulator short is likely because low resistance always indicates a defect.",
+      "The result is inconclusive without circuit, meter/setup and normal impedance information.",
+      "A failed charger is likely because the low impedance would collapse its output.",
+      "The processor should be replaced before another meter test."
+    ],
+    "answer": 1,
+    "why": "Some power rails legitimately show low resistance. Comparing to a wrong board reference is not evidence of a specific fault."
+  },
+  {
+    "scenario": "A repair shop offers a customer-owned laptop that was never collected. What would you need before accepting it?",
+    "choices": [
+      "A dated stock write-off and a working charger.",
+      "A documented authorised release and suitable data-handling agreement, not merely store-room possession.",
+      "A demonstration that it no longer boots to the previous owner's desktop.",
+      "Permission to remove any identifiable labels and sell only components."
+    ],
+    "answer": 1,
+    "why": "Uncollected goods are not automatically the shop's property. Data and ownership duties remain."
+  },
+  {
+    "scenario": "A donor authorises reuse of five business laptops; the serial list includes two under current lease. What is the immediate decision?",
+    "choices": [
+      "Accept all units but don't sell the leased laptops until the contract is checked.",
+      "Require authority from the actual asset owner or lessor before taking custody of leased items.",
+      "Accept only the chargers from the leased units because they are removable accessories.",
+      "Record the lease as an exception after the donor signs a general transfer form."
+    ],
+    "answer": 1,
+    "why": "A donor may manage devices without owning leased goods. Authority must precede transfer."
+  },
+  {
+    "scenario": "A virtual repair note points to a failed adapter, but the battery casing is distorted. Which report best represents both findings?",
+    "choices": [
+      "Record the adapter as confirmed and investigate the battery in a later job.",
+      "Document the probable supply issue separately and stop active repair pending battery safety assessment.",
+      "Discard the adapter readings because battery swelling invalidates every external test.",
+      "Continue with the spare adapter while minimising charging current."
+    ],
+    "answer": 1,
+    "why": "A plausible electrical diagnosis never cancels an independent safety stop."
+  }
 ];
 const symptoms:Challenge[]=[
-{scenario:"No status LED, fan, display or other sign of life.",choices:["No boot","No power","No video","No POST"],answer:1,why:"There is no observed power activity; investigate external supply and power state first."},
-{scenario:"Keyboard lights flash a diagnostic pattern and there is no firmware logo.",choices:["No POST","No video","No boot","No power"],answer:0,why:"Signs of power exist, but firmware self-tests may be failing. Use the model-specific LED guide."},
-{scenario:"Manufacturer logo appears, then ‘No bootable device’.",choices:["No power","No video","No POST","No boot"],answer:3,why:"Firmware displays a logo, but the OS handoff fails."},
-{scenario:"Fans spin and an external monitor shows a desktop; internal panel is black.",choices:["No video on internal display","No boot","No power","No POST"],answer:0,why:"System boot and external video are functioning; focus on internal display path."},
-{scenario:"A firmware boot menu opens correctly, but Windows won't start.",choices:["No power","No boot","No video","No POST"],answer:1,why:"A functional firmware screen shows the device has powered and displayed enough to isolate a boot-stage problem."},
-{scenario:"You hear Windows sign-in sounds and Caps Lock responds, but the built-in screen remains dark.",choices:["No POST","No power","No boot","No internal video"],answer:3,why:"Audible/keyboard signs of a functioning system make the display path a leading suspect."}
+  {
+    "scenario": "The firmware logo appears and then the laptop reports 'No bootable device'. Which is the most precise current failure stage?",
+    "choices": [
+      "A power-path issue because the operating system draws more current than firmware.",
+      "A post-firmware no-boot problem requiring storage and boot-path checks.",
+      "No POST because the OS never finished loading.",
+      "An LCD problem because the error appears on the screen."
+    ],
+    "answer": 1,
+    "why": "The logo and error show a successful display and at least part of firmware startup; boot handoff is failing."
+  },
+  {
+    "scenario": "An external monitor displays the desktop, while the internal screen is black. What is the best next diagnostic direction?",
+    "choices": [
+      "Inspect the internal display/cable/illumination pathway without assuming the exact component.",
+      "Replace the LCD immediately because the external GPU output works.",
+      "Reinstall the graphics driver before verifying screen detection.",
+      "Test the battery since external monitors tend to draw less from the laptop."
+    ],
+    "answer": 0,
+    "why": "External video narrows the symptom family but not the specific internal display component."
+  },
+  {
+    "scenario": "The keyboard lights, fans run and a manufacturer-specific LED fault pattern repeats without a firmware logo. Best working classification?",
+    "choices": [
+      "A no-POST investigation, interpreted using the exact platform's code guide.",
+      "An SSD boot issue, because storage is involved in early firmware checks.",
+      "No power, because POST cannot complete and the device repeatedly resets.",
+      "A confirmed memory-chip failure based on common LED codes."
+    ],
+    "answer": 0,
+    "why": "Power exists, but POST may not complete. Manufacturer codes require exact model mapping."
+  },
+  {
+    "scenario": "A computer has no fan, LED or image. What observation should precede firmware or storage testing?",
+    "choices": [
+      "Whether a recovery USB has a visible boot sector.",
+      "A controlled test with a verified compatible adapter and accessible power connection.",
+      "A flashlight check for a faint internal display image.",
+      "A storage SMART check from an external enclosure."
+    ],
+    "answer": 1,
+    "why": "No sign of power makes external supply and connection checks the least invasive starting point."
+  },
+  {
+    "scenario": "A laptop powers on intermittently; when it fails, a model-specific memory diagnostic code appears, while some attempts show a logo. How should you describe it?",
+    "choices": [
+      "Intermittent no-POST behaviour, noting the successful attempts and validated diagnostic code.",
+      "A persistent no-boot condition because at least one logo was observed.",
+      "A likely display-cable failure because the logo does not always appear.",
+      "A USB-C charger fault because intermittent power always suggests negotiation."
+    ],
+    "answer": 0,
+    "why": "Do not flatten intermittent evidence into a single permanent state. Validate the model-specific code."
+  },
+  {
+    "scenario": "Firmware sometimes sees the SSD and a controlled spare drive is always detected in the same socket. What is supported?",
+    "choices": [
+      "The original storage device or its detection path is implicated; preserve it for further authorised diagnosis.",
+      "The original SSD controller is definitively broken and safe to wipe.",
+      "The motherboard is conclusively faulty because the spare drive changes boot order.",
+      "The current Windows installation is proven corrupt and should be reset."
+    ],
+    "answer": 0,
+    "why": "A controlled comparison implicates the original drive/detection family but cannot prove a precise component failure."
+  }
 ];
 
 export default function DetectiveMiniGames({mode}:{mode:"safety"|"symptoms"}) {
