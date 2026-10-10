@@ -20,7 +20,7 @@ export const simChallenges = {
       "question": "A charging light blinks. What does the blink pattern establish by itself?",
       "options": [
         "Compare the flash timing against a generic BIOS blink-code table from another brand",
-        "Identify the exact laptop model and confirm its meaning in the vendor's service guide",
+        "Use the exact model's vendor diagnostic guide before assigning meaning to the flashes",
         "Check the battery-charge percentage, since all flashing lights indicate low capacity"
       ],
       "answer": 1,
@@ -32,7 +32,7 @@ export const simChallenges = {
       "question": "The BIOS lists no SSD, but a known-good USB boots reliably. What would you test next?",
       "options": [
         "Boot a diagnostic USB again to rule out its bootloader before investigating hardware",
-        "Check UEFI storage detection and safely compare the SSD connection and known-good drive",
+        "Check SSD visibility in firmware, then safely compare the connector and known-good drive",
         "Recreate the operating-system boot entry before checking whether the SSD is detected"
       ],
       "answer": 1,
@@ -116,7 +116,7 @@ export const simChallenges = {
       "question": "Your virtual tests show 19.5V at jack, no regulator output and intermittent power LED. What is the strongest report without board-level authorisation?",
       "options": [
         "Record a likely regulator fault based on the missing output, pending safe board evaluation",
-        "Document observed rails, competing failure causes and escalation beyond your test authority",
+        "Document measured rails, alternative faults and the point where escalation is required",
         "Inspect the jack again and report the input adapter as defective until replaced"
       ],
       "answer": 1,
@@ -178,7 +178,7 @@ export const simChallenges = {
       "question": "A venue allows sewing and laptops but prohibits bikes. Two bike volunteers are free. What public event scope is correct?",
       "options": [
         "Advertise bike repairs as conditional, since qualified bike volunteers are attending",
-        "Limit the published programme to approved stations and seek separate bike permission",
+        "Publish only approved stations, and request separate authorisation for bikes",
         "List bikes in an overflow category and make the venue decision on the event day"
       ],
       "answer": 1,
@@ -214,7 +214,7 @@ export const simChallenges = {
       "question": "At 10:30 the sewing station is free but hardware backlog is ten deep. What's a better operational response?",
       "options": [
         "Move hardware jobs to the available sewing table if the tools can be relocated",
-        "Keep skill-specific station boundaries, manage arrivals and offer realistic referrals",
+        "Keep station scope distinct; cap admissions and refer hardware jobs as needed",
         "Allow walk-ins to start self-diagnosis while hardware volunteers clear the queue"
       ],
       "answer": 1,
@@ -250,7 +250,7 @@ export const simChallenges = {
       "question": "The event handles 20 items, only five fully repaired. Volunteers think it failed. What evaluation is more useful?",
       "options": [
         "Compare completed fixes against attendance, then use that conversion rate alone",
-        "Track diagnosis, safe deferrals, learning, referrals and repair outcomes with time used",
+        "Track diagnoses, safe refusals, learning, referrals, repair outcomes and time spent",
         "Focus on visitor satisfaction first, since a low repair rate can be offset by goodwill"
       ],
       "answer": 1,
