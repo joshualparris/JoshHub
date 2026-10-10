@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run test:learning-lab && next build",
     "start": "next start",
     "lint": "eslint",
     "test": "vitest",
-    "generate-projects": "node ./scripts/generate-projects-inventory.js"
+    "generate-projects": "node ./scripts/generate-projects-inventory.js",
+    "test:learning-lab": "vitest run src/lib/learning/dead-laptop-logic.test.ts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
