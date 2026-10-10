@@ -8,6 +8,12 @@ on:
       - 'src/lib/learning/**'
       - 'src/data/dead-laptop-detective.json'
       - '.github/workflows/learning-lab-qa.yml'
+  pull_request:
+    paths:
+      - "src/components/learn/**"
+      - "src/lib/learning/**"
+      - "src/data/**"
+      - ".github/workflows/learning-lab-qa.yml"
   workflow_dispatch:
 
 permissions:
