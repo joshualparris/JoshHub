@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import course from "@/data/dead-laptop-detective.json";
+import course from "../../data/dead-laptop-detective.json";
 
 const testIds = new Set(course.tests.map(t => t.id));
 const sourceIds = new Set(course.sources.map(s => s.id));
