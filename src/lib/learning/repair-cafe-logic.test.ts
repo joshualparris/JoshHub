@@ -42,7 +42,8 @@ describe("repair cafe operations simulation",()=>{
  it("does not award debrief before all seven events and a meaningful reflection",()=>{
    expect(canDebrief({...ready(),incidentIndex:6,reflection:"All went well, I'll keep refining."},data)).toBe(false);
    expect(canDebrief({...ready(),incidentIndex:7,reflection:""},data)).toBe(false);
-   expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake."},data)).toBe(true);
+   expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake."},data)).toBe(false);
+   expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake.",debriefPassed:true},data)).toBe(true);
  });
  it("does not mutate metrics and preserves distinct report dimensions",()=>{
     const s={...ready(),incidentIndex:7};
