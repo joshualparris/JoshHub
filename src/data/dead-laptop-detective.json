@@ -1,0 +1,629 @@
+{
+  "version": "2026-10-11.1",
+  "title": "The Dead Laptop Detective",
+  "subtitle": "An evidence-first virtual repair laboratory",
+  "estimatedMinutes": 80,
+  "designedFor": "Learning and practice; not a certificate of live electrical-service competence",
+  "missions": [
+    {
+      "id": "intake",
+      "number": 1,
+      "minutes": 10,
+      "title": "The intake desk",
+      "tag": "Safety & ownership",
+      "eyebrow": "FIRST, MAKE IT SAFE",
+      "objective": "Explain why a professional diagnosis starts with authority, condition, data and isolation.",
+      "reading": [
+        "Meet the fictional laptop: it has arrived at your repair bench with an uncertain fault. A good investigator does not remove a cover first. Record ownership/permission, the reported symptom, accessories, liquid damage history, battery condition and whether personal data is present.",
+        "Do not puncture, bend or charge a swollen lithium battery. Stop work if you notice swelling, leakage, smoke, strong odour or heat. Isolate where safe and seek a specialist battery pathway. Do not use a multimeter on mains voltage or probe an energised motherboard in this learning course.",
+        "For actual ThinkPad L480 internal work, Lenovo documents how to disable the built-in battery before replacing certain parts. Other models vary, so the exact service manual governs. Simulations here have zero electrical risk."
+      ],
+      "activity": {
+        "prompt": "A laptop arrives with a visibly swollen battery. What should you do first?",
+        "options": [
+          "Open the lid and press the battery flat",
+          "Stop work and follow a safe specialist battery process",
+          "Test the battery terminals with a live meter"
+        ],
+        "answer": 1,
+        "why": "A swollen lithium battery can be hazardous. Do not press, puncture or charge it."
+      },
+      "check": {
+        "question": "Why record ownership and storage status before refurbishment?",
+        "options": [
+          "The serial number predicts every fault",
+          "Because devices and data require authorised custody and handling",
+          "To avoid using a service manual"
+        ],
+        "answer": 1,
+        "explanation": "Repair access and data access are different permissions; both matter."
+      },
+      "sourceIds": [
+        "lenovo",
+        "repo"
+      ]
+    },
+    {
+      "id": "categories",
+      "number": 2,
+      "minutes": 10,
+      "title": "Four very different failures",
+      "tag": "Symptom classification",
+      "eyebrow": "READ THE SIGNS",
+      "objective": "Distinguish no power, no POST, no video and no boot from observed behaviour.",
+      "reading": [
+        "NO POWER: you press the power button and there are no apparent signs of life. Before blaming a motherboard, check the correct charger, wall outlet, port and documented reset procedures.",
+        "NO POST: the device receives power but does not complete firmware self-tests. Patterns of LEDs or beeps are model-specific clues, not universal codes. Consult the exact manufacturer's documentation.",
+        "NO VIDEO: the computer may be working but the internal screen stays blank. An external display and a carefully conducted flashlight observation are useful non-destructive isolation tests. NO BOOT: firmware is reached but the operating system does not start; check storage detection and software before condemning hardware."
+      ],
+      "activity": {
+        "prompt": "A laptop displays the manufacturer's logo, then says ‘No bootable device’. Best symptom category?",
+        "options": [
+          "No power",
+          "No POST",
+          "No boot",
+          "No video"
+        ],
+        "answer": 2,
+        "why": "The logo shows at least some successful power, display and firmware activity. The failure is at OS/storage boot."
+      },
+      "check": {
+        "question": "What does a blinking diagnostic LED prove on its own?",
+        "options": [
+          "A specific universal component failure",
+          "Only a clue; interpret the pattern using the exact model guide",
+          "That Windows is corrupt"
+        ],
+        "answer": 1,
+        "explanation": "LED patterns vary between manufacturers, models and generations."
+      },
+      "sourceIds": [
+        "dell",
+        "ifixit"
+      ]
+    },
+    {
+      "id": "anatomy",
+      "number": 3,
+      "minutes": 10,
+      "title": "Map the machine",
+      "tag": "Visual exploration",
+      "eyebrow": "UNDER THE COVER",
+      "objective": "Locate the power input, cooling, memory, battery and storage on an illustrative board.",
+      "reading": [
+        "Explore the annotated virtual laptop. Select the components and read their jobs. A motherboard is a connected system, not just a collection of parts. Power enters through the input stage; memory supports early startup; storage holds the operating system; the display path is separate from the system's ability to run.",
+        "Service manuals identify how to access field-replaceable units (FRUs). An electrical schematic goes deeper, showing circuits and nets. A BoardView maps component positions. They are not interchangeable.",
+        "DubboEwaste's model research shows why exact motherboard silkscreen IDs and revisions matter. An illustrative photograph of an X220 cannot be used as a repair map for an L480, even though the machines share some categories of components."
+      ],
+      "activity": {
+        "prompt": "You have a retail model name but not the PCB revision. Is it safe to assume a downloaded circuit schematic is exact?",
+        "options": [
+          "Yes, if the branding matches",
+          "No, check the printed board/platform code and revision",
+          "Only if the PDF is detailed"
+        ],
+        "answer": 1,
+        "why": "A retail family may have multiple motherboards and revisions."
+      },
+      "check": {
+        "question": "Which document tells you the physical location of individual board-level components?",
+        "options": [
+          "A BoardView matched to the exact PCB revision",
+          "A Windows licence agreement",
+          "A general laptop marketing brochure"
+        ],
+        "answer": 0,
+        "explanation": "A BoardView can map placements; a service manual addresses assembly; a schematic maps circuits."
+      },
+      "sourceIds": [
+        "repo",
+        "lenovo",
+        "photo"
+      ]
+    },
+    {
+      "id": "meter",
+      "number": 4,
+      "minutes": 10,
+      "title": "The simulated multimeter",
+      "tag": "Reading evidence",
+      "eyebrow": "MEASURE ONLY IN THE SIMULATOR",
+      "objective": "Read fictional power readings and decide what the evidence can and cannot establish.",
+      "reading": [
+        "Here you can click the virtual test points without touching electricity. The screen displays made-up but plausible readings for the training scenario. They are not targets for your actual hardware.",
+        "Voltage is a potential difference between two points. A displayed 0.3 V on a simulated external 19.5 V adapter under load suggests abnormal power supply behaviour, but interpretation depends on test setup and manufacturer's expectations.",
+        "Resistance/continuity checks are normally done on appropriately isolated, unpowered circuits by someone trained for the equipment. Never switch a real meter into resistance mode against a live circuit. This course never instructs you to probe mains electricity."
+      ],
+      "activity": {
+        "prompt": "Which description is valid for an ohms/continuity test in actual electronics service?",
+        "options": [
+          "Connect it straight across a powered motherboard",
+          "Use it only on an appropriate isolated, unpowered circuit after safety checks",
+          "Use it to test a wall socket"
+        ],
+        "answer": 1,
+        "why": "Resistance/continuity mode is not for live circuits; all our readings are simulated."
+      },
+      "check": {
+        "question": "A virtual meter reads 0.3 V where the scenario expects approximately 19.5 V. What's the next scientific step?",
+        "options": [
+          "Declare the motherboard dead",
+          "Check the adapter, load and test conditions with more evidence",
+          "Ignore the reading"
+        ],
+        "answer": 1,
+        "explanation": "An isolated reading is evidence, not a final diagnosis."
+      },
+      "sourceIds": [
+        "ifixit",
+        "lenovo"
+      ]
+    },
+    {
+      "id": "power",
+      "number": 5,
+      "minutes": 10,
+      "title": "Where did the power go?",
+      "tag": "No-power investigation",
+      "eyebrow": "A FAILED POWER PATH",
+      "objective": "Prioritise external, reversible checks before an invasive board diagnosis.",
+      "reading": [
+        "Our training case starts completely dark: no LEDs, no fan and no image. An expensive motherboard replacement would be a premature guess. Begin with a known-working outlet, correct compatible power adapter and a visual inspection of the port.",
+        "Charging adapters, cable connections, sockets, batteries and internal regulators can all affect startup. Simulated voltage clues and substitution tests can narrow which part of the path failed.",
+        "Use the virtual workbench to compare a suspect adapter and a known-good one. Do not confuse an adapter's printed rating with a measured output or conclude that a good battery rules out the DC input."
+      ],
+      "activity": {
+        "prompt": "No lights or fan. Which early action is usually least invasive?",
+        "options": [
+          "Reflow a power IC",
+          "Check the correct adapter and accessible power connection",
+          "Replace the CPU"
+        ],
+        "answer": 1,
+        "why": "First rule out external power without opening the laptop."
+      },
+      "check": {
+        "question": "A correct known-good adapter allows boot; the original fails under load. Best-supported fault family?",
+        "options": [
+          "Original adapter or its cable",
+          "Windows activation",
+          "Internal LCD"
+        ],
+        "answer": 0,
+        "explanation": "The controlled substitution makes the adapter path the leading hypothesis."
+      },
+      "sourceIds": [
+        "ifixit",
+        "dell"
+      ]
+    },
+    {
+      "id": "video",
+      "number": 6,
+      "minutes": 10,
+      "title": "The screen is not the computer",
+      "tag": "No-video investigation",
+      "eyebrow": "FOLLOW THE IMAGE",
+      "objective": "Use independent display tests to distinguish an image from its illumination.",
+      "reading": [
+        "A blank internal screen does not mean the whole computer is dead. Listen for normal startup, look for keyboard response and, where supported, test an external display. Do not assume every black screen is a bad panel.",
+        "In a simulated scenario, an external monitor shows a perfect desktop while a faint image is visible with angled light on the built-in panel. Together, these indicate the internal backlight/display path rather than missing system power.",
+        "Even then, the exact replaceable part may be the panel, cable or board circuitry. Safe service work requires model-specific instructions. Watch an L480 hardware demonstration to learn where parts are, not to copy a procedure blindly."
+      ],
+      "activity": {
+        "prompt": "External monitor works and a faint picture appears on the internal screen with a flashlight. Leading area?",
+        "options": [
+          "Internal display/backlight path",
+          "Internal SSD",
+          "Power button"
+        ],
+        "answer": 0,
+        "why": "Video data appears present; the illumination path deserves investigation."
+      },
+      "check": {
+        "question": "Does a working external monitor prove the LCD panel is the only defective component?",
+        "options": [
+          "Yes, always",
+          "No, panel/cable/backlight circuitry may still need isolation",
+          "It proves the SSD is bad"
+        ],
+        "answer": 1,
+        "explanation": "We can narrow a fault family without overclaiming a specific board component."
+      },
+      "sourceIds": [
+        "dell",
+        "video",
+        "lenovo-video"
+      ]
+    },
+    {
+      "id": "boot",
+      "number": 7,
+      "minutes": 10,
+      "title": "The operating system has vanished",
+      "tag": "No-boot investigation",
+      "eyebrow": "THE HANDOFF FROM BIOS",
+      "objective": "Separate a storage/OS fault from failure to power on or display firmware.",
+      "reading": [
+        "A vendor logo means the machine progressed further than a completely dead laptop. If firmware reports 'No bootable device', inspect whether internal storage is detected rather than immediately reinstalling the OS.",
+        "An independent bootable USB can show the CPU, RAM and much of the hardware are usable; it does not by itself prove the internal SSD is dead. Check connections, firmware boot mode and drive detection before deciding.",
+        "Keep data safe: cloning or professional recovery may be more appropriate than formatting an original drive. The learner never handles real files or storage media in this course."
+      ],
+      "activity": {
+        "prompt": "BIOS runs, but the internal SSD does not appear. Which action would destroy evidence?",
+        "options": [
+          "Record the BIOS storage inventory",
+          "Try a compatible known-good drive in a controlled test",
+          "Format the missing original drive without approval"
+        ],
+        "answer": 2,
+        "why": "Never erase user storage before ownership, backup/recovery and authorisation are resolved."
+      },
+      "check": {
+        "question": "A known-good USB boots but the original SSD isn't detected. Which stage is implicated?",
+        "options": [
+          "OS/storage detection",
+          "LCD backlight",
+          "AC wall socket"
+        ],
+        "answer": 0,
+        "explanation": "The machine is powering, posting and displaying; now investigate storage and boot."
+      },
+      "sourceIds": [
+        "dell",
+        "ifixit"
+      ]
+    },
+    {
+      "id": "final",
+      "number": 8,
+      "minutes": 10,
+      "title": "The unseen three-case challenge",
+      "tag": "Mastery demonstration",
+      "eyebrow": "EVIDENCE BEFORE VERDICT",
+      "objective": "Diagnose three unfamiliar simulated laptops using two decisive observations per case.",
+      "reading": [
+        "Three fictional laptops have arrived with new combinations of symptoms. Unlike the earlier guided lessons, this is a casework assessment. Use the virtual tests to collect evidence and decide the most likely *fault family*, not an exact component replacement.",
+        "Each case has a few tempting but low-value tests. A well-supported conclusion needs two independently useful observations. You can retry freely; mistakes reveal the explanation rather than costing a life.",
+        "Mastery means completing all three final cases. For real repair work, a simulation is only preparation. Follow the correct service manual, professional supervision, electrical safety and data-security procedures."
+      ],
+      "activity": {
+        "prompt": "What's the most defensible repair conclusion?",
+        "options": [
+          "A single reading proves the entire board is faulty",
+          "A testable hypothesis supported by multiple observations and explicit uncertainty",
+          "Replacing parts until it starts"
+        ],
+        "answer": 1,
+        "why": "Diagnoses should fit the observations and show where confidence ends."
+      },
+      "check": {
+        "question": "What constitutes mastery for this module?",
+        "options": [
+          "Watching one video",
+          "Collecting decisive observations and solving three different simulated cases",
+          "Opening the course on two devices"
+        ],
+        "answer": 1,
+        "explanation": "Three evidence-gated cases are required for final completion."
+      },
+      "sourceIds": [
+        "dell",
+        "ifixit",
+        "repo"
+      ]
+    }
+  ],
+  "board": [
+    {
+      "id": "input",
+      "name": "DC input / USB-C power",
+      "x": 8,
+      "y": 18,
+      "w": 24,
+      "h": 20,
+      "detail": "Power enters here. Condition of cable, connector, adapter and power negotiation comes before chip-level theories.",
+      "color": "#e8a34c"
+    },
+    {
+      "id": "power",
+      "name": "Power management",
+      "x": 36,
+      "y": 13,
+      "w": 20,
+      "h": 20,
+      "detail": "Regulators and charging ICs manage and distribute power. Board-level measurement requires proper training.",
+      "color": "#a980df"
+    },
+    {
+      "id": "cpu",
+      "name": "CPU + cooling",
+      "x": 59,
+      "y": 12,
+      "w": 33,
+      "h": 28,
+      "detail": "Processor and heatsink/fan. Heat and fan activity are clues, not proof of a good processor.",
+      "color": "#3db9b0"
+    },
+    {
+      "id": "ram",
+      "name": "SO-DIMM memory",
+      "x": 33,
+      "y": 45,
+      "w": 30,
+      "h": 14,
+      "detail": "RAM participates in firmware checks. For an actual replacement, follow ESD and battery isolation steps.",
+      "color": "#83c76f"
+    },
+    {
+      "id": "storage",
+      "name": "SSD / storage",
+      "x": 67,
+      "y": 50,
+      "w": 25,
+      "h": 17,
+      "detail": "Firmware storage detection helps distinguish a missing SSD from a broken OS. Protect customer data.",
+      "color": "#e8a34c"
+    },
+    {
+      "id": "battery",
+      "name": "Lithium battery",
+      "x": 9,
+      "y": 67,
+      "w": 53,
+      "h": 24,
+      "detail": "Stored energy is hazardous if damaged or swollen. This artwork is not a real board diagram.",
+      "color": "#d97569"
+    },
+    {
+      "id": "display",
+      "name": "Display connector",
+      "x": 69,
+      "y": 75,
+      "w": 22,
+      "h": 11,
+      "detail": "Video-data and backlight paths can fail independently; external display helps isolate symptoms.",
+      "color": "#a980df"
+    }
+  ],
+  "tests": [
+    {
+      "id": "adapter",
+      "tool": "meter",
+      "title": "Virtual adapter output",
+      "safe": "Entirely simulated isolated external measurement"
+    },
+    {
+      "id": "spare",
+      "tool": "swap",
+      "title": "Known-good compatible adapter",
+      "safe": "Fictional substitution, no real connection"
+    },
+    {
+      "id": "port",
+      "tool": "inspect",
+      "title": "Inspect power jack",
+      "safe": "Virtual visual inspection"
+    },
+    {
+      "id": "led",
+      "tool": "inspect",
+      "title": "Watch startup indicators",
+      "safe": "Virtual observation"
+    },
+    {
+      "id": "external",
+      "tool": "display",
+      "title": "External display",
+      "safe": "Virtual screen test"
+    },
+    {
+      "id": "flashlight",
+      "tool": "display",
+      "title": "Angled flashlight observation",
+      "safe": "Virtual screen observation"
+    },
+    {
+      "id": "bios",
+      "tool": "firmware",
+      "title": "Check firmware storage",
+      "safe": "Virtual firmware UI"
+    },
+    {
+      "id": "usb",
+      "tool": "firmware",
+      "title": "Start known-good recovery USB",
+      "safe": "Fictional read-only boot"
+    },
+    {
+      "id": "ssd",
+      "tool": "swap",
+      "title": "Known-good SSD detected?",
+      "safe": "Fictional authorised comparison"
+    },
+    {
+      "id": "ohms",
+      "tool": "meter",
+      "title": "Isolated continuity exercise",
+      "safe": "Virtual no-power resistance sample"
+    }
+  ],
+  "cases": [
+    {
+      "id": "case-port",
+      "alias": "CASE A / Silent Harbour",
+      "model": "Fictional 14-inch office laptop",
+      "symptom": "No fan, no charge light, blank screen; correct adapter label says 19.5 V.",
+      "family": "adapter",
+      "familyLabel": "Failed external adapter/cable path",
+      "intro": "The user reports it was working last week and has become entirely unresponsive.",
+      "required": [
+        "adapter",
+        "spare"
+      ],
+      "reason": "Under the simulated load the suspect adapter output collapses, while a known-good compatible adapter restores normal startup. The external adapter/cable is the leading fault family, not a proven internal board defect.",
+      "readings": {
+        "adapter": "0.3 V under the scenario load (adapter label: 19.5 V). Simulated reading only.",
+        "spare": "With a verified compatible 19.5 V/appropriate-wattage adapter: charge LED appears, system boots to firmware.",
+        "port": "Jack is straight; no debris or deformation observed. A good-looking socket alone does not prove electrical integrity.",
+        "led": "No indicators on suspect adapter. When known-good adapter substituted, charge LED and fan respond.",
+        "external": "No external output while the system is unpowered; this tells us little about display health.",
+        "flashlight": "No faint picture; system has not started.",
+        "bios": "Firmware unavailable until power is restored.",
+        "usb": "Recovery USB cannot boot until power is restored.",
+        "ssd": "Not meaningful until system receives power.",
+        "ohms": "Adapter unplugged and isolated: no meaningful internal board diagnosis here. Always ask what circuit is being tested."
+      }
+    },
+    {
+      "id": "case-glow",
+      "alias": "CASE B / Invisible Desktop",
+      "model": "Fictional 15-inch work laptop",
+      "symptom": "Startup fan and keyboard work; built-in screen appears black.",
+      "family": "backlight",
+      "familyLabel": "Internal LCD backlight/display illumination path",
+      "intro": "The user sometimes hears the sign-in chime and believes the whole laptop is dead.",
+      "required": [
+        "external",
+        "flashlight"
+      ],
+      "reason": "A clear external picture shows the system can produce video; a faint internal image with angled light indicates that the LCD image path exists but illumination is absent. Exact cable, panel and board parts remain unresolved.",
+      "readings": {
+        "adapter": "19.5 V from an approved charger, measured in the simulator.",
+        "spare": "Replacing the charger makes no difference to internal black screen.",
+        "port": "No visible damage.",
+        "led": "Power LED on; fan spins; keyboard caps lock toggles; sign-in chime audible.",
+        "external": "External monitor shows a normal logo and desktop.",
+        "flashlight": "Faint desktop visible on internal panel under angled light; the backlight appears absent.",
+        "bios": "Firmware setup visible on external monitor; internal panel stays unlit.",
+        "usb": "Boots known-good USB and outputs video externally.",
+        "ssd": "Internal SSD appears normally in firmware.",
+        "ohms": "Isolated continuity prompt: no relevant safe conclusion without exact schematic."
+      }
+    },
+    {
+      "id": "case-drive",
+      "alias": "CASE C / Missing Drive",
+      "model": "Fictional 13-inch student laptop",
+      "symptom": "Manufacturer logo appears, then 'No bootable device'.",
+      "family": "storage",
+      "familyLabel": "Internal storage detection/device path",
+      "intro": "The user is concerned about losing their files. Data preservation is a higher priority than reinstalling.",
+      "required": [
+        "bios",
+        "usb"
+      ],
+      "reason": "Firmware runs but the expected internal drive is not detected, while an independent read-only recovery environment boots. This implicates the storage connection/device path. Preserve data; further tests establish whether the drive, connector or configuration is responsible.",
+      "readings": {
+        "adapter": "Correct simulated adapter voltage; charging works.",
+        "spare": "Compatible spare adapter makes no difference.",
+        "port": "No damage visible.",
+        "led": "Startup indicators normal; logo visible.",
+        "external": "External and internal displays both work.",
+        "flashlight": "Normal bright panel. No backlight problem suggested.",
+        "bios": "Firmware storage inventory: internal SSD missing. Boot order lists no internal storage target.",
+        "usb": "Approved read-only recovery USB boots successfully and shows system CPU/RAM information.",
+        "ssd": "Known-good compatible spare SSD is detected in the fictional test; original SSD still needs diagnosis and data-preservation plan.",
+        "ohms": "Continuity is not an appropriate standalone way to diagnose SSD data failure."
+      }
+    }
+  ],
+  "diagnoses": [
+    {
+      "id": "adapter",
+      "label": "External power adapter/cable path"
+    },
+    {
+      "id": "backlight",
+      "label": "Internal display/backlight path"
+    },
+    {
+      "id": "storage",
+      "label": "Storage detection/device path"
+    },
+    {
+      "id": "memory",
+      "label": "Memory or POST path"
+    },
+    {
+      "id": "mainboard",
+      "label": "Motherboard failure (not yet isolated)"
+    }
+  ],
+  "sources": [
+    {
+      "id": "lenovo",
+      "title": "Lenovo ThinkPad L480/L580 User Guide (battery isolation and CRUs)",
+      "kind": "Official manual",
+      "url": "https://download.lenovo.com/pccbbs/mobiles_pdf/l480_l580_ug_en.pdf",
+      "note": "Follow the exact model instructions; many internal operations need isolated battery power."
+    },
+    {
+      "id": "lenovo-video",
+      "title": "Lenovo L480 official removal and replacement video index",
+      "kind": "Official videos",
+      "url": "https://support.lenovo.com/pr/en/solutions/HT511079",
+      "note": "Vendor videos for memory, drives and bottom covers."
+    },
+    {
+      "id": "dell",
+      "title": "Dell: distinguish no power, no POST, no boot, no video",
+      "kind": "Manufacturer diagnostics",
+      "url": "https://www.dell.com/support/kbdoc/en-us/000125609/resolve-no-power-no-post-no-boot-or-no-video-issues-with-your-dell-computer",
+      "note": "Symptoms are categories, not interchangeable diagnoses."
+    },
+    {
+      "id": "ifixit",
+      "title": "iFixit: Laptop will not turn on",
+      "kind": "Repair diagnostic guide",
+      "url": "https://www.ifixit.com/Troubleshooting/PC_Laptop/Laptop+Will+Not+Turn+On/505262",
+      "note": "Initial troubleshooting and signs of life."
+    },
+    {
+      "id": "repo",
+      "title": "DubboEwaste: verified schematic and PCB matching research",
+      "kind": "Your research",
+      "url": "https://github.com/joshualparris/DubboEwaste/blob/main/docs/DEVICE-SCHEMATICS-LIBRARY.md",
+      "note": "Retail model names do not establish exact schematic board revisions."
+    },
+    {
+      "id": "video",
+      "title": "How to upgrade RAM on Lenovo ThinkPad L480 — TechNTechie",
+      "kind": "Instructional video",
+      "url": "https://www.youtube.com/watch?v=DrIuj47bqX0",
+      "note": "Video is a demonstration, not a substitute for model-specific safety instructions."
+    },
+    {
+      "id": "video2",
+      "title": "Lenovo ThinkPad L480 inside — Notebook-Doktor",
+      "kind": "Teardown video",
+      "url": "https://www.youtube.com/watch?v=wfi_3AAOUxI",
+      "note": "Shows RAM, SSD and battery access; audio language should be checked before using as narration."
+    },
+    {
+      "id": "photo",
+      "title": "Wikimedia Commons: X220 motherboard with two Crucial RAM modules",
+      "kind": "Photo, CC BY-SA 4.0",
+      "url": "https://commons.wikimedia.org/wiki/File:Lenovo_ThinkPad_X220_Motherboard_(FRU_04W3286)_with_16GB_Crucial_RAM.jpg",
+      "note": "Illustrative X220 board, NOT your L480 and not a schematic match."
+    },
+    {
+      "id": "podcast",
+      "title": "Restart Radio: Hackney Fixers’ laptop repair and reuse project (29 min)",
+      "kind": "Podcast episode",
+      "url": "https://podcasts.apple.com/us/podcast/restart-radio-hackney-fixers-laptop-repair-and-reuse/id983603182?i=1000490761002",
+      "note": "Real discussion of community laptop repair and reuse."
+    }
+  ],
+  "media": {
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:FilePath/Lenovo_ThinkPad_X220_Motherboard_%28FRU_04W3286%29_with_16GB_Crucial_RAM.jpg?width=960",
+    "imageSource": "https://commons.wikimedia.org/wiki/File:Lenovo_ThinkPad_X220_Motherboard_(FRU_04W3286)_with_16GB_Crucial_RAM.jpg",
+    "imageCaption": "Real Lenovo ThinkPad X220 motherboard (different model from L480). Siarhei V, CC BY-SA 4.0, via Wikimedia Commons.",
+    "videoId": "DrIuj47bqX0",
+    "videoUrl": "https://www.youtube.com/watch?v=DrIuj47bqX0",
+    "videoTitle": "ThinkPad L480 RAM upgrade: real walkthrough (TechNTechie)",
+    "podcastUrl": "https://podcasts.apple.com/us/podcast/restart-radio-hackney-fixers-laptop-repair-and-reuse/id983603182?i=1000490761002",
+    "podcastTitle": "Restart Radio: Hackney Fixers’ laptop repair and reuse project",
+    "narration": "Welcome to The Dead Laptop Detective. You are not here to guess which part to replace. Begin by listening to the symptoms. Classify the failure: no power, no POST, no video, or no boot. Find the least invasive test that separates hypotheses. Record your observation, not just your conclusion. This is a simulated bench: every voltage reading is fictional. If you discover a swollen battery, stop. On real hardware, follow the exact manufacturer's safety and service instructions. At the final bench you will face three unfamiliar laptops. Investigate each before making a diagnosis. Your goal is a justified fault family and clear uncertainty. That's how an effective technician thinks."
+  }
+}
