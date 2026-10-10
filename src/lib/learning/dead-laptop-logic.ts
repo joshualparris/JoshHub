@@ -39,4 +39,4 @@ export function progressPercentage(completed: string[], missionIds: string[]) {
   return Math.round((missionIds.filter((id) => completed.includes(id)).length / missionIds.length) * 100);
 }
 
-export const STORAGE_VERSION = "dead-laptop-detective-v1";
+export const STORAGE_VERSION = "dead-laptop-detective-v2";
