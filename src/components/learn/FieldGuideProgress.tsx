@@ -7,7 +7,7 @@ type Check = { question: string; options: string[]; answer: number; explanation:
 type Lesson = { id: string; title: string; check: Check };
 const key = "field-guide:dubbo-businesses:2026-10-10.1";
 
-export default function FieldGuideProgress({ lessons }: { lessons: Lesson[] }) {
+export default function FieldGuideProgress({ lessons, storageKey = key }: { lessons: Lesson[]; storageKey?: string }) {
   const [completed, setCompleted] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [ready, setReady] = useState(false);
@@ -16,7 +16,7 @@ export default function FieldGuideProgress({ lessons }: { lessons: Lesson[] }) {
 
   useEffect(() => {
     let active = true;
-    db.learnSettings.get(key).then((row) => {
+    db.learnSettings.get(storageKey).then((row) => {
       if (!active) return;
       const value: unknown = row ? JSON.parse(row.value) : [];
       if (Array.isArray(value)) setCompleted(value.filter((id): id is string => typeof id === "string" && lessons.some((lesson) => lesson.id === id)));
@@ -25,14 +25,14 @@ export default function FieldGuideProgress({ lessons }: { lessons: Lesson[] }) {
       if (active) setError("Saved progress could not be loaded. You can still read the lessons and answer the checks.");
     });
     return () => { active = false; };
-  }, [lessons]);
+  }, [lessons, storageKey]);
 
   async function toggle(id: string) {
     if (!ready || busy) return;
     setBusy(true);
     const next = completed.includes(id) ? completed.filter((x) => x !== id) : [...completed, id];
     try {
-      await db.learnSettings.put({ key, value: JSON.stringify(next), updatedAt: Date.now() });
+      await db.learnSettings.put({ key: storageKey, value: JSON.stringify(next), updatedAt: Date.now() });
       setCompleted(next);
       setError("");
     } catch {
