@@ -1,0 +1,1433 @@
+{
+  "id": "dubbo-business-field-guide",
+  "title": "Inside Dubbo’s technology and repair businesses",
+  "version": "2026-10-10.1",
+  "reviewed": "10 October 2026",
+  "summary": "A public-source learning module covering 15 locations across 14 businesses: operating models, people, workplace evidence and practical reuse partnerships.",
+  "businesses": [
+    {
+      "id": "crt",
+      "name": "Computer Research & Technology",
+      "locations": [
+        "128 Darling Street, Dubbo"
+      ],
+      "model": "Business IT + local repair + regional smart hands",
+      "identity": "Verified: Hissey and Associates Pty Limited, ABN 67 054 587 656, has the registered business name Computer Research and Technology. Current website matches the Dubbo operation. [CRT3, CRT1]",
+      "team": [
+        "Unknown: current local headcount and reporting lines.",
+        "Historical only: Arthur Hissey was identified as Managing Director/CTO in a 2004–2007 parliamentary inquiry. This is not confirmation of his current position. [CRT4]",
+        "Decision route: ask the current service manager for operational questions and the authorised business representative for partnerships. Do not assume the historical director is the current approver."
+      ],
+      "operations": [
+        "Documented offering: business support, Microsoft 365, networks, security, backups and hardware, alongside accounting systems and custom software. [CRT1]",
+        "Distinctive operating clue: it markets regional third-party smart-hands, warranty and project work and Christmas-period SLA coverage. This suggests more than a retail repair counter; actual rostering is unknown. [CRT1]",
+        "Home service includes upgrades, troubleshooting and remote/onsite help. Ticketing, RMM vendor, escalation chart and repair outsourcing were not established. [CRT2]"
+      ],
+      "workplace": "Insufficient employee evidence to assess culture, pay or turnover. Role-fit inference: potentially broad technical and customer-facing work. Ask what share is workshop, driving and support queue, and how holiday coverage is staffed. Service coverage is not proof every employee is on call.",
+      "lifecycle": "Potential stream, not confirmed availability: customer refresh PCs and uneconomic home repairs. No verified downstream recycler, sanitisation tool, volumes or donor policy found. Customer and warranty ownership must be resolved before transfer.",
+      "opportunities": [
+        "DubboEwaste: propose a narrowly defined overflow assessment conversation, without promising collection capacity.",
+        "Repair Café/Circular: specialist referral criteria and a short troubleshooting demonstration could help visitors and generate appropriate paid referrals.",
+        "Library of Things: ask about maintaining a small computer/projector kit rather than assuming donations.",
+        "AssetFlow lesson: record customer authority, subcontractor scope, warranty destination and service handover separately.",
+        "Career: useful broad-service learning candidate; a current role and hours remain unknown."
+      ],
+      "questions": [
+        "Which work is done in Dubbo and which is subcontracted or vendor warranty work?",
+        "Who authorises the destination of replaced client computers?",
+        "How are Christmas coverage, call-outs and escalation shared?",
+        "Would a written referral boundary or a small owner-authorised reuse pilot solve a real problem?"
+      ],
+      "sources": [
+        "CRT1",
+        "CRT2",
+        "CRT3",
+        "CRT4"
+      ],
+      "ratings": [
+        "Medium",
+        "Medium",
+        "Low",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "sos",
+      "name": "SOS Phone Repairs Dubbo",
+      "locations": [
+        "126 Darling Street, Dubbo"
+      ],
+      "model": "Locally owned store in a wider repair network",
+      "identity": "Verified: WILKOHARA Pty Ltd, ABN 92 645 837 565, registers SOS Phone Repairs Dubbo. The network names Casey O’Hara as Dubbo owner. The same ABN also registers SOS Phone Repairs Moree; this does not establish shared staff or workshops. [SOS1, SOS2]",
+      "team": [
+        "Casey O’Hara — Dubbo owner, named by the SOS network. [SOS1]",
+        "Store technicians/customer service roles: functional inference; headcount and manager not established.",
+        "Network directors are listed separately. Exact franchise or licensing terms and local spending authority were not established."
+      ],
+      "operations": [
+        "Public Dubbo posts advertise free diagnosis, quotes and some same-day repairs at the Darling Street store. This is the business’s promise, not independently measured turnaround. [SOS3]",
+        "Likely workflow to validate: intake, fault diagnosis, approval, parts/repair, test, collection. Board-level repair, mail-out work, job software and warranty exclusions are unknown."
+      ],
+      "workplace": "No reliable Dubbo employee-review sample or salary advertisement was established. Infer a mix of fine bench work and front-counter explanations; do not infer culture from customer reviews. Ask about protected repair time, parts-related rework and the training offered to new technicians.",
+      "lifecycle": "Potential phone/tablet donor parts, but failed repairs remain customer property unless properly transferred. No verified bulk resale, wipe or recycling arrangement found. Ask about lock release and battery handling before considering a stream.",
+      "opportunities": [
+        "DubboEwaste: phone-parts or referral discussion may be more realistic than recurring laptop supply.",
+        "Repair Café: strong topic fit for screen/battery referral boundaries; invite the owner to nominate a technician, not assume anyone will volunteer.",
+        "Circular: clear repair-versus-replace advice could reduce premature disposal.",
+        "Library of Things: limited direct stock fit; possible advice on tablet kit servicing.",
+        "AssetFlow: model quote approval and collection state independently from ownership transfer."
+      ],
+      "questions": [
+        "Which repairs are completed here versus sent to another workshop?",
+        "What happens when a customer declines a quote?",
+        "Who can approve a community referral or demonstration arrangement?",
+        "What training, bench time and warranty rework expectations apply to technicians?"
+      ],
+      "sources": [
+        "SOS1",
+        "SOS2",
+        "SOS3"
+      ],
+      "ratings": [
+        "Low",
+        "High",
+        "Low",
+        "Likely local; confirm scope"
+      ]
+    },
+    {
+      "id": "case-indulgence",
+      "name": "Case Indulgence",
+      "locations": [
+        "Shop K04, Dubbo Square, 177 Macquarie Street",
+        "Shop T08, Orana Mall, 56 Windsor Parade"
+      ],
+      "model": "Multi-location accessories retail and device repair",
+      "identity": "Verified: both locations are listed by the brand. An active CASE INDULGENCE Pty Ltd ABN 73 664 582 441 exists; the precise contracting entity for each branch is not independently tied to an invoice or branch terms. Treat that link as provisional. [CI1, CI3]",
+      "team": [
+        "Unknown: branch managers, owners, technician headcount and cross-store reporting.",
+        "Ask the chosen store manager for the regional/owner contact and whether community decisions cover both stores.",
+        "Same brand is not proof of identical staffing, repair facilities or legal ownership."
+      ],
+      "operations": [
+        "Documented service journey: model-specific assessment, quote, approved repair and functional checks. Accessories and second-hand devices are also advertised. [CI1, CI2]",
+        "Location distinction: Dubbo Square is K04; Orana Mall is T08. Shared repair workshop, parts pool and repair handoffs are unverified.",
+        "Certification caution: Orana Mall’s listing describes Apple IRP-certified technicians, while the brand’s iPhone page does not claim Apple-authorised status. Do not equate IRP wording with Apple Authorised Service Provider status. Verify scope before referrals. [CI2, CI4]"
+      ],
+      "workplace": "No usable branch-specific employee review, salary or roster evidence found. Retail trading on weekends suggests questions about weekend shifts, not a confirmed roster. Ask whether accessory sales targets compete with repair time and whether technicians move between stores.",
+      "lifecycle": "Second-hand sales indicate an existing value-recovery channel. Donations or low-cost stock should not be assumed. Parts ownership, purchase grading, data erasure and downstream providers are unknown.",
+      "opportunities": [
+        "DubboEwaste: test complementary referrals or unwanted categories rather than asking for stock they already resell.",
+        "Repair Café: one brand-level conversation, then verify acceptance and contact at each location.",
+        "Circular: publish precise model/repair scope after confirmation, not broad certification claims.",
+        "Library of Things: possible accessory sourcing; low direct evidence for a lending partnership.",
+        "AssetFlow: branch location, repair location and owner must be separate fields."
+      ],
+      "questions": [
+        "Are repairs done at each store, a shared workshop or externally?",
+        "Which legal entity and manager approve partnerships for each branch?",
+        "Which Apple repair programme applies to these locations and which repairs?",
+        "How do technicians split repairs, sales, testing and warranty work?"
+      ],
+      "sources": [
+        "CI1",
+        "CI2",
+        "CI3",
+        "CI4"
+      ],
+      "ratings": [
+        "Low",
+        "High",
+        "Low",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "axxis",
+      "name": "Axxis ComWorld",
+      "locations": [
+        "Shop 10, Dubbo Square, 177 Macquarie Street"
+      ],
+      "model": "Independent telecommunications partner and retail support",
+      "identity": "Verified: AXXIS COMWORLD Pty Ltd, ABN 37 085 563 051. Its business names include Dubbo, Mudgee, Armidale and Narrabri. These registrations alone do not establish current branch staffing. The official website identifies an independent Telstra Partner. [AX1, AX3]",
+      "team": [
+        "The public directory names Mathew and Katrina Dickerson, Xander Peters and other team members, but does not assign a complete management hierarchy. [AX2]",
+        "Ten named profiles are a directory snapshot, not verified Dubbo FTE.",
+        "Ask the store for its manager/partnership approver; do not assign director titles from surnames or directory order."
+      ],
+      "operations": [
+        "Documented focus: mobile, NBN, internet, landline and telecommunications advice. [AX1]",
+        "Correction to a broad repairer list: a telecom partner is not automatically a board-level repair workshop. Specific repair intake, outsourcing and warranty arrangements need confirmation.",
+        "Functional inference: needs assessment, plan/device selection, provisioning and customer support may dominate; sales targets and carrier escalation processes are unknown."
+      ],
+      "workplace": "Insufficient employee evidence to assess culture, salary or flexibility. Likely stronger fit for customer education and service/sales than deep bench repair; this is role-fit inference, not a judgement of the workplace.",
+      "lifecycle": "Phone upgrades could generate questions about trade-ins and carrier returns, but no available independent reuse stream was established. Carrier-financed or trade-in devices may have committed destinations.",
+      "opportunities": [
+        "Repair Café/Circular: useful digital-confidence, connectivity and referral contact once exact help boundaries are agreed.",
+        "DubboEwaste: ask who owns devices after upgrades before discussing collection.",
+        "Library of Things: possible advice about connected devices and ongoing service costs.",
+        "AssetFlow: track carrier/vendor obligations and distinguish a service referral from custody.",
+        "Career: explore customer-facing technical explanation roles; do not assume a technician vacancy."
+      ],
+      "questions": [
+        "What repair work is actually done here and what is referred elsewhere?",
+        "Are device returns controlled by Telstra, finance or a trade-in partner?",
+        "Who manages staffing and approves community activities?",
+        "How much of a normal role is sales, support, provisioning and education?"
+      ],
+      "sources": [
+        "AX1",
+        "AX2",
+        "AX3"
+      ],
+      "ratings": [
+        "Low",
+        "Medium",
+        "Low",
+        "Unknown"
+      ]
+    },
+    {
+      "id": "gravity",
+      "name": "Gravity IT",
+      "locations": [
+        "83 Wingewarra Street, Dubbo"
+      ],
+      "model": "Multi-office managed IT provider",
+      "identity": "The Dubbo office and brand are verified. Legal identity remains unresolved: website terms say Gravity IT Pty Ltd, an NSW register candidate is Gravity IT Solutions Pty Ltd, and another Queensland SAP business uses a similar name. Do not attach the Queensland ABN or US Gravity IT Resources reviews to this Dubbo business. [GR1, GR3, GR4, GR5]",
+      "team": [
+        "Glenn Chapman — Managing Director. Drew Harding — Level 2 Systems Engineer/Technical Team Lead. [GR1]",
+        "Justin Root — Level 2 Systems Engineer/NSW West Manager, explicitly Dubbo-based. [GR1]",
+        "Ana Nuttall and Jack Richards — Level 1 technicians; Elinor Chapman — Accounts/Admin Manager. Six named profiles do not establish local or total FTE. [GR1]",
+        "Reporting lines are not published. Justin is the best evidenced local starting role; final donation/hiring authority is unknown."
+      ],
+      "operations": [
+        "Managed monthly packages include monitoring, security, support and co-management options. The public site links ticket submission and ScreenConnect remote access; the full PSA/RMM stack is not established. [GR2, GR1]",
+        "Role differentiation suggests Level 1/Level 2 escalation capacity, but the actual handoff process and local staffing cover require confirmation."
+      ],
+      "workplace": "Insufficient matched employee evidence for workplace ratings. On-call support is advertised, but individual roster obligations are not. Ask Justin about local-versus-remote collaboration, interruptions and regional travel. Exclude the unrelated US recruiter’s Glassdoor scores.",
+      "lifecycle": "Business refresh devices are a plausible source hypothesis. No verified recycler, erasure system or release policy found. Security-focused client work makes documented customer authority central to any proposal.",
+      "opportunities": [
+        "DubboEwaste: ask Justin about the current refresh/disposal workflow and whether a documented local handoff would help.",
+        "Repair Café: possible diagnostic mentoring, subject to employer approval and workload.",
+        "Circular/Library: explore support and referral advice rather than assume equipment gifts.",
+        "AssetFlow: distinguish local contact, technical reviewer and asset-release approver.",
+        "Career: strong public role visibility, but actual hours, vacancies and culture remain unknown."
+      ],
+      "questions": [
+        "Which entity contracts with Dubbo clients and employs the local team?",
+        "How do local technicians share tickets with the other offices?",
+        "Who approves retirement, wiping and release of client equipment?",
+        "What does on-call coverage mean for a Dubbo technician in practice?"
+      ],
+      "sources": [
+        "GR1",
+        "GR2",
+        "GR3",
+        "GR4",
+        "GR5"
+      ],
+      "ratings": [
+        "Medium",
+        "Medium",
+        "Low",
+        "Local manager identified; authority unknown"
+      ]
+    },
+    {
+      "id": "tech-savvy",
+      "name": "Tech Savvy Dubbo",
+      "locations": [
+        "Shop 101, 56 Windsor Parade, Orana Mall"
+      ],
+      "model": "Local consumer repair and refurbished-device retail",
+      "identity": "Verified current trading/location evidence. Orana Mall identifies the former Experimac business as Tech Savvy and locally operated. Exact legal entity/ABN and current owner not established. Do not confuse it with the Tech Savvy Seniors programme. [TS1, TS2]",
+      "team": [
+        "Tom Lawson was identified as a computer/phone technician in a November 2025 local interview; continued employment and management authority are unconfirmed. [TS3]",
+        "Current owner, manager, headcount and reporting lines: unknown. Ask through the store."
+      ],
+      "operations": [
+        "Advertises phone, tablet and laptop repairs, tech help, accessories, mail-in repairs and second-hand/refurbished sales. Published repair and refurbished-device warranty is 12 months; exact conditions need a quote. [TS1]",
+        "This combines repairs with resale rather than being merely a collection point. Bench allocation, testing checklist and parts procurement remain unknown.",
+        "Contact conflict: current business site lists 0439 662 335; the centre listing retains another number. Prefer the business’s own contact and confirm before visiting. [TS1, TS2]"
+      ],
+      "workplace": "One named worker interview reports satisfaction in helping people keep using technology. That is a dated individual experience, not independent proof of overall culture. No salary, employment conditions or current vacancy established. Weekend opening is confirmed, individual shifts are not. [TS3, TS1]",
+      "lifecycle": "Direct evidence of resale makes this a high-value learning contact but an uncertain free-stock source. Its own refurbishment margins matter. No evidence of willingness to supply parts, sanitisation tools or a recycler identified.",
+      "opportunities": [
+        "DubboEwaste: explore categories outside its commercial focus, parts matching or referrals; avoid competing for stock it already values.",
+        "Repair Café: strong device-repair referral and possible demonstration fit.",
+        "Circular: useful local example of repair plus resale.",
+        "Library of Things: discuss repairable tablet/laptop choices, chargers and maintenance costs.",
+        "AssetFlow: learn how intake grading and warranty evidence connect to resale."
+      ],
+      "questions": [
+        "Which devices are refurbished locally and which are sourced already refurbished?",
+        "What makes a device worth repairing versus reselling for parts?",
+        "Is there a useful category you routinely decline?",
+        "How are customer service, bench work and weekend shifts shared?"
+      ],
+      "sources": [
+        "TS1",
+        "TS2",
+        "TS3"
+      ],
+      "ratings": [
+        "Medium",
+        "High",
+        "Limited named interview",
+        "Likely local; owner unknown"
+      ]
+    },
+    {
+      "id": "cbm",
+      "name": "CBM Computers",
+      "locations": [
+        "111 Talbragar Street, Dubbo"
+      ],
+      "model": "Owner-led IT retail, support and local repairs",
+      "identity": "Verified: Country Business Machines (Dubbo) Pty Ltd, ABN 79 075 652 943, trades as CBM Computers. Its website names Nasser Sedghi as business owner and traces operations to 1996. [CB1, CB3]",
+      "team": [
+        "Nasser Sedghi — business owner. [CB1]",
+        "Sales, service and onsite/in-store technician functions are evidenced; exact reporting and current headcount are not. [CB1, CB2]",
+        "Ask the owner about partnerships and the service lead about workflow; do not assume all decisions are delegated to technicians."
+      ],
+      "operations": [
+        "Official description says systems are serviced locally, in store or onsite. Customer segments include small businesses and home users. [CB1]",
+        "Recruitment material requires written technician reports for in-store and onsite work and includes account development/sales responsibilities. This is unusually useful operational evidence; not every duty necessarily applies to every role. [CB2]"
+      ],
+      "workplace": "Employer-published expectations include practical training, negotiated wages, performance/workload-dependent employment, occasional Saturday or after-hours needs, confidentiality and explicit outside-work conflict considerations. These are stated expectations, not employee testimony. No numeric pay range or dependable employee-review sample found. Ask for the actual proposed role in writing. [CB2]",
+      "lifecycle": "A directory company description advertises e-recycling of customer equipment and community support. This is a lead requiring direct confirmation, not proof of a current recycler or accessible stock. [CB4]",
+      "opportunities": [
+        "DubboEwaste: useful first conversation about existing recycling versus reusable equipment, without assuming their supplier chain can be changed.",
+        "Repair Café/Circular: clear paid-referral boundaries may be mutually useful; community support is a discussion lead.",
+        "Library of Things: ask about serviceability and maintenance economics of a small PC kit.",
+        "AssetFlow: adopt concise written work reports and explicit ownership handovers.",
+        "Career: strong clarity about expectations; resolve side-project compatibility and after-hours demands early."
+      ],
+      "questions": [
+        "What does your e-recycling service currently accept and who receives it?",
+        "Would reusable items ever be available with explicit owner consent?",
+        "How is technician work balanced against retail and account sales?",
+        "What outside-work and after-hours terms would apply to a part-time employee?"
+      ],
+      "sources": [
+        "CB1",
+        "CB2",
+        "CB3",
+        "CB4"
+      ],
+      "ratings": [
+        "Medium",
+        "High",
+        "Employer expectations only",
+        "Owner identified"
+      ]
+    },
+    {
+      "id": "colton",
+      "name": "Colton Computer Technologies",
+      "locations": [
+        "Suite 1, 64 Talbragar Street, Dubbo"
+      ],
+      "model": "Regional MSP with specialised service and project functions",
+      "identity": "Verified: Colton Computer Technologies Pty Ltd, ABN 64 150 272 414. Company history describes Orange origins, Bathurst expansion and 25+ regional employees. This is company-wide, not Dubbo headcount. [CO2, CO5]",
+      "team": [
+        "Mitch Colton — Managing Director; Adam Willoughby — Technical Director; Tom Bennett — Professional Services Director. [CO1]",
+        "Michael Carlisle — Service Delivery Manager; Aaron Smith — Sales Manager; Tracey Holdsworth — HR Manager; Karen Morris — Finance/Admin Manager. [CO1]",
+        "Jake Teale — Dispatcher; Casey Neff — Level 1 Team Lead; Fahad Hussain — Senior Support Technician/Team Lead; project and coordinator roles are also listed. [CO1]",
+        "These are verified role labels, not a published reporting chart. Local staff allocation and signing authority remain unknown."
+      ],
+      "operations": [
+        "Published agreement guidance distinguishes covered users/workstations, remote support and separately scoped onsite/project work. E-waste disposal is explicitly listed as outside that standard agreement. This is a 2024 guide, not proof of every current contract. [CO3]",
+        "A senior-role advertisement describes ticket ownership, SLAs, documentation, onsite/remote support and collaboration with service, sales and professional services. [CO4]"
+      ],
+      "workplace": "Best explicit pay evidence in this set: a regional senior technician advertisement lists $75,000–$85,000 a year, permanent full-time, plus regional travel and clearance requirements. It is not a verified open Dubbo role or an entry-level salary. Employer culture language is not an employee-review sample. Training and professional development are advertised; ask about allocated time and targets. [CO4, CO6]",
+      "lifecycle": "The disposal scope boundary offers a concrete question: who currently completes that separate job? It does not show an unmet need or permission to collect. No downstream or erasure tool verified.",
+      "opportunities": [
+        "DubboEwaste: ask Service Delivery about separately scoped retirement work and procurement requirements for a local partner.",
+        "Repair Café: specialist referrals or one-off mentoring could fit; availability unconfirmed.",
+        "Circular/Library: learn from documented service boundaries and recurring support costs.",
+        "AssetFlow: keep scope, approvals, service tasks and physical custody distinct.",
+        "Career: strongest documented structure and senior-role benchmark; confirm Dubbo availability and family-compatible hours."
+      ],
+      "questions": [
+        "Who handles the e-waste disposal excluded from standard managed agreements?",
+        "What vendor checks would a small local reuse partner need?",
+        "Which roles are based in Dubbo and how are tickets dispatched?",
+        "What are the actual travel, on-call, utilisation and training expectations?"
+      ],
+      "sources": [
+        "CO1",
+        "CO2",
+        "CO3",
+        "CO4",
+        "CO5",
+        "CO6"
+      ],
+      "ratings": [
+        "Medium",
+        "Medium",
+        "Employer role/pay evidence",
+        "Service roles identified; approval unknown"
+      ]
+    },
+    {
+      "id": "orana",
+      "name": "Orana Business Solutions",
+      "locations": [
+        "122–124 Fitzroy Street, Dubbo — appointment only"
+      ],
+      "model": "Local Ricoh dealer, document workflows and refurbishment",
+      "identity": "Verified: Orana Business Solutions Pty Ltd, ABN 67 658 038 861; registered names include Orana Business Machines. Official contact is at Fitzroy Street by appointment. [OB2, OB5]",
+      "team": [
+        "Matt is the named official contact; LinkedIn lists Matt Hoyle and Trent Hocking and a self-reported 2–10 company-size band. Their exact current roles/reporting are not established by these sources. [OB2, OB6]",
+        "Ask Matt who authorises partnerships, technical commitments and equipment transfers. Do not turn a directory profile into a full org chart."
+      ],
+      "operations": [
+        "Advertises Ricoh authorised dealership, print/multifunction devices, IT support and document solutions. [OB1]",
+        "Its refurbishment page explicitly describes inspection, repair and software/hardware upgrades; exact device categories and volume remain unclear. [OB3]",
+        "Product offerings include EzeScan, PaperCut and Ricoh cloud/document tools. These are solutions sold, not proof of its internal ticketing stack. [OB4]"
+      ],
+      "workplace": "No matched employee reviews, pay advertisement or roster evidence found. Role-fit inference: a small office-technology business may offer varied customer, installation and service work. Local company-size band is not an audited workforce count. Ask about travel, cover and training.",
+      "lifecycle": "Actual refurbishment is documented, making this a strong circular-economy learning lead. Clarify whether stock is principally copiers or computers: printer expertise must not be mistaken for laptop supply. Existing reuse is a strength but may leave little unwanted saleable stock.",
+      "opportunities": [
+        "DubboEwaste: first ask about device categories and the existing refurbishment chain; a parts/overflow fit is a hypothesis.",
+        "Repair Café: print troubleshooting or referral advice may be more useful than general laptop repair.",
+        "Circular: strong public reuse-process example and possible local case study, with permission.",
+        "Library of Things: advice on serviceable equipment and lifecycle costs; avoid taking bulky print stock.",
+        "AssetFlow: capture inspection, repair, upgrade and availability states separately."
+      ],
+      "questions": [
+        "Which categories do you refurbish: printers, computers or both?",
+        "How are title, lease returns and data-bearing storage handled?",
+        "Is there any small category you cannot economically process?",
+        "Who provides technical service and what travel or backup coverage is needed?"
+      ],
+      "sources": [
+        "OB1",
+        "OB2",
+        "OB3",
+        "OB4",
+        "OB5",
+        "OB6"
+      ],
+      "ratings": [
+        "Medium; category unknown",
+        "Medium",
+        "Low",
+        "Named local contact"
+      ]
+    },
+    {
+      "id": "leading-edge",
+      "name": "Leading Edge Computers Dubbo",
+      "locations": [
+        "33 Macquarie Street, Dubbo"
+      ],
+      "model": "Independent local retailer in a buying group",
+      "identity": "Verified local/group model: its site describes local ownership and membership of Leading Edge Computers, plus Cartridge World and Apple reseller offerings. NSW supplier profile gives ABN 94 121 381 959; a commercial directory associates Manage IT (Australia) Pty Ltd. Obtain a current invoice/ABN match before treating that legal link as settled. [LE1, LE3, LE4]",
+      "team": [
+        "Rhett is the current chamber contact; the directory names Rhett Stockdale as principal. Exact current director/manager role should be confirmed. [LE2, LE4]",
+        "Local headcount and hierarchy are unknown. Buying-group membership does not make the store a corporate-owned branch."
+      ],
+      "operations": [
+        "Sales, support, consumables, new and refurbished computers are documented. Apple reseller status is not automatically authorised repair status. [LE1, LE2]",
+        "Workflow inference: product advice, sourcing, setup and after-sales service; internal ticket system, repairs outsourced and refurbishment origin are unverified."
+      ],
+      "workplace": "No reliable local employee sample or numeric salary found. Potential role fit spans customers, sales and hardware rather than only a remote helpdesk. Ask about commission/targets, Apple training, hands-on repairs and weekend expectations. Customer satisfaction awards do not establish staff satisfaction.",
+      "lifecycle": "Refurbished sales show an existing second-life market. Ask whether devices are refurbished in-house or purchased through a wholesaler, and whether any stock is unsuitable for its own resale. No documented donation or downstream policy identified.",
+      "opportunities": [
+        "DubboEwaste: pursue complementary categories and quality requirements, not assumed free refurbished stock.",
+        "Repair Café: potentially useful computer repair/referral and buying-advice partner.",
+        "Circular: local refurbished purchasing option; confirm actual stock and warranty at referral time.",
+        "Library of Things: practical source of maintainable equipment and consumables advice.",
+        "AssetFlow: distinguish sourced-refurbished inventory from locally refurbished inventory."
+      ],
+      "questions": [
+        "Which repairs and refurbishment steps happen in Dubbo?",
+        "Who owns the refurbished stock and how is it sourced?",
+        "What training and sales expectations apply to a support role?",
+        "Could an agreed referral boundary help both the store and Repair Café?"
+      ],
+      "sources": [
+        "LE1",
+        "LE2",
+        "LE3",
+        "LE4"
+      ],
+      "ratings": [
+        "Medium",
+        "High",
+        "Low",
+        "Local contact identified; confirm"
+      ]
+    },
+    {
+      "id": "viatek",
+      "name": "Viatek Dubbo",
+      "locations": [
+        "Unit 2, 41 Erskine Street, Dubbo"
+      ],
+      "model": "Regional branch within a print, IT and communications group",
+      "identity": "Verified local branch in Viatek and FUJIFILM directories. VIATEK CENTRAL WEST NSW Pty Ltd has ABN 35 119 910 271. Confirm the precise contracting/employing entity for a proposal; group services may use other entities. [VI1, VI5, VI6]",
+      "team": [
+        "No current Dubbo manager or complete ownership/executive chart established.",
+        "Published functions include sales, pre-sales, technical service, IT, finance and administration. [VI2]",
+        "Recommended route: regional print/service manager via the official Central West office, then the authorised partnership approver."
+      ],
+      "operations": [
+        "Viatek publishes separate print and IT support channels. A pre-sales role lists demonstration, implementation and post-sales troubleshooting, with Dubbo one possible base. [VI1, VI2]",
+        "Its print page explicitly connects reuse/recycling with FUJIFILM resource-recycling systems. Do not read marketing about environmental standards as independent certification verification. [VI3]"
+      ],
+      "workplace": "Two accessible employee reports are old and not Dubbo-specific: a NSW service technician in 2021 and Ballarat technician in 2017 describe supportive colleagues; the latter notes a fast-paced environment. This is far too small and dated to rate today’s Dubbo culture. A published pre-sales role requires technical communication, organisation, driving and checks; vacancy status and pay are unknown. [VI4, VI2]",
+      "lifecycle": "Established vendor recycling is a material constraint and learning opportunity. Print devices can be lease/vendor returns; computer reuse cannot be inferred from copier recycling. Local exceptions, ownership and storage handling remain unknown.",
+      "opportunities": [
+        "DubboEwaste: prioritise understanding the existing return chain rather than proposing to replace it.",
+        "Repair Café: specialist print referral and safe user-maintenance education may fit.",
+        "Circular: useful professional recycling comparator.",
+        "Library of Things: low direct evidence; avoid complex leased print equipment.",
+        "AssetFlow: add return-to-vendor disposition and contracting entity to proposed lifecycle records.",
+        "Career: pre-sales/field-service learning may suit communication plus movement; clarify actual local role."
+      ],
+      "questions": [
+        "Which employing entity and manager cover Dubbo technical staff?",
+        "How much work is print hardware versus IT/software implementation?",
+        "What must return through FUJIFILM or a lessor?",
+        "What are travel radius, service targets and after-hours expectations?"
+      ],
+      "sources": [
+        "VI1",
+        "VI2",
+        "VI3",
+        "VI4",
+        "VI5",
+        "VI6"
+      ],
+      "ratings": [
+        "Low for laptop supply",
+        "Medium",
+        "Sparse historical reviews",
+        "Regional approval likely; verify"
+      ]
+    },
+    {
+      "id": "winc",
+      "name": "Winc Australia — Dubbo",
+      "locations": [
+        "107–109 Fitzroy Street, Dubbo; Winc lists 109"
+      ],
+      "model": "National B2B supplier with local managed print service",
+      "identity": "Verified: Winc Australia Pty Limited, ABN 94 000 728 398, appears on buy.nsw. Platinum Equity lists Winc as an active portfolio company, tracing the Staples acquisition/rebrand and OfficeMax acquisition. [WI3, WI6]",
+      "team": [
+        "Winc advertises 55+ managed-print specialists nationally; this is not Dubbo headcount. [WI1]",
+        "A Geraldton role reports to an MPS Service Team Leader. This is a documented comparator, not a confirmed Dubbo reporting line. [WI4]",
+        "Current Dubbo manager and local authority over donations are unknown; approach local MPS management for referral to the lifecycle/partnership team."
+      ],
+      "operations": [
+        "Local managed-print service is confirmed. Winc also advertises technology commissioning, deployment and retirement/recycling. [WI1, WI2]",
+        "The comparator technician role includes fault diagnosis, installation/network setup, training, parts control, testing and response/productivity targets; PaperCut, UniFlow and Microsoft 365 are listed skills, not proof of the local internal stack. [WI4]"
+      ],
+      "workplace": "A historical Dubbo technician listing establishes role type, not an open vacancy. National Indeed page has 14 reviews and a 3.0/5 aggregate (updated December 2025), with mixed accounts of support, management and advancement across other locations. It cannot rate Dubbo. Ask about the specific manager, route size and workload. No local pay range verified. [WI8, WI5]",
+      "lifecycle": "Current lifecycle offering plus historical ITAD credit/resale and paid recycling descriptions suggest an established commercial channel. The historic terms are not a current quotation. Local free-stock access and downstream providers are unverified. [WI2, WI7]",
+      "opportunities": [
+        "DubboEwaste: explore whether an approved regional partner role exists; expect commercial/vendor checks rather than informal handover.",
+        "Repair Café/Circular: ask about approved volunteering or equipment support; do not infer local approval from national benefits.",
+        "Library of Things: supplier/service advice is more evidenced than donations.",
+        "AssetFlow: benchmark inventory, service response, acceptance testing and retirement outcome records.",
+        "Career: field print work offers movement and customer contact, but specialist skills and targets warrant checking."
+      ],
+      "questions": [
+        "Who manages Dubbo MPS technicians and retirement requests?",
+        "What is the real travel radius, daily call load and parts responsibility?",
+        "Which device streams must remain in national ITAD/vendor contracts?",
+        "Is there a formal pathway for a small regional reuse or community partner?"
+      ],
+      "sources": [
+        "WI1",
+        "WI2",
+        "WI3",
+        "WI4",
+        "WI5",
+        "WI6",
+        "WI7",
+        "WI8"
+      ],
+      "ratings": [
+        "Low for informal supply",
+        "Medium",
+        "National reviews only",
+        "Corporate approval required to confirm"
+      ]
+    },
+    {
+      "id": "hitech",
+      "name": "Hi Tech ITworX",
+      "locations": [
+        "5–7 Johnson Street, Dubbo — supplied lead; confirm current entry"
+      ],
+      "model": "Regional MSP with workshop, project and security functions",
+      "identity": "Official site identifies Hi Tech ITworX Pty Ltd, ABN 38 137 400 161, also trading as Hi Tech Data & Security and Hi Tech Creative. It describes five regional workshops including Dubbo. Street address is retained from the supplied list pending current location-page confirmation. [HT1]",
+      "team": [
+        "Kamran Malik — Managing Director; James Allen — General Manager. [HT2]",
+        "David Towells — Service Delivery Manager; Billy Purtell — Projects Manager; Jackson Sievers — BDM. [HT2]",
+        "Additional specialist roles include software engineering and web/hosting operations. Reporting lines and Dubbo allocations are not published. [HT2]",
+        "LinkedIn’s 11–50 band is company-wide, self-reported, not local staffing. [HT5]"
+      ],
+      "operations": [
+        "Documented mix: managed support, cyber security, communications, projects and workshops with parts inventory. The site reports all technical staff completed MS-900; certification currency is not independently checked. [HT1]",
+        "An Orange role describes Tier 1/2, remote/onsite support, training and vehicle/travel support. It informs questions for Dubbo, not guaranteed local conditions. [HT4]"
+      ],
+      "workplace": "No matched Dubbo employee-review sample found. Career page says no current vacancies while indexed Orange recruitment exists; timing differs, so neither establishes today’s vacancy status. Salary is not numerically disclosed. Ask how hybrid claims, professional development and duty cover work for local staff. [HT3, HT4]",
+      "lifecycle": "Workshops and client refresh work create a plausible stream hypothesis. Actual discarded volume, vendor obligations, erasure tools and recycler not established. Managed security responsibilities may require formal release controls.",
+      "opportunities": [
+        "DubboEwaste: Service Delivery is the best evidenced functional starting point for retirement workflow questions.",
+        "Repair Café: hardware diagnosis or escalation mentoring could be useful if staff availability permits.",
+        "Circular/Library: discuss practical maintainability and service coverage.",
+        "AssetFlow: model dispatcher/service/project handoffs without copying an assumed internal stack.",
+        "Career: documented technical development makes this worth learning about; roster and Dubbo role must be checked."
+      ],
+      "questions": [
+        "Which people and workshop capabilities are based in Dubbo now?",
+        "Who coordinates retirement and who can authorise transfers?",
+        "How are training time, tickets, onsite work and on-call balanced?",
+        "Would a small documented reuse handoff complement existing arrangements?"
+      ],
+      "sources": [
+        "HT1",
+        "HT2",
+        "HT3",
+        "HT4",
+        "HT5"
+      ],
+      "ratings": [
+        "Medium",
+        "Medium",
+        "Employer role evidence only",
+        "Service leadership identified"
+      ]
+    },
+    {
+      "id": "desspos",
+      "name": "Desspos Solutions",
+      "locations": [
+        "Unit 12, 11 Asset Way, Dubbo"
+      ],
+      "model": "Specialist POS deployment and ongoing hospitality support",
+      "identity": "Verified: Global Pos Group Pty Limited, ABN 78 127 731 435, registers Desspos Solutions. Its history describes a family business originating in 1970; current contact page lists Central West, Sydney and South Coast. Historical age wording varies, so do not treat “40/50 years” as a current calculation. [DE1, DE2, DE3]",
+      "team": [
+        "Daniel Poulter identifies himself publicly as Managing Director. [DE5]",
+        "Company LinkedIn lists several staff and a 2–10 band; this is self-reported and not a local headcount audit. [DE4]",
+        "Technical support, installation and training functions are documented, but named reporting relationships are unknown. [DE1]"
+      ],
+      "operations": [
+        "Public process is unusually specific: staging hardware/software, scheduled installation milestones, customer training, documentation, SLA tracking and phone/email/web support advertised 24/7. [DE1]",
+        "SwiftPOS is a core product area. Public remote-support links exist, but internal ticketing and employee roster are not established. [DE1, DE4]",
+        "Named company case examples include multi-venue hospitality; client claims remain company-reported, not independently audited."
+      ],
+      "workplace": "Public reposts show recruitment for a SwiftPOS installer and a junior technical trainee; these are historical signals, not open jobs or salary evidence. Role-fit inference: customer training and onsite deployment offer variety, while hospitality operating hours make after-hours questions especially important. 24/7 customer support does not mean every employee is always on call. [DE6, DE1]",
+      "lifecycle": "Potential retired POS terminals, scanners and displays differ from ordinary laptops. Software licences, payment-provider ownership and stored business data may constrain reuse. No verified donation stream, sanitisation process or downstream recycler found.",
+      "opportunities": [
+        "DubboEwaste: ask specifically about non-payment peripherals and owner-released terminals, with a small category limit.",
+        "Repair Café/Circular: refer specialist POS faults rather than attempting business-critical repairs at an event.",
+        "Library of Things: scanner/label equipment advice may be useful; ensure demand before acquiring niche stock.",
+        "AssetFlow: staging, acceptance, training and support handoff are valuable workflow lessons.",
+        "Career: worthwhile learning lead for specialist installation and customer education; confirm travel and duty roster."
+      ],
+      "questions": [
+        "How do installers, support and customer trainers divide responsibility?",
+        "How is 24/7 coverage rostered and compensated?",
+        "Which retired peripherals are owned outright rather than vendor-controlled?",
+        "What skills distinguish a successful trainee from an experienced SwiftPOS installer?"
+      ],
+      "sources": [
+        "DE1",
+        "DE2",
+        "DE3",
+        "DE4",
+        "DE5",
+        "DE6"
+      ],
+      "ratings": [
+        "Medium for niche peripherals",
+        "Low for general repairs",
+        "Historical recruitment only",
+        "MD identified; confirm delegation"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "CRT1",
+      "title": "CR&T services and regional smart-hands work",
+      "url": "https://crt.net.au/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CRT2",
+      "title": "CR&T home IT",
+      "url": "https://crt.net.au/home-it/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CRT3",
+      "title": "Hissey and Associates ABN record",
+      "url": "https://abr.business.gov.au/ABN/View/67054587656",
+      "kind": "Government register",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CRT4",
+      "title": "Historical parliamentary witness record",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/Completed_inquiries/2004-07/trr/report/e02",
+      "kind": "Government historical record",
+      "date": "2004–2007 inquiry; historical only",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "SOS1",
+      "title": "SOS network owners",
+      "url": "https://sosphonerepairs.com.au/who-is-sos/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "SOS2",
+      "title": "Wilkohara ABN and business names",
+      "url": "https://abr.business.gov.au/ABN/View?abn=92645837565",
+      "kind": "Government register",
+      "date": "Business-name entry dated 2 June 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "SOS3",
+      "title": "Dubbo store public posts",
+      "url": "https://www.findglocal.com/AU/Dubbo/100926761898936/SOS-Phone-Repairs-Dubbo",
+      "kind": "Syndicated business posts",
+      "date": "Includes August 2026 posts; secondary mirror",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CI1",
+      "title": "Case Indulgence Dubbo locations and repair process",
+      "url": "https://caseindulgence.com.au/phone-repair-dubbo/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CI2",
+      "title": "Case Indulgence Orana Mall listing",
+      "url": "https://www.oranamall.com.au/case-indulgence/",
+      "kind": "Shopping-centre listing",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CI3",
+      "title": "Case Indulgence company ABN",
+      "url": "https://abr.business.gov.au/ABN/View?id=73664582441",
+      "kind": "Government register",
+      "date": "Record updated 27 August 2025",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CI4",
+      "title": "Case Indulgence iPhone repair scope",
+      "url": "https://caseindulgence.com.au/iphone-repair-dubbo/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "AX1",
+      "title": "Axxis service model",
+      "url": "https://axxis.digital/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "AX2",
+      "title": "Axxis team directory",
+      "url": "https://axxis.digital/axxis-team/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "AX3",
+      "title": "Axxis company and business names",
+      "url": "https://abr.business.gov.au/ABN/View/37085563051",
+      "kind": "Government register",
+      "date": "Business names include January–April 2025 additions",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "GR1",
+      "title": "Gravity IT team and locations",
+      "url": "https://gravityit.com.au/about/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "GR2",
+      "title": "Gravity IT managed service scope",
+      "url": "https://gravityit.com.au/managed-it/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "GR3",
+      "title": "Gravity IT website terms",
+      "url": "https://gravityit.com.au/terms-conditions/",
+      "kind": "Official business",
+      "date": "Updated 24 October 2025",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "GR4",
+      "title": "Gravity IT Solutions candidate entity",
+      "url": "https://abr.business.gov.au/ABN/View?id=80611733174",
+      "kind": "Government register; identity unresolved",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "GR5",
+      "title": "Different Queensland Gravity IT entity",
+      "url": "https://www.gravity-it.com/terms-and-conditions",
+      "kind": "Different business; exclusion evidence",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "TS1",
+      "title": "Tech Savvy repair and refurbished sales",
+      "url": "https://www.techsavvyau.com/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "TS2",
+      "title": "Tech Savvy former Experimac listing",
+      "url": "https://www.oranamall.com.au/experimac/",
+      "kind": "Shopping-centre listing",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "TS3",
+      "title": "Tom Lawson workplace interview",
+      "url": "https://www.dubbophotonews.com.au/news/love-your-work-tom-lawson-t8jjnvch",
+      "kind": "Local news; named worker interview",
+      "date": "28 November 2025",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CB1",
+      "title": "CBM ownership and local servicing",
+      "url": "https://cbmcomputers.com.au/about/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CB2",
+      "title": "CBM employment expectations",
+      "url": "https://cbmcomputers.com.au/join-our-team/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CB3",
+      "title": "Country Business Machines ABN",
+      "url": "https://abr.business.gov.au/ABN/View?id=79075652943",
+      "kind": "Government register",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CB4",
+      "title": "CBM e-recycling and community claims",
+      "url": "https://www.localsearch.com.au/profile/cbm-computers/dubbo-nsw-2830/O5NG",
+      "kind": "Business directory; company description",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO1",
+      "title": "Colton team roles",
+      "url": "https://coltoncomputers.com.au/cct-staff/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO2",
+      "title": "Colton history and scale",
+      "url": "https://coltoncomputers.com.au/about-us/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO3",
+      "title": "Colton managed agreement scope",
+      "url": "https://coltoncomputers.com.au/whats-covered-under-your-managed-business-agreement/",
+      "kind": "Official business",
+      "date": "19 April 2024 page timestamp; check current contract",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO4",
+      "title": "Colton senior technician role",
+      "url": "https://employmenthero.com/jobs/position/colton-computer-technologies-pty-ltd-senior-it-support-technician-m24d6/",
+      "kind": "Employer recruitment advertisement",
+      "date": "Indexed advertisement; current vacancy not established",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO5",
+      "title": "Colton legal entity",
+      "url": "https://abr.business.gov.au/ABN/View/64150272414",
+      "kind": "Government register",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "CO6",
+      "title": "Colton recruitment contact",
+      "url": "https://coltoncomputers.com.au/careers/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB1",
+      "title": "Orana Business Solutions services",
+      "url": "https://obsolutions.com.au/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB2",
+      "title": "Orana appointment contact",
+      "url": "https://obsolutions.com.au/contact-us",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB3",
+      "title": "Orana refurbishment process",
+      "url": "https://obsolutions.com.au/refurbished-devices",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB4",
+      "title": "Orana document solutions",
+      "url": "https://obsolutions.com.au/document-solutions",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB5",
+      "title": "Orana legal entity",
+      "url": "https://abr.business.gov.au/ABN/View/67658038861",
+      "kind": "Government register",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "OB6",
+      "title": "Orana company size and listed people",
+      "url": "https://www.linkedin.com/company/orana-business-solutions",
+      "kind": "Company LinkedIn profile; self-reported",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "LE1",
+      "title": "Leading Edge Dubbo group membership",
+      "url": "https://lecit.com.au/pages/about-us",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "LE2",
+      "title": "Leading Edge Dubbo chamber profile",
+      "url": "https://dubbochamber.com.au/chamber-members/leading-edge-computers-dubbo",
+      "kind": "Local chamber listing",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "LE3",
+      "title": "Leading Edge Dubbo supplier ABN",
+      "url": "https://buy.nsw.gov.au/supplier/profile/115440",
+      "kind": "Government supplier directory",
+      "date": "Profile updated 6 July 2022",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "LE4",
+      "title": "Manage IT entity association",
+      "url": "https://www.dnb.com/business-directory/company-profiles.manage_it_%28australia%29_pty_ltd.ab82707b7d7c83fb505d82fba76f2bbd.html",
+      "kind": "Commercial company directory",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI1",
+      "title": "Viatek locations and service channels",
+      "url": "https://viatek.com.au/contact-us/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI2",
+      "title": "Viatek published roles",
+      "url": "https://viatek.com.au/about-us/careers/",
+      "kind": "Official recruitment page",
+      "date": "Undated role descriptions; vacancy status unconfirmed",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI3",
+      "title": "Viatek print and recycling model",
+      "url": "https://www.viatek.com.au/print/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI4",
+      "title": "Viatek employee reports",
+      "url": "https://au.indeed.com/cmp/Viatek",
+      "kind": "Employee review platform",
+      "date": "Two visible reviews: 19 December 2021 NSW; 2 February 2017 Ballarat",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI5",
+      "title": "Viatek Central West ABN",
+      "url": "https://abr.business.gov.au/ABN/View/35119910271",
+      "kind": "Government register",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "VI6",
+      "title": "FUJIFILM partner directory",
+      "url": "https://www.fujifilm.com/fbau/en/about/initiatives/partner-definitions",
+      "kind": "Vendor directory",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI1",
+      "title": "Winc managed print and Dubbo branch",
+      "url": "https://www.winc.com.au/services/managed-print-services/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI2",
+      "title": "Winc lifecycle services",
+      "url": "https://www.winc.com.au/services/technology-essentials/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI3",
+      "title": "Platinum Equity Winc portfolio",
+      "url": "https://www.platinumequity.com/our-company/winc/",
+      "kind": "Owner portfolio page",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI4",
+      "title": "Winc service technician comparator",
+      "url": "https://careers.winc.com.au/job/Geraldton-SERVICE-TECHNICIAN-MANAGED-PRINT-SERVICES-GERALDTON-WA-6530/1367990166/",
+      "kind": "Employer advertisement; Geraldton, NOT Dubbo",
+      "date": "Indexed October 2026; location-specific comparator",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI5",
+      "title": "Winc Australia employee reviews",
+      "url": "https://au.indeed.com/cmp/Winc-Australia/reviews",
+      "kind": "Employee review platform",
+      "date": "14 reviews; page updated 2 December 2025; not Dubbo-specific",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI6",
+      "title": "Winc government supplier profile",
+      "url": "https://buy.nsw.gov.au/supplier/profile/875",
+      "kind": "Government supplier directory",
+      "date": "Updated 10 June 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI7",
+      "title": "Historical Winc ITAD offer",
+      "url": "https://www.winc.com.au/services/about-us/overview/media-centre/",
+      "kind": "Official historical media archive",
+      "date": "Historical offer; current terms not established",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "WI8",
+      "title": "Dubbo print technician advertisement signal",
+      "url": "https://au.seek.com/technician-jobs/in-Dubbo-%26-Central-NSW",
+      "kind": "Job aggregation; historical listing",
+      "date": "June 2026 indexed page; vacancy unconfirmed",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "HT1",
+      "title": "Hi Tech operating model and workshops",
+      "url": "https://htw.net.au/about/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "HT2",
+      "title": "Hi Tech named team roles",
+      "url": "https://htw.net.au/our-team/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "HT3",
+      "title": "Hi Tech careers page",
+      "url": "https://htw.net.au/careers/",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "HT4",
+      "title": "Hi Tech Orange technician role",
+      "url": "https://au.linkedin.com/jobs/view/information-technology-technician-at-hi-tech-itworx-4373032232",
+      "kind": "Employer job listing; Orange comparator",
+      "date": "Indexed 2026; vacancy and Dubbo applicability unconfirmed",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "HT5",
+      "title": "Hi Tech company size band",
+      "url": "https://au.linkedin.com/company/hi-tech-itworx",
+      "kind": "Company LinkedIn profile; self-reported",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE1",
+      "title": "Desspos operations and support",
+      "url": "https://desspos.com.au/about-us",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE2",
+      "title": "Desspos current contact locations",
+      "url": "https://desspos.com.au/contact-us",
+      "kind": "Official business",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE3",
+      "title": "Global Pos Group ABN",
+      "url": "https://abr.business.gov.au/ABN/View?abn=78127731435",
+      "kind": "Government register",
+      "date": "Record extracted 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE4",
+      "title": "Desspos team and size band",
+      "url": "https://au.linkedin.com/company/dess-point-of-sale-solutions",
+      "kind": "Company LinkedIn profile; self-reported",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE5",
+      "title": "Daniel Poulter professional role",
+      "url": "https://au.linkedin.com/in/daniel-poulter-5bb61b48",
+      "kind": "Public professional profile",
+      "date": "Undated; accessed 10 October 2026",
+      "accessed": "2026-10-10"
+    },
+    {
+      "id": "DE6",
+      "title": "Desspos recruitment reposts",
+      "url": "https://au.linkedin.com/in/kristy-boothman-298570240",
+      "kind": "Public professional posts",
+      "date": "Undated/reposted installer and trainee ads; not current vacancy proof",
+      "accessed": "2026-10-10"
+    }
+  ],
+  "method": [
+    "Research snapshot: 10 October 2026. Scope is 14 businesses operating across the 15 locations in the supplied list; Case Indulgence has two locations. This is public-source research, not access to confidential internal information.",
+    "Evidence was sought through business websites, team and career pages, ABN records, vendor directories, local reporting, public professional profiles and employee-review searches. Search themes covered ownership, roles, recruitment, service terms, refurbishment, retirement and workplace conditions. No business or employee was contacted.",
+    "Official pages establish what a business publishes, not independent proof of service quality or working conditions. Job advertisements describe a role at a particular time and place. Customer reviews do not establish employee experience; employee reviews are anecdotes with location, age and sample-size limits.",
+    "Named roles below are public role maps, not verified reporting charts. Where direct reporting lines, staffing, pay, rosters, tools, throughput or culture are not documented, they remain unknown. National or regional information is labelled and must not be read as Dubbo-specific.",
+    "Opportunities, rankings and proposed workflows are research inferences. None establishes willingness to donate, available stock, ownership authority or an agreed partnership. Dates refer to source dates where available; undated sources carry an access date. Stale indexed roles are not current vacancies.",
+    "Driving distances and travel times were not reverified; no 20-minute exclusion or distance ranking is asserted. Confirm the Hi Tech street address before visiting. Confirm all appointments, current staff roles and stock arrangements directly."
+  ],
+  "lessons": [
+    {
+      "id": "models",
+      "title": "1. Understand how the businesses earn their money",
+      "minutes": 15,
+      "objective": "Distinguish a walk-in repair shop, managed IT provider, print dealer and specialist installer.",
+      "reading": [
+        "Start with SOS, Tech Savvy and Case Indulgence for retail diagnosis, repair and resale. Contrast Gravity, Colton and Hi Tech for ongoing support and projects. Read Orana, Viatek and Winc for print/device service, then Desspos for POS installation. The dossiers identify each source and its limits.",
+        "A customer journey can be sketched as request → authorisation → diagnosis or scope → work → testing → handover → support. This is a proposed comparison framework, not a claim that all firms use identical workflows.",
+        "Ask who pays and for what: labour, parts, fixed project, subscription, device lease or usage. A working device being replaced may still belong to a finance provider or customer. Selling new equipment does not establish control over the old equipment."
+      ],
+      "practice": "Choose one retailer and one MSP. Draw their likely handoffs, then mark every unverified stage with a question mark.",
+      "check": {
+        "question": "A provider replaces a client laptop. What can you conclude?",
+        "options": [
+          "The provider can donate it",
+          "Ownership and release authority still need checking",
+          "It must be recycled"
+        ],
+        "answer": 1,
+        "explanation": "Replacement work shows a possible contact point, not title to the outgoing asset."
+      }
+    },
+    {
+      "id": "people",
+      "title": "2. Read the people map without inventing an org chart",
+      "minutes": 15,
+      "objective": "Identify a useful functional contact and separate titles from reporting relationships.",
+      "reading": [
+        "Gravity publishes technical, regional and accounts roles. Colton publishes leadership, service delivery, dispatch and sales roles. Hi Tech publishes management, service delivery and project roles. These provide stronger public role maps than the smaller retailers.",
+        "A managing director can be a useful introduction, while a service manager may understand actual workflow. A dispatcher may know handoff problems but may not authorise stock release. A published team list is not proof of current local availability.",
+        "For a small business, ask who owns the decision. For a larger chain or dealer, ask what the branch can approve and what must go to a national asset, finance or supplier team. Do not infer ownership from a surname or reporting lines from website order."
+      ],
+      "practice": "For three businesses, record one evidenced role, one unknown reporting relationship, and one question that would identify the decision owner.",
+      "check": {
+        "question": "A website lists a service manager and two technicians. Is their reporting line verified?",
+        "options": [
+          "Yes, website order establishes hierarchy",
+          "Only if job titles sound senior",
+          "No, the reporting relationship needs evidence"
+        ],
+        "answer": 2,
+        "explanation": "A role map can show published roles without drawing unsupported manager-to-employee arrows."
+      }
+    },
+    {
+      "id": "workplace",
+      "title": "3. Investigate what working there is actually like",
+      "minutes": 20,
+      "objective": "Evaluate employer claims and prepare questions that uncover daily working conditions.",
+      "reading": [
+        "Read CBM’s explicit employment expectations, the Colton regional role and the Hi Tech role comparison. These reveal more about tasks and expectations than generic employer branding, but local pay, current vacancies and current rostering still need confirmation.",
+        "Winc national reviews and Viatek older reviews have limited local relevance. Tech Savvy has a local worker interview, but one interview cannot establish an overall culture. For most small shops, public employee evidence was insufficient for a reliable culture verdict.",
+        "Ask for a recent example: how did the team handle a difficult ticket, an incorrect diagnosis, a parts delay or an after-hours call? Ask about ticket targets, escalation, paid training time, lone work, travel, weekend cover, overtime arrangements and the first 90 days.",
+        "For project compatibility, ask how outside volunteering, repair activities and commercial conflicts are handled. Evaluate the actual written role and agreement; do not assume a friendly interview overrides employment conditions."
+      ],
+      "practice": "Prepare six interview questions and an evidence sheet with columns for claim, example, source/date and what still needs checking.",
+      "check": {
+        "question": "Two old interstate employee reviews are best treated as…",
+        "options": [
+          "Proof of the current Dubbo culture",
+          "Limited prompts for questions, with date and location stated",
+          "Evidence of every team member’s experience"
+        ],
+        "answer": 1,
+        "explanation": "Review samples are self-selected; age and local relevance matter."
+      }
+    },
+    {
+      "id": "lifecycle",
+      "title": "4. Trace a device through repair, reuse and retirement",
+      "minutes": 20,
+      "objective": "Design a small, documented handoff that respects ownership and existing arrangements.",
+      "reading": [
+        "Orana advertises refurbished devices; Tech Savvy sells and repairs pre-owned equipment; Leading Edge lists refurbished stock. These are reasons to discuss complementary work, not assume they will give up saleable stock.",
+        "Colton’s published guide separately scopes e-waste disposal. Winc and Viatek already describe lifecycle or recycling pathways. Ask what is already contracted and where there is an unmet need before proposing collection.",
+        "Proposed AssetFlow fields: source organisation, authorised transfer reference, asset ID, category, serial where appropriate, condition, accessories, data-bearing status, sanitisation evidence reference, custody events, destination and acceptance. These are design suggestions, not an inventory of any business’s internal software.",
+        "A pilot should specify eligible categories, who owns and releases items, data responsibilities, transport, rejection handling, costs, evidence and the final destination. Start with a small agreed lot and review the results before repeating."
+      ],
+      "practice": "Write a one-page handoff for up to five owner-released laptops. Include the point at which you would decline or pause acceptance.",
+      "check": {
+        "question": "An existing recycling arrangement means…",
+        "options": [
+          "All devices are available for free",
+          "The business cannot discuss reuse",
+          "You should understand existing obligations and gaps first"
+        ],
+        "answer": 2,
+        "explanation": "A useful partnership complements the actual service and custody arrangements."
+      }
+    },
+    {
+      "id": "projects",
+      "title": "5. Turn findings into separate project experiments",
+      "minutes": 15,
+      "objective": "Choose a focused next step for each project instead of one generic partnership pitch.",
+      "reading": [
+        "DubboEwaste: validate one released-device stream and one documented handoff. Repair Café: validate a specialist referral or mentoring relationship. Circular Economy Dubbo: document a repeatable local repair/refurbishment pathway.",
+        "Library of Things: validate demand, maintainability, accessories and support before accepting equipment. AssetFlow: test the proposed custody and evidence fields using synthetic records; do not copy customer data into a prototype.",
+        "Career learning: compare task variety, training, service pressure and after-hours expectations. None of the rankings here is a best-employer award or a promise of a vacancy.",
+        "A discovery conversation should end with a small question resolved: who decides, what categories exist, what conditions apply, or whether there is any fit. A clear “no” is useful evidence."
+      ],
+      "practice": "Select two businesses and two different project goals. Write a specific 15-minute conversation agenda for each.",
+      "check": {
+        "question": "What is the strongest initial project outcome?",
+        "options": [
+          "A verified decision owner and a scoped next step",
+          "A large stock-volume estimate based on store size",
+          "One pitch sent to every business"
+        ],
+        "answer": 0,
+        "explanation": "Resolving a concrete uncertainty is more useful than premature scale assumptions."
+      }
+    },
+    {
+      "id": "fieldwork",
+      "title": "6. Run a 30-day learning cycle",
+      "minutes": 15,
+      "objective": "Convert research into a small set of observed, reviewable decisions.",
+      "reading": [
+        "Week 1: read three priority dossiers, verify current contact roles and record five unanswered questions. Build a synthetic asset handoff and a separate workplace interview sheet.",
+        "Week 2: if you choose to initiate outreach, request two short discovery conversations. State the project and ask about existing arrangements. No outreach was sent as part of this research.",
+        "Week 3: document answers, distinguish quotes from interpretation, and design one optional pilot with written scope. Do not accept stock or make service promises before the relevant authority and capacity are established.",
+        "Week 4: review evidence, time spent, declined items, verified transfers and useful referrals. Update the source record and decide to stop, adjust or repeat. Measure useful outcomes rather than the number of businesses contacted."
+      ],
+      "practice": "Complete a plan with two priorities, one decision owner to verify, one measurable outcome and one stop condition.",
+      "check": {
+        "question": "Which finding should cause the source record to be updated?",
+        "options": [
+          "A direct confirmation that a listed manager has left",
+          "An assumption based on the size of the shop",
+          "A customer star rating without workplace evidence"
+        ],
+        "answer": 0,
+        "explanation": "Dated, attributable corrections improve the research and prevent stale role maps."
+      }
+    }
+  ],
+  "priorities": [
+    {
+      "rank": 1,
+      "business": "Orana Business Solutions",
+      "goal": "Understand an existing refurbishment workflow",
+      "reason": "Published refurbishment offering makes the process question concrete. Clarify device categories, owner release and who handles refurbishment before suggesting a complementary role.",
+      "references": [
+        "OB1",
+        "OB3"
+      ]
+    },
+    {
+      "rank": 2,
+      "business": "Tech Savvy Dubbo",
+      "goal": "Explore repair/refurbishment referrals and learning",
+      "reason": "Repair and resale are documented, and a local technician interview gives a useful starting point. Ask about uneconomic repairs and training, without assuming stock is available.",
+      "references": [
+        "TS1",
+        "TS3"
+      ]
+    },
+    {
+      "rank": 3,
+      "business": "Colton Computer Technologies",
+      "goal": "Learn managed-service handoffs and disposal scope",
+      "reason": "Published roles and service terms give a strong process map. Ask service delivery about separately scoped disposal and what a compliant handoff would require.",
+      "references": [
+        "CO1",
+        "CO3"
+      ]
+    },
+    {
+      "rank": 4,
+      "business": "CBM Computers",
+      "goal": "Explore practical technical work and community fit",
+      "reason": "Specific employment expectations help shape realistic questions about workshop work, training and outside activities. Verify any community recycling arrangement directly.",
+      "references": [
+        "CB1",
+        "CB2",
+        "CB4"
+      ]
+    },
+    {
+      "rank": 5,
+      "business": "Gravity IT",
+      "goal": "Understand local support escalation and client refresh",
+      "reason": "Published regional and technical leadership gives a useful functional entry point. Resolve the contracting entity and retirement authority before proposing a device stream.",
+      "references": [
+        "GR1",
+        "GR2"
+      ]
+    }
+  ],
+  "projectBriefs": [
+    {
+      "project": "DubboEwaste",
+      "first": "Orana / Tech Savvy / Colton",
+      "deliverable": "One category-limited intake pilot proposal",
+      "success": "Authority, data responsibilities, costs and downstream path recorded; no assumed stock volume."
+    },
+    {
+      "project": "Repair Café",
+      "first": "Tech Savvy / CBM / SOS",
+      "deliverable": "A verified specialist referral or mentoring contact",
+      "success": "Scope, availability and customer consent agreed; no implied warranty relationship."
+    },
+    {
+      "project": "Circular Economy Dubbo",
+      "first": "Orana / Leading Edge / Viatek",
+      "deliverable": "One documented local repair or reuse pathway",
+      "success": "Acceptance categories, conditions and review date recorded before publication."
+    },
+    {
+      "project": "Library of Things",
+      "first": "Leading Edge / CBM / Axxis",
+      "deliverable": "Maintainability and support checklist for a demanded item",
+      "success": "Demand, repairability, complete accessories and support costs validated before acquisition."
+    },
+    {
+      "project": "AssetFlow",
+      "first": "Colton / Hi Tech / Desspos",
+      "deliverable": "Synthetic custody and service-handoff prototype",
+      "success": "Each status has an owner, evidence requirement and exception path; no customer data used."
+    },
+    {
+      "project": "Career learning",
+      "first": "CBM / Colton / Hi Tech / Desspos",
+      "deliverable": "Comparable role and workplace interview notes",
+      "success": "Current vacancy, local duties, roster, training and pay checked directly; no unsupported employer ranking."
+    }
+  ]
+}

@@ -39,6 +39,12 @@ export default function LearnPage() {
                 </div>
             </div>
 
+            <a href="/learn/dubbo-business-field-guide" className="mb-6 block rounded-xl border p-5">
+                <strong className="text-lg">Inside Dubbo’s technology and repair businesses</strong>
+                <p className="mt-2">15 locations · 67 sources · 6 lessons. Explore workplace evidence, public role maps and opportunities for your projects.</p>
+                <span className="mt-2 block underline">Open the learning module →</span>
+            </a>
+
             <div className="mb-4">
                 <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search topics or tags" className="w-full border rounded p-2" />
             </div>
