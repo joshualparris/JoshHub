@@ -1,4 +1,4 @@
-export const REPAIR_CAFE_STORAGE_KEY = "joshhub:repair-cafe-simulator:v2";
+export const REPAIR_CAFE_STORAGE_KEY = "joshhub:repair-cafe-simulator:v3";
 export const STATIONS = ["sewing", "computers", "bikes"] as const;
 export type SimState = {
   venueId: string;
@@ -11,6 +11,7 @@ export type SimState = {
   incidentIndex: number;
   badChoices: number;
   reflection: string;
+  debriefPassed:boolean;
 };
 export const INITIAL_SIM_STATE: SimState = {
   venueId: "",
@@ -23,6 +24,7 @@ export const INITIAL_SIM_STATE: SimState = {
   incidentIndex: 0,
   badChoices: 0,
   reflection: "",
+  debriefPassed:false,
 };
 export type SimData = {
   venues: {id:string;title:string;allowed:string[];accessible:boolean;capacity:number}[];
@@ -76,7 +78,7 @@ export function dayMetrics(state:SimState,data:SimData) {
   },{trust:50,energy:65,queue:2});
 }
 export function canDebrief(state:SimState,data:SimData):boolean {
-  return state.incidentIndex===data.incidents.length && state.reflection.trim().length>=20;
+  return state.incidentIndex===data.incidents.length && state.debriefPassed===true && state.reflection.trim().length>=20;
 }
 export function restoreSim(raw:unknown):SimState {
   if(!raw || typeof raw!=="object") return {...INITIAL_SIM_STATE};
@@ -93,5 +95,6 @@ export function restoreSim(raw:unknown):SimState {
     incidentIndex: Number.isInteger(v.incidentIndex) && (v.incidentIndex??0)>=0 ? v.incidentIndex! : 0,
     badChoices: Number.isInteger(v.badChoices)&&(v.badChoices??0)>=0 ? v.badChoices! : 0,
     reflection: typeof v.reflection==="string"?v.reflection:"",
+    debriefPassed: v.debriefPassed===true,
   };
 }
