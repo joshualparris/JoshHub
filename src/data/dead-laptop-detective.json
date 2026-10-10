@@ -275,7 +275,7 @@
         "question": "The firmware storage list is empty, yet a compatible known-good SSD is recognised in the same slot. The original SSD contains irreplaceable files. Which conclusion is justified?",
         "options": [
           "The original SSD is definitely electrically shorted, so test it live with an ohmmeter.",
-          "Protect the original drive; its detection path is implicated.",
+          "Protect the original medium for authorised recovery; its detection path is implicated.",
           "The OS is corrupt; a clean install of Windows on the original SSD should confirm.",
           "The motherboard storage interface is conclusively broken, so replace the board."
         ],
