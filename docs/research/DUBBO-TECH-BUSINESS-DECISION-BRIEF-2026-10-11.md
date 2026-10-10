@@ -47,7 +47,7 @@ Low / medium / high below describes **potential fit for a targeted conversation,
 
 ## C. Evidence-backed business dossiers and conversation questions
 
-The **full substantial dossiers** (history, public roles, process signals, employee evidence, device lifecycle, five-project relevance, source markers and unknowns) are in the [master report](DUBBO-TECH-BUSINESS-FIELD-GUIDE-2026-10-10.md). Their primary structured source is [research JSON](research/dubbo-business-field-guide.json). Rather than reproduce 80KB of existing research, this section adds the missing *decision-focused* questions beside specific identity and workplace evidence. The current identity wording is from the 10 October research and may require current-business confirmation.
+The **full substantial dossiers** (history, public roles, process signals, employee evidence, device lifecycle, five-project relevance, source markers and unknowns) are in the [master report](DUBBO-TECH-BUSINESS-FIELD-GUIDE-2026-10-10.md). Their primary structured source is [research JSON](../../src/data/dubbo-business-field-guide.json). Rather than reproduce 80KB of existing research, this section adds the missing *decision-focused* questions beside specific identity and workplace evidence. The current identity wording is from the 10 October research and may require current-business confirmation.
 
 ### Computer Research & Technology
 **What is established:** Verified: Hissey and Associates Pty Limited, ABN 67 054 587 656, has the registered business name Computer Research and Technology. Current website matches the Dubbo operation. [CRT3](https://abr.business.gov.au/ABN/View/67054587656) [CRT1](https://crt.net.au/)
@@ -259,6 +259,6 @@ The four tailored questions per business are embedded in section C above (56 tot
 
 ## Evidence and update rules
 
-Primary source citations are embedded against material facts, linked by ID from the [67-source JSON register](research/dubbo-business-field-guide.json). These citations refer to sources reviewed on **10 October 2026**, not a re-verification of every external page on 11 October. Public marketing is what businesses *say* they do, not audit proof; employee reviews and interviews are geographically and temporally limited. Recommendations and all comparative ratings are judgement calls, explicitly not facts about stock or employment.
+Primary source citations are embedded against material facts, linked by ID from the [67-source JSON register](../../src/data/dubbo-business-field-guide.json). These citations refer to sources reviewed on **10 October 2026**, not a re-verification of every external page on 11 October. Public marketing is what businesses *say* they do, not audit proof; employee reviews and interviews are geographically and temporally limited. Recommendations and all comparative ratings are judgement calls, explicitly not facts about stock or employment.
 
 **Related:** [Additional 27 Dubbo e-waste outreach leads](DUBBO-NEW-EWASTE-OUTREACH-LEADS-2026-10-11.md) (compared to user-sent emails, 11 October 2026).
