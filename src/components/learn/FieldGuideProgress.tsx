@@ -36,7 +36,7 @@ export default function FieldGuideProgress({ lessons, storageKey = defaultKey }:
           for (const [id, value] of Object.entries(stored)) {
             if (!validIds.has(id) || !value || typeof value !== "object") continue;
             const row = value as Partial<Review>;
-            if (Number.isFinite(row.nextDue) && Number.isFinite(row.interval) && Number.isFinite(row.attempts)) {
+            if (typeof row.nextDue === "number" && Number.isFinite(row.nextDue) && typeof row.interval === "number" && Number.isFinite(row.interval) && typeof row.attempts === "number" && Number.isFinite(row.attempts)) {
               next[id] = { nextDue: row.nextDue!, interval: row.interval!, attempts: row.attempts!, lastCorrect: row.lastCorrect === true };
             }
           }
@@ -120,7 +120,7 @@ export default function FieldGuideProgress({ lessons, storageKey = defaultKey }:
       const dueNow = done && (!scheduled || scheduled <= Date.now());
       return <article key={lesson.id} className="space-y-3 border-t pt-5">
         <h3 className="font-semibold"><a className="underline" href={"#lesson-" + lesson.id}>{lesson.title}</a></h3>
-        {done ? <p className="text-sm">{dueNow ? "Review due now" : "Next review: " + new Date(scheduled).toLocaleDateString("en-AU")}</p> : null}
+        {done ? <p className="text-sm">{dueNow ? "Review due now" : "Next review: " + new Date(scheduled ?? Date.now()).toLocaleDateString("en-AU")}</p> : null}
         <label className="block font-medium" htmlFor={"recall-" + lesson.id}>First, what can you remember about this lesson?</label>
         <textarea id={"recall-" + lesson.id} rows={2} className="w-full rounded border p-3" value={recall[lesson.id] ?? ""}
           onChange={(event) => setRecall((current) => ({ ...current, [lesson.id]: event.target.value }))}
