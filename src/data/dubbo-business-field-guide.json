@@ -1216,12 +1216,12 @@
       "check": {
         "question": "A regional IT provider advertises laptop procurement, repairs and managed services. You want to understand where retired customer devices go. Which first question best distinguishes its business model from its ownership rights?",
         "options": [
+          "Which device manufacturer accounts for most of your customers' refresh expenditure?",
           "How many managed endpoints does your helpdesk typically support across NSW?",
           "When devices are replaced, which party usually controls title and final disposition, and does this differ by lease, resale or customer ownership?",
-          "Do you have a dedicated recycling bin or any preferred e-waste brands?",
-          "Which device manufacturer accounts for most of your customers' refresh expenditure?"
+          "Do you have a dedicated recycling bin or any preferred e-waste brands?"
         ],
-        "answer": 1,
+        "answer": 2,
         "explanation": "Revenue from supporting a device is not proof of title. Contractual disposal authority may vary across fleet models."
       }
     },
@@ -1239,12 +1239,12 @@
       "check": {
         "question": "A public site names a local service manager and two senior technicians. A regional LinkedIn profile names a procurement director. You want to request an authorised small equipment pilot. Which outreach plan is most defensible?",
         "options": [
-          "Address the procurement director as the confirmed supervisor of the local technicians.",
-          "Ask the local service manager how device retirement authority is delegated, then seek the documented asset owner or contract approver.",
           "Ask a senior technician to sign off on equipment release based on their technical expertise.",
-          "Treat the organisation chart as established because titles distinguish operational and financial responsibilities."
+          "Treat the organisation chart as established because titles distinguish operational and financial responsibilities.",
+          "Address the procurement director as the confirmed supervisor of the local technicians.",
+          "Ask the local service manager how device retirement authority is delegated, then seek the documented asset owner or contract approver."
         ],
-        "answer": 1,
+        "answer": 3,
         "explanation": "An evidence-backed functional contact is reasonable, but professional titles do not establish decision rights or reporting lines."
       }
     },
@@ -1263,12 +1263,12 @@
       "check": {
         "question": "Three public employee reviews criticise a national provider's weekend workloads; two reviews are several years old and none identify Dubbo. The Dubbo role advertisement mentions regional travel and occasional after-hours work. Which conclusion is best supported?",
         "options": [
-          "The Dubbo roster probably involves frequent unplanned weekend work because national teams share policies.",
           "Insufficient evidence to judge local culture; the advertised travel and occasional after-hours requirement merits specific interview questions.",
           "The local team has better balance than the national average because no Dubbo complaints were found.",
-          "The national reviews verify a pattern of management problems even without a current local sample."
+          "The national reviews verify a pattern of management problems even without a current local sample.",
+          "The Dubbo roster probably involves frequent unplanned weekend work because national teams share policies."
         ],
-        "answer": 1,
+        "answer": 0,
         "explanation": "Separate a verifiable job requirement from uncertain anonymous accounts; don't make a culture verdict without local evidence."
       }
     },
@@ -1311,12 +1311,12 @@
       "check": {
         "question": "A small shop seems willing to discuss five faulty laptops, but your project has limited space and no proven sanitisation procedure. Which partnership proposal creates the best mutual value?",
         "options": [
+          "Pitch AssetFlow software before discussing the shop's existing workflow so you can control the disposal records.",
           "Offer monthly collections with a cap of five until a recycler can be arranged.",
           "Propose a short discovery conversation and only a tightly defined pilot after owner release, data responsibility, safe storage and downstream arrangements are documented.",
-          "Accept units without storage as long as all serials are photographed on collection.",
-          "Pitch AssetFlow software before discussing the shop's existing workflow so you can control the disposal records."
+          "Accept units without storage as long as all serials are photographed on collection."
         ],
-        "answer": 1,
+        "answer": 2,
         "explanation": "A verifiable small pilot is better than assuming capacity or using unproven data handling as part of an offer."
       }
     },
@@ -1335,12 +1335,12 @@
       "check": {
         "question": "An old directory shows a shop's manager; the current company page lists a different title, and a staff member in a phone conversation says a regional team now makes equipment decisions. How should this affect your research register?",
         "options": [
-          "Overwrite the manager's name immediately and remove earlier references to avoid confusion.",
-          "Record the sources and dates separately, mark the old directory as superseded only where confirmed, and verify the delegation with an authorised current contact.",
           "Retain the directory entry as the sole published fact because a telephone conversation is less permanent.",
-          "Infer the new manager's reporting line from the company hierarchy and label it confirmed."
+          "Infer the new manager's reporting line from the company hierarchy and label it confirmed.",
+          "Overwrite the manager's name immediately and remove earlier references to avoid confusion.",
+          "Record the sources and dates separately, mark the old directory as superseded only where confirmed, and verify the delegation with an authorised current contact."
         ],
-        "answer": 1,
+        "answer": 3,
         "explanation": "Preserve provenance, dates and uncertainties; private conversations and public records have different evidentiary limits."
       }
     }
