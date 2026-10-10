@@ -17,7 +17,7 @@ function activeChallenge(lesson:Lesson, storageKey:string, level:Difficulty):Che
 }
 type Review = { interval: number; nextDue: number; attempts: number; lastCorrect: boolean };
 type ReviewMap = Record<string, Review>;
-const defaultKey = "field-guide:dubbo-businesses:2026-10-10.1";
+const defaultKey = "field-guide:dubbo-businesses:2026-10-11.2";
 const intervalDays = [1, 3, 7, 14, 30, 60];
 
 export default function FieldGuideProgress({ lessons, storageKey = defaultKey }: { lessons: Lesson[]; storageKey?: string }) {
