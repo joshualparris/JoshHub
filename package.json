@@ -9,7 +9,7 @@
     "lint": "eslint",
     "test": "vitest",
     "generate-projects": "node ./scripts/generate-projects-inventory.js",
-    "test:learning-lab": "vitest run src/lib/learning/dead-laptop-logic.test.ts"
+    "test:learning-lab": "vitest run src/lib/learning"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
