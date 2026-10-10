@@ -1218,7 +1218,7 @@
         "options": [
           "Which device manufacturer accounts for most of your customers' refresh expenditure?",
           "How many managed endpoints does your helpdesk typically support across NSW?",
-          "When devices are replaced, which party usually controls title and final disposition, and does this differ by lease, resale or customer ownership?",
+          "Check ownership and disposal rights for each category of device.",
           "Do you have a dedicated recycling bin or any preferred e-waste brands?"
         ],
         "answer": 2,
@@ -1242,7 +1242,7 @@
           "Ask a senior technician to sign off on equipment release based on their technical expertise.",
           "Treat the organisation chart as established because titles distinguish operational and financial responsibilities.",
           "Address the procurement director as the confirmed supervisor of the local technicians.",
-          "Ask the local service manager how device retirement authority is delegated, then seek the documented asset owner or contract approver."
+          "Ask who is delegated equipment-release authority, then verify that decision path."
         ],
         "answer": 3,
         "explanation": "An evidence-backed functional contact is reasonable, but professional titles do not establish decision rights or reporting lines."
@@ -1263,7 +1263,7 @@
       "check": {
         "question": "Three public employee reviews criticise a national provider's weekend workloads; two reviews are several years old and none identify Dubbo. The Dubbo role advertisement mentions regional travel and occasional after-hours work. Which conclusion is best supported?",
         "options": [
-          "Insufficient evidence to judge local culture; the advertised travel and occasional after-hours requirement merits specific interview questions.",
+          "Job duties are evidenced; local culture and workload frequency remain uncertain.",
           "The local team has better balance than the national average because no Dubbo complaints were found.",
           "The national reviews verify a pattern of management problems even without a current local sample.",
           "The Dubbo roster probably involves frequent unplanned weekend work because national teams share policies."
@@ -1288,7 +1288,7 @@
         "question": "A print/MPS provider says retired devices go to a contracted downstream partner. A client separately asks whether a community pilot could reuse old PCs. What's the best next step?",
         "options": [
           "Contact the recycler directly for surplus PCs before the provider has assessed its contracts.",
-          "Map device ownership, data sanitisation and existing return agreements before testing whether an authorised reuse exception exists.",
+          "Map title, data and return obligations before suggesting an authorised exception.",
           "Suggest a one-month informal trial with only non-working PCs, since faulty devices have no resale value.",
           "Ask the client to remove drives and place PCs in a separate pallet, then seek paperwork after collection."
         ],
@@ -1313,7 +1313,7 @@
         "options": [
           "Pitch AssetFlow software before discussing the shop's existing workflow so you can control the disposal records.",
           "Offer monthly collections with a cap of five until a recycler can be arranged.",
-          "Propose a short discovery conversation and only a tightly defined pilot after owner release, data responsibility, safe storage and downstream arrangements are documented.",
+          "Discuss a limited pilot only after release, data, storage and downstream checks.",
           "Accept units without storage as long as all serials are photographed on collection."
         ],
         "answer": 2,
@@ -1338,7 +1338,7 @@
           "Retain the directory entry as the sole published fact because a telephone conversation is less permanent.",
           "Infer the new manager's reporting line from the company hierarchy and label it confirmed.",
           "Overwrite the manager's name immediately and remove earlier references to avoid confusion.",
-          "Record the sources and dates separately, mark the old directory as superseded only where confirmed, and verify the delegation with an authorised current contact."
+          "Retain dated evidence and verify current delegation before changing the role map."
         ],
         "answer": 3,
         "explanation": "Preserve provenance, dates and uncertainties; private conversations and public records have different evidentiary limits."
