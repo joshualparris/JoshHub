@@ -2,19 +2,22 @@ import business from "../../data/dubbo-business-field-guide.json";
 import outreach from "../../data/outreach-quiz.json";
 import tiers from "../../data/field-guide-adaptive-challenges.json";
 import { z } from "zod";
+import { simChallenges } from "./simChallenges";
 
-export const gradingRequest = z.object({
-  course: z.enum(["business","outreach"]),
-  lessonId: z.string().regex(/^[a-z-]{2,35}$/),
-  level: z.union([z.literal(1),z.literal(2),z.literal(3)]),
-  selected: z.number().int().min(0).max(3),
-  response: z.string().max(2400),
-}).strict();
+const writtenResponse = z.string().min(0).max(2400);
+export const gradingRequest = z.discriminatedUnion("kind",[
+  z.object({kind:z.literal("research"),course:z.enum(["business","outreach"]),lessonId:z.string().regex(/^[a-z-]{2,35}$/),level:z.union([z.literal(1),z.literal(2),z.literal(3)]),selected:z.number().int().min(0).max(3),response:writtenResponse}).strict(),
+  z.object({kind:z.literal("simulation"),simulator:z.enum(["laptop","cafe"]),challengeId:z.string().regex(/^(laptop|cafe):[0-9]{1,2}$/),selected:z.number().int().min(0).max(2),response:writtenResponse}).strict()
+]);
 export type GradingRequest = z.infer<typeof gradingRequest>;
 type Question = {question:string;options:string[];answer:number;explanation:string};
 const appliedOutreach:Record<string,Question>=Object.fromEntries(outreach.map(x=>[x.id,x]));
 const variations=tiers.variants as Record<string,{guided:Question;expert:Question}>;
-export function resolveAssessment(input:Pick<GradingRequest,"course"|"lessonId"|"level">): Question|null {
+export function resolveAssessment(input:GradingRequest): Question|null {
+  if(input.kind==="simulation"){
+    const item=simChallenges[input.simulator].find(x=>x.id===input.challengeId);
+    return item?{question:item.question,options:item.options,answer:item.answer,explanation:item.explanation}:null;
+  }
   const key=(input.course==="business"?"business-":"outreach-")+input.lessonId;
   const variants=variations[key];
   if (!variants)return null;
