@@ -1,272 +1,272 @@
 import type { Challenge } from "./adaptive";
-/** Fictional decision cases; training only, not a repair/electrical qualification. */
+/** Fictional decision cases. Answers are best-supported actions, not repair qualifications. */
 export const simChallenges = {
   "laptop": [
     {
       "id": "laptop:0",
       "level": 1,
-      "question": "A laptop shows the OEM logo then 'No bootable device'. What did it demonstrably achieve?",
+      "question": "The vendor logo appears and a boot-device error follows. What does that establish, and what remains unknown?",
       "options": [
-        "Some power-on and firmware display; not a successful OS boot",
-        "A complete storage failure diagnosis",
-        "No POST at all"
+        "Basic power and firmware display operated; storage detection and boot handoff still need separate evidence.",
+        "A successful power-on test; follow up with a Windows repair environment to confirm filesystem health.",
+        "A partial POST; the next action is to treat the OS as corrupt until a drive is visible."
       ],
       "answer": 0,
-      "explanation": "Visible firmware output distinguishes boot stage from no-power and no-video."
+      "explanation": "A logo and firmware-generated storage error show progress past complete no-power and no-video, but they do not isolate drive, connection or OS state."
     },
     {
       "id": "laptop:1",
       "level": 1,
-      "question": "A charging light blinks. What does the blink pattern establish by itself?",
+      "question": "A manufacturer-specific light pattern repeats on startup, but your generic code chart is for another model. How should it affect diagnosis?",
       "options": [
-        "Defective CPU",
-        "A symptom requiring a model-specific diagnostic reference",
-        "Windows corruption"
+        "Document the sequence as a possible hardware clue and compare to similar models before ordering parts.",
+        "Treat the pattern as a current observation, but withhold component attribution until the exact platform guide is found.",
+        "Use the code to prioritise replacing a likely faulty component, confirming later with firmware diagnostics."
       ],
       "answer": 1,
-      "explanation": "Blink codes are not universal."
+      "explanation": "Diagnostic blink codes differ by model and platform; analogous guides are hypotheses, not verified interpretations."
     },
     {
       "id": "laptop:2",
       "level": 2,
-      "question": "The BIOS lists no SSD, but a known-good USB boots reliably. What would you test next?",
+      "question": "BIOS does not list the original SSD. A known-good USB boots repeatedly, and the owner wants files preserved. Which next plan reduces uncertainty with least data risk?",
       "options": [
-        "Reinstall Windows on the missing drive",
-        "Record firmware detection, storage connector and a known-good compatible SSD path while respecting data consent",
-        "Replace the LCD"
+        "Inspect firmware mode and connector, then test a compatible spare drive while preserving the original medium.",
+        "Reseat the original SSD before documenting settings; intermittent detection is commonly mechanical.",
+        "Run OS recovery from USB against the original volume before substituting hardware."
       ],
-      "answer": 1,
-      "explanation": "A bootable USB isolates some boot and power functions, not the original SSD or connector."
+      "answer": 0,
+      "explanation": "A working USB does not verify SSD or connector health. Data preservation and documented, reversible isolation have priority."
     },
     {
       "id": "laptop:3",
       "level": 2,
-      "question": "External HDMI works; internal screen is black but a faint image is visible under a torch. Leading fault family?",
+      "question": "External HDMI works, while angled light shows a faint image on the internal LCD. What hypothesis is strongest without ordering parts?",
       "options": [
-        "Backlight, panel supply or cable path",
-        "CPU instruction set",
-        "Storage partition table"
+        "A panel illumination or supply/control-path fault, still requiring cable and backlight isolation.",
+        "An eDP data failure, because external output routes through a separate channel.",
+        "An internal panel logic fault, because the faint image proves the backlight supply is stable."
       ],
       "answer": 0,
-      "explanation": "Faint video implies image data exists but illumination may not."
+      "explanation": "Faint image suggests an illumination problem without proving which cable, panel component or controller has failed."
     },
     {
       "id": "laptop:4",
       "level": 2,
-      "question": "Laptop powers down after ten minutes under load, but works cooled and unloaded. Strongest next hypothesis?",
+      "question": "The laptop shuts down under sustained load but operates cold at idle. Both power and CPU temperature were uncontrolled. What should you investigate next?",
       "options": [
-        "Loose Windows activation",
-        "Thermal or power protection under load, needing controlled comparative evidence",
-        "Broken display panel"
+        "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
+        "Control adapter, battery and temperature conditions to distinguish thermal protection from supply collapse.",
+        "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
       ],
       "answer": 1,
-      "explanation": "Load and temperature correlation matters."
+      "explanation": "Correlation with load alone cannot differentiate heat from power limits. Control competing variables first."
     },
     {
       "id": "laptop:5",
       "level": 2,
-      "question": "One 19V adapter measures 19.4V unloaded but collapses under a known-good compatible load. What can you conclude?",
+      "question": "The adapter reads 19.4V unloaded and 0.6V when connected to a verified compatible load. What is the most defensible next test?",
       "options": [
-        "Voltage unloaded confirms healthy supply",
-        "Adapter path is suspect; compare with safe load-controlled substitution",
-        "Motherboard is certainly dead"
+        "Check an alternate known-good supply at the same load and verify the original test configuration.",
+        "Measure the adapter's open-circuit output a second time using a different meter range.",
+        "Inspect the laptop charging socket for heat before concluding anything about the adapter."
       ],
-      "answer": 1,
-      "explanation": "No-load readings do not prove current delivery."
+      "answer": 0,
+      "explanation": "Voltage collapse under a controlled load implicates supply path; matched comparison is more informative than another unloaded reading."
     },
     {
       "id": "laptop:6",
       "level": 2,
-      "question": "Your first successful boot follows a RAM reseat but subsequent boots fail when the hinge moves. What do you record?",
+      "question": "A RAM reseat preceded one successful boot, but hinge movement later triggered repeated failures. What diagnosis note is scientifically sound?",
       "options": [
-        "Fixed by RAM reseat",
-        "All symptoms mean RAM",
-        "Intermittent fault; document repeatability and the movement condition"
+        "Record a suspected memory seating issue and schedule a longer memory stress test.",
+        "Record the apparent temporary change and movement-dependent intermittence, without claiming a confirmed repair.",
+        "Prioritise hinge-cable replacement before more tests because the failure changes with movement."
       ],
-      "answer": 2,
-      "explanation": "Single success is not a verified fix."
+      "answer": 1,
+      "explanation": "One improvement is correlation not proof; movement introduces other electrical and mechanical possibilities."
     },
     {
       "id": "laptop:7",
       "level": 3,
-      "question": "You have a black internal LCD, stable HDMI, intermittent eDP image during hinge movement and a spare incompatible panel. Choose the most defensible test plan.",
+      "question": "The internal LCD flickers when the hinge moves. External HDMI is stable; the spare panel is not compatible. What is the safest informative plan?",
       "options": [
-        "Record hinge dependence, isolate power and inspect/verify matched eDP cable path before component substitution",
-        "Install incompatible LCD for a quick A/B check",
-        "Replace motherboard before mechanical inspection"
+        "Compare the incompatible panel briefly under low brightness to isolate the fault family.",
+        "Document movement dependence and use exact-model service guidance for isolated cable/connector checks before compatible substitution.",
+        "Swap the motherboard display connector first, leaving the panel untested until a part arrives."
       ],
-      "answer": 0,
-      "explanation": "Controlled compatible checks beat incompatible swaps."
+      "answer": 1,
+      "explanation": "Model-matched, isolated cable and hinge-path checks are safer and more interpretable than incompatible substitutions."
     },
     {
       "id": "laptop:8",
       "level": 3,
-      "question": "A data-bearing laptop's owner requests refurbishment, but its MDM enrolment belongs to a third party and SSD erase logs are incomplete. What is the safe release gate?",
+      "question": "A refurbished laptop still has third-party MDM enrolment and incomplete storage erasure records. The current holder has physical custody. What is the release decision?",
       "options": [
-        "Use a bypass and leave incomplete log hidden",
-        "Require legitimate MDM release and verified authorised storage outcome before disposition",
-        "Erase user profile only"
+        "Retain the laptop and seek documented MDM release plus authorised sanitisation evidence before reuse.",
+        "Approve reuse with a restricted local account if network enrolment can be disabled.",
+        "Issue it after replacing the SSD; the old MDM registration can be addressed after delivery."
       ],
-      "answer": 1,
-      "explanation": "Operational use requires resolving both identity and data responsibility."
+      "answer": 0,
+      "explanation": "Ownership and management controls must be legitimately removed, and data processing documented, before a device is released."
     },
     {
       "id": "laptop:9",
       "level": 3,
-      "question": "Your virtual tests show 19.5V at jack, no regulator output and intermittent power LED. What is the strongest report without board-level authorisation?",
+      "question": "Simulated input voltage is normal but regulator output is absent, with intermittent status LEDs. You do not have exact board records. What is the strongest report?",
       "options": [
-        "Declare the regulator faulty as proven",
-        "Apply a live soldering iron as test",
-        "State measured points, fault families, uncertainty and escalation to an appropriately competent technician"
+        "Suspect a regulator-stage issue with two measured points, explicitly leaving the cause and component uncertain for competent review.",
+        "Describe the main buck regulator as failed based on its output and schedule replacement.",
+        "Focus on the embedded controller firmware, because intermittent LEDs make regulator data unreliable."
       ],
-      "answer": 2,
-      "explanation": "A failed downstream reading does not identify a single defective component."
+      "answer": 0,
+      "explanation": "A missing rail is a symptom; surrounding power enable, load and component evidence remain absent."
     },
     {
       "id": "laptop:10",
       "level": 3,
-      "question": "Five refurbished laptops show 4 successful cold boots but only 2 successful warm boots. Battery and adapter models varied. Which outcome statement is scientifically supportable?",
+      "question": "Five laptops show four successful cold starts and two successful warm starts with mixed chargers and batteries. What can you responsibly report?",
       "options": [
-        "Report test conditions and a possible temperature/power association; standardise controls before claiming root cause",
-        "Declare 60% motherboard reliability",
-        "Call all machines fit for resale"
+        "Warm boot reliability is lower in this sample, but confounding power/thermal variables need controlled replication.",
+        "A 40% chance of warm boot failure across this laptop family, based on ten attempts.",
+        "An established temperature-sensitive motherboard failure, provided test dates are documented."
       ],
       "answer": 0,
-      "explanation": "A non-controlled sample can't support root-cause attribution."
+      "explanation": "Uncontrolled conditions prevent causal or population-level reliability claims."
     },
     {
       "id": "laptop:11",
       "level": 3,
-      "question": "A laptop reports SMART warnings but boots fine, has a tired battery and an uncertain replacement screen. What's the correct release judgement?",
+      "question": "A device boots reliably but reports storage health warnings and battery wear; the replacement panel has not been validated. Is it ready for resale?",
       "options": [
-        "List as fully functional if the desktop opens",
-        "Keep hold until storage, battery and display conditions have verified outcomes and honest disclosure",
-        "Only screen matters"
+        "Offer conditional resale with disclosed faults, since basic functionality is proven.",
+        "Withhold normal refurbished-sale claims until critical storage, battery and screen outcomes are verified or clearly categorised.",
+        "Sell as fully working with a short warranty, and fix any remaining faults if a buyer returns it."
       ],
       "answer": 1,
-      "explanation": "A single successful boot cannot certify multiple failing/untested systems."
+      "explanation": "A successful boot does not prove durable performance, safety or a verified display replacement."
     }
   ],
   "cafe": [
     {
       "id": "cafe:0",
       "level": 1,
-      "question": "A venue host says 'you can probably use the hall'. Is this a confirmed booking?",
+      "question": "A hall host says the group could probably use the space and offers a provisional Saturday hold. What is the defensible publicity decision?",
       "options": [
-        "Only after written date/activity approval",
-        "Yes if volunteers are ready",
-        "Yes if no fee"
+        "Publish a tentative date with no venue name and seek a written activity-specific booking before final publicity.",
+        "Confirm the specific date, approved activities and terms with the host before advertising a definite event.",
+        "Publish the event with a venue-to-be-confirmed notice, since an expression of interest is enough for planning."
       ],
-      "answer": 0,
-      "explanation": "Interest is not an agreement."
+      "answer": 1,
+      "explanation": "A provisional hold may support planning, but publicity shouldn't imply a definite venue and approved activities without confirmation."
     },
     {
       "id": "cafe:1",
       "level": 1,
-      "question": "A volunteer indicates availability. Is that an accepted shift?",
+      "question": "Jules listed Saturday availability but hasn't accepted the offered bike station. What should the event desk record?",
       "options": [
-        "Yes on a monthly roster",
-        "Not until an offer and explicit acceptance",
-        "Only if they know tools"
+        "Available but not rostered; request explicit acceptance and keep the station unconfirmed until then.",
+        "Provisional shift assigned and counted towards safe coverage, with confirmation due on Friday.",
+        "Accepted if the volunteer's prior attendance demonstrates reliable participation."
       ],
-      "answer": 1,
-      "explanation": "Availability, assignment and confirmation are distinct."
+      "answer": 0,
+      "explanation": "Availability is distinct from a specific accepted shift; public scope cannot rely on unconfirmed coverage."
     },
     {
       "id": "cafe:2",
       "level": 2,
-      "question": "A venue allows sewing and laptops but prohibits bikes. Two bike volunteers are free. What public event scope is correct?",
+      "question": "The hall permits sewing and laptop guidance but explicitly excludes bicycles. Two bicycle volunteers are confirmed. What repair categories may you advertise?",
       "options": [
-        "Advertise bikes anyway",
-        "Advertise only authorised repair stations and capacity; request a separate bike approval",
-        "Leave visitors to decide at arrival"
+        "Advertise bicycle repairs conditional on an additional host check at opening.",
+        "Advertise the authorised staffed activities and seek distinct host permission before adding bicycles.",
+        "List all categories and turn away bicycles only if the venue objects on the day."
       ],
       "answer": 1,
-      "explanation": "Scope combines permission and staffing."
+      "explanation": "Public scope requires both an approved venue and appropriate volunteer coverage. More volunteers can't override venue restrictions."
     },
     {
       "id": "cafe:3",
       "level": 2,
-      "question": "A visitor presents a toaster that trips power, but your team has no authorised electrical specialist. What is the intake path?",
+      "question": "A visitor brings a toaster that trips power, and no competent mains-electricity repair station is authorised. What should intake do?",
       "options": [
-        "External competent electrical referral; no exploratory energising",
-        "Test another socket",
-        "Ask an enthusiastic volunteer"
+        "Offer a non-invasive visual assessment and explain likely faults without energising.",
+        "Decline mains troubleshooting for this event, explain the boundary and refer to an appropriate qualified pathway.",
+        "Place the appliance in a secure hold for a later event where an electrician might attend."
       ],
-      "answer": 0,
-      "explanation": "Risk can't be resolved by enthusiasm."
+      "answer": 1,
+      "explanation": "Unapproved mains testing is outside scope; retaining hazardous items or making unverified repair claims adds risk."
     },
     {
       "id": "cafe:4",
       "level": 2,
-      "question": "A coordinator wants to count expressions of interest as confirmed volunteer shifts. What data model should be used?",
+      "question": "You need a reliable roster that can handle tentative availability, explicit acceptance and cancellation. Which record model is best?",
       "options": [
-        "Single boolean called available",
-        "Distinct availability, proposed assignment, acceptance and cancellation states",
-        "A list of first names"
+        "Capture separate availability, offers, confirmations and cancellations with timestamps and roles.",
+        "Store one availability calendar and derive confirmed shifts from the latest edits.",
+        "Assign shifts optimistically and treat lack of cancellation as acceptance."
       ],
-      "answer": 1,
-      "explanation": "Scheduling workflows need real confirmations."
+      "answer": 0,
+      "explanation": "Distinct states preserve consent and make capacity promises defensible."
     },
     {
       "id": "cafe:5",
       "level": 2,
-      "question": "At 10:30 the sewing station is free but hardware backlog is ten deep. What's a better operational response?",
+      "question": "Hardware arrivals rise sharply while the sewing table remains free. The event is near capacity. What action best respects repair skills and visitor time?",
       "options": [
-        "Transfer all jobs to sewing station",
-        "Keep scope-specific stations, adjust admissions and communicate wait/referral options",
-        "Skip triage"
+        "Temporarily transfer low-risk hardware diagnostics to sewing volunteers after a short briefing.",
+        "Close or slow hardware intake, explain wait/referral options, and maintain stations within accepted skill and scope.",
+        "Reassign sewing volunteers to welcome while allowing electronics owners to examine devices at a shared table."
       ],
       "answer": 1,
-      "explanation": "Competence and station scope are not interchangeable."
+      "explanation": "Volunteer capacity isn't interchangeable across repair skills; throughput should not bypass agreed safety or intake."
     },
     {
       "id": "cafe:6",
       "level": 3,
-      "question": "Your insurer allows defined portable repairs, the venue excludes messy processes, and a specialist offers ad-hoc soldering. How do you decide?",
+      "question": "A venue excludes messy activity, your cover specifies particular repair categories, and a visiting expert offers soldering. What is the correct decision rule?",
       "options": [
-        "Permit everything the specialist proposes",
-        "Seek scope-specific written venue/insurance permission and safety controls; exclude unapproved activity",
-        "Add a disclaimer and proceed"
+        "Allow low-temperature soldering if the expert brings fume extraction and fire protection.",
+        "Seek explicit written approval, competent controls and cover for that activity; otherwise keep it outside scope.",
+        "Offer the expert a supervised trial during quiet periods before formally changing the published scope."
       ],
       "answer": 1,
-      "explanation": "Permission must cover the actual processes and risks."
+      "explanation": "Expertise alone can't authorise work beyond venue rules, insurance and risk controls."
     },
     {
       "id": "cafe:7",
       "level": 3,
-      "question": "A repair event is oversubscribed while two volunteers cancel. Which response optimises outcomes without unsafe throughput?",
+      "question": "Two fixers cancel shortly before doors open, and pre-registration already exceeds safe station capacity. How do you proceed?",
       "options": [
-        "Throttle intake by hazard and capacity, communicate priorities and document referrals",
-        "Let visitors do live electrical repairs",
-        "Remove check-in records to save time"
+        "Reduce arrivals to covered stations, set transparent triage/cut-offs and offer referrals.",
+        "Keep the original scope but prioritise the safest repairs first, explaining delays as they arise.",
+        "Use experienced visitors to support volunteers on unstaffed benches if they sign consent."
       ],
       "answer": 0,
-      "explanation": "Manage queue exposure and expectations with a controlled ceiling."
+      "explanation": "Published commitments must yield to confirmed capacity; clear intake limits protect people without substituting untrained labour."
     },
     {
       "id": "cafe:8",
       "level": 3,
-      "question": "The event handles 20 items, only five fully repaired. Volunteers think it failed. What evaluation is more useful?",
+      "question": "Twenty items were presented but only five were fully repaired. Which outcome measure is most useful for the next event?",
       "options": [
-        "Count repairs only",
-        "Measure diagnoses, safe refusals, learning, referrals, returns, time and visitor outcomes",
-        "Report all items fixed"
+        "Record completed fixes, diagnosis/referrals, safe declines, owner learning, demand and service limits.",
+        "Focus on the repair-success percentage because it is the simplest reproducible outcome.",
+        "Record all attempted devices as diverted from waste, since each extended its useful life."
       ],
-      "answer": 1,
-      "explanation": "Repair Café value is broader than fixes, but recorded honestly."
+      "answer": 0,
+      "explanation": "Outcome integrity matters: diagnostic learning and referral value are real, but attempted repairs are not automatically waste diverted."
     },
     {
       "id": "cafe:9",
       "level": 3,
-      "question": "Your planned second event has free venue and spare volunteers, but no coordinator, incomplete first-event incident report and unapproved electrical scope. Do you open?",
+      "question": "The venue is free for next month, but there is no lead, an incident follow-up remains open and electrical scope is unapproved. Should you confirm the date?",
       "options": [
-        "Only after governance/incident closure and approved scope are secured",
-        "Yes because venue cost is zero",
-        "Yes if no publicity"
+        "Confirm a textiles-only event provided the host approves the narrower activity in writing.",
+        "Hold the date provisionally, close governance/safety gaps and secure a confirmed leader before public commitments.",
+        "Use a rotating technician as nominal lead to preserve the scheduled event and close paperwork afterward."
       ],
-      "answer": 0,
-      "explanation": "Unresolved controls block a responsible event."
+      "answer": 1,
+      "explanation": "A cheap venue and potential fixers do not replace lead accountability and incident follow-up."
     }
   ]
 } as unknown as Record<"laptop"|"cafe",Challenge[]>;
