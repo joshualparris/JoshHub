@@ -4,6 +4,7 @@ import { useEffect, useState, type CSSProperties } from "react";
 import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, Compass, ExternalLink, Headphones, Lightbulb, RotateCcw, ShieldAlert, Volume2, VolumeX, Wrench } from "lucide-react";
 import data from "@/data/dead-laptop-detective.json";
 import DetectiveMiniGames from "@/components/learn/DetectiveMiniGames";
+import AdaptiveSimQuiz from "@/components/learn/AdaptiveSimQuiz";
 import { STORAGE_VERSION, canCompleteMission, gradeCase, progressPercentage } from "@/lib/learning/dead-laptop-logic";
 
 type AnswerKind = "activity" | "check";
@@ -163,6 +164,7 @@ export default function DeadLaptopLab() {
     </div>
 
     <div className="space-y-7 p-4 sm:p-7">
+      <AdaptiveSimQuiz simulator="laptop" dark />
       <section className={card} aria-labelledby="missions-title">
         <div className="mb-4 flex items-center gap-2"><Compass size={20} className="text-cyan-300"/><h2 id="missions-title" className="text-xl font-bold">Choose a mission</h2></div>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
