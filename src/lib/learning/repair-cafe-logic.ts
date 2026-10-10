@@ -1,4 +1,4 @@
-export const REPAIR_CAFE_STORAGE_KEY = "joshhub:repair-cafe-simulator:v1";
+export const REPAIR_CAFE_STORAGE_KEY = "joshhub:repair-cafe-simulator:v2";
 export const STATIONS = ["sewing", "computers", "bikes"] as const;
 export type SimState = {
   venueId: string;
