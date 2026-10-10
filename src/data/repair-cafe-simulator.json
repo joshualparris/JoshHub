@@ -177,36 +177,36 @@
       "id": "q1",
       "question": "Jules has indicated Saturday availability and has relevant bike skills. The lead is considering a bike station, but Jules has not yet accepted a specific shift. Which next action best preserves the roster's integrity?",
       "options": [
+        "Publish bike repairs as conditional, with a prominent note that qualified attendance is subject to confirmation.",
         "Add Jules as provisional coverage, display the station as pending and ask them to confirm before publicising that repair category.",
         "Offer Jules a specific bike shift; only count the station as covered after acceptance, otherwise narrow the public repair scope.",
-        "Temporarily assign Alex as bike lead for administrative coverage, then replace the name after Jules replies.",
-        "Publish bike repairs as conditional, with a prominent note that qualified attendance is subject to confirmation."
+        "Temporarily assign Alex as bike lead for administrative coverage, then replace the name after Jules replies."
       ],
-      "answer": 1,
+      "answer": 2,
       "why": "An available person is a prospect, not guaranteed coverage. Even a conditional public commitment could mislead visitors if the only capable volunteer hasn't accepted."
     },
     {
       "id": "q2",
       "question": "A library coordinator has tentatively offered a room, subject to confirming insurance and activity restrictions. You have three volunteers accepted and a draft flyer. What's the strongest next decision?",
       "options": [
-        "Share a save-the-date without an address while leaving the repair categories undecided.",
-        "Confirm the date and permitted activities in writing, resolve relevant risk/cover questions and coverage, then approve public wording.",
         "Ask the venue to publish the event on its calendar first, as that provides written evidence of approval.",
-        "Announce the proposed time with a cancellation clause while the final venue form is being processed."
+        "Announce the proposed time with a cancellation clause while the final venue form is being processed.",
+        "Share a save-the-date without an address while leaving the repair categories undecided.",
+        "Confirm the date and permitted activities in writing, resolve relevant risk/cover questions and coverage, then approve public wording."
       ],
-      "answer": 1,
+      "answer": 3,
       "why": "A draft offer and accepted volunteers do not replace written permission and agreed activities before advertising a definite event."
     },
     {
       "id": "q3",
       "question": "An experienced volunteer wants to run a station with a plug-in appliance. The site provides an RCD, and someone offers a portable appliance tester, but competency, liability cover and procedures are unclear. What is the defensible scope decision?",
       "options": [
-        "Allow only a visual inspection because a functioning RCD controls the main electrical hazard.",
         "Restrict work to low-risk approved categories until a competent person and tailored electrical work/testing controls are verified.",
         "Allow the volunteer to perform repairs without energising the appliance and arrange testing at a later event.",
-        "Permit repairs after a waiver is signed, because the volunteer's experience covers informal community activities."
+        "Permit repairs after a waiver is signed, because the volunteer's experience covers informal community activities.",
+        "Allow only a visual inspection because a functioning RCD controls the main electrical hazard."
       ],
-      "answer": 1,
+      "answer": 0,
       "why": "SafeWork NSW guidance is context-dependent: an RCD, a volunteer's experience and an offered tester don't automatically establish competent, authorised electrical work or adequate insurance and procedures."
     }
   ],
@@ -261,6 +261,17 @@
       "story": "The shirt needs a small seam repair. The owner wants to watch and learn, and you have to decide how to admit the item.",
       "choices": [
         {
+          "id": "dropoff",
+          "label": "Invite the owner to wait until near closing so Maya can fit the job between longer repairs, without opening a queue record.",
+          "correct": false,
+          "why": "The plan seems flexible but loses a fair queue, an informed wait estimate and a reliable handover record.",
+          "impact": {
+            "welcome": -2,
+            "energy": -1,
+            "queue": 2
+          }
+        },
+        {
           "id": "scope",
           "label": "Confirm scope, consent and owner presence at intake, then direct the shirt to Maya if the textile station has capacity; otherwise offer a referral.",
           "correct": true,
@@ -281,17 +292,6 @@
             "energy": -1,
             "queue": 2
           }
-        },
-        {
-          "id": "dropoff",
-          "label": "Invite the owner to wait until near closing so Maya can fit the job between longer repairs, without opening a queue record.",
-          "correct": false,
-          "why": "The plan seems flexible but loses a fair queue, an informed wait estimate and a reliable handover record.",
-          "impact": {
-            "welcome": -2,
-            "energy": -1,
-            "queue": 2
-          }
         }
       ]
     },
@@ -302,17 +302,6 @@
       "title": "A kettle arrives with a damaged mains lead",
       "story": "A visitor wants a volunteer to plug it in to 'see whether it's safe'. No qualified electrical repair or testing station has been approved.",
       "choices": [
-        {
-          "id": "stop",
-          "label": "Decline testing/energising the kettle, record a safety referral and explain why an appropriately qualified electrical pathway is needed.",
-          "correct": true,
-          "why": "A damaged mains lead and no authorised electrical station are clear limits on this event's repair scope.",
-          "impact": {
-            "welcome": 2,
-            "energy": 0,
-            "queue": 0
-          }
-        },
         {
           "id": "plug",
           "label": "Have the experienced computer volunteer visually inspect the cable without opening the case, then record the likely repair as a future possibility.",
@@ -333,6 +322,17 @@
             "welcome": -3,
             "energy": -1,
             "queue": 1
+          }
+        },
+        {
+          "id": "stop",
+          "label": "Decline testing/energising the kettle, record a safety referral and explain why an appropriately qualified electrical pathway is needed.",
+          "correct": true,
+          "why": "A damaged mains lead and no authorised electrical station are clear limits on this event's repair scope.",
+          "impact": {
+            "welcome": 2,
+            "energy": 0,
+            "queue": 0
           }
         }
       ]
@@ -387,6 +387,17 @@
       "story": "Six people arrive together. Your tables are at capacity; several may wait beyond closing.",
       "choices": [
         {
+          "id": "overload",
+          "label": "Switch Maya to general intake and let visitors undertake basic textile fixes with shared tools until the backlog clears.",
+          "correct": false,
+          "why": "This mixes roles and moves untrained visitors into unsupervised repair work, contrary to the confirmed roster/scope.",
+          "impact": {
+            "welcome": -3,
+            "energy": -3,
+            "queue": 3
+          }
+        },
+        {
           "id": "manage",
           "label": "Set and explain an arrivals cut-off, update wait estimates, prioritise only within published fair criteria and offer referrals where capacity runs out.",
           "correct": true,
@@ -407,17 +418,6 @@
             "energy": -2,
             "queue": 3
           }
-        },
-        {
-          "id": "overload",
-          "label": "Switch Maya to general intake and let visitors undertake basic textile fixes with shared tools until the backlog clears.",
-          "correct": false,
-          "why": "This mixes roles and moves untrained visitors into unsupervised repair work, contrary to the confirmed roster/scope.",
-          "impact": {
-            "welcome": -3,
-            "energy": -3,
-            "queue": 3
-          }
         }
       ]
     },
@@ -428,17 +428,6 @@
       "title": "A liquid spill blocks the accessible route",
       "story": "A drink spills across the route to the exit while someone is moving past with a mobility aid.",
       "choices": [
-        {
-          "id": "isolate",
-          "label": "Stop movement through the affected section, arrange prompt safe clean-up, and maintain a genuinely accessible alternative until the route is restored.",
-          "correct": true,
-          "why": "Access, hazard control and an effective accessible detour matter more than keeping the station operating.",
-          "impact": {
-            "welcome": 2,
-            "energy": -1,
-            "queue": 1
-          }
-        },
         {
           "id": "wait",
           "label": "Place a caution sign and assign a volunteer to help people past the spill while the person managing refreshments finds cleaning supplies.",
@@ -458,6 +447,17 @@
           "impact": {
             "welcome": -3,
             "energy": -2,
+            "queue": 1
+          }
+        },
+        {
+          "id": "isolate",
+          "label": "Stop movement through the affected section, arrange prompt safe clean-up, and maintain a genuinely accessible alternative until the route is restored.",
+          "correct": true,
+          "why": "Access, hazard control and an effective accessible detour matter more than keeping the station operating.",
+          "impact": {
+            "welcome": 2,
+            "energy": -1,
             "queue": 1
           }
         }
