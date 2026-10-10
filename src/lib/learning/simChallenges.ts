@@ -1,5 +1,5 @@
 import type { Challenge } from "./adaptive";
-/** Fictional decision cases. Best-supported reasoning matters more than choice position. */
+/** Fictional applied cases with credible distractors; reasoning is now independently graded. */
 export const simChallenges = {
   "laptop": [
     {
@@ -7,7 +7,7 @@ export const simChallenges = {
       "level": 1,
       "question": "The vendor logo appears and a boot-device error follows. What does that establish, and what remains unknown?",
       "options": [
-        "Firmware displayed and a boot-device error appeared; drive recognition is unproven.",
+        "Firmware has displayed a boot-device error, but neither drive recognition nor the OS path is established.",
         "A successful power-on test; follow up with a Windows repair environment to confirm filesystem health.",
         "A partial POST; the next action is to treat the OS as corrupt until a drive is visible."
       ],
@@ -56,7 +56,7 @@ export const simChallenges = {
       "question": "The laptop shuts down under sustained load but operates cold at idle. Both power and CPU temperature were uncontrolled. What should you investigate next?",
       "options": [
         "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
-        "Control adapter, battery and temperature to distinguish power from thermal causes.",
+        "Control adapter, battery and temperature variables before attributing shutdown to heat or supply.",
         "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
       ],
       "answer": 1,
@@ -105,7 +105,7 @@ export const simChallenges = {
       "options": [
         "Approve reuse with a restricted local account if network enrolment can be disabled.",
         "Issue it after replacing the SSD; the old MDM registration can be addressed after delivery.",
-        "Hold the device until legitimate MDM release and approved erasure can be evidenced."
+        "Hold this device pending both confirmed MDM de-enrolment and formally verified data sanitisation."
       ],
       "answer": 2,
       "explanation": "Ownership and management controls must be legitimately removed, and data processing documented, before a device is released."
@@ -115,7 +115,7 @@ export const simChallenges = {
       "level": 3,
       "question": "Simulated input voltage is normal but regulator output is absent, with intermittent status LEDs. You do not have exact board records. What is the strongest report?",
       "options": [
-        "Suspect a regulator-stage problem; the two readings cannot identify its exact cause.",
+        "Suspect a regulator-stage issue, but the two observed voltage points do not establish the cause.",
         "Describe the main buck regulator as failed based on its output and schedule replacement.",
         "Focus on the embedded controller firmware, because intermittent LEDs make regulator data unreliable."
       ],
@@ -166,7 +166,7 @@ export const simChallenges = {
       "question": "Jules listed Saturday availability but hasn't accepted the offered bike station. What should the event desk record?",
       "options": [
         "Accepted if the volunteer's prior attendance demonstrates reliable participation.",
-        "Record availability but not a filled shift until specific acceptance is received.",
+        "Record availability but leave the shift open until this volunteer explicitly accepts the offered role.",
         "Provisional shift assigned and counted towards safe coverage, with confirmation due on Friday."
       ],
       "answer": 1,
@@ -189,7 +189,7 @@ export const simChallenges = {
       "level": 2,
       "question": "A visitor brings a toaster that trips power, and no competent mains-electricity repair station is authorised. What should intake do?",
       "options": [
-        "Refer the appliance to qualified electrical help; don't accept an unapproved repair.",
+        "Decline this mains repair for today and refer to competent electrical support rather than retaining it.",
         "Place the appliance in a secure hold for a later event where an electrician might attend.",
         "Offer a non-invasive visual assessment and explain likely faults without energising."
       ],
