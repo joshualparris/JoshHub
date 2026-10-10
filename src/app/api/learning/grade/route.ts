@@ -65,7 +65,7 @@ export async function POST(request:Request){
      headers:{"Content-Type":"application/json",Authorization:"Bearer "+apiKey},
      body:JSON.stringify({
        model:process.env.GROQ_MODEL||"openai/gpt-oss-120b",
-       temperature:0.1,max_completion_tokens:450,
+       temperature:0.1,reasoning_effort:"low",max_completion_tokens:950,
        response_format:{type:"json_object"},
        messages:[{role:"system",content:system},{role:"user",content:user}]
      })
