@@ -57,7 +57,7 @@ export const simChallenges = {
       "options": [
         "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
         "Control thermal and supply conditions before attributing the shutdown to a specific cause.",
-        "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
+        "Prioritise battery-cycle tests, since unstable packs can cause shutdowns under load."
       ],
       "answer": 1,
       "explanation": "Correlation with load alone cannot differentiate heat from power limits. Control competing variables first."
@@ -93,7 +93,7 @@ export const simChallenges = {
       "options": [
         "Compare the incompatible panel briefly under low brightness to isolate the fault family.",
         "Record hinge dependence and inspect the eDP cable path safely before compatible substitution.",
-        "Swap the motherboard display connector first, leaving the panel untested until a part arrives."
+        "Swap the board's display connector first, leaving the panel untested until parts arrive."
       ],
       "answer": 1,
       "explanation": "Model-matched, isolated cable and hinge-path checks are safer and more interpretable than incompatible substitutions."
