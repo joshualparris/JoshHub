@@ -7,7 +7,7 @@ export const simChallenges = {
       "level": 1,
       "question": "The vendor logo appears and a boot-device error follows. What does that establish, and what remains unknown?",
       "options": [
-        "Firmware displayed and a boot-device error appeared; drive recognition is unproven.",
+        "Firmware displayed and the boot process reached an error; drive discovery remains unverified.",
         "A successful power-on test; follow up with a Windows repair environment to confirm filesystem health.",
         "A partial POST; the next action is to treat the OS as corrupt until a drive is visible."
       ],
@@ -20,7 +20,7 @@ export const simChallenges = {
       "question": "A manufacturer-specific light pattern repeats on startup, but your generic code chart is for another model. How should it affect diagnosis?",
       "options": [
         "Document the sequence as a possible hardware clue and compare to similar models before ordering parts.",
-        "Record the pattern, but verify its meaning from the exact platform documentation.",
+        "Record the exact blink pattern, then check its meaning in the correct model's own diagnostic manual.",
         "Use the code to prioritise replacing a likely faulty component, confirming later with firmware diagnostics."
       ],
       "answer": 1,
@@ -56,7 +56,7 @@ export const simChallenges = {
       "question": "The laptop shuts down under sustained load but operates cold at idle. Both power and CPU temperature were uncontrolled. What should you investigate next?",
       "options": [
         "Measure thermal behaviour under reproducible loading before assuming it is heat-related.",
-        "Control adapter, battery and temperature to distinguish power from thermal causes.",
+        "Control adapter, battery and CPU temperatures in repeat tests to distinguish heat from power.",
         "Prioritise battery-cycle tests, because unstable packs commonly cause load-related shutdown."
       ],
       "answer": 1,
@@ -92,7 +92,7 @@ export const simChallenges = {
       "question": "The internal LCD flickers when the hinge moves. External HDMI is stable; the spare panel is not compatible. What is the safest informative plan?",
       "options": [
         "Compare the incompatible panel briefly under low brightness to isolate the fault family.",
-        "Document movement dependence and use exact-model service guidance for isolated cable/connector checks before compatible substitution.",
+        "Document hinge dependence and check the eDP route safely before using compatible test parts.",
         "Swap the motherboard display connector first, leaving the panel untested until a part arrives."
       ],
       "answer": 1,
@@ -105,7 +105,7 @@ export const simChallenges = {
       "options": [
         "Approve reuse with a restricted local account if network enrolment can be disabled.",
         "Issue it after replacing the SSD; the old MDM registration can be addressed after delivery.",
-        "Hold the device until legitimate MDM release and approved erasure can be evidenced."
+        "Hold the laptop until legitimate MDM removal and approved drive erasure are evidenced."
       ],
       "answer": 2,
       "explanation": "Ownership and management controls must be legitimately removed, and data processing documented, before a device is released."
@@ -115,7 +115,7 @@ export const simChallenges = {
       "level": 3,
       "question": "Simulated input voltage is normal but regulator output is absent, with intermittent status LEDs. You do not have exact board records. What is the strongest report?",
       "options": [
-        "Suspect a regulator-stage problem; the two readings cannot identify its exact cause.",
+        "Suspect a regulator-stage issue, but note that the readings cannot isolate one specific failed part.",
         "Describe the main buck regulator as failed based on its output and schedule replacement.",
         "Focus on the embedded controller firmware, because intermittent LEDs make regulator data unreliable."
       ],
@@ -141,7 +141,7 @@ export const simChallenges = {
       "options": [
         "Sell as fully working with a short warranty, and fix any remaining faults if a buyer returns it.",
         "Offer conditional resale with disclosed faults, since basic functionality is proven.",
-        "Hold normal sale claims until storage, battery and display findings are resolved."
+        "Hold normal resale claims until storage, battery and display issues have verified outcomes."
       ],
       "answer": 2,
       "explanation": "A successful boot does not prove durable performance, safety or a verified display replacement."
@@ -153,9 +153,9 @@ export const simChallenges = {
       "level": 1,
       "question": "A hall host says the group could probably use the space and offers a provisional Saturday hold. What is the defensible publicity decision?",
       "options": [
-        "Secure a written date and scope agreement before advertising the event as confirmed.",
+        "Secure a written venue and activity agreement before advertising the Saturday as confirmed.",
         "Publish the event with a venue-to-be-confirmed notice, since an expression of interest is enough for planning.",
-        "Publish a tentative date with no venue name and seek a written activity-specific booking before final publicity."
+        "Publish a tentative date without venue details, then seek a written activity booking."
       ],
       "answer": 0,
       "explanation": "A provisional hold may support planning, but publicity shouldn't imply a definite venue and approved activities without confirmation."
@@ -166,7 +166,7 @@ export const simChallenges = {
       "question": "Jules listed Saturday availability but hasn't accepted the offered bike station. What should the event desk record?",
       "options": [
         "Accepted if the volunteer's prior attendance demonstrates reliable participation.",
-        "Record availability but not a filled shift until specific acceptance is received.",
+        "Record the volunteer as available, but not confirmed until accepting this exact station.",
         "Provisional shift assigned and counted towards safe coverage, with confirmation due on Friday."
       ],
       "answer": 1,
@@ -189,7 +189,7 @@ export const simChallenges = {
       "level": 2,
       "question": "A visitor brings a toaster that trips power, and no competent mains-electricity repair station is authorised. What should intake do?",
       "options": [
-        "Refer the appliance to qualified electrical help; don't accept an unapproved repair.",
+        "Refer to qualified electrical help and refuse unapproved mains repair at the bench.",
         "Place the appliance in a secure hold for a later event where an electrician might attend.",
         "Offer a non-invasive visual assessment and explain likely faults without energising."
       ],
@@ -202,7 +202,7 @@ export const simChallenges = {
       "question": "You need a reliable roster that can handle tentative availability, explicit acceptance and cancellation. Which record model is best?",
       "options": [
         "Assign shifts optimistically and treat lack of cancellation as acceptance.",
-        "Capture separate availability, offers, confirmations and cancellations with timestamps and roles.",
+        "Record availability, assignments, accepted shifts and cancellations separately.",
         "Store one availability calendar and derive confirmed shifts from the latest edits."
       ],
       "answer": 1,
@@ -225,7 +225,7 @@ export const simChallenges = {
       "level": 3,
       "question": "A venue excludes messy activity, your cover specifies particular repair categories, and a visiting expert offers soldering. What is the correct decision rule?",
       "options": [
-        "Seek scope-specific approval, cover and competent safeguards before permitting it.",
+        "Seek written permission for soldering, insurance cover and competent safeguards.",
         "Offer the expert a supervised trial during quiet periods before formally changing the published scope.",
         "Allow low-temperature soldering if the expert brings fume extraction and fire protection."
       ],
@@ -238,7 +238,7 @@ export const simChallenges = {
       "question": "Two fixers cancel shortly before doors open, and pre-registration already exceeds safe station capacity. How do you proceed?",
       "options": [
         "Use experienced visitors to support volunteers on unstaffed benches if they sign consent.",
-        "Cap arrivals to staffed capacity with clear queue criteria and referral options.",
+        "Cap arrivals to supervised station capacity, explaining queue rules and referral choices.",
         "Keep the original scope but prioritise the safest repairs first, explaining delays as they arise."
       ],
       "answer": 1,
@@ -261,7 +261,7 @@ export const simChallenges = {
       "level": 3,
       "question": "The venue is free for next month, but there is no lead, an incident follow-up remains open and electrical scope is unapproved. Should you confirm the date?",
       "options": [
-        "Hold the date; finish incident follow-up and confirm a lead and scope before publicity.",
+        "Hold the date but don't advertise until the incident is closed and a lead and scope are approved.",
         "Use a rotating technician as nominal lead to preserve the scheduled event and close paperwork afterward.",
         "Confirm a textiles-only event provided the host approves the narrower activity in writing."
       ],
