@@ -18,6 +18,7 @@ export default function BusinessFieldGuidePage() {
       <p className="text-lg">{data.summary}</p>
       <p>Six lessons · about 100 minutes · optional fieldwork. Learn how these businesses operate, what public evidence says about working there, and where your projects may fit.</p>
       <p><strong>Evidence boundary:</strong> public role maps and documented practices; gaps remain where internal reporting lines or employee experience cannot be verified.</p>
+      <p><a href="https://github.com/joshualparris/JoshHub/blob/main/docs/research/DUBBO-TECH-BUSINESS-DECISION-BRIEF-2026-10-11.md" className="underline" target="_blank" rel="noreferrer">Open the completed A–G comparison: 15 locations, relationship map, shortlists and 56 interview questions ↗</a></p>
       <a href="https://github.com/joshualparris/JoshHub/blob/main/docs/research/DUBBO-TECH-BUSINESS-FIELD-GUIDE-2026-10-10.md" className="inline-block rounded border px-4 py-2 underline">Read the full research report on GitHub</a>
     </header>
     <nav aria-label="Field guide sections" className="flex flex-wrap gap-4 rounded-xl border p-4">
