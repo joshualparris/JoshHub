@@ -39,6 +39,15 @@ export default function LearnPage() {
                 </div>
             </div>
 
+            <a href="/learn/dead-laptop-detective" className="mb-6 block rounded-2xl border-2 border-cyan-500/40 bg-slate-950 p-6 text-white shadow-lg transition hover:border-cyan-300">
+                <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Featured · New interactive simulation</p>
+                <strong className="mt-2 block text-2xl">The Dead Laptop Detective</strong>
+                <p className="mt-2 text-sm text-slate-200">8 missions · virtual circuit board · simulated multimeter · 3 evidence-gated cases · videos, pictures and audio.</p>
+                <span className="mt-3 block font-semibold text-cyan-200 underline">Enter the repair laboratory →</span>
+            </a>
+
+            <a href="https://github.com/joshualparris/JoshHub/blob/main/docs/learning-lab/JOSHHUB-TEN-UNIQUE-COURSES-ROADMAP.html" target="_blank" rel="noreferrer" className="mb-5 block text-sm underline">Explore the ten unique course experiences planned for JoshHub ↗</a>
+
             <a href="/learn/dubbo-business-field-guide" className="mb-6 block rounded-xl border p-5">
                 <strong className="text-lg">Inside Dubbo’s technology and repair businesses</strong>
                 <p className="mt-2">15 locations · 67 sources · 6 lessons. Explore workplace evidence, public role maps and opportunities for your projects.</p>
