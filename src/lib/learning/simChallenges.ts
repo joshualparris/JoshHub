@@ -33,7 +33,7 @@ export const simChallenges = {
       "options": [
         "Reseat the original SSD before documenting settings; intermittent detection is commonly mechanical.",
         "Run OS recovery from USB against the original volume before substituting hardware.",
-        "Inspect firmware mode and connector, then test a compatible spare drive while preserving the original medium."
+        "Check firmware and connector, then compare a spare drive without altering the owner's SSD."
       ],
       "answer": 2,
       "explanation": "A working USB does not verify SSD or connector health. Data preservation and documented, reversible isolation have priority."
@@ -128,7 +128,7 @@ export const simChallenges = {
       "question": "Five laptops show four successful cold starts and two successful warm starts with mixed chargers and batteries. What can you responsibly report?",
       "options": [
         "An established temperature-sensitive motherboard failure, provided test dates are documented.",
-        "Warm boot reliability is lower in this sample, but confounding power/thermal variables need controlled replication.",
+        "Warm boots failed more often here; control power and heat before inferring why.",
         "A 40% chance of warm boot failure across this laptop family, based on ten attempts."
       ],
       "answer": 1,
