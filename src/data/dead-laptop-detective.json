@@ -23,7 +23,7 @@
         "options": [
           "Remove the bottom cover to confirm storage removal before making an acceptance decision.",
           "Accept it for software diagnostics while awaiting proof the SSD was removed.",
-          "Quarantine it from active repair pending battery risk handling and documented transfer authority, while recording what is unknown.",
+          "Pause active work for battery-risk assessment and verified transfer authority.",
           "Ask for a battery photo and begin with adapter testing if the photo looks normal."
         ],
         "answer": 2,
@@ -32,7 +32,7 @@
       "check": {
         "question": "A school offers six old laptops. Their technician says the school purchased them and has erased the disks, but the equipment is still recorded on an internal asset register. What evidence is the most useful next step?",
         "options": [
-          "Evidence of an authorised asset disposal/release decision, with agreed data-handling responsibility and documented custody.",
+          "Require authorised asset release and documented custody and sanitisation responsibility.",
           "A successful installation of a clean operating system on a sample laptop.",
           "Written permission to borrow the laptops for testing and make a decision about ownership later.",
           "A serial-number list and informal technician confirmation that Windows no longer starts."
@@ -61,7 +61,7 @@
       "activity": {
         "prompt": "The power LED remains on, the keyboard responds, and the external monitor is blank. The owner says they sometimes hear a Windows notification, but no controlled test has been done. Which classification best directs the next step?",
         "options": [
-          "Record an unresolved display/startup symptom and seek independent evidence of successful POST or OS activity before categorising.",
+          "Keep the stage unresolved pending repeatable evidence of startup activity.",
           "Treat it as no-boot because a blank display commonly hides a failed SSD.",
           "Classify immediately as no-video and request a replacement panel.",
           "Treat it as no-POST until the internal RAM has been reseated."
@@ -73,7 +73,7 @@
         "question": "A laptop gives a manufacturer-documented three-flash code, but the owner's description says it reached the firmware logo twice last week. Which evidence should dominate the current diagnostic classification?",
         "options": [
           "The historical logo, because it proves the system completed POST previously.",
-          "Today's repeatable observed symptoms and the exact model-specific code definition, while recording that the fault may be intermittent.",
+          "Prioritise today's repeatable signs and the exact model's code definition.",
           "The generic meaning of three flashes on the manufacturer's most popular laptop line.",
           "A storage SMART scan before investigating the current firmware behaviour."
         ],
@@ -101,7 +101,7 @@
       "activity": {
         "prompt": "A donor HP laptop's retail model matches a downloadable board schematic, but the board silk-screen shows a different suffix. Both drawings list the same CPU. What should you do?",
         "options": [
-          "Confirm the exact PCB/platform ID and revision against a trusted source before using board-level component references.",
+          "Check the PCB/platform ID and revision before trusting board-level references.",
           "Use it for voltage readings but not component locations, since the chipsets may differ.",
           "Cross-check the date on the PDF and accept it if newer than the laptop.",
           "Use the diagram provisionally for all power rails, because the CPU determines regulator topology."
@@ -113,7 +113,7 @@
         "question": "You need to find which assembly contains an SSD connector and which resistor sits beside its power rail. What research combination is best?",
         "options": [
           "Retail service parts catalogue for all three, provided the motherboard brand matches.",
-          "Service manual for mechanical access; correctly matched BoardView for placement; schematic for electrical circuit relationships.",
+          "Use the service manual, matched BoardView and schematic for separate questions.",
           "Service manual for electrical nets; motherboard photos for exact resistor values; BIOS menu for mechanical screws.",
           "Service manual plus a generic teardown video; BoardView is only useful when identifying battery connectors."
         ],
@@ -143,7 +143,7 @@
         "prompt": "In the virtual lab a 19.5 V adapter reads 19.6 V with no load but drops to 0.4 V with the scenario load. Which interpretation is best?",
         "options": [
           "The unloaded voltage proves the adapter is healthy and the motherboard must be shorted.",
-          "The load-dependent collapse warrants a controlled known-good supply comparison and verification of test conditions before assigning the fault family.",
+          "Verify load conditions and compare behaviour with a known-good supply.",
           "The difference proves the internal battery is preventing boot.",
           "The adapter's nominal label is sufficient to exclude it; prioritise firmware updates."
         ],
@@ -156,7 +156,7 @@
           "The low reading proves the adapter has failed.",
           "The reading confirms a safe operating condition as long as the meter beeps.",
           "The CPU is shorted and requires replacement.",
-          "It suggests a potentially low-impedance path but is not a fault diagnosis without the rail specification, circuit and comparative evidence."
+          "Low impedance is possible; no fault is proven without rail context."
         ],
         "answer": 3,
         "explanation": "Low resistance may be normal on some rails; context, correct isolation and an exact board reference are essential. This remains a simulated reading."
@@ -184,7 +184,7 @@
         "options": [
           "Measure an internal regulator with a live meter before trying a different cable.",
           "Replace the internal battery to eliminate an unstable cell.",
-          "Use a verified compatible adapter/cable with adequate power delivery, inspect the port and record whether any signs of life change.",
+          "Try a compatible verified adapter/cable and record any power response.",
           "Run a recovery USB to separate firmware and hardware faults."
         ],
         "answer": 2,
@@ -193,7 +193,7 @@
       "check": {
         "question": "The laptop boots consistently with a compatible known-good adapter but fails intermittently on its original USB-C charger. The original adapter powers a low-wattage phone. What is the strongest conclusion?",
         "options": [
-          "The original charger/cable or negotiated power-delivery path is the leading suspect; phone charging doesn't demonstrate sufficient laptop power.",
+          "Suspect the original charger/cable; phone charging doesn't prove laptop power.",
           "The laptop BIOS has corrupted ACPI tables because only one charger is accepted.",
           "The internal SSD is unstable because the symptom appears only during charging.",
           "The laptop motherboard is proven healthy under all loads."
@@ -222,7 +222,7 @@
       "activity": {
         "prompt": "The laptop displays normally through HDMI. Its internal screen remains black, but there is no faint image under a flashlight. Which component should you order?",
         "options": [
-          "None yet: confirm panel detection, display settings, cable path and model-specific checks before choosing a part.",
+          "Order no parts yet; investigate detection, settings and the internal signal path.",
           "A replacement SSD, because firmware can still output HDMI without storage.",
           "A replacement LCD panel, because external HDMI rules out the GPU.",
           "The internal eDP cable, because absence of a faint image proves a data failure."
@@ -234,7 +234,7 @@
         "question": "An external monitor works and a faint internal desktop becomes visible under angled light. What is the best service-note wording?",
         "options": [
           "Confirmed backlight LED strip failure; replace the display assembly.",
-          "Evidence favours an internal illumination/backlight path issue; the panel, cable and power/control circuitry still need isolation.",
+          "Suspect the backlight path; the exact failed part remains unproven.",
           "Confirmed GPU channel fault, because the internal display is dark.",
           "Confirmed display-cable damage, because an external monitor is unaffected."
         ],
@@ -263,7 +263,7 @@
       "activity": {
         "prompt": "Firmware lists a 256 GB drive, and an approved read-only recovery USB boots. The installed OS fails with 'INACCESSIBLE_BOOT_DEVICE'. What is the next evidence-preserving action?",
         "options": [
-          "Record firmware storage mode and recovery-environment drive status, assess backup/recovery needs and only then plan non-destructive tests.",
+          "Document storage settings and preserve data before further tests.",
           "Swap the CPU because a recovery USB boot is not a full stress test.",
           "Update firmware immediately before recording its current settings.",
           "Reformat the internal SSD to test whether Windows can reinstall cleanly."
@@ -275,7 +275,7 @@
         "question": "The firmware storage list is empty, yet a compatible known-good SSD is recognised in the same slot. The original SSD contains irreplaceable files. Which conclusion is justified?",
         "options": [
           "The original SSD is definitely electrically shorted, so test it live with an ohmmeter.",
-          "The original drive/device path is strongly implicated, and the original should be protected for authorised professional data-recovery evaluation.",
+          "Protect the original drive; its detection path is implicated.",
           "The OS is corrupt; a clean install of Windows on the original SSD should confirm.",
           "The motherboard storage interface is conclusively broken, so replace the board."
         ],
@@ -304,7 +304,7 @@
         "prompt": "Two tests support an external charger problem, but a swollen battery is also reported. What should the diagnostic write-up do?",
         "options": [
           "Rank the charger as the probable fault and schedule normal further testing to see whether the battery matters.",
-          "Document the probable charger-path finding separately from the unresolved battery hazard, and withhold active repair pending safe handling.",
+          "Note the probable adapter issue but stop work until battery safety is resolved.",
           "Ignore the battery report because adapter substitution already explains the observed symptoms.",
           "State a single confirmed charger failure, since multiple simultaneous faults are unlikely."
         ],
@@ -317,7 +317,7 @@
           "Automatic failure: diagnosis cannot be learned through a simulation.",
           "Passing if they also viewed the supporting teardown video.",
           "Passing, because selecting the correct answer is sufficient when the observation count is met.",
-          "Partial competence: require an evidence-based comparison to the closest plausible alternative before awarding stronger mastery."
+          "Require a comparison with the closest alternative before stronger mastery."
         ],
         "answer": 3,
         "explanation": "Professional reasoning includes choosing among credible hypotheses and stating what is not yet known."
