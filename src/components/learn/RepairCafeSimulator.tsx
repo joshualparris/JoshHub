@@ -18,6 +18,9 @@ export default function RepairCafeSimulator(){
   const [stage,setStage]=useState<Stage>("venue");
   const [hydrated,setHydrated]=useState(false);
   const [saveError,setSaveError]=useState(false);
+  const [debriefLoading,setDebriefLoading]=useState(false);
+  const [debriefFeedback,setDebriefFeedback]=useState<{passed:boolean;summary:string;improvement:string}|null>(null);
+  const [debriefError,setDebriefError]=useState("");
   const [choice,setChoice]=useState("");
   const [feedback,setFeedback]=useState("");
   const [speaking,setSpeaking]=useState(false);
@@ -44,6 +47,22 @@ export default function RepairCafeSimulator(){
   function scenarioDecision(id:string){if(choice || !incident)return;const c=incident.choices.find(x=>x.id===id);if(!c)return;setChoice(id);setFeedback(c.why);if(!c.correct)setState(s=>({...s,badChoices:s.badChoices+1}));}
   function advance(){if(!incident||!isSafeResolution(course,incident.id,choice))return;setState(s=>({...s,incidentIndex:Math.min(course.incidents.length,s.incidentIndex+1)}));setChoice("");setFeedback("");}
   function narration(){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();if(speaking){setSpeaking(false);return;}const u=new SpeechSynthesisUtterance(guide.heading+". "+guide.body+" "+guide.prompt);u.lang="en-AU";u.rate=0.92;u.onend=()=>setSpeaking(false);u.onerror=()=>setSpeaking(false);setSpeaking(true);window.speechSynthesis.speak(u);}
+  async function gradeDebrief(){
+    if(debriefLoading || !closed || !state.reflection.trim())return;
+    setDebriefLoading(true);setDebriefError("");setDebriefFeedback(null);
+    try{
+      const res=await fetch("/api/learning/grade",{
+        method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",
+        body:JSON.stringify({kind:"reflection",course:"cafe",response:state.reflection.trim()})
+      });
+      const result=await res.json() as {passed?:boolean;summary?:string;improvement?:string;error?:string};
+      if(!res.ok){setDebriefError(result.error??result.summary??"The reflection was not graded. Try again.");return;}
+      const passed=result.passed===true;
+      setDebriefFeedback({passed,summary:result.summary??"Reasoning reviewed.",improvement:result.improvement??"Add concrete event evidence and consider alternatives."});
+      setState(prev=>({...prev,debriefPassed:passed}));
+    }catch{setDebriefError("The grader could not be reached. No completion has been awarded.");}
+    finally{setDebriefLoading(false);}
+  }
   function exportReport(){const report={course:course.title,fictional:true,venue:venue?.title,stations:state.activeStations,roles:activeRoles(state),safeScenariosCompleted:state.incidentIndex,choicesReconsidered:state.badChoices,reflection:state.reflection,completed:finished};const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="repair-cafe-fictional-report.json";a.click();URL.revokeObjectURL(url);}
   return <article className="overflow-hidden rounded-3xl bg-[#f6f1e4] text-stone-900">
     <header className="bg-gradient-to-br from-emerald-950 via-[#1b5143] to-[#4c7552] px-5 py-8 text-white sm:px-9">
@@ -115,8 +134,12 @@ export default function RepairCafeSimulator(){
           <div className="mt-5 grid grid-cols-3 gap-2">{[["Safe decisions",state.incidentIndex],["Retried choices",state.badChoices],["Open stations",state.activeStations.length]].map(([k,v])=><div key={k} className="rounded-lg bg-emerald-50 p-3 text-center"><p className="text-xs">{k}</p><p className="mt-2 text-2xl font-black">{v}</p></div>)}</div>
           <p className="mt-4 text-sm">No real repairs, carbon savings, donated devices or volunteer hours are claimed. This is training, not an event record.</p>
           <label className="mt-4 block font-bold" htmlFor="reflection-cafe">What one thing would you improve next time?</label>
-          <textarea id="reflection-cafe" rows={5} className="mt-3 w-full rounded-xl border border-stone-300 p-4" maxLength={1500} placeholder="Next month I would…" value={state.reflection} onChange={e=>setState(s=>({...s,reflection:e.target.value}))}/>
-          {finished?<div className="mt-4 rounded-xl bg-emerald-900 p-5 text-white"><CheckCircle2 className="text-amber-200"/><h3 className="mt-2 text-2xl font-black">Simulation completed</h3><p className="mt-2 text-sm">You've made and revised event decisions, planned a safe opening, and chosen a sustainable next improvement.</p></div>:<p className="mt-2 text-sm">A practical reflection of at least 20 characters completes the learning experience.</p>}
+          <textarea id="reflection-cafe" rows={5} className="mt-3 w-full rounded-xl border border-stone-300 p-4" maxLength={1500} placeholder="Next month I would…" value={state.reflection} onChange={e=>{setDebriefFeedback(null);setDebriefError("");setState(s=>({...s,reflection:e.target.value,debriefPassed:false}));}}/>
+          <p className="mt-3 text-sm text-stone-700">Give a concrete incident, one feasible change, why it is preferable to another reasonable approach, and how you will assess the result. Your writing is sent to Groq only when you submit; do not include personal details.</p>
+          <button type="button" className={go+" mt-3"} disabled={debriefLoading||!state.reflection.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Assessing event reflection…":"Have Groq assess my plan"}</button>
+          {debriefError?<p role="alert" className="mt-3 rounded-lg border border-amber-600 p-3 text-sm">{debriefError}</p>:null}
+          {debriefFeedback?<div role="status" className="mt-3 rounded-lg border border-stone-300 p-3 text-sm"><p className="font-bold">{debriefFeedback.passed?"Reflection demonstrates applied planning.":"Reflection needs more reasoning."}</p><p className="mt-1">{debriefFeedback.summary}</p><p className="mt-2"><strong>Improve:</strong> {debriefFeedback.improvement}</p></div>:null}
+          {finished?<div className="mt-4 rounded-xl bg-emerald-900 p-5 text-white"><CheckCircle2 className="text-amber-200"/><h3 className="mt-2 text-2xl font-black">Simulation completed</h3><p className="mt-2 text-sm">You've made and revised event decisions, planned a safe opening, and chosen a sustainable next improvement.</p></div>:<p className="mt-2 text-sm">Completion requires a substantive event-improvement plan that passes the AI grading rubric, not a character count.</p>}
           <button type="button" className={go+" mt-4"} disabled={!finished} onClick={exportReport}><Download size={16} className="mr-1 inline"/> Export fictional event report</button>
         </>}
       </section>}
