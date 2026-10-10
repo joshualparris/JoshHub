@@ -8,6 +8,11 @@ on:
       - 'src/lib/learning/**'
       - 'src/data/dead-laptop-detective.json'
       - '.github/workflows/learning-lab-qa.yml'
+  pull_request:
+    paths:
+      - 'src/components/learn/**'
+      - 'src/lib/learning/**'
+      - '.github/workflows/learning-lab-qa.yml'
   workflow_dispatch:
 
 permissions:
@@ -25,6 +30,6 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - name: Evidence-gated diagnostic unit tests
-        run: npm run test -- --run src/lib/learning/dead-laptop-logic.test.ts
+        run: npm run test -- --run src/lib/learning
       - name: TypeScript strict type checking
         run: npx tsc --noEmit
