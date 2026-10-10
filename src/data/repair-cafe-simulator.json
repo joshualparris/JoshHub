@@ -179,7 +179,7 @@
       "options": [
         "Publish bike repairs as conditional, with a prominent note that qualified attendance is subject to confirmation.",
         "Add Jules as provisional coverage, display the station as pending and ask them to confirm before publicising that repair category.",
-        "Offer Jules a specific bike shift; only count the station as covered after acceptance, otherwise narrow the public repair scope.",
+        "Offer Jules the shift; count coverage only after acceptance, or narrow scope.",
         "Temporarily assign Alex as bike lead for administrative coverage, then replace the name after Jules replies."
       ],
       "answer": 2,
@@ -192,7 +192,7 @@
         "Ask the venue to publish the event on its calendar first, as that provides written evidence of approval.",
         "Announce the proposed time with a cancellation clause while the final venue form is being processed.",
         "Share a save-the-date without an address while leaving the repair categories undecided.",
-        "Confirm the date and permitted activities in writing, resolve relevant risk/cover questions and coverage, then approve public wording."
+        "Confirm written date/scope approval, relevant cover and crew before advertising."
       ],
       "answer": 3,
       "why": "A draft offer and accepted volunteers do not replace written permission and agreed activities before advertising a definite event."
@@ -201,7 +201,7 @@
       "id": "q3",
       "question": "An experienced volunteer wants to run a station with a plug-in appliance. The site provides an RCD, and someone offers a portable appliance tester, but competency, liability cover and procedures are unclear. What is the defensible scope decision?",
       "options": [
-        "Restrict work to low-risk approved categories until a competent person and tailored electrical work/testing controls are verified.",
+        "Withhold the activity until competent electrical controls and approved cover exist.",
         "Allow the volunteer to perform repairs without energising the appliance and arrange testing at a later event.",
         "Permit repairs after a waiver is signed, because the volunteer's experience covers informal community activities.",
         "Allow only a visual inspection because a functioning RCD controls the main electrical hazard."
