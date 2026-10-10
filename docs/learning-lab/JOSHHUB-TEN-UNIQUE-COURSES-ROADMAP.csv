@@ -1,0 +1,11 @@
+id,title,subject,interaction,scope,mastery,source_collection,engine
+"dead-laptop-detective","The Dead Laptop Detective","Electronics diagnostics","Virtual repair workbench","8 missions, 3 unseen fault cases","Evidence-based fault isolation + safe escalation","DubboEwaste schematics library; Drive device indexes","simulation"
+"repair-cafe-event","Run Your Own Repair Café","Community operations","Event management simulation","5 events, one full event day","Safe event/rostering/referral decisions","DubboEwaste Repair Café SOP; Drive check-in checklist","simulation"
+"lost-in-bush","Lost in the Australian Bush","Outdoor navigation","Map-based expedition","6 expeditions","Choose a safe route and justify decisions","Drive bushwalking/outdoor education research","navigation"
+"journey-through-psalms","Journey Through the Psalms","Scripture and reflection","Audio-first annotated journal","12 Psalms","Contextual comprehension and personal reflection (unscored)","FaithHub; Drive Psalms and Bible reflection documents","journal"
+"family-history-detective","The Family History Detective","Genealogy","Evidence board and archive puzzles","5 historical mysteries","Source-backed mini family tree","Drive genealogical reports; private tree","investigation"
+"play-piano","Play Piano by Ear and Sight","Music","Live MIDI studio","20 graded exercises","Demonstrated note, rhythm and listening skills","ParrisPiano MIDI tutor","performance"
+"money-lab","The Household Money Lab","Financial literacy","Interactive cash-flow sandbox","7 scenarios","Build a resilient fictional budget","ParrisBudgetApp; Drive financial literacy research","simulation"
+"ai-ethics-council","The AI Education Ethics Council","AI governance","Deliberative multi-role dialogue","5 hearings","Defensible school AI use policy","Drive AI education inquiry and teaching reports","dialogue"
+"worldbuilders-atlas","The Worldbuilder's Atlas","Creative worldbuilding","Explorable interactive fantasy atlas","8 chapters","Coherent maps, cultures, trade and story conflict","realms-atlas; AshFallen","creation"
+"sound-garden","The Sound Garden","Early literacy","Play-based phonics garden","12 child-led sessions","Recognise/blend target phonemes over contexts","SylviePhonetics EYLF mapping","co-play"
