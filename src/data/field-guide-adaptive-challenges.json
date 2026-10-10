@@ -43,7 +43,7 @@
           "Treat the director as the sole signatory for every regional disposal because the title implies control.",
           "Link the supplier parent directly to the engineers based on its new procurement standard.",
           "Draw engineers reporting to the account manager, whose commercial role likely supervises tickets.",
-          "Record published roles and central procurement; leave reporting lines unverified."
+          "Record public roles and procurement changes; mark reporting and delegated approval unverified."
         ],
         "answer": 3,
         "explanation": "Published role names, supplier relationships and reporting lines are distinct evidentiary claims."
@@ -114,7 +114,7 @@
         "options": [
           "Pay a recycler to take the drives after collecting the whole batch; use the laptops as training stock.",
           "Take five units quickly and document the remaining five as declined, trusting the MSP's identification of the safest devices.",
-          "Decline the rush; offer a smaller later batch after authority and safety checks.",
+          "Decline the urgent batch; propose a smaller future handoff once data and battery safeguards are proved.",
           "Accept all ten but store five temporarily with another volunteer to avoid exceeding your own capacity."
         ],
         "answer": 2,
@@ -185,7 +185,7 @@
         "question": "A business offers five retired units: two leased, one with a damaged lithium pack, two company-owned with encrypted SSDs. The company has a data-destruction contract. Which proposed intake is defensible?",
         "options": [
           "Accept the two company-owned units based solely on the employee's promise the drives are encrypted.",
-          "Scope only owned units after contract and erasure checks; hold the rest.",
+          "Consider only owned units after contract and erasure verification; hold all other items.",
           "Take the chassis of all five and return the drives and battery to the donor after the event.",
           "Accept all five under a temporary custody note, leaving each exception to be resolved before resale."
         ],
@@ -199,7 +199,7 @@
         "options": [
           "Spend both hours making asset labels for devices you might eventually source.",
           "Arrange a collection route and ask donors to leave items out even if they have not replied.",
-          "Ask one shop a process question and reserve time for intake controls.",
+          "Contact one new shop with a process question, then prepare a small authorised intake checklist.",
           "Email all remaining regional employers in one batch and follow up when stock becomes available."
         ],
         "answer": 2,
