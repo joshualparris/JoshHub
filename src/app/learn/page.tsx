@@ -39,6 +39,13 @@ export default function LearnPage() {
                 </div>
             </div>
 
+            <a href="/learn/repair-cafe-simulator" className="mb-6 block rounded-2xl border-2 border-emerald-500/30 bg-emerald-950 p-6 text-white shadow-lg transition hover:border-amber-300">
+                <p className="text-xs font-bold uppercase tracking-widest text-amber-200">Featured · New live-event learning game</p>
+                <strong className="mt-2 block text-2xl">Run Your Own Repair Café</strong>
+                <p className="mt-2 text-sm text-emerald-100">Five stages · interactive venue plan · confirmed volunteer roster · safety gates · seven live incidents · reflection and media.</p>
+                <span className="mt-3 block font-semibold text-amber-200 underline">Open the event simulation →</span>
+            </a>
+
             <a href="/learn/dead-laptop-detective" className="mb-6 block rounded-2xl border-2 border-cyan-500/40 bg-slate-950 p-6 text-white shadow-lg transition hover:border-cyan-300">
                 <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Featured · New interactive simulation</p>
                 <strong className="mt-2 block text-2xl">The Dead Laptop Detective</strong>
