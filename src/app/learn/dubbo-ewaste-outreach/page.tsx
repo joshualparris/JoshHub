@@ -38,7 +38,7 @@ export default function OutreachLearningPage() {
         <article className="rounded-xl border p-5"><h3 className="font-semibold">3. Use a small two-week outreach budget</h3><p>Contact two suitable organisations, not everyone at once. Ask a genuine process question rather than assuming donation. Keep independent project contacts separate from employer relationships.</p><p className="mt-2">Practice: record the role to contact, question, effort cap and follow-up date.</p></article>
       </div>
     </section>
-    <FieldGuideProgress storageKey="field-guide:dubbo-ewaste-outreach:2026-10-11.2" lessons={lessons.map(({id,title,question,options,answer,explanation})=>({id,title,check:{question,options,answer,explanation}}))} />
+    <FieldGuideProgress storageKey="field-guide:dubbo-ewaste-outreach:2026-10-11.3" lessons={lessons.map(({id,title,question,options,answer,explanation})=>({id,title,check:{question,options,answer,explanation}}))} />
     <section className="space-y-4">
       <h2 className="text-2xl font-semibold">Recommended research contacts</h2>
       <p>These eleven are highlights only. The linked report contains all 27 and their evidence sources. “Email verified” means published, not tested for delivery or a guarantee of response.</p>
