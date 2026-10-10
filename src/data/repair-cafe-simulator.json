@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-11.1",
+  "version": "2026-10-11.2",
   "title": "Run Your Own Repair Café",
   "subtitle": "One Saturday. Five stages. Real decisions, fictional people.",
   "description": "A strategy and community leadership simulation set in a fictional Dubbo community venue. Every name, approval, visitor and outcome in the simulation is invented.",
@@ -175,36 +175,39 @@
   "questions": [
     {
       "id": "q1",
-      "question": "Jules clicks 'I'm available' for a Saturday. Can you put them straight on the confirmed bike roster?",
+      "question": "Jules has indicated Saturday availability and has relevant bike skills. The lead is considering a bike station, but Jules has not yet accepted a specific shift. Which next action best preserves the roster's integrity?",
       "options": [
-        "Yes, availability is an accepted shift",
-        "No, offer a particular shift and receive their explicit acceptance",
-        "Only if the event is monthly"
+        "Add Jules as provisional coverage, display the station as pending and ask them to confirm before publicising that repair category.",
+        "Offer Jules a specific bike shift; only count the station as covered after acceptance, otherwise narrow the public repair scope.",
+        "Temporarily assign Alex as bike lead for administrative coverage, then replace the name after Jules replies.",
+        "Publish bike repairs as conditional, with a prominent note that qualified attendance is subject to confirmation."
       ],
       "answer": 1,
-      "why": "Availability, assignment and acceptance are distinct states."
+      "why": "An available person is a prospect, not guaranteed coverage. Even a conditional public commitment could mislead visitors if the only capable volunteer hasn't accepted."
     },
     {
       "id": "q2",
-      "question": "The host says 'You're welcome here sometime'. May you publish a fixed event date at their address?",
+      "question": "A library coordinator has tentatively offered a room, subject to confirming insurance and activity restrictions. You have three volunteers accepted and a draft flyer. What's the strongest next decision?",
       "options": [
-        "Yes, the verbal offer is enough",
-        "No, obtain written approval for the date and permitted activities first",
-        "Only if 20 visitors RSVP"
+        "Share a save-the-date without an address while leaving the repair categories undecided.",
+        "Confirm the date and permitted activities in writing, resolve relevant risk/cover questions and coverage, then approve public wording.",
+        "Ask the venue to publish the event on its calendar first, as that provides written evidence of approval.",
+        "Announce the proposed time with a cancellation clause while the final venue form is being processed."
       ],
       "answer": 1,
-      "why": "A venue suggestion or provisional hold is not a confirmed booking."
+      "why": "A draft offer and accepted volunteers do not replace written permission and agreed activities before advertising a definite event."
     },
     {
       "id": "q3",
-      "question": "Does NSW require a PAT test of every object a visitor brings to every Repair Café?",
+      "question": "An experienced volunteer wants to run a station with a plug-in appliance. The site provides an RCD, and someone offers a portable appliance tester, but competency, liability cover and procedures are unclear. What is the defensible scope decision?",
       "options": [
-        "Yes, without exceptions",
-        "No: testing duties depend on the circumstances, hazards, equipment and applicable obligations; get competent advice",
-        "No inspection or safety screening is needed"
+        "Allow only a visual inspection because a functioning RCD controls the main electrical hazard.",
+        "Restrict work to low-risk approved categories until a competent person and tailored electrical work/testing controls are verified.",
+        "Allow the volunteer to perform repairs without energising the appliance and arrange testing at a later event.",
+        "Permit repairs after a waiver is signed, because the volunteer's experience covers informal community activities."
       ],
       "answer": 1,
-      "why": "SafeWork NSW describes risk- and environment-dependent inspection/testing obligations. This simulator does not authorise electrical work."
+      "why": "Electrical testing/repair obligations depend on competency, hazard, equipment and context. Neither an RCD, tester nor waiver alone proves the activity is authorised or adequately controlled."
     }
   ],
   "incidents": [
@@ -217,9 +220,9 @@
       "choices": [
         {
           "id": "slow",
-          "label": "Pause new check-ins, brief the event lead to cover intake temporarily, then resume only when the queue can be handled.",
+          "label": "Set a short intake hold while Alex briefly covers welcome, record coverage changes and only reopen check-in when intake/triage is controlled.",
           "correct": true,
-          "why": "Safe capacity management and an explicit handover protect visitors and volunteers.",
+          "why": "Maintains intake and safeguarding without suggesting two roles can be staffed indefinitely.",
           "impact": {
             "welcome": 1,
             "energy": -1,
@@ -228,24 +231,24 @@
         },
         {
           "id": "open",
-          "label": "Let visitors wander to whichever repair bench is free.",
+          "label": "Move Morgan's remaining intake slot to Alex for the morning and ask Dev to supervise the queue from the computer table.",
           "correct": false,
-          "why": "Unscreened and unregistered items bypass scope, consent and safety checks.",
+          "why": "This appears to fill the roster, but silently overloads two existing roles and weakens the active computer station.",
           "impact": {
-            "welcome": -4,
+            "welcome": -2,
             "energy": -2,
-            "queue": 3
+            "queue": 2
           }
         },
         {
           "id": "ignore",
-          "label": "Mark Morgan as present and assume they'll catch up.",
+          "label": "Keep visitor intake open using a simplified name-and-item tally until Morgan arrives, then complete consent forms retrospectively.",
           "correct": false,
-          "why": "False attendance records can hide a critical uncovered role.",
+          "why": "Retroactive consent and risk checks can leave unscreened hazards and unclear ownership, even if visitor throughput improves.",
           "impact": {
-            "welcome": -2,
+            "welcome": -3,
             "energy": -1,
-            "queue": 2
+            "queue": 3
           }
         }
       ]
@@ -259,9 +262,9 @@
       "choices": [
         {
           "id": "scope",
-          "label": "Explain the one-item rule, register minimal details, then allocate to textiles only if that station is open; otherwise offer a referral.",
+          "label": "Confirm scope, consent and owner presence at intake, then direct the shirt to Maya if the textile station has capacity; otherwise offer a referral.",
           "correct": true,
-          "why": "Visitor consent and an active, skilled station both matter. The owner can learn alongside the fixer.",
+          "why": "A routine item still needs agreement and current station availability, with the owner involved.",
           "impact": {
             "welcome": 3,
             "energy": 0,
@@ -270,20 +273,20 @@
         },
         {
           "id": "promise",
-          "label": "Promise a repair regardless of the day's available skills and venue restrictions.",
+          "label": "Send the shirt to Maya immediately because sewing is low-risk, then record item details after the repair is completed.",
           "correct": false,
-          "why": "A Repair Café offers help, not guaranteed fixes. Don't promise a service outside the confirmed scope.",
+          "why": "A low-risk repair can still create custody, consent, accessibility and queue fairness problems when intake is skipped.",
           "impact": {
-            "welcome": -2,
-            "energy": -2,
+            "welcome": -1,
+            "energy": -1,
             "queue": 2
           }
         },
         {
           "id": "dropoff",
-          "label": "Tell the owner to leave the shirt and collect it another day.",
+          "label": "Invite the owner to wait until near closing so Maya can fit the job between longer repairs, without opening a queue record.",
           "correct": false,
-          "why": "Repair Cafés are designed around repairing together, not an indefinite drop-off service.",
+          "why": "The plan seems flexible but loses a fair queue, an informed wait estimate and a reliable handover record.",
           "impact": {
             "welcome": -2,
             "energy": -1,
@@ -301,9 +304,9 @@
       "choices": [
         {
           "id": "stop",
-          "label": "Do not energise it. Explain the safety exclusion and recommend an appropriately qualified repair or recycling pathway.",
+          "label": "Decline testing/energising the kettle, record a safety referral and explain why an appropriately qualified electrical pathway is needed.",
           "correct": true,
-          "why": "An unapproved mains repair/test is a stop condition. A disclaimer is not permission to attempt unsafe work.",
+          "why": "A damaged mains lead and no authorised electrical station are clear limits on this event's repair scope.",
           "impact": {
             "welcome": 2,
             "energy": 0,
@@ -312,23 +315,23 @@
         },
         {
           "id": "plug",
-          "label": "Plug it in briefly while watching carefully.",
+          "label": "Have the experienced computer volunteer visually inspect the cable without opening the case, then record the likely repair as a future possibility.",
           "correct": false,
-          "why": "Never energise a visibly unsafe mains appliance for a casual trial.",
+          "why": "Without an approved electrical scope or qualified workflow, a repair assessment could create a misleading service recommendation; referral is clearer.",
           "impact": {
-            "welcome": -5,
-            "energy": -2,
+            "welcome": -2,
+            "energy": -1,
             "queue": 1
           }
         },
         {
           "id": "waiver",
-          "label": "Have the visitor sign an extra waiver and ask the computer fixer to repair it.",
+          "label": "Quarantine the kettle in the repair area until the event closes, then organise a specialist to assess it if the owner cannot stay.",
           "correct": false,
-          "why": "Consent cannot override competence or electrical safety obligations.",
+          "why": "Keeping a hazardous customer item adds unnecessary custody and storage risk; the owner should retain it for a qualified referral.",
           "impact": {
-            "welcome": -4,
-            "energy": -2,
+            "welcome": -3,
+            "energy": -1,
             "queue": 1
           }
         }
@@ -343,9 +346,9 @@
       "choices": [
         {
           "id": "protect",
-          "label": "Decline unattended work and password handling; offer an owner-present session or an appropriate professional referral.",
+          "label": "Explain that the owner must remain involved, avoid recording credentials, and offer another session or suitable professional referral.",
           "correct": true,
-          "why": "Protect personal data and keep the community learning model owner-led and consent-aware.",
+          "why": "Collaborative repair and minimum-data practices protect privacy and custody.",
           "impact": {
             "welcome": 2,
             "energy": 0,
@@ -354,22 +357,22 @@
         },
         {
           "id": "keep",
-          "label": "Keep the laptop and password at the station while the visitor leaves.",
+          "label": "Offer to perform only a hardware diagnosis while the owner is away, with the SSD removed and stored separately at intake.",
           "correct": false,
-          "why": "This creates unnecessary privacy, custody and liability risks.",
+          "why": "Removing or holding storage is still a custody/data-sensitive intervention beyond the intended owner-present arrangement.",
           "impact": {
-            "welcome": -3,
+            "welcome": -2,
             "energy": -2,
             "queue": 1
           }
         },
         {
           "id": "upload",
-          "label": "Photograph the password and upload it to the shared volunteer roster.",
+          "label": "Have the owner give Dev temporary account access, then securely delete the note before the volunteer finishes the investigation.",
           "correct": false,
-          "why": "Never expose passwords or unnecessary personal information to volunteers.",
+          "why": "Temporary passwords still introduce avoidable data access and don't solve the unattended-work consent/custody problem.",
           "impact": {
-            "welcome": -5,
+            "welcome": -3,
             "energy": -2,
             "queue": 1
           }
@@ -385,9 +388,9 @@
       "choices": [
         {
           "id": "manage",
-          "label": "Explain the estimated wait and arrival cut-off, offer referrals and process only what the confirmed staff and venue can safely support.",
+          "label": "Set and explain an arrivals cut-off, update wait estimates, prioritise only within published fair criteria and offer referrals where capacity runs out.",
           "correct": true,
-          "why": "Honest expectations and a fair queue matter more than counting maximum items.",
+          "why": "Honest capacity constraints protect volunteers and visitors without silently reducing safety or access.",
           "impact": {
             "welcome": 2,
             "energy": 1,
@@ -396,22 +399,22 @@
         },
         {
           "id": "rush",
-          "label": "Ask volunteers to shorten safety checks to get through every item.",
+          "label": "Keep check-in open but shorten the intake to a minimum safety question, then do the full owner agreement when a table becomes free.",
           "correct": false,
-          "why": "A crowded session is not a reason to bypass intake and risk controls.",
+          "why": "Risk and consent must be addressed before queuing an item as accepted; a partial intake risks overcommitment.",
           "impact": {
-            "welcome": -4,
-            "energy": -3,
+            "welcome": -3,
+            "energy": -2,
             "queue": 3
           }
         },
         {
           "id": "overload",
-          "label": "Open an unstaffed repair table for anyone to use.",
+          "label": "Switch Maya to general intake and let visitors undertake basic textile fixes with shared tools until the backlog clears.",
           "correct": false,
-          "why": "Unsupervised activities exceed the safe event scope.",
+          "why": "This mixes roles and moves untrained visitors into unsupervised repair work, contrary to the confirmed roster/scope.",
           "impact": {
-            "welcome": -4,
+            "welcome": -3,
             "energy": -3,
             "queue": 3
           }
@@ -427,9 +430,9 @@
       "choices": [
         {
           "id": "isolate",
-          "label": "Stop nearby activities, keep the route clear, arrange safe clean-up and reroute people accessibly before reopening the area.",
+          "label": "Stop movement through the affected section, arrange prompt safe clean-up, and maintain a genuinely accessible alternative until the route is restored.",
           "correct": true,
-          "why": "Accessible egress and prompt hazard isolation take priority over throughput.",
+          "why": "Access, hazard control and an effective accessible detour matter more than keeping the station operating.",
           "impact": {
             "welcome": 2,
             "energy": -1,
@@ -438,20 +441,20 @@
         },
         {
           "id": "wait",
-          "label": "Leave the spill until closing; everyone can step around it.",
+          "label": "Place a caution sign and assign a volunteer to help people past the spill while the person managing refreshments finds cleaning supplies.",
           "correct": false,
-          "why": "This creates a foreseeable slip and access hazard.",
+          "why": "A spotter and sign reduce awareness problems but do not make a slippery blocked accessible route appropriate to keep using.",
           "impact": {
-            "welcome": -4,
+            "welcome": -3,
             "energy": -2,
             "queue": 1
           }
         },
         {
           "id": "sign",
-          "label": "Put a sign at the spill but keep the blocked route in use.",
+          "label": "Close the neighbouring repair bench but allow people to cross the spilled area one at a time using the edge of the room.",
           "correct": false,
-          "why": "A sign alone does not eliminate an obstacle blocking access.",
+          "why": "Staggered movement still exposes visitors to a known hazard and may not provide usable access for mobility aids.",
           "impact": {
             "welcome": -3,
             "energy": -2,
@@ -469,9 +472,9 @@
       "choices": [
         {
           "id": "record",
-          "label": "Return items to owners, record consented non-identifying outcomes, thank volunteers, make the room safe and note improvements.",
+          "label": "Confirm item handback and exit, record minimum appropriate non-identifying outcomes, debrief volunteers and check the venue with the host.",
           "correct": true,
-          "why": "A good close-out is a learning and custody process, not just counting fixes.",
+          "why": "Respectful custody closure, a safe venue and a useful review make the next event better.",
           "impact": {
             "welcome": 3,
             "energy": 1,
@@ -480,24 +483,24 @@
         },
         {
           "id": "store",
-          "label": "Keep unrepairable items and visitor passwords for the next monthly event.",
+          "label": "Complete the headcount, photograph all outstanding items for next month's volunteers and leave the room once tables are folded.",
           "correct": false,
-          "why": "Don't create a covert storage/ITAD stream or retain sensitive information without authority.",
+          "why": "Photos may capture private data and don't substitute for owner handback, host checks or a structured debrief.",
           "impact": {
-            "welcome": -5,
-            "energy": -1,
+            "welcome": -2,
+            "energy": -2,
             "queue": 1
           }
         },
         {
           "id": "vanish",
-          "label": "Pack away immediately without recording any outcomes or checking the space.",
+          "label": "Invite the remaining visitors to book unfinished items for the next session, storing them in labelled boxes if they consent.",
           "correct": false,
-          "why": "Event learning, owner handover, room safety and volunteer care are lost.",
+          "why": "An optional next booking doesn't imply capacity or permission for storage, ownership transfer or indefinite custody.",
           "impact": {
-            "welcome": -2,
-            "energy": -2,
-            "queue": 1
+            "welcome": -3,
+            "energy": -1,
+            "queue": 2
           }
         }
       ]
