@@ -1,0 +1,114 @@
+{
+  "version": "2026-10-11.1",
+  "status": "plan",
+  "goals": [
+    "observable mastery",
+    "subject-specific interaction",
+    "source provenance",
+    "accessibility",
+    "privacy"
+  ],
+  "courses": [
+    {
+      "id": "dead-laptop-detective",
+      "title": "The Dead Laptop Detective",
+      "subject": "Electronics diagnostics",
+      "interaction": "Virtual repair workbench",
+      "scope": "8 missions, 3 unseen fault cases",
+      "mastery": "Evidence-based fault isolation + safe escalation",
+      "sourceCollection": "DubboEwaste schematics library; Drive device indexes",
+      "engine": "simulation"
+    },
+    {
+      "id": "repair-cafe-event",
+      "title": "Run Your Own Repair Café",
+      "subject": "Community operations",
+      "interaction": "Event management simulation",
+      "scope": "5 events, one full event day",
+      "mastery": "Safe event/rostering/referral decisions",
+      "sourceCollection": "DubboEwaste Repair Café SOP; Drive check-in checklist",
+      "engine": "simulation"
+    },
+    {
+      "id": "lost-in-bush",
+      "title": "Lost in the Australian Bush",
+      "subject": "Outdoor navigation",
+      "interaction": "Map-based expedition",
+      "scope": "6 expeditions",
+      "mastery": "Choose a safe route and justify decisions",
+      "sourceCollection": "Drive bushwalking/outdoor education research",
+      "engine": "navigation"
+    },
+    {
+      "id": "journey-through-psalms",
+      "title": "Journey Through the Psalms",
+      "subject": "Scripture and reflection",
+      "interaction": "Audio-first annotated journal",
+      "scope": "12 Psalms",
+      "mastery": "Contextual comprehension and personal reflection (unscored)",
+      "sourceCollection": "FaithHub; Drive Psalms and Bible reflection documents",
+      "engine": "journal"
+    },
+    {
+      "id": "family-history-detective",
+      "title": "The Family History Detective",
+      "subject": "Genealogy",
+      "interaction": "Evidence board and archive puzzles",
+      "scope": "5 historical mysteries",
+      "mastery": "Source-backed mini family tree",
+      "sourceCollection": "Drive genealogical reports; private tree",
+      "engine": "investigation"
+    },
+    {
+      "id": "play-piano",
+      "title": "Play Piano by Ear and Sight",
+      "subject": "Music",
+      "interaction": "Live MIDI studio",
+      "scope": "20 graded exercises",
+      "mastery": "Demonstrated note, rhythm and listening skills",
+      "sourceCollection": "ParrisPiano MIDI tutor",
+      "engine": "performance"
+    },
+    {
+      "id": "money-lab",
+      "title": "The Household Money Lab",
+      "subject": "Financial literacy",
+      "interaction": "Interactive cash-flow sandbox",
+      "scope": "7 scenarios",
+      "mastery": "Build a resilient fictional budget",
+      "sourceCollection": "ParrisBudgetApp; Drive financial literacy research",
+      "engine": "simulation"
+    },
+    {
+      "id": "ai-ethics-council",
+      "title": "The AI Education Ethics Council",
+      "subject": "AI governance",
+      "interaction": "Deliberative multi-role dialogue",
+      "scope": "5 hearings",
+      "mastery": "Defensible school AI use policy",
+      "sourceCollection": "Drive AI education inquiry and teaching reports",
+      "engine": "dialogue"
+    },
+    {
+      "id": "worldbuilders-atlas",
+      "title": "The Worldbuilder's Atlas",
+      "subject": "Creative worldbuilding",
+      "interaction": "Explorable interactive fantasy atlas",
+      "scope": "8 chapters",
+      "mastery": "Coherent maps, cultures, trade and story conflict",
+      "sourceCollection": "realms-atlas; AshFallen",
+      "engine": "creation"
+    },
+    {
+      "id": "sound-garden",
+      "title": "The Sound Garden",
+      "subject": "Early literacy",
+      "interaction": "Play-based phonics garden",
+      "scope": "12 child-led sessions",
+      "mastery": "Recognise/blend target phonemes over contexts",
+      "sourceCollection": "SylviePhonetics EYLF mapping",
+      "engine": "co-play"
+    }
+  ],
+  "initialDelivery": "dead-laptop-detective"
+}
