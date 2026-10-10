@@ -1,0 +1,30 @@
+name: JoshHub Learning Lab QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/app/learn/**'
+      - 'src/components/learn/**'
+      - 'src/lib/learning/**'
+      - 'src/data/dead-laptop-detective.json'
+      - '.github/workflows/learning-lab-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  learning-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Evidence-gated diagnostic unit tests
+        run: npm run test -- --run src/lib/learning/dead-laptop-logic.test.ts
+      - name: TypeScript strict type checking
+        run: npx tsc --noEmit
