@@ -192,7 +192,7 @@ export default function FieldGuideProgress({ lessons, storageKey = defaultKey }:
         {wasChecked && grades[lesson.id] ? <div role="status" className="space-y-2 rounded border p-3 text-sm">
           <p className="font-semibold">{correct?"Evidence-based reasoning accepted.":"Reasoning needs more work."} {grades[lesson.id].summary}</p>
           <p><strong>Improve:</strong> {grades[lesson.id].improvement}</p>
-          {grades[lesson.id].dimensions?<p>Rubric (out of 4): understanding {grades[lesson.id].dimensions.understanding}, evidence {grades[lesson.id].dimensions.evidence}, alternatives {grades[lesson.id].dimensions.alternatives}, judgement {grades[lesson.id].dimensions.risk}.</p>:null}
+          {grades[lesson.id].dimensions?<p>Rubric (out of 4): understanding {grades[lesson.id].dimensions?.understanding}, evidence {grades[lesson.id].dimensions?.evidence}, alternatives {grades[lesson.id].dimensions?.alternatives}, judgement {grades[lesson.id].dimensions?.risk}.</p>:null}
           <p>{challenge.explanation}</p>
         </div> : null}
         <div>
