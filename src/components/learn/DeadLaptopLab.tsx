@@ -297,11 +297,11 @@ export default function DeadLaptopLab() {
             const q=mission[kind];const answer=state.answers[mission.id]?.[kind];const good=answer===q.answer;
             return <fieldset key={kind} className="rounded-xl border border-slate-700 bg-slate-950/50 p-4">
               <legend className="px-1 text-xs font-bold uppercase tracking-widest text-cyan-200">{i===0?"Scenario activity":"Knowledge check"}</legend>
-              <p className="mt-2 font-semibold leading-6">{q.prompt??q.question}</p>
+              <p className="mt-2 font-semibold leading-6">{"prompt" in q ? q.prompt : q.question}</p>
               <div className="mt-3 space-y-2">{q.options.map((o,index)=><label key={o} className={"flex cursor-pointer items-start gap-2 rounded-lg border p-3 text-sm "+(answer===index?"border-cyan-400 bg-cyan-400/10":"border-slate-700 hover:bg-slate-800")}>
                 <input type="radio" name={mission.id+"-"+kind} checked={answer===index} onChange={()=>updateAnswer(kind,index)} className="mt-1 h-4 w-4 accent-cyan-300"/><span>{o}</span>
               </label>)}</div>
-              {answer!==undefined?<p role="status" className={"mt-3 text-sm leading-6 "+(good?"text-emerald-200":"text-amber-200")}>{good?"Correct. ":"Not quite. "}{q.why??q.explanation}</p>:null}
+              {answer!==undefined?<p role="status" className={"mt-3 text-sm leading-6 "+(good?"text-emerald-200":"text-amber-200")}>{good?"Correct. ":"Not quite. "}{"why" in q ? q.why : q.explanation}</p>:null}
             </fieldset>;
           })}
         </div>
