@@ -45,6 +45,12 @@ export default function LearnPage() {
                 <span className="mt-2 block underline">Open the learning module →</span>
             </a>
 
+            <a href="/learn/dubbo-ewaste-outreach" className="mb-6 block rounded-xl border p-5">
+                <strong className="text-lg">New e-waste sourcing opportunities in Dubbo</strong>
+                <p className="mt-2">27 uncontacted prospects · verified contact routes · 3 short lessons. Learn to assess device ownership, risk and useful outreach.</p>
+                <span className="mt-2 block underline">Open the follow-on learning module →</span>
+            </a>
+
             <div className="mb-4">
                 <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search topics or tags" className="w-full border rounded p-2" />
             </div>
