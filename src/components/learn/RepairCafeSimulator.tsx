@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import {ArrowLeft,ArrowRight,Check,CheckCircle2,Download,ExternalLink,MapPin,RotateCcw,ShieldCheck,Users,Volume2,VolumeX} from "lucide-react";
 import course from "@/data/repair-cafe-simulator.json";
+import AdaptiveSimQuiz from "@/components/learn/AdaptiveSimQuiz";
 import {INITIAL_SIM_STATE,REPAIR_CAFE_STORAGE_KEY,activeRoles,canConfirmVolunteer,canPlaceVolunteer,canDebrief,dayMetrics,isSafeResolution,readinessBlockers,restoreSim,type SimState} from "@/lib/learning/repair-cafe-logic";
 
 const stages=["venue","roster","safety","event","debrief"] as const;
@@ -54,6 +55,7 @@ export default function RepairCafeSimulator(){
       <div className="mt-6 max-w-lg"><div className="mb-1 flex justify-between text-xs text-emerald-100"><span>Simulation progress</span><span>{percent}%</span></div><progress aria-label="Course progress" value={percent} max={100} className="h-3 w-full accent-amber-300"/><p className="mt-1 text-xs text-emerald-100">{saveError?"Browser progress cannot be saved.":"Progress saves in this browser only."}</p></div>
     </header>
     <div className="space-y-6 p-4 sm:p-7">
+      <AdaptiveSimQuiz simulator="cafe" />
       <nav className="grid grid-cols-2 gap-2 sm:grid-cols-5" aria-label="Learning stages">{stages.map(s=><button type="button" key={s} onClick={()=>setStage(s)} aria-current={s===stage?"step":undefined} className={"min-h-16 rounded-xl border p-3 text-left text-sm font-bold "+(stage===s?"border-emerald-900 bg-emerald-900 text-white":"border-stone-300 bg-white hover:bg-emerald-50")}>{names[s]}</button>)}</nav>
       <section className={box}><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-widest text-emerald-800">Coordinator field guide · {names[stage]}</p><h2 className={"mt-2 "+title}>{guide.heading}</h2></div><button className={btn} type="button" onClick={narration}>{speaking?<VolumeX size={15} className="mr-2 inline"/>:<Volume2 size={15} className="mr-2 inline"/>}{speaking?"Stop reading":"Listen to this lesson"}</button></div><p className="mt-3 max-w-4xl leading-7 text-stone-700">{guide.body}</p><p className="mt-4 rounded-xl border-l-4 border-amber-500 bg-amber-50 p-3 text-sm font-semibold">{guide.prompt}</p></section>
 
