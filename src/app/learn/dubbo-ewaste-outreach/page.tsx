@@ -31,6 +31,7 @@ export default function OutreachLearningPage() {
       <p className="text-sm uppercase tracking-wide">DubboEwaste · Research checked 11 October 2026</p>
       <h1 className="text-3xl font-bold sm:text-5xl">Find additional local e-waste sources responsibly</h1>
       <p>27 additional prospects or contact routes, checked against 21 sent outreach messages. No organisation has offered free equipment, and no new enquiries have been sent.</p>
+      <p><a href="https://github.com/joshualparris/JoshHub/blob/main/docs/research/DUBBO-TECH-BUSINESS-DECISION-BRIEF-2026-10-11.md" className="underline" target="_blank" rel="noreferrer">Read the complete business comparison and 56 decision-maker questions ↗</a></p>
       <a className="underline" href={guideUrl} target="_blank" rel="noreferrer">Read the full 27-lead research, sources and 30-day plan ↗</a>
     </header>
     <section className="space-y-4" aria-labelledby="lessons-title">
