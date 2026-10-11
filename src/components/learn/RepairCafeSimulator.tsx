@@ -19,7 +19,9 @@ export default function RepairCafeSimulator(){
   const [hydrated,setHydrated]=useState(false);
   const [saveError,setSaveError]=useState(false);
   const [debriefLoading,setDebriefLoading]=useState(false);
-  const [debriefFeedback,setDebriefFeedback]=useState<{passed:boolean;summary:string;improvement:string}|null>(null);
+  const [debriefFeedback,setDebriefFeedback]=useState<{passed:boolean;status:"pass"|"clarify"|"revise";summary:string;improvement:string;followUpQuestion?:string|null}|null>(null);
+  const [debriefFollowUp,setDebriefFollowUp]=useState("");
+  const [debriefAnswers,setDebriefAnswers]=useState("");
   const [debriefError,setDebriefError]=useState("");
   const [decisionReason,setDecisionReason]=useState("");
   const [speaking,setSpeaking]=useState(false);
@@ -60,16 +62,20 @@ export default function RepairCafeSimulator(){
   function narration(){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();if(speaking){setSpeaking(false);return;}const u=new SpeechSynthesisUtterance(guide.heading+". "+guide.body+" "+guide.prompt);u.lang="en-AU";u.rate=0.92;u.onend=()=>setSpeaking(false);u.onerror=()=>setSpeaking(false);setSpeaking(true);window.speechSynthesis.speak(u);}
   async function gradeDebrief(){
     if(debriefLoading || !closed || !state.reflection.trim())return;
+    const followUpNeeded=debriefFeedback?.status==="clarify"&&!debriefFeedback.passed;
+    if(followUpNeeded&&!debriefFollowUp.trim())return;
+    const answers=followUpNeeded?[debriefAnswers,"Further answer: "+debriefFollowUp.trim()].filter(Boolean).join("\n") : debriefAnswers;
     setDebriefLoading(true);setDebriefError("");setDebriefFeedback(null);
     try{
       const res=await fetch("/api/learning/grade",{
         method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",
-        body:JSON.stringify({kind:"reflection",course:"cafe",response:[state.reflection.trim(),"Accountable role: "+state.improvementOwner,"Check whether it worked: "+state.improvementMeasure].join("\n")})
+        body:JSON.stringify({kind:"reflection",course:"cafe",response:[state.reflection.trim(),"Accountable role: "+state.improvementOwner,"Check whether it worked: "+state.improvementMeasure,answers].filter(Boolean).join("\n")})
       });
-      const result=await res.json() as {passed?:boolean;summary?:string;improvement?:string;error?:string};
+      const result=await res.json() as {passed?:boolean;status?:"pass"|"clarify"|"revise";summary?:string;improvement?:string;followUpQuestion?:string|null;error?:string};
       if(!res.ok){setDebriefError(result.error??result.summary??"The reflection was not graded. Try again.");return;}
-      const passed=result.passed===true;
-      setDebriefFeedback({passed,summary:result.summary??"Reasoning reviewed.",improvement:result.improvement??"Add concrete event evidence and consider alternatives."});
+      const passed=result.passed===true&&result.status==="pass";
+      if(followUpNeeded){setDebriefAnswers(answers);setDebriefFollowUp("");}
+      setDebriefFeedback({passed,status:result.status??"revise",summary:result.summary??"Reasoning reviewed.",improvement:result.improvement??"Add concrete event evidence and consider alternatives.",followUpQuestion:result.followUpQuestion});
       setState(prev=>({...prev,debriefPassed:passed}));
     }catch{setDebriefError("The grader could not be reached. No completion has been awarded.");}
     finally{setDebriefLoading(false);}
@@ -194,15 +200,21 @@ export default function RepairCafeSimulator(){
           <p className="mt-4 text-sm">This portfolio records your actual simulated choices, including first-choice errors and recovery. No real repairs, savings or volunteer hours are claimed.</p>
           <div className="mt-5 rounded-xl border border-stone-200 p-4"><h3 className="font-bold">Your simulated event decision ledger</h3><ol className="mt-3 space-y-3 text-sm">{state.decisions.map((d,i)=>{const e=course.incidents.find(x=>x.id===d.incidentId);return <li key={d.incidentId} className="border-l-2 border-stone-300 pl-3"><strong>{i+1}. {e?.title}</strong> · {d.safe?"Sound first judgement":"Risky first judgement; recovered"}<p className="mt-1 text-stone-600">{e?.choices.find(c=>c.id===d.choiceId)?.label}</p>{d.reason?<p className="mt-1 italic text-stone-700">Your note: {d.reason}</p>:null}</li>;})}</ol></div>
           <label className="mt-4 block font-bold" htmlFor="reflection-owner">Who would own your proposed improvement?</label>
-          <input id="reflection-owner" className="mt-2 w-full rounded-xl border border-stone-300 p-3" maxLength={100} placeholder="e.g. Event coordinator, with a backup volunteer" value={state.improvementOwner} onChange={e=>{setDebriefFeedback(null);setState(x=>({...x,improvementOwner:e.target.value,debriefPassed:false}));}}/>
+          <input id="reflection-owner" className="mt-2 w-full rounded-xl border border-stone-300 p-3" maxLength={100} placeholder="e.g. Event coordinator, with a backup volunteer" value={state.improvementOwner} onChange={e=>{setDebriefFeedback(null);setDebriefAnswers("");setDebriefFollowUp("");setState(x=>({...x,improvementOwner:e.target.value,debriefPassed:false}));}}/>
           <label className="mt-4 block font-bold" htmlFor="reflection-measure">How would you check if the improvement worked?</label>
-          <textarea id="reflection-measure" rows={2} maxLength={300} className="mt-2 w-full rounded-xl border border-stone-300 p-3" placeholder="e.g. Compare recorded wait estimates and number of abandoned queues over two sessions." value={state.improvementMeasure} onChange={e=>{setDebriefFeedback(null);setState(x=>({...x,improvementMeasure:e.target.value,debriefPassed:false}));}}/>
+          <textarea id="reflection-measure" rows={2} maxLength={300} className="mt-2 w-full rounded-xl border border-stone-300 p-3" placeholder="e.g. Compare recorded wait estimates and number of abandoned queues over two sessions." value={state.improvementMeasure} onChange={e=>{setDebriefFeedback(null);setDebriefAnswers("");setDebriefFollowUp("");setState(x=>({...x,improvementMeasure:e.target.value,debriefPassed:false}));}}/>
           <label className="mt-4 block font-bold" htmlFor="reflection-cafe">What one thing would you improve next time?</label>
-          <textarea id="reflection-cafe" rows={5} className="mt-3 w-full rounded-xl border border-stone-300 p-4" maxLength={1500} placeholder="Next month I would…" value={state.reflection} onChange={e=>{setDebriefFeedback(null);setDebriefError("");setState(s=>({...s,reflection:e.target.value,debriefPassed:false}));}}/>
+          <textarea id="reflection-cafe" rows={5} className="mt-3 w-full rounded-xl border border-stone-300 p-4" maxLength={1500} placeholder="Next month I would…" value={state.reflection} onChange={e=>{setDebriefFeedback(null);setDebriefAnswers("");setDebriefFollowUp("");setDebriefError("");setState(s=>({...s,reflection:e.target.value,debriefPassed:false}));}}/>
           <p className="mt-3 text-sm text-stone-700">Give a concrete incident, one feasible change, why it is preferable to another reasonable approach, and how you will assess the result. Your writing is sent to Groq only when you submit; do not include personal details.</p>
-          <button type="button" className={go+" mt-3"} disabled={debriefLoading||!state.reflection.trim()||!state.improvementOwner.trim()||!state.improvementMeasure.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Assessing event reflection…":"Have Groq assess my plan"}</button>
+          <button type="button" className={go+" mt-3"} disabled={debriefLoading||Boolean(debriefFeedback?.passed)||Boolean(debriefFeedback?.status==="clarify")||!state.reflection.trim()||!state.improvementOwner.trim()||!state.improvementMeasure.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Assessing event reflection…":"Have Groq assess my plan"}</button>
           {debriefError?<p role="alert" className="mt-3 rounded-lg border border-amber-600 p-3 text-sm">{debriefError}</p>:null}
-          {debriefFeedback?<div role="status" className="mt-3 rounded-lg border border-stone-300 p-3 text-sm"><p className="font-bold">{debriefFeedback.passed?"Reflection demonstrates applied planning.":"Reflection needs more reasoning."}</p><p className="mt-1">{debriefFeedback.summary}</p><p className="mt-2"><strong>Improve:</strong> {debriefFeedback.improvement}</p></div>:null}
+          {debriefFeedback?<div role="status" className="mt-3 rounded-lg border border-stone-300 p-3 text-sm"><p className="font-bold">{debriefFeedback.passed?"Reflection demonstrates applied planning.":debriefFeedback.status==="clarify"?"Promising plan: one detail to confirm.":"Let's improve this plan."}</p><p className="mt-1">{debriefFeedback.summary}</p><p className="mt-2"><strong>Next step:</strong> {debriefFeedback.improvement}</p>
+            {debriefFeedback.status==="clarify"&&!debriefFeedback.passed?<div className="mt-3 space-y-2">
+              <label htmlFor="debrief-clarification" className="block font-semibold">{debriefFeedback.followUpQuestion??"What evidence or authorisation would make your plan safe and workable?"}</label>
+              <textarea id="debrief-clarification" rows={3} maxLength={850} className="w-full rounded-lg border border-stone-300 p-3" placeholder="A short clarification is fine…" value={debriefFollowUp} onChange={e=>setDebriefFollowUp(e.target.value)}/>
+              <button type="button" className={go} disabled={debriefLoading||!debriefFollowUp.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Reviewing…":"Send clarification"}</button>
+            </div>:null}
+          </div>:null}
           {finished?<div className="mt-4 rounded-xl bg-emerald-900 p-5 text-white"><CheckCircle2 className="text-amber-200"/><h3 className="mt-2 text-2xl font-black">Simulation completed</h3><p className="mt-2 text-sm">You've recorded your real first decisions in this fictional exercise, recovered from incidents where needed, and produced an AI-reviewed improvement plan. Real event leadership still needs supervised observation.</p></div>:<p className="mt-2 text-sm">Completion requires a substantive event-improvement plan that passes the AI grading rubric, not a character count.</p>}
           <button type="button" className={go+" mt-4"} disabled={!finished} onClick={exportReport}><Download size={16} className="mr-1 inline"/> Export fictional event report</button>
         </>}
