@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {podcasts} from "@/lib/learning/podcast-library";
 
 import { PodcastLibrary } from "@/components/podcast-library";
 
@@ -18,6 +19,11 @@ type Episode = {
   show: string;
   tags?: string[];
   duration?: string;
+  tags?: string[];
+  playerType?:"spotify"|"mp3";
+  spotifyType?:"episode"|"show";
+  audioUrl?:string;
+  sourceUrl?:string;
 };
 
 const topicGroups: Array<{ id: string; name: string; episodes: Episode[] }> = [
@@ -29,6 +35,7 @@ const topicGroups: Array<{ id: string; name: string; episodes: Episode[] }> = [
   { id: "career", name: "Career", episodes: career },
   { id: "decision", name: "Decision making", episodes: decision },
   { id: "homelab", name: "Homelab & local AI", episodes: homelab },
+  { id: "repair-cafe", name: "Repair Café & e-waste", episodes: podcasts.map(p=>({id:p.player==="mp3"?p.id:p.url.split("/").pop()??p.id,title:p.title,show:p.creator,tags:[p.category],playerType:p.player==="mp3"?"mp3" as const:"spotify" as const,spotifyType:p.url.includes("/show/")?"show" as const:"episode" as const,audioUrl:p.audio||undefined,sourceUrl:p.url})) },
   { id: "horses", name: "Horse therapy", episodes: horses },
 ];
 
