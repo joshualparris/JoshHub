@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-11.2",
+  "version": "2026-10-11.3",
   "title": "Run Your Own Repair Café",
   "subtitle": "One Saturday. Five stages. Real decisions, fictional people.",
   "description": "A strategy and community leadership simulation set in a fictional Dubbo community venue. Every name, approval, visitor and outcome in the simulation is invented.",
@@ -587,6 +587,16 @@
     {
       "title": "DubboEwaste: farmers market pilot evidence and cautions",
       "url": "https://github.com/joshualparris/DubboEwaste/blob/main/docs/REPAIR-CAFE-FARMERS-MARKET-PILOT-RESEARCH-2026-10-09.md",
+      "kind": "Own research"
+    },
+    {
+      "title": "NSW Government: Event risk assessment and management",
+      "url": "https://www.nsw.gov.au/departments-and-agencies/premiers-department/community-engagement/event-starter-guide/risk-assessment-management",
+      "kind": "Government"
+    },
+    {
+      "title": "JoshHub Repair Café coordinator mastery playbook",
+      "url": "https://github.com/joshualparris/JoshHub/blob/main/docs/learning-lab/REPAIR-CAFE-COORDINATOR-MASTERY-PLAYBOOK.md",
       "kind": "Own research"
     }
   ]
