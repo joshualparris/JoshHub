@@ -7,8 +7,8 @@ import repairCafeCases from "../../data/repair-cafe-simulator.json";
 
 const writtenResponse = z.string().min(0).max(2400);
 export const gradingRequest = z.discriminatedUnion("kind",[
-  z.object({kind:z.literal("research"),course:z.enum(["business","outreach"]),lessonId:z.string().regex(/^[a-z-]{2,35}$/),level:z.union([z.literal(1),z.literal(2),z.literal(3)]),selected:z.number().int().min(0).max(3),response:writtenResponse}).strict(),
-  z.object({kind:z.literal("simulation"),simulator:z.enum(["laptop","cafe"]),challengeId:z.string().regex(/^(laptop|cafe):[0-9]{1,2}$/),selected:z.number().int().min(0).max(2),response:writtenResponse}).strict(),
+  z.object({kind:z.literal("research"),course:z.enum(["business","outreach"]),lessonId:z.string().regex(/^[a-z-]{2,35}$/),level:z.union([z.literal(1),z.literal(2),z.literal(3)]),selected:z.number().int().min(0).max(3).nullable().optional(),response:writtenResponse}).strict(),
+  z.object({kind:z.literal("simulation"),simulator:z.enum(["laptop","cafe"]),challengeId:z.string().regex(/^(laptop|cafe):[0-9]{1,2}$/),selected:z.number().int().min(0).max(2).nullable().optional(),response:writtenResponse}).strict(),
   z.object({kind:z.literal("reflection"),course:z.literal("cafe"),response:writtenResponse}).strict()
 ]);
 export type GradingRequest = z.infer<typeof gradingRequest>;
@@ -30,14 +30,16 @@ export function resolveAssessment(input:GradingRequest): Question|null {
   return appliedOutreach[input.lessonId]??null;
 }
 export type WritingQuality={ok:boolean;reason?:string;words:number};
+/** Reject non-answers cheaply, not concise but genuinely reasoned alternatives. */
 export function writingQuality(raw:string):WritingQuality{
  const text=raw.normalize("NFKC").trim();
- const words=text.match(/\p{L}[\p{L}'-]{1,}/gu)??[];
- const distinct=new Set(words.map(w=>w.toLowerCase()));
- if(text.length>2400)return {ok:false,reason:"Please keep your reasoning under 2,400 characters.",words:words.length};
- if(words.length<24 || distinct.size<14) return {ok:false,reason:"Explain your decision in your own words (at least 24 meaningful words with some detail). Punctuation, repeated words and copied options do not count.",words:words.length};
- if(!/[.!?;:]|\n/.test(text))return {ok:false,reason:"Write at least one clear sentence connecting the scenario to your decision.",words:words.length};
- if(/\b(?:password|api[_ -]?key|access token)\s*[:=]\s*\S{8,}/i.test(text))return {ok:false,reason:"Please remove any passwords, access tokens or confidential details before submitting.",words:words.length};
+ const words=text.match(/\p{L}[\p{L}'’-]*/gu)??[];
+ const distinct=new Set(words.map(w=>w.toLocaleLowerCase("en")));
+ const letters=(text.match(/\p{L}/gu)??[]).length;
+ if(text.length>2400)return {ok:false,reason:"Please keep your answer under 2,400 characters.",words:words.length};
+ if(letters<7 || distinct.size<2)return {ok:false,reason:"Tell me what you would do and why, even briefly. Punctuation or repeated filler isn't an answer.",words:words.length};
+ if(/\b(?:password|api[_ -]?key|access token)\s*[:=]\s*\S{8,}/i.test(text))return {ok:false,reason:"Remove passwords, tokens or confidential details before submitting.",words:words.length};
+ // No arbitrary word minimum, sentence punctuation rule or boilerplate alternatives requirement.
  return {ok:true,words:words.length};
 }
 export function duplicateAnswer(student:string,option:string):boolean{
@@ -46,15 +48,28 @@ export function duplicateAnswer(student:string,option:string):boolean{
  return a===b||a.startsWith(b+" ")&&a.length<b.length+55;
 }
 export const modelGradeSchema = z.object({
+ status:z.enum(["pass","clarify","revise"]),
  understanding:z.number().int().min(0).max(4),
  evidence:z.number().int().min(0).max(4),
  alternatives:z.number().int().min(0).max(4),
  risk:z.number().int().min(0).max(4),
  substantive:z.boolean(),
- summary:z.string().min(15).max(650),
- improvement:z.string().min(15).max(650),
+ creativeAlternative:z.boolean(),
+ summary:z.string().min(12).max(650),
+ improvement:z.string().min(10).max(650),
+ followUpQuestion:z.string().max(320).nullable(),
 });
-export function calculateMastery(g:z.infer<typeof modelGradeSchema>) {
- // AI cannot override the minimum explicit component standards.
- return g.substantive && g.understanding>=3 && g.evidence>=3 && g.alternatives>=2 && g.risk>=2 && (g.understanding+g.evidence+g.alternatives+g.risk)>=12;
+/** AI suggests a disposition but cannot award completion if underlying rubric fails. */
+export function gradingDecision(g:{
+ status?:"pass"|"clarify"|"revise";
+ understanding:number;evidence:number;alternatives:number;risk:number;substantive:boolean
+}):"pass"|"clarify"|"revise" {
+ const total=g.understanding+g.evidence+g.alternatives+g.risk;
+ const strong=g.substantive && g.understanding>=3 && g.evidence>=2 && g.alternatives>=2 && g.risk>=2 && total>=10;
+ if(g.status==="revise")return "revise";
+ if(g.status==="pass" && strong)return "pass";
+ return g.substantive && g.understanding>=2?"clarify":"revise";
+}
+export function calculateMastery(g:{understanding:number;evidence:number;alternatives:number;risk:number;substantive:boolean;status?:"pass"|"clarify"|"revise"}) {
+ return gradingDecision({...g,status:g.status??"pass"})==="pass";
 }
