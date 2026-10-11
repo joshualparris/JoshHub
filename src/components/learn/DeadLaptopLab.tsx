@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ClipboardCheck, Co
 import data from "@/data/dead-laptop-detective.json";
 import DetectiveMiniGames from "@/components/learn/DetectiveMiniGames";
 import AdaptiveSimQuiz from "@/components/learn/AdaptiveSimQuiz";
+import PowerFaultCapstone from "@/components/learn/PowerFaultCapstone";
 import { STORAGE_VERSION, canCompleteMission, gradeCase, progressPercentage } from "@/lib/learning/dead-laptop-logic";
 
 type AnswerKind = "activity" | "check";
@@ -293,6 +294,8 @@ export default function DeadLaptopLab() {
           </div>
         </div>
       </section>
+
+      <PowerFaultCapstone />
 
       <section className={card} aria-labelledby="practice-title">
         <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">PRACTICE + RETRIEVAL</p>
