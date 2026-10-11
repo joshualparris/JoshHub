@@ -57,6 +57,8 @@ It is **not valid** to add every row as a separate taught subject. Subject label
 - [AvancePD: activity, skill and scenario register](https://github.com/Parris-Tech-Services/AvancePD/blob/main/docs/AVANCE-MSP-LEARNING-QUALITY-REGISTER-2026-10-11.md)
 - [AvanceProfessionalDevelopment: activity, skill and scenario register](https://github.com/Parris-Tech-Services/AvanceProfessionalDevelopment/blob/main/docs/AVANCE-MSP-LEARNING-QUALITY-REGISTER-2026-10-11.md)
 - [JoshHub Learning Lab: seed topics and simulation register](https://github.com/joshualparris/JoshHub/blob/main/docs/JOSHHUB-LEARNING-QUALITY-REGISTER-2026-10-11.md)
+- [Research Atlas: all 91 document-resource entries](https://github.com/Parris-Tech-Services/ResearchAtlas/blob/main/docs/RESEARCH-ATLAS-RESOURCE-QUALITY-REGISTER-2026-10-11.md)
+- [UpskillApp: all 9 training-pathway options](https://github.com/Parris-Tech-Services/UpskillApp/blob/main/docs/UPSKILL-TRAINING-PATHWAY-REGISTER-2026-10-11.md)
 - [Shared learning quality standard](LEARNING-QUALITY-STANDARD.md)
 
 This is a **code audit**, not a reviewed student outcome study, screenshot/browser UI certification, individually verified 218-link run, or legal/occupational approval.
