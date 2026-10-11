@@ -1,7 +1,7 @@
 # Dubbo Men's Sheds & inclusive Repair Café partnership
 **Research checked:** 12 October 2026  
 **Status:** Public-source desk research. **No partnership, insurer approval, membership/access arrangement or public computer repair service is confirmed.**  
-**Interactive course:** [Mens Sheda Dubbo](https://josh-hub-two.vercel.app/learn/mens-sheda-dubbo) (code committed; confirm deployment before public use).  
+**Interactive course:** [Mens Sheda Dubbo](https://josh-hub-two.vercel.app/learn/mens-sheda-dubbo) (production deployed 12 October 2026).  
 **Google Doc:** https://docs.google.com/document/d/1-357ROFKogCPaIEcI_frN8b_qsstT25OnNBmUJBk-_o/edit
 
 ## Executive decision
@@ -121,3 +121,32 @@ Dubbo Community is listed on ABN Lookup as active under **ABN 75 537 194 581**, 
 ### Decision
 
 **Preferred:** neutral, accessible Repair Café Dubbo with interested Shed members contributing skills once permissions, insurance, competencies and safety are confirmed. If Eric cannot be reached, contact Peter Cluff through Dubbo Community in parallel and ask AMSA to confirm South Dubbo's committee contact.
+
+
+---
+
+## Update 12 October 2026 — community replies and Narromine Women’s Shed
+
+**Evidence level: local third-party report, not confirmed organisation policy.**
+
+A community member replied to Josh's Facebook enquiry that *the men's shed* does not allow women, suggested a trial evening/monthly mixed session, and said it is not open until after 1 pm on Monday. The thread followed Josh’s unanswered SMS to the South Dubbo AMSA contact, but **the comment does not explicitly identify which Dubbo Shed**. Treat the purported women’s exclusion and Monday opening time as *unverified for both organisations*. Do not change either Shed's inclusion matrix to a definitive yes/no.
+
+**Hours conflict:** Local directories and 2024 community reporting list Dubbo Community Men’s Shed at **Monday 9 am–1 pm**, plus Thursday/Saturday afternoons. The comment about opening only *after* 1 pm Monday conflicts with that and might refer to a different Shed, or updated hours. Do not publish either as a confirmed 2026 timetable; telephone before visiting.
+- Dubbo Community local listing: https://www.findglocal.com/AU/Dubbo/240305542725764/Dubbo-Community-Men%27s-Shed-Inc.
+- Dubbo Photo News historical opening window: https://www.dubbophotonews.com.au/news/donate-to-help-the-dubbo-community-mens-shed-fundraise-j8np6m2c
+
+**New organisation independently verified: Narromine Community Women’s Shed.** This is a separate organisation from Narromine Men’s Shed (AMSA lists the latter at 60–66 Dandaloo Street with contact John Edmunds, phone 0427 892 235). Dubbo Photo News **7 May 2026** identifies Narromine Community Women’s Shed chair **Bette Thatcher** and secretary **Dawn Collins**, reports that the group meets three times a week at **Wesley Centre in Narromine**, welcomes women of all ages, and participates in craft, fundraising and support for Timbrebongie House. This is **verified recent community activity**, not verified technology repair ability, formal public tool access or agreement to volunteer in Dubbo.
+
+- May 2026 report: https://www.dubbophotonews.com.au/news/regional/womens-shed-crafters-make-a-gift-to-timbrebongie-house-gzspg6ku
+- Directory address/phone: **Wesley Centre, Dandaloo Street, Narromine; (02) 6889 4473**. The phone is published but 2026 currency and telephone answering are **unverified**. https://www.yellowpages.com.au/nsw/narromine/narromine-community-womens-shed-1000002210649-listing.html
+- Narromine Council's community groups team offers to help locate contacts on **02 6889 9999**, which is a reliable fallback rather than inventing a current email: https://narromine.nsw.gov.au/community/community-groups
+- AMSA Narromine Men’s Shed (different organisation): https://mensshed.org/sheds/narromine-mens-shed-inc/
+
+**Partnership implication:** add Narromine Community Women’s Shed to the *potential skills and inclusion network* for Repair Café Dubbo, primarily around craft, sewing/mending and mentoring. Do **not** call it a mixed Shed, and do **not** assume it repairs electronics or has offered to participate. Mixed workshops at either Dubbo Men’s Shed are only a *community suggestion* until the host committee and insurer agree. The original neutral, inclusive Repair Café venue remains the preferred plan.
+
+**Next three verification questions:**
+1. Which Dubbo Men's Shed did the Facebook commenter mean, and was the reported women’s exclusion about **ordinary membership, guest visits or special public events**?
+2. Which Shed currently opens on Mondays after 1 pm, if either? Confirm 2026 hours directly.
+3. Would Narromine Community Women's Shed’s current committee consider an exploratory chat about **craft/mending and an occasional inclusive Repair Café Dubbo collaboration**? Who is the 2026 contact and preferred route?
+
+*Provenance:* user-supplied screenshot of Facebook thread (12 October 2026); independent May 2026 Dubbo Photo News and public directory/Council/AMSA pages as linked above. No direct reply from any Shed has been obtained.
