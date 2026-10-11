@@ -8,6 +8,10 @@ export type PodcastEpisode = {
   title: string;
   show: string;
   duration?: string;
+  playerType?:"spotify"|"mp3";
+  spotifyType?:"episode"|"show";
+  audioUrl?:string;
+  sourceUrl?:string;
 };
 
 const STORAGE_KEY = "joshhub:podcast-current";
@@ -44,6 +48,11 @@ export function PodcastPlayer() {
     window.addEventListener(PLAYER_EVENT, handlePlay);
     return () => window.removeEventListener(PLAYER_EVENT, handlePlay);
   }, []);
+
+  const spotifyId= current?.id && /^[a-zA-Z0-9]{8,40}$/.test(current.id)?current.id:null;
+  const audioUrl=(()=>{try{if(!current?.audioUrl)return null;const url=new URL(current.audioUrl);return url.protocol==="https:" && ["media.blubrry.com","therestartproject.org"].includes(url.hostname)?url.toString():null;}catch{return null;}})();
+  const spotifyType=current?.spotifyType==="show"?"show":"episode";
+  const validOriginal=(()=>{try{if(!current?.sourceUrl)return null;const url=new URL(current.sourceUrl);return url.protocol==="https:"?url.toString():null;}catch{return null;}})();
 
   const closePlayer = () => {
     setCurrent(null);
@@ -120,16 +129,9 @@ export function PodcastPlayer() {
         aria-hidden={!expanded}
       >
         <div className="border-t border-slate-200 px-3 pb-3 pt-2 dark:border-slate-800">
-          <iframe
-            key={current.id}
-            title={`Spotify player for ${current.title}`}
-            src={`https://open.spotify.com/embed/episode/${current.id}?utm_source=generator&theme=0`}
-            width="100%"
-            height="152"
-            loading="eager"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            className="rounded-xl border-0"
-          />
+          {current.playerType==="mp3" && audioUrl?<audio key={current.id} controls preload="none" src={audioUrl} className="w-full" aria-label={`Listen to ${current.title}`}>Your browser does not support HTML5 audio.</audio>:
+           spotifyId?<iframe key={current.id} title={`Spotify player for ${current.title}`} src={`https://open.spotify.com/embed/${spotifyType}/${spotifyId}?utm_source=generator&theme=0`} width="100%" height="152" loading="eager" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" className="rounded-xl border-0"/>:
+           <p role="status" className="text-xs">This recording needs to be played on its publisher's website.</p>}
 
           <div className="mt-2 flex items-center justify-between gap-2">
             <Link
@@ -139,12 +141,12 @@ export function PodcastPlayer() {
               Browse podcasts
             </Link>
             <a
-              href={`https://open.spotify.com/episode/${current.id}`}
+              href={validOriginal ?? `https://open.spotify.com/${spotifyType}/${spotifyId??""}`}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-lg px-2 py-1.5 text-xs text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 dark:text-slate-400 dark:hover:bg-slate-900"
             >
-              Open in Spotify ↗
+              Original recording ↗
             </a>
           </div>
         </div>
