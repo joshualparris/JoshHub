@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {ArrowLeft,ArrowRight,Check,CheckCircle2,Download,ExternalLink,MapPin,RotateCcw,ShieldCheck,Users,Volume2,VolumeX} from "lucide-react";
 import course from "@/data/repair-cafe-simulator.json";
 import AdaptiveSimQuiz from "@/components/learn/AdaptiveSimQuiz";
-import {INITIAL_SIM_STATE,REPAIR_CAFE_STORAGE_KEY,activeRoles,canConfirmVolunteer,canPlaceVolunteer,canDebrief,dayMetrics,isSafeResolution,readinessBlockers,restoreSim,type SimState} from "@/lib/learning/repair-cafe-logic";
+import {INITIAL_SIM_STATE,REPAIR_CAFE_STORAGE_KEY,activeRoles,canConfirmVolunteer,canPlaceVolunteer,canDebrief,dayMetrics,readinessBlockers,restoreSim,eventDecision,recoverDecision,canAdvanceEvent,nextEvent,eventPressure,type SimState} from "@/lib/learning/repair-cafe-logic";
 
 const stages=["venue","roster","safety","event","debrief"] as const;
 type Stage=typeof stages[number];
@@ -21,8 +21,7 @@ export default function RepairCafeSimulator(){
   const [debriefLoading,setDebriefLoading]=useState(false);
   const [debriefFeedback,setDebriefFeedback]=useState<{passed:boolean;summary:string;improvement:string}|null>(null);
   const [debriefError,setDebriefError]=useState("");
-  const [choice,setChoice]=useState("");
-  const [feedback,setFeedback]=useState("");
+  const [decisionReason,setDecisionReason]=useState("");
   const [speaking,setSpeaking]=useState(false);
   const [media,setMedia]=useState<"sources"|"video"|"audio">("sources");
   const [imageError,setImageError]=useState(false);
@@ -35,6 +34,8 @@ export default function RepairCafeSimulator(){
   const locked=state.incidentIndex>0;
   const closed=state.incidentIndex>=course.incidents.length;
   const incident=course.incidents[state.incidentIndex];
+  const currentDecision=incident?state.decisions.find(x=>x.incidentId===incident.id):undefined;
+  const chosenOption=incident?.choices.find(x=>x.id===currentDecision?.choiceId);
   const metrics=dayMetrics(state,course);
   const finished=canDebrief(state,course);
   const guide=course.reading.find(x=>x.step===stage)!;
@@ -44,8 +45,18 @@ export default function RepairCafeSimulator(){
 
   function toggleScope(id:string){if(locked)return;setState(s=>({...s,activeStations:s.activeStations.includes(id)?s.activeStations.filter(x=>x!==id):[...s.activeStations,id]}));}
   function assign(role:string,id:string){if(locked)return;if(id && !canPlaceVolunteer(course,state,role,id))return;setState(s=>({...s,assigned:id?{...s.assigned,[role]:id}:Object.fromEntries(Object.entries(s.assigned).filter(([key])=>key!==role))}));}
-  function scenarioDecision(id:string){if(choice || !incident)return;const c=incident.choices.find(x=>x.id===id);if(!c)return;setChoice(id);setFeedback(c.why);if(!c.correct)setState(s=>({...s,badChoices:s.badChoices+1}));}
-  function advance(){if(!incident||!isSafeResolution(course,incident.id,choice))return;setState(s=>({...s,incidentIndex:Math.min(course.incidents.length,s.incidentIndex+1)}));setChoice("");setFeedback("");}
+  function scenarioDecision(id:string) {
+    if(!incident || currentDecision)return;
+    setState(prev=>eventDecision(prev,course,incident.id,id,decisionReason));
+  }
+  function advance(){
+    if(!canAdvanceEvent(state,course))return;
+    setState(prev=>nextEvent(prev,course));
+    setDecisionReason("");
+  }
+  function recover(){
+    setState(prev=>recoverDecision(prev,course));
+  }
   function narration(){if(!("speechSynthesis" in window))return;window.speechSynthesis.cancel();if(speaking){setSpeaking(false);return;}const u=new SpeechSynthesisUtterance(guide.heading+". "+guide.body+" "+guide.prompt);u.lang="en-AU";u.rate=0.92;u.onend=()=>setSpeaking(false);u.onerror=()=>setSpeaking(false);setSpeaking(true);window.speechSynthesis.speak(u);}
   async function gradeDebrief(){
     if(debriefLoading || !closed || !state.reflection.trim())return;
@@ -53,7 +64,7 @@ export default function RepairCafeSimulator(){
     try{
       const res=await fetch("/api/learning/grade",{
         method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",
-        body:JSON.stringify({kind:"reflection",course:"cafe",response:state.reflection.trim()})
+        body:JSON.stringify({kind:"reflection",course:"cafe",response:[state.reflection.trim(),"Accountable role: "+state.improvementOwner,"Check whether it worked: "+state.improvementMeasure].join("\n")})
       });
       const result=await res.json() as {passed?:boolean;summary?:string;improvement?:string;error?:string};
       if(!res.ok){setDebriefError(result.error??result.summary??"The reflection was not graded. Try again.");return;}
@@ -63,7 +74,24 @@ export default function RepairCafeSimulator(){
     }catch{setDebriefError("The grader could not be reached. No completion has been awarded.");}
     finally{setDebriefLoading(false);}
   }
-  function exportReport(){const report={course:course.title,fictional:true,venue:venue?.title,stations:state.activeStations,roles:activeRoles(state),safeScenariosCompleted:state.incidentIndex,choicesReconsidered:state.badChoices,reflection:state.reflection,completed:finished};const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json"}));const a=document.createElement("a");a.href=url;a.download="repair-cafe-fictional-report.json";a.click();URL.revokeObjectURL(url);}
+  function exportReport(){
+    if(!finished)return;
+    const report={
+      course:course.title,version:course.version,fictional:true,
+      venue:venue?.title,stations:state.activeStations,
+      confirmedRoles:activeRoles(state).map(role=>({role,assigned:Boolean(state.assigned[role])})),
+      decisions:state.decisions.map(x=>{
+        const incident=course.incidents.find(e=>e.id===x.incidentId);
+        return {incident:x.incidentId,time:incident?.at,choice:incident?.choices.find(c=>c.id===x.choiceId)?.label??"unknown",firstChoiceSafe:x.safe,recoveryCompleted:x.recovered,reason:x.reason};
+      }),
+      metrics:dayMetrics(state,course),
+      initialRiskDecisions:state.badChoices,
+      reflection:state.reflection,improvementOwner:state.improvementOwner,improvementMeasure:state.improvementMeasure,
+      simulationFinished:finished,verification:"Self-reported, browser-local learning only; not observed real-world competence."
+    };
+    const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json"}));
+    const a=document.createElement("a");a.href=url;a.download="repair-cafe-learning-evidence.json";a.click();URL.revokeObjectURL(url);
+  }
   return <article className="overflow-hidden rounded-3xl bg-[#f6f1e4] text-stone-900">
     <header className="bg-gradient-to-br from-emerald-950 via-[#1b5143] to-[#4c7552] px-5 py-8 text-white sm:px-9">
       <a href="/learn" className="inline-flex items-center gap-2 text-sm text-emerald-100 hover:underline"><ArrowLeft size={16}/> Back to JoshHub Learn</a>
@@ -123,8 +151,31 @@ export default function RepairCafeSimulator(){
         <div className="flex flex-wrap items-center justify-between gap-3"><h2 className={title}>Your Saturday event desk</h2><span className="rounded-full bg-amber-100 px-3 py-2 text-sm font-bold">{closed?"13:00 · Closed":incident.at+" · Saturday"}</span></div>
         {!ready?<div className="mt-4 rounded-xl bg-amber-50 p-4 text-sm">You cannot open until the venue, crew and safety preparation are ready. <button type="button" className="font-bold underline" onClick={()=>setStage("safety")}>Resolve launch gates.</button></div>:<>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">{[["Community trust",metrics.trust],["Volunteer energy",metrics.energy],["Queue pressure",metrics.queue]].map(([k,v])=><div key={k} className="rounded-xl border border-stone-200 bg-emerald-50 p-4"><p className="text-xs">{k}</p><p className="mt-1 text-3xl font-black">{v}</p></div>)}</div>
-          <div className="mt-4 h-2 rounded-full bg-stone-200"><div className="h-full rounded-full bg-emerald-800" style={{width:(state.incidentIndex/course.incidents.length*100)+"%"}}/></div><p className="mt-2 text-xs">{state.incidentIndex} / {course.incidents.length} events resolved. Unsafe answers pause and require revision.</p>
-          {closed?<div className="mt-5 rounded-2xl bg-emerald-900 p-6 text-white"><CheckCircle2 size={32} className="text-amber-200"/><h3 className="mt-3 text-2xl font-black">Your café has closed safely.</h3><p className="mt-2 text-sm">Seven fictional situations resolved. You reconsidered {state.badChoices} choices. Your learning is measured by judgement, not imaginary kilograms of waste.</p><button type="button" className="mt-4 rounded-xl bg-amber-200 px-4 py-3 font-bold text-emerald-950" onClick={()=>setStage("debrief")}>Debrief the event →</button></div>:<div className="mt-5 rounded-2xl border-2 border-emerald-700 bg-[#fff9e8] p-5"><p className="text-xs font-bold uppercase tracking-widest text-emerald-900">{incident.type} · Situation {state.incidentIndex+1}/{course.incidents.length}</p><h3 className="mt-2 text-2xl font-black">{incident.title}</h3><p className="mt-3 leading-7">{incident.story}</p><div className="mt-5 grid gap-3">{incident.choices.map(c=><button key={c.id} type="button" disabled={!!choice} onClick={()=>scenarioDecision(c.id)} className={"rounded-xl border-2 p-4 text-left text-sm disabled:cursor-not-allowed "+(choice===c.id?(c.correct?"border-emerald-700 bg-emerald-50":"border-rose-700 bg-rose-50"):"border-stone-200 bg-white hover:border-emerald-600")}>{c.label}</button>)}</div>{choice?<div role="status" className="mt-4 rounded-xl border border-stone-200 bg-white p-4"><p className="font-bold">{isSafeResolution(course,incident.id,choice)?"A well-reasoned response.":"Pause and reconsider."}</p><p className="mt-2 text-sm">{feedback}</p>{isSafeResolution(course,incident.id,choice)?<button type="button" className={go+" mt-3"} onClick={advance}>Advance the clock <ArrowRight size={14} className="ml-1 inline"/></button>:<button type="button" className={btn+" mt-3"} onClick={()=>{setChoice("");setFeedback("");}}>Choose a safer response <RotateCcw size={14} className="ml-1 inline"/></button>}</div>:null}</div>}
+          <div className="mt-4 h-2 rounded-full bg-stone-200"><div className="h-full rounded-full bg-emerald-800" style={{width:(state.incidentIndex/course.incidents.length*100)+"%"}}/></div><p className="mt-2 text-xs">{state.incidentIndex} / {course.incidents.length} events closed. First choices persist; a risky choice creates an incident to recover from and affects the remaining event.</p>
+          <p className="mt-4 rounded-xl border-l-4 border-amber-600 bg-amber-50 p-3 text-sm" role="status"><strong>Situation update:</strong> {eventPressure(state,course)}</p>
+          {closed?<div className="mt-5 rounded-2xl bg-emerald-900 p-6 text-white"><CheckCircle2 size={32} className="text-amber-200"/><h3 className="mt-3 text-2xl font-black">The fictional doors are closed.</h3><p className="mt-2 text-sm">You have an accountable record of all seven first decisions, including {state.badChoices} choices that required safety recovery. Review the consequences in your event portfolio before making the next-month improvement plan.</p><button type="button" className="mt-4 rounded-xl bg-amber-200 px-4 py-3 font-bold text-emerald-950" onClick={()=>setStage("debrief")}>Debrief the event →</button></div>:
+            <div className="mt-5 rounded-2xl border-2 border-emerald-700 bg-[#fff9e8] p-5">
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-900">{incident.type} · Situation {state.incidentIndex+1}/{course.incidents.length}</p>
+              <h3 className="mt-2 text-2xl font-black">{incident.title}</h3>
+              <p className="mt-3 leading-7">{incident.story}</p>
+              {!currentDecision?<div>
+                <label htmlFor="decision-reason" className="mt-5 block text-sm font-bold">Field notebook: what evidence matters, and what is uncertain?</label>
+                <textarea id="decision-reason" rows={3} maxLength={500} value={decisionReason} onChange={e=>setDecisionReason(e.target.value)} placeholder="Record your reasoning before choosing. The final AI debrief, not this draft, is assessed." className="mt-2 w-full rounded-xl border border-stone-300 bg-white p-3 text-sm"/>
+                <p className="mt-2 text-xs">Your first choice is final for this simulated incident. Mistakes stay in the log and change the workload. This field note is not separately graded.</p>
+                <div className="mt-4 grid gap-3">{incident.choices.map(c=><button key={c.id} type="button" onClick={()=>scenarioDecision(c.id)} className="rounded-xl border-2 border-stone-200 bg-white p-4 text-left text-sm hover:border-emerald-600 focus-visible:outline-2 focus-visible:outline-emerald-800">{c.label}</button>)}</div>
+              </div>:<div role="status" className="mt-5 rounded-xl border border-stone-300 bg-white p-4">
+                <p className={"font-bold "+(currentDecision.safe?"text-emerald-900":"text-rose-900")}>{currentDecision.safe?"Strong first judgement.":"Your first judgement caused a simulated incident."}</p>
+                <p className="mt-2 text-sm"><strong>Chosen approach:</strong> {chosenOption?.label}</p>
+                <p className="mt-2 text-sm"><strong>Consequence:</strong> {chosenOption?.why}</p>
+                <p className="mt-3 text-xs text-stone-700">The resulting impact on community trust, team energy and queue pressure is already reflected above. It will not be erased by correction.</p>
+                {!currentDecision.safe && !currentDecision.recovered?<div className="mt-4 rounded-xl border border-rose-300 bg-rose-50 p-3 text-sm">
+                  <h4 className="font-bold text-rose-900">Incident recovery required</h4>
+                  <p className="mt-2">In this fictional exercise, stop the affected activity, inform the event lead, record the near miss, ensure the item remains with its owner, restore agreed safe scope and explain the revised plan to visitors. Reopening consumes time and energy; it does not erase the initial choice.</p>
+                  <button type="button" className={btn+" mt-3"} onClick={recover}>Record recovery actions and accept the consequences</button>
+                </div>:<button type="button" className={go+" mt-4"} onClick={advance}>Advance the clock <ArrowRight size={14} className="ml-1 inline"/></button>}
+              </div>}
+            </div>}
+
         </>}
       </section>}
 
@@ -132,11 +183,16 @@ export default function RepairCafeSimulator(){
         <h2 className={title}>Reflect and prepare for next month</h2>
         {!closed?<p className="mt-4 rounded-xl bg-amber-50 p-4 text-sm">Complete the seven simulated event situations first. <button type="button" className="font-bold underline" onClick={()=>setStage("event")}>Return to event desk.</button></p>:<>
           <div className="mt-5 grid grid-cols-3 gap-2">{[["Safe decisions",state.incidentIndex],["Retried choices",state.badChoices],["Open stations",state.activeStations.length]].map(([k,v])=><div key={k} className="rounded-lg bg-emerald-50 p-3 text-center"><p className="text-xs">{k}</p><p className="mt-2 text-2xl font-black">{v}</p></div>)}</div>
-          <p className="mt-4 text-sm">No real repairs, carbon savings, donated devices or volunteer hours are claimed. This is training, not an event record.</p>
+          <p className="mt-4 text-sm">This portfolio records your actual simulated choices, including first-choice errors and recovery. No real repairs, savings or volunteer hours are claimed.</p>
+          <div className="mt-5 rounded-xl border border-stone-200 p-4"><h3 className="font-bold">Your simulated event decision ledger</h3><ol className="mt-3 space-y-3 text-sm">{state.decisions.map((d,i)=>{const e=course.incidents.find(x=>x.id===d.incidentId);return <li key={d.incidentId} className="border-l-2 border-stone-300 pl-3"><strong>{i+1}. {e?.title}</strong> · {d.safe?"Sound first judgement":"Risky first judgement; recovered"}<p className="mt-1 text-stone-600">{e?.choices.find(c=>c.id===d.choiceId)?.label}</p>{d.reason?<p className="mt-1 italic text-stone-700">Your note: {d.reason}</p>:null}</li>;})}</ol></div>
+          <label className="mt-4 block font-bold" htmlFor="reflection-owner">Who would own your proposed improvement?</label>
+          <input id="reflection-owner" className="mt-2 w-full rounded-xl border border-stone-300 p-3" maxLength={100} placeholder="e.g. Event coordinator, with a backup volunteer" value={state.improvementOwner} onChange={e=>{setDebriefFeedback(null);setState(x=>({...x,improvementOwner:e.target.value,debriefPassed:false}));}}/>
+          <label className="mt-4 block font-bold" htmlFor="reflection-measure">How would you check if the improvement worked?</label>
+          <textarea id="reflection-measure" rows={2} maxLength={300} className="mt-2 w-full rounded-xl border border-stone-300 p-3" placeholder="e.g. Compare recorded wait estimates and number of abandoned queues over two sessions." value={state.improvementMeasure} onChange={e=>{setDebriefFeedback(null);setState(x=>({...x,improvementMeasure:e.target.value,debriefPassed:false}));}}/>
           <label className="mt-4 block font-bold" htmlFor="reflection-cafe">What one thing would you improve next time?</label>
           <textarea id="reflection-cafe" rows={5} className="mt-3 w-full rounded-xl border border-stone-300 p-4" maxLength={1500} placeholder="Next month I would…" value={state.reflection} onChange={e=>{setDebriefFeedback(null);setDebriefError("");setState(s=>({...s,reflection:e.target.value,debriefPassed:false}));}}/>
           <p className="mt-3 text-sm text-stone-700">Give a concrete incident, one feasible change, why it is preferable to another reasonable approach, and how you will assess the result. Your writing is sent to Groq only when you submit; do not include personal details.</p>
-          <button type="button" className={go+" mt-3"} disabled={debriefLoading||!state.reflection.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Assessing event reflection…":"Have Groq assess my plan"}</button>
+          <button type="button" className={go+" mt-3"} disabled={debriefLoading||!state.reflection.trim()||!state.improvementOwner.trim()||!state.improvementMeasure.trim()} onClick={()=>void gradeDebrief()}>{debriefLoading?"Assessing event reflection…":"Have Groq assess my plan"}</button>
           {debriefError?<p role="alert" className="mt-3 rounded-lg border border-amber-600 p-3 text-sm">{debriefError}</p>:null}
           {debriefFeedback?<div role="status" className="mt-3 rounded-lg border border-stone-300 p-3 text-sm"><p className="font-bold">{debriefFeedback.passed?"Reflection demonstrates applied planning.":"Reflection needs more reasoning."}</p><p className="mt-1">{debriefFeedback.summary}</p><p className="mt-2"><strong>Improve:</strong> {debriefFeedback.improvement}</p></div>:null}
           {finished?<div className="mt-4 rounded-xl bg-emerald-900 p-5 text-white"><CheckCircle2 className="text-amber-200"/><h3 className="mt-2 text-2xl font-black">Simulation completed</h3><p className="mt-2 text-sm">You've made and revised event decisions, planned a safe opening, and chosen a sustainable next improvement.</p></div>:<p className="mt-2 text-sm">Completion requires a substantive event-improvement plan that passes the AI grading rubric, not a character count.</p>}
@@ -150,7 +206,7 @@ export default function RepairCafeSimulator(){
           <div className="rounded-xl bg-emerald-50 p-5"><h3 className="text-lg font-bold">15 years of Repair Café</h3><p className="mt-2 text-sm leading-6">This official documentary explores the movement and learning through repair. The publisher notes optional English subtitles. Observe how visitors and volunteers collaborate.</p><a className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-900 px-4 py-3 text-sm font-bold text-white" href="https://www.repaircafe.org/en/anniversary-documentary-on-15-years-of-repair-cafe/" target="_blank" rel="noreferrer">Watch official film <ExternalLink size={14}/></a></div></div>:null}
         {media==="audio"?<div className="mt-4 grid gap-4 sm:grid-cols-2"><div className="rounded-xl border border-stone-200 p-4"><h3 className="font-bold">Stage briefings</h3><p className="mt-2 text-sm">Choose any course stage above and tap “Listen to this lesson”. Your browser reads its written transcript using local text-to-speech; this is not a recorded podcast.</p><button type="button" className={btn+" mt-3"} onClick={narration}><Volume2 size={15} className="mr-1 inline"/> Play current briefing</button></div><div className="rounded-xl border border-stone-200 p-4"><h3 className="font-bold">Restart Radio</h3><p className="mt-2 text-sm">Original conversations with community repairers and circular economy organisers. Reflection: what supports volunteers beyond counting repairs?</p><a href="https://therestartproject.org/podcast/" target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1 text-sm font-bold text-emerald-800 underline">Browse real podcast episodes <ExternalLink size={14}/></a></div></div>:null}
       </section>
-      <footer className="rounded-xl border border-stone-300 bg-[#ece5d3] p-4 text-sm"><p><strong>Reality boundary:</strong> Every event, person, booking and scenario is fictional. This module is separate from Repair Café Dubbo's operational database. It cannot publish events, assign real shifts, notify volunteers or authorise electrical work.</p><button type="button" className={btn+" mt-4"} onClick={()=>{if(window.confirm("Erase only this simulator's locally saved progress?")){setState(INITIAL_SIM_STATE);setChoice("");setFeedback("");setStage("venue");}}}><RotateCcw size={15} className="mr-1 inline"/> Reset simulation</button></footer>
+      <footer className="rounded-xl border border-stone-300 bg-[#ece5d3] p-4 text-sm"><p><strong>Reality boundary:</strong> Every event, person, booking and scenario is fictional. This module is separate from Repair Café Dubbo's operational database. It cannot publish events, assign real shifts, notify volunteers or authorise electrical work.</p><button type="button" className={btn+" mt-4"} onClick={()=>{if(window.confirm("Erase only this simulator's locally saved progress?")){setState(INITIAL_SIM_STATE);setDecisionReason("");setStage("venue");}}}><RotateCcw size={15} className="mr-1 inline"/> Reset simulation</button></footer>
     </div>
   </article>;
 }
