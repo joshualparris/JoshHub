@@ -117,7 +117,7 @@ export default function PowerFaultCapstone(){
     a.href=url;a.download="power-fault-capstone-notes.txt";a.click();URL.revokeObjectURL(url);
   }
 
-  return <section aria-labelledby="advanced-power-title" className="rounded-2xl border border-cyan-400/45 bg-gradient-to-b from-[#0c2b36] to-slate-950 p-4 sm:p-7">
+  return <section id="power-fault-capstone" aria-labelledby="advanced-power-title" className="scroll-mt-4 rounded-2xl border border-cyan-400/45 bg-gradient-to-b from-[#0c2b36] to-slate-950 p-4 sm:p-7">
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div className="max-w-3xl">
         <p className="text-xs font-bold uppercase tracking-[.19em] text-emerald-300">Advanced capstone · new applied practice · 55 min</p>
@@ -182,7 +182,7 @@ export default function PowerFaultCapstone(){
       </article>
     </div>
 
-    <section className="mt-6 rounded-xl border border-slate-600 bg-slate-900/80 p-4 sm:p-6" aria-label="Transfer assessment">
+    {hasFinishedDecisions(notebook.history)?<section className="mt-6 rounded-xl border border-slate-600 bg-slate-900/80 p-4 sm:p-6" aria-label="Transfer assessment">
       <div className="flex items-center gap-2"><ClipboardList className="text-emerald-200"/><h3 className="text-xl font-bold">Unseen transfer assessment</h3></div>
       <p className="mt-2 text-sm leading-6 text-slate-300">Three new symptoms. The correct response is not always the longest option. These test whether you can apply the approach beyond the one-flash example.</p>
       <div className="mt-5 space-y-6">
@@ -196,7 +196,7 @@ export default function PowerFaultCapstone(){
           {chosen?<p role="status" className={"mt-2 text-sm leading-6 "+(chosen.correct?"text-emerald-200":"text-amber-200")}>{chosen.correct?"Correct. ":"Not yet. "}{chosen.feedback} {chosen.correct?t.principle:""}</p>:null}
         </fieldset>;})}
       </div>
-    </section>
+    </section>:<section aria-label="Locked transfer assessment" className="mt-6 rounded-xl border border-slate-600 bg-slate-900/80 p-4 text-sm"><h3 className="font-bold text-cyan-200">Transfer assessment unlocks after eight decisions</h3><p className="mt-2 leading-6 text-slate-300">Finish the investigation first, without seeing the unseen transfer cases or their feedback. Then try three unfamiliar scenarios without relying on the previous answers.</p></section>}
 
     <section className="mt-6 rounded-xl border border-slate-600 bg-slate-900/80 p-4 sm:p-6" aria-label="Client handover and reflection">
       <h3 className="text-xl font-bold">Final assessment: write the client handover</h3>
