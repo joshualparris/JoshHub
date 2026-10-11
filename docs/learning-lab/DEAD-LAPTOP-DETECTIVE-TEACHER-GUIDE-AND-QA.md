@@ -92,3 +92,61 @@ Production builds are not proof of all interactions. Do not mark browser-only ro
 6. Log anonymised error patterns only with consent; do not capture device secrets or personal donor data.
 
 **Acceptance rule:** A real learner can open the route, complete every mission, manipulate the board, perform virtual tests, solve the three evidence-gated cases, view properly attributed photos, open real media, resume progress, and understand precisely which skills the simulation does and does not establish.
+
+
+## G. Advanced capstone: The one-flash laptop (added 11 October 2026)
+
+**Code:** [PowerFaultCapstone.tsx](../../src/components/learn/PowerFaultCapstone.tsx), [content/decision engine](../../src/lib/learning/power-fault-capstone.ts), [quality gates](../../src/lib/learning/power-fault-capstone.test.ts).
+
+**Why this module:** A real-world repair learning session exposed an unusually useful chain of diagnostic ambiguities: an unloaded 20 V reading, a brief white LED flash that did not establish POST, a 285-ohm reading on an unidentified jack contact, inconclusive peripheral isolation, repasting after heatsink removal, a previous liquid exposure, and a customer SSD with personal files. The public scenario is fictionalised and anonymous. No client identity, unique serial number, photograph, personal file or exact board-level test-point is included.
+
+### Measurable learning outcomes
+
+The learner can:
+
+1. Record permission, data priority, liquid/battery hazards, accessory details and *reported vs observed* facts before opening a device.
+2. Classify a brief light flash as evidence of an early start *attempt*, not successful firmware execution.
+3. Explain the limit of unloaded adapter voltage and why a third-party plug with unknown ID/pinout does not make an independent verified control.
+4. Explain why an unidentified 285Ω pin measurement does not prove a short or a healthy input rail; unpowered resistance mode only.
+5. Interpret battery, SSD, SO-DIMM and Wi-Fi card isolation as *changing likelihoods*, not certifying removed parts.
+6. Identify that repasting is necessary for safe reassembly but not proof of an original overheating failure.
+7. Write cautious, accurate conclusions about possible liquid-associated board faults.
+8. Preserve customer data and check NVMe vs M.2 SATA, BitLocker, explicit owner consent, and read-only/non-destructive methods.
+9. Transfer the reasoning to three different symptom families; draft a handover stating observations, uncertainties, data handling and next step.
+
+### Assessment sequence, standard and limits
+
+- **Eight decisions:** one best-supported response per scenario with rationale, a misconception explanation for every incorrect option, unlimited corrective retry and retained first-attempt accuracy. The decision sequence cannot progress until the current best answer is selected.
+- **Adaptive support:** initial investigator mode; after repeated first-attempt mistakes, guided hints; after three consecutive first-pass correct responses, harder expert extension prompts. This adaptation adjusts support, not the factual grading rules.
+- **Transfer:** three unseen symptoms deliberately contrast early power-off, normal startup with internal no-video, a firmware-visible machine with undetected SSD, and a charger substitution. The correct response order and answer length vary.
+- **Client writing:** an owner-friendly report of at least 140 characters, requiring technician judgement and human review. The application *does not* assert that text length equals quality or issue an independent skill certificate.
+- **Calibration:** first-attempt results and misconceived tests are retained so that retry cannot masquerade as first-pass mastery. Export gives a transparent notebook record.
+- **Spaced retrieval:** suggested next-day, three-day and seven-day revisits. These are study prompts only, **not** notifications, guaranteed retention outcomes or scheduled reminders.
+- **Resources:** manufacturer troubleshooting taxonomy, iFixit diagnosis, iFixit heatsink repaste guide and Microsoft BitLocker recovery-key instructions; each carries a specific prediction/reflect task. Existing course video, podcast and audio narration remain part of the overall course.
+
+### Instructor assessment rubric (score 0–3 per criterion)
+
+| Criterion | 0 — Unsafe/unsupported | 1 — Emerging | 2 — Sound | 3 — Transfer-ready |
+|---|---|---|---|---|
+| Safety and authority | No consent, live-ohms, battery risk ignored | Some controls named but missing context | Records permission, data and hazards; stops where indicated | Explains trade-offs and modifies process for new hazards |
+| Test interpretation | Treats voltage or 285Ω as proof | States a result but asserts a part | Identifies source, load, probe identity and uncertainty | Specifies discriminating next evidence without guessing |
+| Hypothesis calibration | Declares an exact failed chip | Names many possibilities without prioritising | Ranks power path/board/firmware with caveats | Updates likelihoods after substitutions and isolation |
+| Data custody | Formats, reads without permission | Mentions copying but no consent or encryption | Identifies NVMe reader, consent, BitLocker, verification | Documents return/retention/secure erasure permissions clearly |
+| Client communication | Misstates repair as complete | Vague result and cost | Clear observations, limits, next action and no fabricated certainty | Specific, proportionate, empathetic explanation adaptable to another client |
+
+**Suggested instructor pass:** every criterion at least 2/3 with no safety red flags, and a 2/3 or 3/3 performance across independently reviewed transfer cases. An application-only completed status is practice, *not certification*.
+
+### QA checklist before claiming production readiness
+
+- [x] Source unit tests gate decision count, answer diversity, answer-length bias, misconception feedback, safety, case transfer and completion controls.
+- [x] Strict TS validation and learning tests have passed in GitHub Actions for the implementation commit.
+- [ ] Vercel production deployment at/after the final capstone commit is READY and aliased to the public site.
+- [ ] 360px Android browser: no horizontal overflow; every option, progress control, source link and output is reachable.
+- [ ] Walk through a wrong response and a second correct attempt; first-pass score must not become 100%.
+- [ ] Switch between all eight phases and reload; data must persist only on same browser.
+- [ ] Try submitting without transfer answers and without adequate report length; completion must be disabled.
+- [ ] Try browser with blocked localStorage and TTS unavailable; readable fallback must remain useful.
+- [ ] Check export contents for accurate choices and *no private client data*.
+- [ ] Independently review written handover quality and external resource availability/captions.
+
+**Open limits:** The public simulation cannot validate an actual live board, motor skills, safe ESD handling, ethical data recovery or a technician's supervised competency. Treat manufacturer-specific test points and thermal instructions as model-dependent; no real dangerous probing is taught.
