@@ -24,7 +24,7 @@ describe("Groq grading hard gates",()=>{
   const x=gradingRequest.parse({kind:"simulation",simulator:"laptop",challengeId:q.id,selected:q.answer,response:"reason"});
   expect(resolveAssessment(x)?.question).toBe(q.question);
   expect(resolveAssessment(x)?.answer).toBe(q.answer);
-  expect(resolveAssessment({...x,challengeId:"cafe:2"})).toBeNull();
+  expect(resolveAssessment({kind:"simulation",simulator:"laptop",challengeId:"cafe:2",selected:q.answer,response:"reason"})).toBeNull();
  });
  it("maps research difficulty without arbitrary client questions",()=>{
   for(const level of [1,2,3] as const) {
