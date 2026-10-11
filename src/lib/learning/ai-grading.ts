@@ -3,6 +3,7 @@ import outreach from "../../data/outreach-quiz.json";
 import tiers from "../../data/field-guide-adaptive-challenges.json";
 import { z } from "zod";
 import { simChallenges } from "./simChallenges";
+import repairCafeCases from "../../data/repair-cafe-simulator.json";
 
 const writtenResponse = z.string().min(0).max(2400);
 export const gradingRequest = z.discriminatedUnion("kind",[
@@ -15,7 +16,7 @@ type Question = {question:string;options:string[];answer:number;explanation:stri
 const appliedOutreach:Record<string,Question>=Object.fromEntries(outreach.map(x=>[x.id,x]));
 const variations=tiers.variants as Record<string,{guided:Question;expert:Question}>;
 export function resolveAssessment(input:GradingRequest): Question|null {
-  if(input.kind==="reflection")return {question:"After running a fictional Repair Café event, identify ONE feasible improvement for next month. Base it on a concrete incident from the Saturday, name a trade-off or alternative, specify the action within limited volunteer capacity and say how you will check that it worked.",options:[],answer:-1,explanation:"Look for operational ownership, a specific and proportionate process improvement, evidence from the event, realistic capacity/safety constraints, and a measurable or observable follow-up. Vague praise, merely repeating that safety matters, or a large unfunded commitment are insufficient."};
+  if(input.kind==="reflection")return {question:"After running a fictional Repair Café event, identify ONE feasible improvement for next month. Base it on a concrete incident from the Saturday, name a trade-off or alternative, specify the action within limited volunteer capacity and say how you will check that it worked. Known simulated incidents: "+repairCafeCases.incidents.map(x=>x.title+" — "+x.story).join(" | "),options:[],answer:-1,explanation:"The submitted plan must refer to a genuine simulated incident, explain a specific intervention, compare a plausible alternative, name an accountable role, acknowledge risk and propose a measurable check. The reported decisions remain learner-supplied, not independently observed. Do not award mastery for vague praise or an unfunded commitment."};
   if(input.kind==="simulation"){
     const item=simChallenges[input.simulator].find(x=>x.id===input.challengeId);
     return item?{question:item.question,options:item.options,answer:item.answer,explanation:item.explanation}:null;
