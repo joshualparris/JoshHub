@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-11.3",
+  "version": "2026-10-11.4",
   "title": "Run Your Own Repair Café",
   "subtitle": "One Saturday. Five stages. Real decisions, fictional people.",
   "description": "A strategy and community leadership simulation set in a fictional Dubbo community venue. Every name, approval, visitor and outcome in the simulation is invented.",
@@ -251,7 +251,12 @@
             "queue": 3
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Pause admissions and account for every visitor who arrived while the welcome role was uncovered.",
+        "safeguard": "Use a competent accepted handover or reduce active stations; never retrospectively invent a volunteer attendance or consent record.",
+        "evidence": "Record who covered welcome, how queue/consent checks were restored, and what staffing backup is needed."
+      }
     },
     {
       "id": "shirt",
@@ -293,7 +298,12 @@
             "queue": 2
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Stop the off-record repair or unapproved drop-off and explain the position clearly to the owner.",
+        "safeguard": "Return the item to the owner, complete only the permitted, owner-present intake pathway, and offer a fair queue or referral.",
+        "evidence": "Record a non-identifying description of the intake gap and update volunteer briefing on consent and scope."
+      }
     },
     {
       "id": "kettle",
@@ -335,7 +345,12 @@
             "queue": 0
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Stop any testing or energising of the damaged appliance and keep visitors away from the hazard.",
+        "safeguard": "Do not re-energise it or assume a volunteer's experience proves electrical authorisation. Keep custody with the owner and offer a qualified referral.",
+        "evidence": "Record the near miss, who was informed and which activity was halted; review the electrical exclusion briefing."
+      }
     },
     {
       "id": "laptop",
@@ -377,7 +392,12 @@
             "queue": 1
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Stop unattended work, ensure the owner retains or promptly regains the laptop and do not use or share credentials.",
+        "safeguard": "If credentials were exposed, treat them as compromised and advise the owner to change them using a safe independent process; do not record the secret in the queue.",
+        "evidence": "Document a non-sensitive privacy incident and reinforce the owner-present repair boundary without copying passwords."
+      }
     },
     {
       "id": "queue",
@@ -419,7 +439,12 @@
             "queue": 3
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Close new admissions briefly, acknowledge the inaccurate wait expectation and identify who is already waiting.",
+        "safeguard": "Set a fair, explicit cutoff and realistic wait estimates. Keep consent and hazard checks intact; do not open an unstaffed bench.",
+        "evidence": "Record peak queue, those referred or declined and the next-event intake capacity assumption."
+      }
     },
     {
       "id": "exit",
@@ -461,7 +486,12 @@
             "queue": 1
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Stop movement through the blocked route and nearby repair activities while the spill or obstruction is controlled.",
+        "safeguard": "Arrange safe cleaning or a genuinely accessible alternative route with the host; do not assume a warning sign makes an inaccessible route usable.",
+        "evidence": "Record a non-identifying hazard and closure/restoration time, verify exits and reflect on drink/table placement."
+      }
     },
     {
       "id": "close",
@@ -503,7 +533,12 @@
             "queue": 2
           }
         }
-      ]
+      ],
+      "recovery": {
+        "immediate": "Stop packing long enough to account for every owner and item, especially unfinished repairs.",
+        "safeguard": "Return items and dispose of sensitive notes lawfully; do not create informal after-hours custody, unapproved storage or unpromised extra repair sessions.",
+        "evidence": "Record truthful outcomes, unresolved referrals, a venue handback check and one action for next month."
+      }
     }
   ],
   "reading": [
