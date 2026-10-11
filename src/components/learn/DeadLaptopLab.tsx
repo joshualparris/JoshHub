@@ -157,6 +157,7 @@ export default function DeadLaptopLab() {
         <span className="rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-2 text-sky-100">8 missions · about 80 minutes</span>
         <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-amber-100">3 final diagnostic cases</span>
       </div>
+      <a href="#power-fault-capstone" className="mt-4 inline-flex items-center rounded-xl border border-cyan-300/60 bg-cyan-300/15 px-4 py-3 text-sm font-bold text-cyan-100 transition hover:bg-cyan-300/25">Go to advanced one-flash laptop capstone <ArrowRight size={16} className="ml-2"/></a>
       <div className="mt-7 max-w-xl">
         <div className="mb-2 flex justify-between text-xs font-semibold text-slate-300"><span>{state.completed.length}/8 missions completed</span><span>{total}%</span></div>
         <progress value={total} max={100} className="h-3 w-full accent-emerald-400" aria-label="Mission mastery progress" />
