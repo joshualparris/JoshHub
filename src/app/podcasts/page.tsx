@@ -19,7 +19,6 @@ type Episode = {
   show: string;
   tags?: string[];
   duration?: string;
-  tags?: string[];
   playerType?:"spotify"|"mp3";
   spotifyType?:"episode"|"show";
   audioUrl?:string;
