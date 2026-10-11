@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { GlobalSearch } from "@/components/global-search";
+import { PodcastPlayer } from "@/components/podcast-player";
 import { ThemeInitializer, ThemeToggle } from "@/components/theme-toggle";
 
 const navLinks = [
@@ -21,6 +22,7 @@ const navLinks = [
   { href: "/tasks", label: "Tasks" },
   { href: "/routines", label: "Routines" },
   { href: "/studio", label: "Studio" },
+  { href: "/podcasts", label: "Podcasts" },
 ];
 
 const geistSans = Geist({
@@ -102,6 +104,7 @@ export default function RootLayout({
             </div>
           </main>
         </div>
+        <PodcastPlayer />
       </body>
     </html>
   );
