@@ -135,9 +135,9 @@ export function canDebrief(state:SimState,data:SimData):boolean {
     state.decisions.length===data.incidents.length &&
     state.decisions.every(x=>x.safe||x.recovered) &&
     state.debriefPassed===true &&
-    state.reflection.trim().length>=24 &&
-    state.improvementOwner.trim().length>=2 &&
-    state.improvementMeasure.trim().length>=8;
+    state.reflection.trim().length>0 &&
+    state.improvementOwner.trim().length>0 &&
+    state.improvementMeasure.trim().length>0;
 }
 export function restoreSim(raw:unknown):SimState {
   if(!raw || typeof raw!=="object") return {...INITIAL_SIM_STATE};
