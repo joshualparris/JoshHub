@@ -1,6 +1,17 @@
 import {describe,it,expect} from "vitest";
 import d from "../../data/repair-cafe-simulator.json";
 describe("Repair Café curriculum integrity",()=>{
+ it("uses incident-specific recovery rather than a reusable generic safety message",()=>{
+  expect(d.incidents).toHaveLength(7);
+  const descriptions=new Set();
+  for(const e of d.incidents){
+   expect(e.recovery.immediate.length).toBeGreaterThan(65);
+   expect(e.recovery.safeguard.length).toBeGreaterThan(85);
+   expect(e.recovery.evidence.length).toBeGreaterThan(60);
+   descriptions.add(e.recovery.immediate);
+  }
+  expect(descriptions.size).toBe(7);
+ });
  it("has five distinct stages, three venues and seven contextual incidents",()=>{
    expect(d.reading.map(s=>s.step)).toEqual(["venue","roster","safety","event","debrief"]);
    expect(d.venues).toHaveLength(3);expect(d.incidents).toHaveLength(7);
