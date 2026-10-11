@@ -113,6 +113,7 @@ export default function FieldGuideProgress({ lessons, storageKey = defaultKey }:
     if(awaiting&&!followUp)return;
     const draft=awaiting?combineReasoning(original,followUp):original;
     const level=selectedLevels[lesson.id]??adaptive.level;
+    setSelectedLevels(v=>v[lesson.id]?v:{...v,[lesson.id]:level});
     setGradingId(lesson.id);setGradeErrors(v=>({...v,[lesson.id]:""}));
     try{
       const response=await fetch("/api/learning/grade",{
@@ -195,7 +196,7 @@ export default function FieldGuideProgress({ lessons, storageKey = defaultKey }:
         {done ? <p className="text-sm">{dueNow ? "Review due now" : "Next review: " + new Date(scheduled ?? Date.now()).toLocaleDateString("en-AU")}</p> : null}
         <label className="block font-medium" htmlFor={"recall-" + lesson.id}>What would you do, and why? Short thoughtful answers are fine.</label>
         <textarea id={"recall-" + lesson.id} rows={2} className="w-full rounded border p-3" value={recall[lesson.id] ?? ""}
-          maxLength={2400} onChange={(event) => {setRecall(current=>({...current,[lesson.id]:event.target.value}));setChecked(current=>({...current,[lesson.id]:false}));setGradeErrors(current=>({...current,[lesson.id]:""}));setAssisted(current=>({...current,[lesson.id]:true}));}}
+          maxLength={2400} disabled={correct||needsFollowUp||Boolean(gradingId)} onChange={(event) => {setRecall(current=>({...current,[lesson.id]:event.target.value}));setChecked(current=>({...current,[lesson.id]:false}));setGradeErrors(current=>({...current,[lesson.id]:""}));if(grades[lesson.id])setAssisted(current=>({...current,[lesson.id]:true}));}}
           placeholder="My plan is… because…" />
         <fieldset className="space-y-2" disabled={Boolean(gradingId)||needsFollowUp||correct}>
           <legend className="mb-2 font-medium">{challenge.question} <span className="block mt-1 text-xs font-normal opacity-70">{labelDifficulty(questionLevel)} · listed options are optional comparisons, not a grading key</span></legend>
