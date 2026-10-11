@@ -229,7 +229,7 @@ export default function RepairCafeSimulator(){
           <iframe className="mt-3 aspect-video w-full rounded-xl border-0" src="https://player.vimeo.com/video/72255218" title="Repair Café short film by zwaan.tv" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowFullScreen/>
           <a className="mt-3 block text-sm font-bold text-emerald-800 underline" href="https://vimeo.com/72255218" target="_blank" rel="noopener noreferrer">Open this video on Vimeo ↗</a>
           <p className="mt-4 text-sm">For a deeper documentary, watch <a className="font-bold underline" href="https://www.repaircafe.org/en/anniversary-documentary-on-15-years-of-repair-cafe/" target="_blank" rel="noopener noreferrer">15 years of Repair Café</a> on the original publisher's website, where English subtitles are described. The publisher's documentary embed is not available as a verified standalone player.</p>
-          </div></div></div>:null}
+          </div></div>:null}
         {media==="audio"?<div className="mt-4 grid gap-4 sm:grid-cols-2">
          <div className="rounded-xl border border-stone-200 p-4"><h3 className="font-bold">Stage briefings</h3><p className="mt-2 text-sm">Listen to any course stage through browser text-to-speech. This is narration of the course transcript, not a recorded podcast.</p><button type="button" className={btn+" mt-3"} onClick={narration}><Volume2 size={15} className="mr-1 inline"/> Play current briefing</button></div>
          <div className="rounded-xl border border-stone-200 p-4">
