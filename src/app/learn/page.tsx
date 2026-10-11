@@ -41,6 +41,13 @@ export default function LearnPage() {
 
             <a href="/podcasts#repair-cafe" className="mb-6 block rounded-2xl border border-emerald-500/30 bg-slate-950 p-5 text-white hover:border-emerald-300"><strong className="block text-xl">🎧 Podcasts and audio learning</strong><span className="mt-1 block text-sm text-emerald-100">Your existing JoshHub podcasts plus Repair Café and e-waste listening, with in-page players →</span></a>
 
+            <a href="/learn/mens-sheda-dubbo" className="mb-6 block rounded-2xl border-2 border-teal-500/40 bg-teal-950 p-6 text-white transition hover:border-teal-300">
+                <p className="text-xs font-bold uppercase tracking-widest text-teal-200">New · October 2026 · Local research</p>
+                <strong className="mt-2 block text-2xl">Mens Sheda Dubbo</strong>
+                <p className="mt-2 text-sm text-teal-100">Two Sheds · six interactive lessons · videos and playable podcasts · unanswered field questions · Repair Café partnership decision lab.</p>
+                <span className="mt-3 block font-semibold text-teal-200 underline">Open the learning page →</span>
+            </a>
+
             <a href="/learn/repair-cafe-simulator" className="mb-6 block rounded-2xl border-2 border-emerald-500/30 bg-emerald-950 p-6 text-white shadow-lg transition hover:border-amber-300">
                 <p className="text-xs font-bold uppercase tracking-widest text-amber-200">Featured · New live-event learning game</p>
                 <strong className="mt-2 block text-2xl">Run Your Own Repair Café</strong>
