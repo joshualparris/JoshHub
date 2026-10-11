@@ -23,6 +23,10 @@ export function PodcastLibrary({ topicGroups }: { topicGroups: TopicGroup[] }) {
           title: episode.title,
           show: episode.show,
           duration: episode.duration,
+          playerType:episode.playerType,
+          spotifyType:episode.spotifyType,
+          audioUrl:episode.audioUrl,
+          sourceUrl:episode.sourceUrl,
         },
       })
     );
@@ -53,7 +57,7 @@ export function PodcastLibrary({ topicGroups }: { topicGroups: TopicGroup[] }) {
             <span className="flex items-center justify-between gap-3">
               <span>{group.name}</span>
               <span className="text-xs font-normal text-neutral-500 dark:text-slate-400">
-                {group.episodes.length} episodes
+                {group.episodes.length} recordings or shows
               </span>
             </span>
           </summary>
@@ -87,12 +91,12 @@ export function PodcastLibrary({ topicGroups }: { topicGroups: TopicGroup[] }) {
                     ▶ Play in JoshHub
                   </button>
                   <a
-                    href={`https://open.spotify.com/episode/${episode.id}`}
+                    href={episode.sourceUrl ?? `https://open.spotify.com/episode/${episode.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center rounded-xl border border-neutral-200 bg-white px-3 py-2 text-xs font-medium text-neutral-600 hover:bg-neutral-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
                   >
-                    Spotify ↗
+                    Original ↗
                   </a>
                 </div>
               </article>
