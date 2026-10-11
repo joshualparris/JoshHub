@@ -1,6 +1,6 @@
 import {describe,it,expect} from "vitest";
 import d from "../../data/repair-cafe-simulator.json";
-import {INITIAL_SIM_STATE,activeRoles,canPlaceVolunteer,canConfirmVolunteer,readinessBlockers,isSafeResolution,dayMetrics,canDebrief,restoreSim, type SimState} from "./repair-cafe-logic";
+import {INITIAL_SIM_STATE,activeRoles,canPlaceVolunteer,canConfirmVolunteer,readinessBlockers,isSafeResolution,dayMetrics,canDebrief,restoreSim,eventDecision,recoverDecision,canAdvanceEvent,nextEvent,eventPressure,type SimState} from "./repair-cafe-logic";
 const data=d;
 function ready():SimState {
  return {...INITIAL_SIM_STATE,venueId:"hall",venueConfirmed:true,
@@ -43,11 +43,40 @@ describe("repair cafe operations simulation",()=>{
    expect(canDebrief({...ready(),incidentIndex:6,reflection:"All went well, I'll keep refining."},data)).toBe(false);
    expect(canDebrief({...ready(),incidentIndex:7,reflection:""},data)).toBe(false);
    expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake."},data)).toBe(false);
-   expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake.",debriefPassed:true},data)).toBe(true);
+   expect(canDebrief({...ready(),incidentIndex:7,reflection:"Next time we will add more time at intake.",debriefPassed:true},data)).toBe(false);
+   let s=ready();for(const e of data.incidents){s=eventDecision(s,data,e.id,e.choices.find(c=>c.correct)!.id,"We preserve consent and capacity.");s=nextEvent(s,data);}expect(canDebrief({...s,reflection:"Next month improve intake by training a backup and track waits.",improvementOwner:"Event lead",improvementMeasure:"Log queue waits before and after",debriefPassed:true},data)).toBe(true);
  });
- it("does not mutate metrics and preserves distinct report dimensions",()=>{
-    const s={...ready(),incidentIndex:7};
-    const m=dayMetrics(s,data);expect(m.trust).toBeGreaterThan(50);expect(m.energy).toBeLessThan(70);expect(m.queue).toBeGreaterThanOrEqual(0);
+ it("updates actual metrics from actual first decisions, not an idealised answer key",()=>{
+    const first=data.incidents[0];
+    const good=eventDecision(ready(),data,first.id,first.choices.find(c=>c.correct)!.id,"We hold intake because safe queues matter.");
+    const bad=eventDecision(ready(),data,first.id,first.choices.find(c=>!c.correct)!.id,"We assumed an informal queue might work.");
+    expect(dayMetrics(good,data)).not.toEqual(dayMetrics(bad,data));
+    expect(good.badChoices).toBe(0);
+    expect(bad.badChoices).toBe(1);
+    expect(canAdvanceEvent(bad,data)).toBe(false);
+    expect(nextEvent(bad,data).incidentIndex).toBe(0);
+    expect(eventPressure(nextEvent(good,data),data)).not.toContain("wasn't properly controlled");
+ });
+ it("does not erase an unsafe first choice when a learner recovers",()=>{
+    const first=data.incidents[0];
+    const wrong=eventDecision(ready(),data,first.id,first.choices.find(c=>!c.correct)!.id,"Intake was rushed.");
+    const recovered=recoverDecision(wrong,data);
+    expect(recovered.decisions[0].safe).toBe(false);
+    expect(recovered.decisions[0].recovered).toBe(true);
+    expect(recovered.badChoices).toBe(1);
+    expect(canAdvanceEvent(recovered,data)).toBe(true);
+    expect(eventPressure(nextEvent(recovered,data),data)).toContain("intake coverage");
+    expect(dayMetrics(recovered,data)).not.toEqual(dayMetrics(ready(),data));
+ });
+ it("cannot register multiple first answers to the same event",()=>{
+    const e=data.incidents[0];
+    const chosen=eventDecision(ready(),data,e.id,e.choices[0].id,"reason");
+    expect(eventDecision(chosen,data,e.id,e.choices[1].id,"new guess")).toEqual(chosen);
+ });
+ it("does not allow impossible event order or forged options",()=>{
+    const s=ready();
+    expect(eventDecision(s,data,data.incidents[1].id,data.incidents[1].choices[0].id,"x")).toEqual(s);
+    expect(eventDecision(s,data,data.incidents[0].id,"forged","x")).toEqual(s);
  });
  it("restores bad storage gracefully",()=>{
     expect(restoreSim("garbage")).toEqual(INITIAL_SIM_STATE);
