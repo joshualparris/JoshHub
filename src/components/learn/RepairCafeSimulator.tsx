@@ -175,7 +175,11 @@ export default function RepairCafeSimulator(){
                 <p className="mt-3 text-xs text-stone-700">The resulting impact on community trust, team energy and queue pressure is already reflected above. It will not be erased by correction.</p>
                 {!currentDecision.safe && !currentDecision.recovered?<div className="mt-4 rounded-xl border border-rose-300 bg-rose-50 p-3 text-sm">
                   <h4 className="font-bold text-rose-900">Incident recovery required</h4>
-                  <p className="mt-2">In this fictional exercise, stop the affected activity, inform the event lead, record the near miss, ensure the item remains with its owner, restore agreed safe scope and explain the revised plan to visitors. Reopening consumes time and energy; it does not erase the initial choice.</p>
+                  <p className="mt-2"></p>
+                  <p className="mt-2"><strong>Immediate response:</strong> {incident.recovery.immediate}</p>
+                  <p className="mt-2"><strong>Safeguard:</strong> {incident.recovery.safeguard}</p>
+                  <p className="mt-2"><strong>What to record:</strong> {incident.recovery.evidence}</p>
+                  <p className="mt-2">Recovery consumes time and capacity in this fictional event; it does not erase the first decision.</p><p className="hidden"></p>
                   <button type="button" className={btn+" mt-3"} onClick={recover}>Record recovery actions and accept the consequences</button>
                 </div>:<button type="button" className={go+" mt-4"} onClick={advance}>Advance the clock <ArrowRight size={14} className="ml-1 inline"/></button>}
               </div>}
