@@ -15,6 +15,7 @@ const navLinks = [
   { href: "/projects", label: "Projects" },
   { href: "/map", label: "Everything Map" },
   { href: "/life", label: "Life" },
+  { href: "/prayer-deck.html", label: "Prayer deck" },
   { href: "/care", label: "Care" },
   { href: "/capture", label: "Capture" },
   { href: "/insights/lifestyle", label: "Lifestyle Report" },
