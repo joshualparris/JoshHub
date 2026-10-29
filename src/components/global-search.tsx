@@ -23,6 +23,7 @@ const routes = [
   { label: "Apps", href: "/apps" },
   { label: "Projects", href: "/projects" },
   { label: "Life", href: "/life" },
+  { label: "Prayer deck", href: "/prayer-deck.html" },
   { label: "Capture", href: "/capture" },
   { label: "Notes", href: "/notes" },
   { label: "Tasks", href: "/tasks" },
