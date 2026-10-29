@@ -47,3 +47,9 @@ npm run start  # preview production build
 
 ## Accessibility
 - Semantic headings, focus rings on interactive elements, keyboard-friendly controls, readable contrast.
+
+## Still & Near: Prayer Deck
+
+- [Open the first-party virtual prayer deck](/prayer-deck.html) — illustrated starter cards and private opt-in custom prayers, gratitude pause, embodied posture aids, praying the room, original lament writing and an evening practice reflection.
+- [Research and safety notes](docs/prayer-daily-rituals-2026-10-29.md) — official Practicing the Way sources, Tyler Staton book, habit research, theological and privacy limits.
+- All personal prayer entries are optional and local to the browser after an explicit Save. They are not uploaded to GitHub or sent to a server. No streaks. The app cannot independently send push reminders.

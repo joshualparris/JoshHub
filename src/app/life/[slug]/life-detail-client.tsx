@@ -58,6 +58,15 @@ export function LifeDetailClient({ area }: Props) {
           </Button>
         </div>
 
+        {area.slug === "faith" && (
+          <Card className="border-emerald-200 bg-emerald-50/80 dark:border-emerald-700 dark:bg-emerald-950/30">
+            <CardHeader><CardTitle className="text-lg dark:text-emerald-100">Still &amp; Near — Prayer Deck</CardTitle></CardHeader>
+            <CardContent className="space-y-3">
+              <p className="text-sm text-emerald-950 dark:text-emerald-100">Beautiful prayer cards, a daily moment of gratitude, bodily prayer, praying the room, honest lament and a gentle evening reflection.</p>
+              <Button asChild><Link href="/prayer-deck.html">Open the prayer deck</Link></Button>
+            </CardContent>
+          </Card>
+        )}
         <div className="space-y-4">
           {area.sections.map((section) => (
             <Card

@@ -189,6 +189,12 @@ export default function DashboardPage() {
                   Today
                 </Link>
               </Button>
+              <Button variant="outline" asChild>
+                <Link href="/prayer-deck.html">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Prayer deck
+                </Link>
+              </Button>
               <Button variant="ghost" asChild>
                 <Link href="/life">
                   <Layers className="mr-2 h-4 w-4" />
