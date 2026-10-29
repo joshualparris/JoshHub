@@ -1,0 +1,47 @@
+name: Prayer Deck Verification
+
+on:
+  pull_request:
+    paths:
+      - 'public/prayer-deck.html'
+      - 'src/app/layout.tsx'
+      - 'src/app/dashboard/page.tsx'
+      - 'src/app/life/**'
+      - 'src/components/global-search.tsx'
+      - 'docs/prayer-daily-rituals-2026-10-29.md'
+      - 'scripts/check-prayer-deck.test.mjs'
+      - '.github/workflows/prayer-deck-verification.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'public/prayer-deck.html'
+      - 'src/app/layout.tsx'
+      - 'src/app/dashboard/page.tsx'
+      - 'src/app/life/**'
+      - 'src/components/global-search.tsx'
+      - 'docs/prayer-daily-rituals-2026-10-29.md'
+      - 'scripts/check-prayer-deck.test.mjs'
+      - '.github/workflows/prayer-deck-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Prayer deck syntax and content tests
+        run: node --test scripts/check-prayer-deck.test.mjs
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Type-check JoshHub
+        run: npx tsc --noEmit
