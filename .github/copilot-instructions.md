@@ -1,6 +1,12 @@
 <!-- Copilot / AI agent instructions for JoshHub -->
 # JoshHub — Copilot Instructions
 
+Before substantial work, read the repository-root `AGENTS.md` and apply its
+values gate before optional work. This applies to all supported coding agents;
+the gate protects user-stated real-life commitments, encourages reuse and
+stopping, and requires a human outcome with evidence. Live agent compliance
+must be validated through observed behavior, not inferred from this file.
+
 Brief, actionable guidance for AI coding agents working on this repository.
 
 - Project type: Next.js (App Router) + TypeScript + Tailwind CSS. App lives in `src/app`.
